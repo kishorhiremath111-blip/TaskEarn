@@ -2519,17 +2519,22 @@ async function loadWallet(
 
     try{
 
+        /*
+         * CANONICAL WALLET SOURCE:
+         * wallet_balances is the read-only balance view.
+         * Do NOT read from the legacy user_wallets table.
+         * The actual ledger remains wallet_transactions.
+         */
+
         const {
             data,
             error
         } =
             await supabaseClient
                 .from(
-                    "user_wallets"
+                    "wallet_balances"
                 )
-                .select(
-                    "balance,total_earned,total_withdrawn"
-                )
+                .select("*")
                 .eq(
                     "user_id",
                     userId
@@ -2540,13 +2545,13 @@ async function loadWallet(
         if(error){
 
             console.error(
-                "Wallet database error:",
+                "Wallet balance view error:",
                 error
             );
 
 
             showWalletError(
-                "Wallet data could not be loaded."
+                "Wallet balance could not be loaded."
             );
 
 
@@ -2555,30 +2560,92 @@ async function loadWallet(
         }
 
 
-        /*
-         * IMPORTANT:
-         *
-         * No fake amount is created here.
-         * If database has no wallet row,
-         * display remains ₹0.00.
-         */
-
         const balance =
             Number(
-                data?.balance || 0
+                data?.balance ??
+                data?.wallet_balance ??
+                0
             );
 
 
-        const earned =
+        /*
+         * Keep summary values canonical even if the
+         * balance view exposes only the current balance.
+         * Positive/negative ledger rows are the source
+         * for earned/withdrawn totals.
+         */
+
+        let earned =
             Number(
-                data?.total_earned || 0
+                data?.total_earned ??
+                data?.earned ??
+                0
             );
 
-
-        const withdrawn =
+        let withdrawn =
             Number(
-                data?.total_withdrawn || 0
+                data?.total_withdrawn ??
+                data?.withdrawn ??
+                0
             );
+
+
+        const {
+            data: ledgerRows,
+            error: ledgerError
+        } =
+            await supabaseClient
+                .from(
+                    "wallet_transactions"
+                )
+                .select(
+                    "amount"
+                )
+                .eq(
+                    "user_id",
+                    userId
+                );
+
+
+        if(!ledgerError && Array.isArray(ledgerRows)){
+
+            let ledgerEarned = 0;
+            let ledgerWithdrawn = 0;
+
+            ledgerRows.forEach(
+                row => {
+
+                    const amount =
+                        Number(
+                            row?.amount || 0
+                        );
+
+                    if(
+                        Number.isFinite(amount)
+                    ){
+
+                        if(amount > 0){
+                            ledgerEarned += amount;
+                        }
+
+                        if(amount < 0){
+                            ledgerWithdrawn += Math.abs(amount);
+                        }
+
+                    }
+
+                }
+            );
+
+            /*
+             * Ledger totals are authoritative for the
+             * displayed history totals.
+             */
+
+            earned = ledgerEarned;
+            withdrawn = ledgerWithdrawn;
+
+        }
 
 
         walletBalance.textContent =
@@ -2606,9 +2673,8 @@ async function loadWallet(
 
 
         /*
-         * Keep withdraw button available.
-         * withdrawal.html should perform the
-         * final balance / minimum checks.
+         * Keep withdrawal validation server-side.
+         * This button only opens the withdrawal flow.
          */
 
         withdrawButton.disabled =
