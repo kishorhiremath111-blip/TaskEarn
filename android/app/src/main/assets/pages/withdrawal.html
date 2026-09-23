@@ -2450,8 +2450,8 @@ async function loadWallet(){
         error
     } =
     await supabaseClient
-        .from("user_wallets")
-        .select("balance")
+        .from("wallet_balances")
+        .select("*")
         .eq(
             "user_id",
             currentUser.id
