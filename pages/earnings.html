@@ -7397,10 +7397,6 @@ function updateSummary(){
     numberFormat(allTransactions.length);
 
   // Existing dashboard cards; use the same canonical task/project ledger data.
-  const projectEl = document.getElementById("ownerProjectRevenue");
-  const taskEl = document.getElementById("ownerTaskRevenue");
-  if(projectEl) projectEl.textContent = money(projectRevenue);
-  if(taskEl) taskEl.textContent = money(taskRevenue);
 }
 
 /* ================= WALLET HISTORY ================= */
