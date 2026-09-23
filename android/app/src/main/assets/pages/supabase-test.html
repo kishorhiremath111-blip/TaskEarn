@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TaskEarn - Supabase Test</title>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;padding:24px;font-family:Arial,sans-serif;
+    background:#0b1020;color:#fff;min-height:100vh;
+  }
+  .card{
+    max-width:760px;margin:0 auto;background:#151c32;
+    border:1px solid #2d395d;border-radius:18px;padding:22px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+  }
+  h1{margin:0 0 8px;font-size:24px}
+  p{color:#aeb9d6;line-height:1.5}
+  button{
+    border:0;border-radius:12px;padding:14px 18px;
+    background:#5b7cff;color:#fff;font-weight:700;font-size:15px;
+    cursor:pointer;
+  }
+  button:disabled{opacity:.6}
+  .box{
+    margin-top:18px;padding:14px;border-radius:12px;
+    background:#0b1020;border:1px solid #2d395d;
+  }
+  pre{
+    white-space:pre-wrap;word-break:break-word;
+    font-size:12px;line-height:1.5;color:#dbe4ff;
+    max-height:420px;overflow:auto;
+  }
+  .label{font-weight:700;color:#fff}
+  .ok{color:#63e6a5}.bad{color:#ff7b8a}.muted{color:#8f9bb8}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>TaskEarn — Supabase Connection Test</h1>
+  <p>
+    This page tests the Supabase REST API directly, without the Supabase JS
+    library. It will tell us whether the problem is the network/API/key/RLS.
+  </p>
+
+  <button id="testBtn">Test Supabase Connection</button>
+
+  <div class="box">
+    <div class="label">Endpoint</div>
+    <pre id="endpoint"></pre>
+  </div>
+
+  <div class="box">
+    <div class="label">Result</div>
+    <pre id="result">Not tested yet.</pre>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+const endpoint =
+  SUPABASE_URL +
+  "/rest/v1/tasks" +
+  "?select=id,created_at,title,description,reward,duration_minutes,category,task_url,status,verified,task_type" +
+  "&order=created_at.desc";
+
+document.getElementById("endpoint").textContent = endpoint;
+
+async function testConnection(){
+  const btn = document.getElementById("testBtn");
+  const result = document.getElementById("result");
+
+  btn.disabled = true;
+  btn.textContent = "Testing...";
+  result.textContent = "Sending direct REST request...";
+
+  const started = performance.now();
+
+  try{
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+        "Accept": "application/json"
+      },
+      cache: "no-store"
+    });
+
+    const body = await response.text();
+    const elapsed = Math.round(performance.now() - started);
+
+    let parsed = body;
+    try{
+      parsed = JSON.stringify(JSON.parse(body), null, 2);
+    }catch(_){}
+
+    result.innerHTML =
+      "HTTP STATUS: " + response.status + " " + response.statusText +
+      "\nTIME: " + elapsed + " ms" +
+      "\nOK: " + response.ok +
+      "\n\nRESPONSE BODY:\n" + escapeHtml(parsed);
+
+  }catch(error){
+    const elapsed = Math.round(performance.now() - started);
+
+    result.innerHTML =
+      "DIRECT FETCH FAILED" +
+      "\nTIME: " + elapsed + " ms" +
+      "\n\nname: " + escapeHtml(error?.name || "unknown") +
+      "\nmessage: " + escapeHtml(error?.message || "unknown") +
+      "\n\nThis means the browser/WebView did not receive a normal HTTP response." +
+      "\nPossible causes: network/DNS/TLS/CORS/API gateway.";
+
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "Test Again";
+  }
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+document.getElementById("testBtn").addEventListener("click", testConnection);
+</script>
+</body>
+</html>

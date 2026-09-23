@@ -1,0 +1,2920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080a1b">
+
+<title>TaskEarn — Project Work</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#080a1b;
+  color:#f4f6ff;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button,a{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+:root{
+  --bg:#080a1b;
+  --card:#101327;
+  --card2:#14182d;
+  --line:rgba(255,255,255,.07);
+  --blue:#718cff;
+  --purple:#936fff;
+  --green:#38dfad;
+  --yellow:#ffd05a;
+  --red:#ff647d;
+  --muted:#858eaa;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(83,105,255,.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 25%,
+      rgba(143,93,255,.13),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #090b20,
+      #070918 75%,
+      #080a1b
+    );
+}
+
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    );
+
+  background-size:42px 42px;
+
+  mask-image:linear-gradient(
+    to bottom,
+    black,
+    transparent 90%
+  );
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  min-height:68px;
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  padding:10px 16px;
+
+  background:rgba(8,10,27,.90);
+  backdrop-filter:blur(18px);
+
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.back{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:14px;
+
+  color:#edf0ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #181c38,
+      #0e1126
+    );
+
+  border:1px solid rgba(255,255,255,.10);
+
+  transition:
+    transform .16s ease,
+    filter .16s ease,
+    background .16s ease;
+}
+
+.back:hover{
+  filter:brightness(1.12);
+}
+
+.back:active{
+  transform:scale(.91);
+  filter:brightness(.84);
+}
+
+.back svg{
+  width:22px;
+  height:22px;
+}
+
+.header-title{
+  min-width:0;
+  flex:1;
+
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:-.5px;
+}
+
+.header-title span{
+  color:#718cff;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+
+  padding:16px 16px 44px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading{
+  padding:80px 15px;
+  text-align:center;
+
+  color:#858eaa;
+  font-size:14px;
+  font-weight:600;
+}
+
+.spinner{
+  width:30px;
+  height:30px;
+
+  margin:0 auto 14px;
+
+  border-radius:50%;
+
+  border:3px solid rgba(255,255,255,.08);
+  border-top-color:#718cff;
+
+  animation:spin .7s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.work-hero{
+  position:relative;
+  overflow:hidden;
+
+  padding:20px;
+
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(113,140,255,.20),
+      transparent 40%
+    ),
+    linear-gradient(
+      145deg,
+      #181c3d,
+      #101326
+    );
+
+  border:1px solid rgba(113,140,255,.18);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.25);
+
+  animation:heroIn .35s ease both;
+}
+
+@keyframes heroIn{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.work-hero:after{
+  content:"";
+
+  position:absolute;
+
+  width:150px;
+  height:150px;
+
+  right:-65px;
+  bottom:-75px;
+
+  border-radius:50%;
+
+  background:rgba(115,93,255,.09);
+
+  pointer-events:none;
+}
+
+.hero-top{
+  position:relative;
+  z-index:1;
+
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo-box{
+  width:56px;
+  height:56px;
+  flex:0 0 56px;
+
+  display:grid;
+  place-items:center;
+
+  overflow:hidden;
+
+  border-radius:17px;
+
+  color:#8096ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #202958,
+      #11162f
+    );
+
+  border:1px solid rgba(113,140,255,.22);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.logo-box img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  display:none;
+}
+
+.logo-box svg{
+  width:27px;
+  height:27px;
+}
+
+.hero-content{
+  min-width:0;
+  flex:1;
+}
+
+.status-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  margin-bottom:7px;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+
+  padding:6px 9px;
+
+  border-radius:8px;
+
+  color:#4ce2b4;
+  background:rgba(48,222,174,.09);
+
+  border:1px solid rgba(56,223,173,.08);
+
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.4px;
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+
+  border-radius:50%;
+
+  background:#38dfad;
+
+  box-shadow:
+    0 0 9px rgba(56,223,173,.75);
+
+  animation:pulseDot 1.8s ease-in-out infinite;
+}
+
+@keyframes pulseDot{
+  0%,100%{
+    opacity:1;
+    transform:scale(1);
+  }
+  50%{
+    opacity:.55;
+    transform:scale(.82);
+  }
+}
+
+.hero-title{
+  overflow:hidden;
+
+  font-size:23px;
+  font-weight:950;
+  line-height:1.22;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+
+  letter-spacing:-.55px;
+}
+
+.hero-category{
+  margin-top:5px;
+
+  color:#858eaa;
+
+  font-size:12px;
+  font-weight:600;
+}
+
+.hero-bottom{
+  position:relative;
+  z-index:1;
+
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-top:20px;
+}
+
+.reward-label{
+  color:#7d86a2;
+
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.8px;
+}
+
+.reward{
+  margin-top:4px;
+
+  font-size:36px;
+  font-weight:950;
+  line-height:1;
+
+  letter-spacing:-1.5px;
+}
+
+.reward-note{
+  color:#7a84a0;
+
+  font-size:11px;
+  font-weight:650;
+
+  text-align:right;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-card{
+  margin-top:12px;
+
+  padding:16px;
+
+  border-radius:17px;
+
+  background:rgba(14,17,35,.94);
+
+  border:1px solid rgba(255,255,255,.065);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.12);
+}
+
+.progress-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:10px;
+}
+
+.progress-title{
+  color:#d6daea;
+
+  font-size:13px;
+  font-weight:850;
+}
+
+.progress-percent{
+  color:#8297ff;
+
+  font-size:13px;
+  font-weight:950;
+}
+
+.progress-track{
+  height:8px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:rgba(255,255,255,.065);
+}
+
+.progress-fill{
+  width:0%;
+  height:100%;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #718cff,
+      #936fff
+    );
+
+  transition:
+    width .45s ease;
+
+  box-shadow:
+    0 0 12px rgba(113,140,255,.25);
+}
+
+/* =========================================================
+   META
+========================================================= */
+
+.meta-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:10px;
+
+  margin-top:12px;
+}
+
+.meta-card{
+  min-width:0;
+
+  padding:14px 12px;
+
+  border-radius:15px;
+
+  background:rgba(13,16,34,.94);
+
+  border:1px solid rgba(255,255,255,.065);
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease;
+}
+
+.meta-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(113,140,255,.15);
+}
+
+.meta-icon{
+  color:#7589ff;
+
+  margin-bottom:8px;
+}
+
+.meta-icon svg{
+  width:19px;
+  height:19px;
+}
+
+.meta-value{
+  overflow:hidden;
+
+  color:#e8ebf8;
+
+  font-size:14px;
+  font-weight:900;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.meta-label{
+  margin-top:4px;
+
+  color:#69738e;
+
+  font-size:10px;
+  font-weight:800;
+
+  letter-spacing:.35px;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+  margin-top:13px;
+
+  padding:17px;
+
+  border-radius:18px;
+
+  background:rgba(14,17,35,.93);
+
+  border:1px solid rgba(255,255,255,.065);
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.10);
+
+  animation:sectionIn .35s ease both;
+}
+
+@keyframes sectionIn{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  margin-bottom:11px;
+
+  color:#e5e8f5;
+
+  font-size:16px;
+  font-weight:900;
+
+  letter-spacing:-.2px;
+}
+
+.section-dot{
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+
+  border-radius:50%;
+
+  background:#718cff;
+
+  box-shadow:
+    0 0 9px rgba(113,140,255,.8);
+}
+
+.description{
+  color:#929bb4;
+
+  font-size:13px;
+  line-height:1.7;
+
+  white-space:pre-line;
+}
+
+/* =========================================================
+   INSTRUCTIONS
+========================================================= */
+
+.instructions{
+  display:flex;
+  flex-direction:column;
+
+  gap:9px;
+}
+
+.instruction{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+
+  padding:12px;
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.045);
+
+  transition:
+    transform .18s ease,
+    background .18s ease;
+}
+
+.instruction:hover{
+  transform:translateX(2px);
+
+  background:rgba(113,140,255,.035);
+}
+
+.instruction-number{
+  width:31px;
+  height:31px;
+  flex:0 0 31px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:9px;
+
+  color:#a6b3ff;
+
+  background:rgba(113,140,255,.10);
+
+  border:1px solid rgba(113,140,255,.08);
+
+  font-size:11px;
+  font-weight:950;
+}
+
+.instruction-text{
+  padding-top:4px;
+
+  color:#c3c9dc;
+
+  font-size:12px;
+  line-height:1.55;
+
+  font-weight:550;
+}
+
+/* =========================================================
+   PROJECT WORKSPACE
+========================================================= */
+
+.open-project{
+  width:100%;
+  min-height:52px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:9px;
+
+  border-radius:14px;
+
+  color:#c3cbea;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(113,140,255,.13),
+      rgba(147,111,255,.09)
+    );
+
+  border:1px solid rgba(113,140,255,.17);
+
+  font-size:13px;
+  font-weight:900;
+
+  transition:
+    transform .16s ease,
+    filter .16s ease,
+    background .16s ease,
+    box-shadow .16s ease;
+}
+
+.open-project:hover{
+  filter:brightness(1.08);
+
+  box-shadow:
+    0 8px 24px rgba(82,102,220,.12);
+}
+
+.open-project:active{
+  transform:scale(.965) translateY(1px);
+  filter:brightness(.88);
+}
+
+.open-project svg{
+  width:19px;
+  height:19px;
+}
+
+/* =========================================================
+   FINISH CHECK
+========================================================= */
+
+.complete-check{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+
+  padding:14px;
+
+  border-radius:14px;
+
+  background:rgba(56,223,173,.035);
+
+  border:1px solid rgba(56,223,173,.09);
+
+  transition:
+    background .18s ease,
+    border-color .18s ease;
+}
+
+.complete-check:has(input:checked){
+  background:rgba(56,223,173,.06);
+  border-color:rgba(56,223,173,.18);
+}
+
+.complete-check input{
+  width:20px;
+  height:20px;
+
+  flex:0 0 20px;
+
+  margin:2px 0 0;
+
+  accent-color:#38dfad;
+
+  cursor:pointer;
+}
+
+.complete-check label{
+  color:#c5cbdc;
+
+  font-size:13px;
+  font-weight:650;
+
+  line-height:1.55;
+
+  cursor:pointer;
+}
+
+/* =========================================================
+   ACTION
+========================================================= */
+
+.actions{
+  margin-top:15px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:9px;
+}
+
+.complete-btn{
+  position:relative;
+  overflow:hidden;
+
+  width:100%;
+  min-height:55px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:9px;
+
+  border:0;
+  border-radius:15px;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #718cff,
+      #536edc
+    );
+
+  box-shadow:
+    0 14px 30px rgba(76,101,222,.24);
+
+  font-size:14px;
+  font-weight:950;
+
+  transition:
+    transform .16s ease,
+    filter .16s ease,
+    opacity .16s ease,
+    box-shadow .16s ease;
+}
+
+.complete-btn:before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-100%;
+
+  width:60%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.14),
+      transparent
+    );
+
+  transform:skewX(-18deg);
+
+  transition:left .55s ease;
+}
+
+.complete-btn:hover:before{
+  left:140%;
+}
+
+.complete-btn:hover{
+  filter:brightness(1.07);
+
+  box-shadow:
+    0 17px 34px rgba(76,101,222,.28);
+}
+
+.complete-btn:active{
+  transform:
+    scale(.965)
+    translateY(1px);
+
+  filter:brightness(.87);
+}
+
+.complete-btn:disabled{
+  opacity:.38;
+
+  cursor:not-allowed;
+
+  box-shadow:none;
+}
+
+.complete-btn svg{
+  width:19px;
+  height:19px;
+}
+
+/* =========================================================
+   NEXT INFO
+========================================================= */
+
+.next-box{
+  margin-top:12px;
+
+  padding:13px 14px;
+
+  display:flex;
+  align-items:center;
+
+  gap:11px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(113,140,255,.055),
+      rgba(147,111,255,.035)
+    );
+
+  border:1px solid rgba(113,140,255,.09);
+}
+
+.next-icon{
+  width:36px;
+  height:36px;
+  flex:0 0 36px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:10px;
+
+  color:#a1afff;
+
+  background:rgba(113,140,255,.09);
+}
+
+.next-icon svg{
+  width:18px;
+  height:18px;
+}
+
+.next-text{
+  min-width:0;
+}
+
+.next-title{
+  color:#d1d6e9;
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.next-sub{
+  margin-top:3px;
+
+  color:#707991;
+
+  font-size:11px;
+  line-height:1.5;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error{
+  display:none;
+
+  padding:45px 20px;
+
+  text-align:center;
+
+  border-radius:20px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.error-icon{
+  width:52px;
+  height:52px;
+
+  margin:0 auto 13px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:16px;
+
+  color:#ff7188;
+
+  background:rgba(255,100,125,.07);
+}
+
+.error-icon svg{
+  width:25px;
+  height:25px;
+}
+
+.error-title{
+  color:#ff7188;
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.error-text{
+  margin-top:7px;
+
+  color:#78829b;
+
+  font-size:12px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+  bottom:22px;
+
+  z-index:300;
+
+  width:max-content;
+  max-width:calc(100% - 30px);
+
+  padding:12px 16px;
+
+  border-radius:13px;
+
+  background:#171b32;
+
+  border:1px solid rgba(255,255,255,.11);
+
+  color:#edf0ff;
+
+  font-size:12px;
+  font-weight:800;
+
+  text-align:center;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transform:translate(-50%,18px);
+
+  transition:
+    opacity .22s ease,
+    transform .22s ease;
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.45);
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:translate(-50%,0);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:520px){
+
+  .header{
+    min-height:66px;
+    padding:9px 13px;
+  }
+
+  .header-title{
+    font-size:18px;
+  }
+
+  .page{
+    padding:
+      14px
+      13px
+      40px;
+  }
+
+  .work-hero{
+    padding:18px;
+    border-radius:20px;
+  }
+
+  .logo-box{
+    width:52px;
+    height:52px;
+    flex-basis:52px;
+  }
+
+  .hero-title{
+    font-size:21px;
+  }
+
+  .hero-category{
+    font-size:11px;
+  }
+
+  .reward{
+    font-size:34px;
+  }
+
+  .reward-label{
+    font-size:10px;
+  }
+
+  .reward-note{
+    font-size:10px;
+  }
+
+  .progress-card{
+    padding:15px;
+  }
+
+  .meta-card{
+    padding:13px 11px;
+  }
+
+  .meta-value{
+    font-size:13px;
+  }
+
+  .section{
+    padding:15px;
+  }
+
+  .section-title{
+    font-size:15px;
+  }
+
+  .description{
+    font-size:13px;
+  }
+
+  .instruction-text{
+    font-size:12px;
+  }
+
+  .complete-check label{
+    font-size:12.5px;
+  }
+
+  .complete-btn{
+    min-height:54px;
+    font-size:14px;
+  }
+}
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media(max-width:360px){
+
+  .page{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .work-hero{
+    padding:16px;
+  }
+
+  .hero-top{
+    gap:11px;
+  }
+
+  .logo-box{
+    width:48px;
+    height:48px;
+    flex-basis:48px;
+  }
+
+  .hero-title{
+    font-size:19px;
+  }
+
+  .status{
+    font-size:9px;
+    padding:5px 7px;
+  }
+
+  .reward{
+    font-size:31px;
+  }
+
+  .meta-grid{
+    gap:7px;
+  }
+
+  .meta-card{
+    padding:12px 9px;
+  }
+
+  .meta-icon svg{
+    width:17px;
+    height:17px;
+  }
+
+  .meta-value{
+    font-size:12px;
+  }
+
+  .meta-label{
+    font-size:9px;
+  }
+
+  .section{
+    padding:14px;
+  }
+
+  .instruction{
+    padding:11px;
+  }
+
+  .instruction-number{
+    width:29px;
+    height:29px;
+    flex-basis:29px;
+  }
+
+  .instruction-text{
+    font-size:11.5px;
+  }
+
+  .next-sub{
+    font-size:10.5px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     SVG ICONS
+========================================================= -->
+
+<svg width="0" height="0" style="position:absolute">
+
+<symbol id="back" viewBox="0 0 24 24">
+  <path
+    d="M15 5 8 12l7 7"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="briefcase" viewBox="0 0 24 24">
+  <rect
+    x="3"
+    y="7"
+    width="18"
+    height="13"
+    rx="2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+</symbol>
+
+<symbol id="clock" viewBox="0 0 24 24">
+  <circle
+    cx="12"
+    cy="12"
+    r="8.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M12 7v5l3 2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="users" viewBox="0 0 24 24">
+  <circle
+    cx="9"
+    cy="9"
+    r="3"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <circle
+    cx="17"
+    cy="10"
+    r="2.4"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M3.5 20c.5-3.6 2.3-5.3 5.5-5.3s5 1.7 5.5 5.3M14 15c3.5-.4 5.7 1.2 6.5 5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="external" viewBox="0 0 24 24">
+  <path
+    d="M14 5h5v5M19 5l-8 8"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+  <path
+    d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="check" viewBox="0 0 24 24">
+  <path
+    d="m5 12 4 4L19 6"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="arrow" viewBox="0 0 24 24">
+  <path
+    d="m9 5 7 7-7 7"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="alert" viewBox="0 0 24 24">
+  <path
+    d="M12 4 21 19H3L12 4Z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linejoin="round"/>
+  <path
+    d="M12 9v5M12 17h.01"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+</svg>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+  <button
+    class="back"
+    id="backBtn"
+    aria-label="Back">
+
+    <svg>
+      <use href="#back"></use>
+    </svg>
+
+  </button>
+
+  <div class="header-title">
+    Task<span>Earn</span> — Project Work
+  </div>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="page">
+
+  <!-- LOADING -->
+
+  <div
+    class="loading"
+    id="loading">
+
+    <div class="spinner"></div>
+
+    Loading project work...
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    class="error"
+    id="errorBox">
+
+    <div class="error-icon">
+
+      <svg>
+        <use href="#alert"></use>
+      </svg>
+
+    </div>
+
+    <div class="error-title">
+      Project unavailable
+    </div>
+
+    <div class="error-text">
+      This project could not be loaded.
+      Please return to Projects and try again.
+    </div>
+
+  </div>
+
+
+  <!-- CONTENT -->
+
+  <div
+    id="content"
+    style="display:none;">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="work-hero">
+
+      <div class="hero-top">
+
+        <div
+          class="logo-box"
+          id="logoBox">
+
+          <img
+            id="companyLogo"
+            alt="Project">
+
+          <svg id="defaultLogo">
+            <use href="#briefcase"></use>
+          </svg>
+
+        </div>
+
+
+        <div class="hero-content">
+
+          <div class="status-row">
+
+            <div class="status">
+
+              <span class="status-dot"></span>
+
+              PROJECT IN PROGRESS
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="hero-title"
+            id="projectTitle">
+
+            Project
+
+          </div>
+
+
+          <div
+            class="hero-category"
+            id="projectCategory">
+
+            Company Project
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-bottom">
+
+        <div>
+
+          <div class="reward-label">
+            PROJECT REWARD
+          </div>
+
+          <div
+            class="reward"
+            id="reward">
+
+            ₹0
+
+          </div>
+
+        </div>
+
+
+        <div class="reward-note">
+          Paid after approval
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROGRESS
+    ====================================================== -->
+
+    <div class="progress-card">
+
+      <div class="progress-head">
+
+        <div class="progress-title">
+          Project Progress
+        </div>
+
+        <div
+          class="progress-percent"
+          id="progressPercent">
+
+          25%
+
+        </div>
+
+      </div>
+
+
+      <div class="progress-track">
+
+        <div
+          class="progress-fill"
+          id="progressFill">
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         META
+    ====================================================== -->
+
+    <div class="meta-grid">
+
+      <div class="meta-card">
+
+        <div class="meta-icon">
+
+          <svg>
+            <use href="#clock"></use>
+          </svg>
+
+        </div>
+
+        <div
+          class="meta-value"
+          id="duration">
+
+          —
+
+        </div>
+
+        <div class="meta-label">
+          TIME
+        </div>
+
+      </div>
+
+
+      <div class="meta-card">
+
+        <div class="meta-icon">
+
+          <svg>
+            <use href="#users"></use>
+          </svg>
+
+        </div>
+
+        <div
+          class="meta-value"
+          id="completed">
+
+          —
+
+        </div>
+
+        <div class="meta-label">
+          COMPLETED
+        </div>
+
+      </div>
+
+
+      <div class="meta-card">
+
+        <div class="meta-icon">
+
+          <svg>
+            <use href="#check"></use>
+          </svg>
+
+        </div>
+
+        <div
+          class="meta-value"
+          id="verification">
+
+          —
+
+        </div>
+
+        <div class="meta-label">
+          STATUS
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROJECT INSTRUCTIONS
+    ====================================================== -->
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <span class="section-dot"></span>
+
+        Project Instructions
+
+      </div>
+
+
+      <div
+        class="description"
+        id="description">
+
+        Complete the project according to the instructions.
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         WORK STEPS
+    ====================================================== -->
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <span class="section-dot"></span>
+
+        Work Steps
+
+      </div>
+
+
+      <div
+        class="instructions"
+        id="instructions">
+
+        <div class="instruction">
+
+          <div class="instruction-number">
+            01
+          </div>
+
+          <div class="instruction-text">
+            Read the complete project instructions carefully.
+          </div>
+
+        </div>
+
+
+        <div class="instruction">
+
+          <div class="instruction-number">
+            02
+          </div>
+
+          <div class="instruction-text">
+            Complete the required work exactly as instructed.
+          </div>
+
+        </div>
+
+
+        <div class="instruction">
+
+          <div class="instruction-number">
+            03
+          </div>
+
+          <div class="instruction-text">
+            Make sure your work satisfies all project requirements.
+          </div>
+
+        </div>
+
+
+        <div class="instruction">
+
+          <div class="instruction-number">
+            04
+          </div>
+
+          <div class="instruction-text">
+            Mark the project completed only after finishing the work.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROJECT WORKSPACE
+    ====================================================== -->
+
+    <section
+      class="section"
+      id="linkSection"
+      style="display:none;">
+
+      <div class="section-title">
+
+        <span class="section-dot"></span>
+
+        Project Workspace
+
+      </div>
+
+
+      <a
+        href="#"
+        target="_blank"
+        rel="noopener"
+        class="open-project"
+        id="openProject">
+
+        <svg>
+          <use href="#external"></use>
+        </svg>
+
+        Open Project Workspace
+
+      </a>
+
+    </section>
+
+
+    <!-- =====================================================
+         FINISH PROJECT
+    ====================================================== -->
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <span class="section-dot"></span>
+
+        Finish Project
+
+      </div>
+
+
+      <div class="complete-check">
+
+        <input
+          type="checkbox"
+          id="completeCheck">
+
+        <label for="completeCheck">
+
+          I have completed the project work and followed all
+          the instructions.
+
+        </label>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COMPLETE BUTTON
+    ====================================================== -->
+
+    <div class="actions">
+
+      <button
+        class="complete-btn"
+        id="completeBtn"
+        disabled>
+
+        <svg>
+          <use href="#check"></use>
+        </svg>
+
+        Project Completed
+
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         NEXT STEP
+    ====================================================== -->
+
+    <div class="next-box">
+
+      <div class="next-icon">
+
+        <svg>
+          <use href="#arrow"></use>
+        </svg>
+
+      </div>
+
+      <div class="next-text">
+
+        <div class="next-title">
+          Next: Submit Project
+        </div>
+
+        <div class="next-sub">
+          After completing this project, you will continue to
+          the separate project submission page.
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</main>
+
+
+<!-- TOAST -->
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
+
+<script>
+
+/* =========================================================
+   TASK EARN — PROJECT WORK
+=========================================================
+
+   FLOW:
+
+   projects.html
+        ↓
+   project.details.html?id=1
+        ↓
+   project.work.html?id=1
+        ↓
+   project-submit.html?id=1
+
+   IMPORTANT:
+   This page NEVER redirects to project.details.html.
+========================================================= */
+
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   PROJECT ID
+========================================================= */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const projectId =
+  Number(
+    params.get("id")
+  );
+
+
+let project = null;
+
+
+/* =========================================================
+   STARTING COMPLETION COUNTS
+========================================================= */
+
+const STARTING_COMPLETIONS = {
+
+  1:178,
+  2:175,
+  3:589,
+  4:7,
+  5:264,
+  6:91,
+  7:42,
+  8:315,
+  9:128,
+  10:73,
+
+  11:204,
+  12:56,
+  13:391,
+  14:19,
+  15:147,
+  16:68,
+  17:522,
+  18:33,
+  19:86,
+  20:276
+
+};
+
+
+/* =========================================================
+   MONEY
+========================================================= */
+
+function money(value){
+
+  return "₹" +
+    Number(value || 0)
+      .toLocaleString(
+        "en-IN",
+        {
+          maximumFractionDigits:2
+        }
+      );
+
+}
+
+
+/* =========================================================
+   TIME FORMAT
+========================================================= */
+
+function formatTime(value){
+
+  const minutes =
+    Number(value || 0);
+
+
+  if(!minutes){
+    return "Flexible";
+  }
+
+
+  if(minutes < 60){
+
+    return (
+      minutes +
+      " min"
+    );
+
+  }
+
+
+  const hours =
+    Math.floor(
+      minutes / 60
+    );
+
+
+  const remaining =
+    minutes % 60;
+
+
+  if(remaining){
+
+    return (
+      hours +
+      "h " +
+      remaining +
+      "m"
+    );
+
+  }
+
+
+  return hours + " hr";
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+
+  window.toastTimer =
+    setTimeout(
+      ()=>{
+        toast.classList.remove(
+          "show"
+        );
+      },
+      2600
+    );
+
+}
+
+
+/* =========================================================
+   BUILD INSTRUCTIONS
+========================================================= */
+
+function createInstructions(text){
+
+  const box =
+    document.getElementById(
+      "instructions"
+    );
+
+
+  const raw =
+    String(text || "")
+      .trim();
+
+
+  if(!raw){
+    return;
+  }
+
+
+  const lines =
+    raw
+      .split(/\n+/)
+      .map(
+        x =>
+          x
+            .replace(
+              /^\s*(?:[-•*]|\d+[.)])\s*/,
+              ""
+            )
+            .trim()
+      )
+      .filter(Boolean);
+
+
+  if(lines.length < 2){
+    return;
+  }
+
+
+  const selected =
+    lines.slice(
+      0,
+      6
+    );
+
+
+  box.innerHTML =
+    selected
+      .map(
+        (line,index)=>`
+
+          <div class="instruction">
+
+            <div class="instruction-number">
+              ${String(
+                index + 1
+              ).padStart(
+                2,
+                "0"
+              )}
+            </div>
+
+            <div class="instruction-text">
+              ${escapeHtml(line)}
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   LOAD PROJECT
+========================================================= */
+
+async function loadProject(){
+
+  if(
+    !projectId ||
+    !Number.isFinite(projectId)
+  ){
+
+    showError();
+
+    return;
+
+  }
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("tasks")
+        .select(
+          `
+          id,
+          created_at,
+          title,
+          description,
+          reward,
+          duration_minutes,
+          category,
+          task_url,
+          status,
+          verified,
+          task_type
+          `
+        )
+        .eq(
+          "id",
+          projectId
+        )
+        .maybeSingle();
+
+
+    if(error){
+      throw error;
+    }
+
+
+    if(!data){
+
+      showError();
+
+      return;
+
+    }
+
+
+    project =
+      data;
+
+
+    await renderProject();
+
+  }
+  catch(error){
+
+    console.error(
+      "Project Work:",
+      error
+    );
+
+
+    showError();
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD REAL APPROVED COMPLETIONS
+========================================================= */
+
+async function getCompletionCount(){
+
+  let realCount = 0;
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("task_submissions")
+        .select(
+          "id,status"
+        )
+        .eq(
+          "task_id",
+          projectId
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    realCount =
+      (data || [])
+        .filter(
+          row =>
+            String(
+              row.status || ""
+            )
+            .toLowerCase()
+            ===
+            "approved"
+        )
+        .length;
+
+  }
+  catch(error){
+
+    console.warn(
+      "Completion count:",
+      error
+    );
+
+  }
+
+
+  return realCount;
+
+}
+
+
+/* =========================================================
+   RENDER PROJECT
+========================================================= */
+
+async function renderProject(){
+
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "content"
+  ).style.display =
+    "block";
+
+
+  /* TITLE */
+
+  document.getElementById(
+    "projectTitle"
+  ).textContent =
+    project.title ||
+    "TaskEarn Project";
+
+
+  /* CATEGORY */
+
+  document.getElementById(
+    "projectCategory"
+  ).textContent =
+    project.category ||
+    "Company Project";
+
+
+  /* REWARD */
+
+  document.getElementById(
+    "reward"
+  ).textContent =
+    money(
+      project.reward
+    );
+
+
+  /* DURATION */
+
+  document.getElementById(
+    "duration"
+  ).textContent =
+    formatTime(
+      project.duration_minutes
+    );
+
+
+  /* VERIFICATION */
+
+  document.getElementById(
+    "verification"
+  ).textContent =
+    project.verified === true
+      ? "Verified"
+      : "Review";
+
+
+  /* DESCRIPTION */
+
+  document.getElementById(
+    "description"
+  ).textContent =
+    project.description ||
+    "Complete this project according to the instructions and submit your completed work for review.";
+
+
+  /* INSTRUCTIONS */
+
+  createInstructions(
+    project.description
+  );
+
+
+  /* =======================================================
+     COMPLETION COUNT
+  ======================================================== */
+
+  const realCount =
+    await getCompletionCount();
+
+
+  const starting =
+    STARTING_COMPLETIONS[
+      Number(project.id)
+    ] || 0;
+
+
+  const total =
+    starting +
+    realCount;
+
+
+  document.getElementById(
+    "completed"
+  ).textContent =
+    total.toLocaleString(
+      "en-IN"
+    );
+
+
+  /* =======================================================
+     PROJECT WORKSPACE
+  ======================================================== */
+
+  if(project.task_url){
+
+    const section =
+      document.getElementById(
+        "linkSection"
+      );
+
+
+    const link =
+      document.getElementById(
+        "openProject"
+      );
+
+
+    section.style.display =
+      "block";
+
+
+    link.href =
+      project.task_url;
+
+  }
+
+
+  /* =======================================================
+     OPTIONAL LOGO
+  ======================================================== */
+
+  if(project.logo_url){
+
+    const img =
+      document.getElementById(
+        "companyLogo"
+      );
+
+
+    const defaultLogo =
+      document.getElementById(
+        "defaultLogo"
+      );
+
+
+    img.src =
+      project.logo_url;
+
+
+    img.style.display =
+      "block";
+
+
+    defaultLogo.style.display =
+      "none";
+
+  }
+
+
+  /*
+    Project work starts at 25%.
+    Checkbox → 90%.
+    Completed → 100%.
+  */
+
+  updateProgress(
+    25
+  );
+
+}
+
+
+/* =========================================================
+   UPDATE PROGRESS
+========================================================= */
+
+function updateProgress(percent){
+
+  const safe =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(percent)
+      )
+    );
+
+
+  document.getElementById(
+    "progressFill"
+  ).style.width =
+    safe + "%";
+
+
+  document.getElementById(
+    "progressPercent"
+  ).textContent =
+    safe + "%";
+
+}
+
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+document
+  .getElementById(
+    "completeCheck"
+  )
+  .addEventListener(
+    "change",
+    function(){
+
+      const btn =
+        document.getElementById(
+          "completeBtn"
+        );
+
+
+      btn.disabled =
+        !this.checked;
+
+
+      if(this.checked){
+
+        updateProgress(
+          90
+        );
+
+      }
+      else{
+
+        updateProgress(
+          25
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   PROJECT COMPLETED
+========================================================= */
+
+document
+  .getElementById(
+    "completeBtn"
+  )
+  .addEventListener(
+    "click",
+    async ()=>{
+
+      if(!project){
+        return;
+      }
+
+
+      const checkbox =
+        document.getElementById(
+          "completeCheck"
+        );
+
+
+      if(!checkbox.checked){
+
+        showToast(
+          "Please confirm project completion."
+        );
+
+        return;
+
+      }
+
+
+      /* =====================================================
+         LOGIN SESSION
+      ====================================================== */
+
+      const {
+        data
+      } =
+        await supabaseClient
+          .auth
+          .getSession();
+
+
+      const session =
+        data?.session;
+
+
+      if(!session){
+
+        showToast(
+          "Please login before submitting the project."
+        );
+
+
+        setTimeout(
+          ()=>{
+
+            window.location.href =
+              "login.html";
+
+          },
+          700
+        );
+
+
+        return;
+
+      }
+
+
+      /* =====================================================
+         SAVE PROJECT PROGRESS
+      ====================================================== */
+
+      try{
+
+        const startedKey =
+          "taskearn_project_started_" +
+          project.id;
+
+
+        const completedKey =
+          "taskearn_project_completed_" +
+          project.id;
+
+
+        const startedAt =
+          localStorage.getItem(
+            startedKey
+          ) ||
+          Date.now();
+
+
+        localStorage.setItem(
+          "taskearn_current_project",
+          JSON.stringify({
+
+            id:
+              project.id,
+
+            title:
+              project.title,
+
+            reward:
+              Number(
+                project.reward || 0
+              ),
+
+            started_at:
+              Number(
+                startedAt
+              ),
+
+            completed_at:
+              Date.now(),
+
+            user_id:
+              session.user.id
+
+          })
+        );
+
+
+        localStorage.setItem(
+          completedKey,
+          "true"
+        );
+
+
+      }
+      catch(error){
+
+        console.warn(
+          "Project local state:",
+          error
+        );
+
+      }
+
+
+      /* =====================================================
+         COMPLETE UI
+      ====================================================== */
+
+      updateProgress(
+        100
+      );
+
+
+      const button =
+        document.getElementById(
+          "completeBtn"
+        );
+
+
+      button.disabled =
+        true;
+
+
+      button.innerHTML = `
+
+        <svg>
+          <use href="#check"></use>
+        </svg>
+
+        Project Completed
+
+      `;
+
+
+      showToast(
+        "Project completed. Opening submission..."
+      );
+
+
+      /* =====================================================
+         NEXT PAGE
+         
+         NEVER GO BACK TO DETAILS.
+      ====================================================== */
+
+      setTimeout(
+        ()=>{
+
+          window.location.replace(
+            "project-submit.html?id=" +
+            encodeURIComponent(
+              project.id
+            )
+          );
+
+        },
+        650
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+document
+  .getElementById(
+    "backBtn"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      /*
+        Deterministic navigation:
+
+        Project Work
+             ↓
+        Projects
+
+        It does NOT recycle
+        through Project Details.
+      */
+
+      window.location.replace(
+        "projects.html"
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showError(){
+
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "content"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "errorBox"
+  ).style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+loadProject();
+
+</script>
+
+</body>
+</html>

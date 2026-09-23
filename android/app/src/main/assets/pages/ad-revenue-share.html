@@ -1,0 +1,7102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Ad Revenue Share — TaskEarn</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+  --bg:#070b12;
+  --card:#0d1420;
+  --border:rgba(255,255,255,.07);
+  --text:#f4f7fb;
+  --muted:#8190a5;
+  --green:#36d79c;
+  --cyan:#20d4ff;
+  --blue:#566dff;
+  --yellow:#ffc857;
+  --red:#ff6577;
+  --orange:#ff9e57;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(32,212,255,.06),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 100% 15%,
+      rgba(86,109,255,.07),
+      transparent 30%
+    ),
+    var(--bg);
+
+  color:var(--text);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button{
+  border:0;
+  outline:0;
+  color:#fff;
+  font-family:inherit;
+  cursor:pointer;
+}
+
+button:disabled{
+  cursor:not-allowed;
+}
+
+.page{
+  width:100%;
+  max-width:620px;
+  margin:auto;
+  padding:0 15px 110px;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+  height:70px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.back-btn{
+  width:43px;
+  height:43px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px solid var(--border);
+  border-radius:15px;
+
+  background:rgba(255,255,255,.035);
+
+  transition:.2s;
+}
+
+.back-btn:active{
+  transform:scale(.91);
+}
+
+.back-btn svg{
+  width:18px;
+  height:18px;
+}
+
+.top-title{
+  text-align:center;
+}
+
+.top-title strong{
+  display:block;
+
+  font-size:14px;
+  font-weight:900;
+}
+
+.top-title span{
+  display:block;
+
+  margin-top:3px;
+
+  color:#65758d;
+
+  font-size:8px;
+  font-weight:700;
+}
+
+.top-spacer{
+  width:43px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+
+  padding:24px 20px 21px;
+
+  border:1px solid rgba(54,215,156,.18);
+  border-radius:27px;
+
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(54,215,156,.17),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(32,212,255,.09),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #10252a,
+      #0b1320
+    );
+
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.hero:before{
+  content:"";
+
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  right:-90px;
+  bottom:-110px;
+
+  border-radius:50%;
+
+  background:rgba(54,215,156,.08);
+
+  filter:blur(12px);
+}
+
+.hero-label{
+  position:relative;
+
+  display:inline-flex;
+  align-items:center;
+
+  gap:7px;
+
+  padding:7px 10px;
+
+  border:1px solid rgba(54,215,156,.2);
+  border-radius:999px;
+
+  background:rgba(54,215,156,.06);
+
+  color:#62e4b0;
+
+  font-size:8px;
+  font-weight:900;
+
+  letter-spacing:.4px;
+}
+
+.hero-dot{
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:#45e4aa;
+
+  box-shadow:
+    0 0 10px rgba(69,228,170,.8);
+}
+
+.hero h1{
+  position:relative;
+
+  margin-top:15px;
+
+  font-size:27px;
+  line-height:1.1;
+
+  font-weight:950;
+
+  letter-spacing:-.8px;
+}
+
+.hero h1 span{
+  background:
+    linear-gradient(
+      90deg,
+      #55e3ad,
+      #35d9ff,
+      #7381ff
+    );
+
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  position:relative;
+
+  max-width:520px;
+
+  margin-top:11px;
+
+  color:#8b9bb0;
+
+  font-size:10px;
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats-grid{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:10px;
+
+  margin-top:13px;
+}
+
+.stat-card{
+  min-height:105px;
+
+  padding:15px;
+
+  border:1px solid var(--border);
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,26,40,.95),
+      rgba(10,16,25,.95)
+    );
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.stat-card.full{
+  grid-column:1/-1;
+
+  min-height:112px;
+}
+
+.stat-label{
+  color:#65758b;
+
+  font-size:7px;
+  font-weight:900;
+
+  letter-spacing:.5px;
+}
+
+.stat-value{
+  margin-top:8px;
+
+  font-size:23px;
+  font-weight:950;
+
+  letter-spacing:-.5px;
+}
+
+.stat-value.green{
+  color:#53e0ad;
+}
+
+.stat-value.blue{
+  color:#7182ff;
+}
+
+.stat-value.yellow{
+  color:#ffd16b;
+}
+
+.stat-sub{
+  margin-top:6px;
+
+  color:#68788e;
+
+  font-size:8px;
+  line-height:1.4;
+}
+
+
+/* =========================================================
+   SETTLEMENT
+========================================================= */
+
+.settlement-card{
+  position:relative;
+  overflow:hidden;
+
+  margin-top:13px;
+
+  padding:18px;
+
+  border:1px solid rgba(255,200,87,.16);
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255,200,87,.10),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      #171a20,
+      #0b121c
+    );
+
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.settlement-title{
+  display:flex;
+  align-items:center;
+
+  gap:10px;
+}
+
+.settlement-icon{
+  width:40px;
+  height:40px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:13px;
+
+  background:rgba(255,200,87,.07);
+
+  border:1px solid rgba(255,200,87,.13);
+
+  color:#ffd16b;
+}
+
+.settlement-icon svg{
+  width:18px;
+  height:18px;
+}
+
+.settlement-title strong{
+  display:block;
+
+  font-size:12px;
+  font-weight:950;
+}
+
+.settlement-title span{
+  display:block;
+
+  margin-top:4px;
+
+  color:#68788e;
+
+  font-size:7px;
+}
+
+.settlement-status{
+  display:inline-flex;
+
+  margin-top:14px;
+
+  padding:6px 9px;
+
+  border-radius:999px;
+
+  background:rgba(255,200,87,.06);
+
+  border:1px solid rgba(255,200,87,.13);
+
+  color:#ffd16b;
+
+  font-size:7px;
+  font-weight:900;
+}
+
+.settlement-date{
+  margin-top:11px;
+
+  font-size:18px;
+  font-weight:950;
+
+  letter-spacing:-.4px;
+}
+
+.settlement-date.empty{
+  color:#73849a;
+
+  font-size:12px;
+
+  line-height:1.5;
+}
+
+.settlement-note{
+  margin-top:10px;
+
+  color:#8a99ad;
+
+  font-size:9px;
+
+  line-height:1.7;
+}
+
+.settlement-note strong{
+  color:#fff;
+}
+
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+.notice-card{
+  position:relative;
+  overflow:hidden;
+
+  margin-top:13px;
+
+  padding:18px;
+
+  border:1px solid rgba(32,212,255,.13);
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(32,212,255,.09),
+      transparent 36%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(11,27,39,.96),
+      rgba(8,15,24,.97)
+    );
+
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.2);
+}
+
+.notice-head{
+  display:flex;
+  align-items:center;
+
+  gap:10px;
+}
+
+.notice-icon{
+  width:38px;
+  height:38px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  color:#45d9ff;
+
+  background:rgba(32,212,255,.07);
+
+  border:1px solid rgba(32,212,255,.12);
+}
+
+.notice-icon svg{
+  width:17px;
+  height:17px;
+}
+
+.notice-head strong{
+  font-size:12px;
+  font-weight:950;
+}
+
+.notice-text{
+  margin-top:13px;
+
+  color:#8999ad;
+
+  font-size:9px;
+
+  line-height:1.75;
+}
+
+.notice-list{
+  margin-top:12px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:8px;
+}
+
+.notice-row{
+  display:flex;
+  align-items:flex-start;
+
+  gap:9px;
+
+  padding:10px 11px;
+
+  border:1px solid rgba(255,255,255,.045);
+  border-radius:13px;
+
+  background:rgba(255,255,255,.022);
+}
+
+.notice-number{
+  width:20px;
+  height:20px;
+
+  flex:0 0 20px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:7px;
+
+  background:rgba(54,215,156,.08);
+
+  color:#58dfad;
+
+  font-size:7px;
+  font-weight:950;
+}
+
+.notice-row p{
+  color:#8797ab;
+
+  font-size:8px;
+
+  line-height:1.65;
+}
+
+.notice-row p strong{
+  color:#fff;
+}
+
+
+
+/* =========================================================
+   ADMOB PAYMENT TIMELINE
+========================================================= */
+
+.payment-timeline{
+  margin-top:18px;
+}
+
+.payment-timeline-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.payment-timeline-head strong{
+  font-size:14px;
+  font-weight:950;
+}
+
+.payment-timeline-head span{
+  color:#607188;
+  font-size:7px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.payment-timeline-card{
+  position:relative;
+  overflow:hidden;
+  padding:19px;
+  border:1px solid rgba(32,212,255,.14);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(32,212,255,.10), transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(86,109,255,.08), transparent 38%),
+    linear-gradient(145deg, rgba(13,22,36,.98), rgba(7,13,22,.99));
+  box-shadow:
+    0 16px 45px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.payment-source{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 9px;
+  border:1px solid rgba(54,215,156,.14);
+  border-radius:999px;
+  background:rgba(54,215,156,.06);
+  color:#63e1b1;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.45px;
+}
+
+.payment-source-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#36d79c;
+  box-shadow:0 0 10px rgba(54,215,156,.7);
+}
+
+.payment-period{
+  margin-top:12px;
+  color:#71829a;
+  font-size:8px;
+  line-height:1.6;
+}
+
+.payment-period strong{
+  color:#fff;
+  font-weight:900;
+}
+
+.payment-step{
+  position:relative;
+  display:grid;
+  grid-template-columns:30px 1fr;
+  gap:11px;
+  margin-top:18px;
+}
+
+.payment-step:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  left:14px;
+  top:31px;
+  bottom:-18px;
+  width:1px;
+  background:linear-gradient(
+    to bottom,
+    rgba(32,212,255,.25),
+    rgba(255,255,255,.04)
+  );
+}
+
+.payment-step-icon{
+  position:relative;
+  z-index:2;
+  width:29px;
+  height:29px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(32,212,255,.16);
+  border-radius:10px;
+  background:rgba(32,212,255,.07);
+  color:#62ddff;
+  font-size:10px;
+  font-weight:950;
+}
+
+.payment-step-body{
+  min-width:0;
+}
+
+.payment-step-title{
+  color:#fff;
+  font-size:10px;
+  font-weight:950;
+}
+
+.payment-step-note{
+  margin-top:4px;
+  color:#75869d;
+  font-size:7px;
+  line-height:1.65;
+}
+
+.payment-step-date{
+  margin-top:8px;
+  color:#dce7f4;
+  font-size:8px;
+  font-weight:850;
+}
+
+.payment-countdown{
+  margin-top:8px;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
+}
+
+.payment-countdown-label{
+  color:#607188;
+  font-size:6px;
+  font-weight:900;
+  letter-spacing:.55px;
+}
+
+.payment-countdown-value{
+  margin-top:4px;
+  color:#fff;
+  font-variant-numeric:tabular-nums;
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.3px;
+}
+
+.payment-countdown-sub{
+  margin-top:3px;
+  color:#73849a;
+  font-size:6.5px;
+  line-height:1.55;
+}
+
+.payment-status-pill{
+  display:inline-flex;
+  margin-top:7px;
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(255,200,87,.07);
+  color:#ffd36e;
+  font-size:6.5px;
+  font-weight:950;
+  letter-spacing:.45px;
+}
+
+.payment-status-pill.ready{
+  background:rgba(54,215,156,.08);
+  color:#62e5b2;
+}
+
+.payment-status-pill.error{
+  background:rgba(255,101,119,.08);
+  color:#ff8190;
+}
+
+.payment-warning{
+  margin-top:17px;
+  padding:13px 14px;
+  border:1px solid rgba(255,200,87,.13);
+  border-radius:16px;
+  background:rgba(255,200,87,.045);
+}
+
+.payment-warning strong{
+  display:block;
+  color:#ffd36e;
+  font-size:8px;
+  font-weight:950;
+}
+
+.payment-warning span{
+  display:block;
+  margin-top:5px;
+  color:#9a8f75;
+  font-size:7px;
+  line-height:1.7;
+}
+
+.payment-error{
+  margin-top:10px;
+  padding:13px 14px;
+  border:1px solid rgba(255,101,119,.13);
+  border-radius:16px;
+  background:rgba(255,101,119,.045);
+}
+
+.payment-error strong{
+  display:block;
+  color:#ff8b98;
+  font-size:8px;
+  font-weight:950;
+}
+
+.payment-error span{
+  display:block;
+  margin-top:5px;
+  color:#a18a91;
+  font-size:7px;
+  line-height:1.7;
+}
+
+.payment-source-link{
+  margin-top:12px;
+  color:#5e748f;
+  font-size:6.5px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   MONTHLY SECTION
+========================================================= */
+
+.month-section{
+  margin-top:18px;
+}
+
+.month-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:10px;
+}
+
+.month-heading strong{
+  font-size:14px;
+  font-weight:950;
+}
+
+.month-heading span{
+  color:#607188;
+
+  font-size:7px;
+  font-weight:800;
+}
+
+.month-grid{
+  display:flex;
+  flex-direction:column;
+
+  gap:10px;
+}
+
+
+/* =========================================================
+   MONTH CARD
+========================================================= */
+
+.month-card{
+  position:relative;
+  overflow:hidden;
+
+  padding:18px;
+
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,25,39,.97),
+      rgba(9,15,24,.98)
+    );
+
+  box-shadow:
+    0 15px 42px rgba(0,0,0,.2),
+    inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.month-card.collectible{
+  border-color:rgba(54,215,156,.2);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(54,215,156,.10),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(13,31,34,.98),
+      rgba(9,16,24,.98)
+    );
+}
+
+.month-card.carried{
+  border-color:rgba(255,200,87,.18);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255,200,87,.08),
+      transparent 36%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(27,25,19,.97),
+      rgba(10,16,24,.98)
+    );
+}
+
+.month-card.current{
+  border-color:rgba(86,109,255,.16);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(86,109,255,.10),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(16,21,40,.97),
+      rgba(9,15,24,.98)
+    );
+}
+
+.month-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:12px;
+}
+
+.month-title{
+  min-width:0;
+}
+
+.month-title strong{
+  display:block;
+
+  font-size:12px;
+  font-weight:950;
+}
+
+.month-title span{
+  display:block;
+
+  margin-top:5px;
+
+  color:#697a91;
+
+  font-size:7px;
+}
+
+.month-pill{
+  flex:0 0 auto;
+
+  padding:6px 8px;
+
+  border-radius:999px;
+
+  font-size:6px;
+  font-weight:950;
+
+  background:rgba(255,255,255,.035);
+
+  color:#7d8da2;
+
+  border:1px solid rgba(255,255,255,.055);
+}
+
+.month-pill.open{
+  color:#62e2ae;
+
+  background:rgba(54,215,156,.07);
+
+  border-color:rgba(54,215,156,.13);
+}
+
+.month-pill.locked{
+  color:#8090a5;
+}
+
+.month-pill.carried{
+  color:#ffd16b;
+
+  background:rgba(255,200,87,.06);
+
+  border-color:rgba(255,200,87,.12);
+}
+
+.month-amount{
+  margin-top:14px;
+
+  color:#f4f7fb;
+
+  font-size:27px;
+  font-weight:950;
+
+  letter-spacing:-.8px;
+}
+
+.month-card.collectible .month-amount{
+  color:#58e1ad;
+}
+
+.month-card.carried .month-amount{
+  color:#ffd16b;
+}
+
+.month-description{
+  margin-top:6px;
+
+  color:#74849a;
+
+  font-size:8px;
+
+  line-height:1.65;
+}
+
+.window-box{
+  margin-top:13px;
+
+  padding:12px;
+
+  border-radius:14px;
+
+  border:1px solid rgba(255,255,255,.05);
+
+  background:rgba(255,255,255,.022);
+}
+
+.window-label{
+  color:#66778e;
+
+  font-size:6px;
+  font-weight:950;
+
+  letter-spacing:.45px;
+}
+
+.window-value{
+  margin-top:6px;
+
+  color:#dbe3ed;
+
+  font-size:9px;
+  font-weight:850;
+
+  line-height:1.5;
+}
+
+.countdown{
+  margin-top:9px;
+
+  color:#55e1ad;
+
+  font-size:15px;
+  font-weight:950;
+
+  letter-spacing:.2px;
+}
+
+.countdown.closed{
+  color:#8997aa;
+}
+
+.countdown.warning{
+  color:#ffd16b;
+}
+
+.collect-action{
+  width:100%;
+
+  min-height:47px;
+
+  margin-top:13px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #18cfa0,
+      #19bddd,
+      #566dff
+    );
+
+  box-shadow:
+    0 12px 30px rgba(24,190,188,.13);
+
+  font-size:9px;
+  font-weight:950;
+
+  transition:.2s;
+}
+
+.collect-action:active{
+  transform:scale(.97);
+}
+
+.collect-action:disabled{
+  opacity:.36;
+
+  background:
+    linear-gradient(
+      135deg,
+      #26343d,
+      #202a38
+    );
+
+  box-shadow:none;
+}
+
+.carry-note{
+  margin-top:10px;
+
+  padding:10px 11px;
+
+  border-radius:12px;
+
+  background:rgba(255,200,87,.045);
+
+  border:1px solid rgba(255,200,87,.09);
+
+  color:#ae9c70;
+
+  font-size:7px;
+
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   REQUEST CARD
+========================================================= */
+
+.request-card{
+  display:none;
+
+  margin-top:13px;
+
+  padding:18px;
+
+  border:1px solid rgba(86,109,255,.18);
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(86,109,255,.12),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #11182a,
+      #0a121f
+    );
+
+  box-shadow:
+    0 18px 48px rgba(0,0,0,.25);
+}
+
+.request-card.show{
+  display:block;
+}
+
+.request-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+}
+
+.request-head strong{
+  font-size:12px;
+  font-weight:950;
+}
+
+.request-status{
+  padding:6px 8px;
+
+  border-radius:999px;
+
+  background:rgba(255,200,87,.06);
+
+  border:1px solid rgba(255,200,87,.11);
+
+  color:#ffd16b;
+
+  font-size:6px;
+  font-weight:950;
+}
+
+.request-amount{
+  margin-top:12px;
+
+  color:#72a0ff;
+
+  font-size:26px;
+  font-weight:950;
+}
+
+.request-text{
+  margin-top:6px;
+
+  color:#7c8ca2;
+
+  font-size:8px;
+
+  line-height:1.65;
+}
+
+.request-timer-label{
+  margin-top:14px;
+
+  color:#65768d;
+
+  font-size:6px;
+  font-weight:950;
+
+  letter-spacing:.5px;
+}
+
+.request-countdown{
+  margin-top:5px;
+
+  color:#fff;
+
+  font-size:22px;
+  font-weight:950;
+
+  letter-spacing:.5px;
+}
+
+.request-sub{
+  margin-top:5px;
+
+  color:#687990;
+
+  font-size:7px;
+}
+
+.request-info{
+  margin-top:11px;
+
+  padding:10px;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.05);
+
+  color:#8b9aad;
+
+  font-size:7px;
+
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   AD BLOCK WARNING
+========================================================= */
+
+.adblock-warning{
+  display:none;
+
+  margin-top:13px;
+
+  padding:13px;
+
+  border:1px solid rgba(255,200,87,.15);
+
+  border-radius:16px;
+
+  background:rgba(255,200,87,.045);
+
+  color:#cdb77f;
+
+  font-size:8px;
+
+  line-height:1.6;
+}
+
+.adblock-warning.show{
+  display:block;
+}
+
+
+/* =========================================================
+   WATCH
+========================================================= */
+
+.watch-card{
+  position:relative;
+  overflow:hidden;
+
+  margin-top:13px;
+
+  padding:18px;
+
+  border:1px solid rgba(86,109,255,.15);
+
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(86,109,255,.14),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #10172a,
+      #0b121e
+    );
+
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.2),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.watch-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+}
+
+.watch-title{
+  display:flex;
+  align-items:center;
+
+  gap:11px;
+}
+
+.play-icon{
+  width:44px;
+  height:44px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  flex:0 0 44px;
+
+  border-radius:14px;
+
+  background:rgba(86,109,255,.09);
+
+  border:1px solid rgba(86,109,255,.18);
+
+  color:#8190ff;
+}
+
+.play-icon svg{
+  width:19px;
+  height:19px;
+}
+
+.watch-title strong{
+  display:block;
+
+  font-size:13px;
+  font-weight:900;
+}
+
+.watch-title span{
+  display:block;
+
+  margin-top:4px;
+
+  color:#6f8096;
+
+  font-size:8px;
+}
+
+.live-pill{
+  padding:6px 8px;
+
+  border-radius:999px;
+
+  border:1px solid rgba(54,215,156,.16);
+
+  background:rgba(54,215,156,.05);
+
+  color:#56dda9;
+
+  font-size:7px;
+  font-weight:900;
+}
+
+.watch-description{
+  margin-top:13px;
+
+  color:#8292a8;
+
+  font-size:9px;
+
+  line-height:1.65;
+}
+
+.watch-btn{
+  width:100%;
+
+  min-height:47px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  margin-top:14px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #18cfa0,
+      #18bde0,
+      #566dff
+    );
+
+  box-shadow:
+    0 13px 32px rgba(30,185,220,.17);
+
+  font-size:9px;
+  font-weight:950;
+
+  transition:.2s;
+}
+
+.watch-btn:active{
+  transform:scale(.97);
+}
+
+.watch-btn:disabled{
+  opacity:.5;
+
+  cursor:not-allowed;
+}
+
+.watch-btn svg{
+  width:15px;
+  height:15px;
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-top:23px;
+  margin-bottom:11px;
+}
+
+.section-title strong{
+  font-size:14px;
+  font-weight:950;
+}
+
+.section-title span{
+  color:#5f7088;
+
+  font-size:8px;
+  font-weight:800;
+}
+
+.history{
+  display:flex;
+  flex-direction:column;
+
+  gap:8px;
+}
+
+.history-empty{
+  padding:29px 15px;
+
+  text-align:center;
+
+  border:1px dashed rgba(255,255,255,.08);
+
+  border-radius:18px;
+
+  color:#66768d;
+
+  font-size:9px;
+}
+
+.history-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  padding:13px;
+
+  border:1px solid rgba(255,255,255,.055);
+
+  border-radius:17px;
+
+  background:rgba(255,255,255,.022);
+}
+
+.history-left{
+  display:flex;
+  align-items:center;
+
+  gap:10px;
+
+  min-width:0;
+}
+
+.history-icon{
+  width:39px;
+  height:39px;
+
+  flex:0 0 39px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  background:rgba(54,215,156,.06);
+
+  border:1px solid rgba(54,215,156,.1);
+
+  color:#55dfa9;
+}
+
+.history-icon svg{
+  width:16px;
+  height:16px;
+}
+
+.history-name{
+  min-width:0;
+}
+
+.history-name strong{
+  display:block;
+
+  font-size:9px;
+  font-weight:900;
+}
+
+.history-name span{
+  display:block;
+
+  margin-top:4px;
+
+  color:#617189;
+
+  font-size:7px;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+}
+
+.history-right{
+  text-align:right;
+
+  flex:0 0 auto;
+}
+
+.history-right strong{
+  display:block;
+
+  color:#56e2ad;
+
+  font-size:10px;
+  font-weight:950;
+}
+
+.history-right span{
+  display:inline-block;
+
+  margin-top:4px;
+
+  padding:4px 6px;
+
+  border-radius:999px;
+
+  font-size:6px;
+  font-weight:900;
+}
+
+.status-verified{
+  color:#52dda9;
+
+  background:rgba(54,215,156,.07);
+}
+
+.status-pending{
+  color:#ffd16b;
+
+  background:rgba(255,200,87,.07);
+}
+
+.status-rejected{
+  color:#ff7383;
+
+  background:rgba(255,101,119,.07);
+}
+
+.status-collected{
+  color:#72bfff;
+
+  background:rgba(32,150,255,.07);
+}
+
+
+/* =========================================================
+   FOOTER TRUST
+========================================================= */
+
+.trust-card{
+  margin-top:16px;
+
+  padding:14px 15px;
+
+  text-align:center;
+
+  border:1px solid rgba(255,255,255,.05);
+
+  border-radius:17px;
+
+  background:rgba(255,255,255,.018);
+}
+
+.trust-card strong{
+  display:block;
+
+  color:#dfe7f0;
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.trust-card span{
+  display:block;
+
+  margin-top:5px;
+
+  color:#617189;
+
+  font-size:7px;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+  bottom:25px;
+
+  z-index:9999;
+
+  width:calc(100% - 30px);
+
+  max-width:430px;
+
+  padding:13px 15px;
+
+  border:1px solid rgba(255,255,255,.09);
+
+  border-radius:14px;
+
+  background:rgba(11,17,27,.97);
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.45);
+
+  color:#eaf0f7;
+
+  font-size:9px;
+  font-weight:800;
+
+  transform:
+    translate(-50%,20px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.25s;
+}
+
+.toast.show{
+  transform:
+    translate(-50%,0);
+
+  opacity:1;
+}
+
+.toast.error{
+  border-color:
+    rgba(255,101,119,.2);
+}
+
+.toast.success{
+  border-color:
+    rgba(54,215,156,.2);
+}
+
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+.spin{
+  display:inline-block;
+
+  width:13px;
+  height:13px;
+
+  border:2px solid
+    rgba(255,255,255,.25);
+
+  border-top-color:#fff;
+
+  border-radius:50%;
+
+  animation:
+    spin .7s linear infinite;
+}
+
+@keyframes spin{
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:380px){
+
+  .page{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .hero h1{
+    font-size:24px;
+  }
+
+  .stat-value{
+    font-size:20px;
+  }
+
+  .month-amount{
+    font-size:24px;
+  }
+
+  .request-countdown{
+    font-size:19px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     SVG ICONS
+======================================================= -->
+
+<svg
+  width="0"
+  height="0"
+  style="position:absolute"
+>
+
+  <symbol
+    id="i-arrow-left"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M15 18l-6-6 6-6"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </symbol>
+
+
+  <symbol
+    id="i-arrow-right"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M9 6l6 6-6 6"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </symbol>
+
+
+  <symbol
+    id="i-play"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M8 5.5v13L19 12 8 5.5z"
+      fill="currentColor"
+    />
+  </symbol>
+
+
+  <symbol
+    id="i-chart"
+    viewBox="0 0 24 24"
+  >
+    <path
+      d="M4 19V5M4 19h16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+    />
+
+    <path
+      d="M7 15l4-4 3 2 5-6"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </symbol>
+
+
+  <symbol
+    id="i-calendar"
+    viewBox="0 0 24 24"
+  >
+    <rect
+      x="4"
+      y="5"
+      width="16"
+      height="15"
+      rx="2"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+    />
+
+    <path
+      d="M8 3v4M16 3v4M4 10h16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+    />
+  </symbol>
+
+
+  <symbol
+    id="i-info"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      cx="12"
+      cy="12"
+      r="8"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+    />
+
+    <path
+      d="M12 10v6"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+    />
+
+    <circle
+      cx="12"
+      cy="7.3"
+      r="1"
+      fill="currentColor"
+    />
+  </symbol>
+
+</svg>
+
+
+
+<div class="page">
+
+
+<!-- =======================================================
+     TOP BAR
+======================================================= -->
+
+<header class="topbar">
+
+  <button
+    class="back-btn"
+    id="backButton"
+    type="button"
+  >
+
+    <svg>
+      <use href="#i-arrow-left"></use>
+    </svg>
+
+  </button>
+
+
+  <div class="top-title">
+
+    <strong>
+      Ad Revenue Share
+    </strong>
+
+    <span>
+      Verified advertising rewards
+    </span>
+
+  </div>
+
+
+  <div class="top-spacer"></div>
+
+</header>
+
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<section class="hero">
+
+  <div class="hero-label">
+
+    <span class="hero-dot"></span>
+
+    AD REVENUE
+
+  </div>
+
+
+  <h1>
+
+    Watch eligible ads.<br>
+
+    <span>
+      Earn from verified revenue.
+    </span>
+
+  </h1>
+
+
+  <p>
+
+    Complete eligible advertisements and your earning
+    is calculated only from advertising revenue that is
+    successfully verified by the supported advertising
+    provider.
+
+  </p>
+
+</section>
+
+
+
+<!-- =======================================================
+     STATS
+======================================================= -->
+
+<section class="stats-grid">
+
+
+  <div class="stat-card full">
+
+    <div class="stat-label">
+      YOUR TOTAL EARNINGS
+    </div>
+
+
+    <div
+      class="stat-value green"
+      id="totalUserShare"
+    >
+      ₹0.00
+    </div>
+
+
+    <div class="stat-sub">
+      Verified earnings from completed eligible ads
+    </div>
+
+  </div>
+
+
+
+  <div class="stat-card">
+
+    <div class="stat-label">
+      ADS COMPLETED
+    </div>
+
+
+    <div
+      class="stat-value"
+      id="totalAds"
+    >
+      0
+    </div>
+
+
+    <div class="stat-sub">
+      Verified ad events
+    </div>
+
+  </div>
+
+
+
+  <div class="stat-card">
+
+    <div class="stat-label">
+      TOTAL REVENUE
+    </div>
+
+
+    <div
+      class="stat-value blue"
+      id="totalGross"
+    >
+      ₹0.00
+    </div>
+
+
+    <div class="stat-sub">
+      Verified advertising revenue
+    </div>
+
+  </div>
+
+
+
+  <div class="stat-card">
+
+    <div class="stat-label">
+      AVAILABLE
+    </div>
+
+
+    <div
+      class="stat-value green"
+      id="totalAvailable"
+    >
+      ₹0.00
+    </div>
+
+
+    <div class="stat-sub">
+      Provider settlement completed
+    </div>
+
+  </div>
+
+
+
+  <div class="stat-card">
+
+    <div class="stat-label">
+      PROCESSING
+    </div>
+
+
+    <div
+      class="stat-value yellow"
+      id="totalPending"
+    >
+      ₹0.00
+    </div>
+
+
+    <div class="stat-sub">
+      Verification or settlement pending
+    </div>
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =======================================================
+     COMPANY SETTLEMENT
+======================================================= -->
+
+<section class="settlement-card">
+
+
+  <div class="settlement-title">
+
+
+    <div class="settlement-icon">
+
+      <svg>
+        <use href="#i-calendar"></use>
+      </svg>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Company Payment Settlement
+      </strong>
+
+      <span>
+        Actual provider settlement status
+      </span>
+
+    </div>
+
+
+  </div>
+
+
+
+  <div
+    class="settlement-status"
+    id="settlementStatus"
+  >
+    WAITING FOR SETTLEMENT
+  </div>
+
+
+
+  <div
+    class="settlement-date empty"
+    id="settlementDate"
+  >
+
+    Actual payment date will appear here after the
+    advertising provider confirms the settlement date.
+
+  </div>
+
+
+
+  <div class="settlement-note">
+
+    <strong>
+      Your earning becomes eligible for collection only
+      after the advertising provider confirms the revenue
+      and the required settlement is completed.
+    </strong>
+
+    <br><br>
+
+    TaskEarn does not create fake instant ad balances.
+    Only verified advertising events and confirmed
+    settlement information can become eligible.
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =======================================================
+     PAYMENT NOTICE
+======================================================= -->
+
+<section class="notice-card">
+
+
+  <div class="notice-head">
+
+    <div class="notice-icon">
+
+      <svg>
+        <use href="#i-info"></use>
+      </svg>
+
+    </div>
+
+
+    <strong>
+      Collection & Payment Notice
+    </strong>
+
+  </div>
+
+
+
+  <div class="notice-text">
+
+    Please read the collection schedule carefully.
+    Your monthly earnings are stored separately and are
+    never mixed with another month's earnings.
+
+  </div>
+
+
+
+  <div class="notice-list">
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        1
+      </div>
+
+      <p>
+
+        <strong>Monthly earning:</strong>
+        Your verified ad earnings are accumulated during
+        the current calendar month.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        2
+      </div>
+
+      <p>
+
+        <strong>5-day collection window:</strong>
+        The previous month's Collect button is available
+        from the <strong>1st through the 5th</strong> of the
+        following month.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        3
+      </div>
+
+      <p>
+
+        <strong>After 5 days:</strong>
+        The Collect button closes for that month's normal
+        collection window. The money is not deleted.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        4
+      </div>
+
+      <p>
+
+        <strong>If you skip a month:</strong>
+        Your uncollected amount remains stored as a separate
+        carried-forward balance until you collect it.
+        It does not expire simply because time has passed.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        5
+      </div>
+
+      <p>
+
+        <strong>New month:</strong>
+        New month's earnings belong to the new monthly
+        bucket. They cannot be collected using the previous
+        month's Collect button.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        6
+      </div>
+
+      <p>
+
+        <strong>After Collect:</strong>
+        When a collection request is successfully created,
+        a 24-hour processing timer is shown on this page.
+        The owner can process it earlier; otherwise the
+        secure backend can process eligible requests after
+        the 24-hour release time.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        7
+      </div>
+
+      <p>
+
+        <strong>Wallet payment:</strong>
+        After successful collection processing, the exact
+        server-approved amount is credited to your TaskEarn
+        wallet. The browser cannot change the amount.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="notice-row">
+
+      <div class="notice-number">
+        8
+      </div>
+
+      <p>
+
+        <strong>Trusted accounting:</strong>
+        Rewards are created only after genuine ad completion
+        and provider verification. No fake ad completion or
+        client-side reward amount is accepted.
+
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+<!-- =======================================================
+     ADMOB PAYMENT TIMELINE
+======================================================= -->
+
+<section class="payment-timeline">
+
+  <div class="payment-timeline-head">
+    <strong>AdMob Payment Timeline</strong>
+    <span id="paymentTimelineMonth">CHECKING</span>
+  </div>
+
+  <div class="payment-timeline-card">
+
+    <div class="payment-source">
+      <span class="payment-source-dot"></span>
+      GOOGLE ADMOB PAYMENT CYCLE
+    </div>
+
+    <div class="payment-period" id="paymentTimelinePeriod">
+      Secure payment schedule is loading from the earning month.
+    </div>
+
+    <div class="payment-step">
+
+      <div class="payment-step-icon">1</div>
+
+      <div class="payment-step-body">
+
+        <div class="payment-step-title">
+          Previous Month Earnings Finalization
+        </div>
+
+        <div class="payment-step-note">
+          AdMob normally finalizes the previous month's estimated earnings
+          around the 3rd of the following month.
+        </div>
+
+        <div class="payment-step-date" id="paymentFinalizationDate">
+          Expected: —
+        </div>
+
+        <div class="payment-countdown">
+          <div class="payment-countdown-label">
+            FINALIZATION COUNTDOWN
+          </div>
+
+          <div
+            class="payment-countdown-value"
+            id="paymentFinalizationCountdown"
+          >
+            Calculating...
+          </div>
+
+          <div
+            class="payment-countdown-sub"
+            id="paymentFinalizationSub"
+          >
+            The displayed date is an expected schedule, not a guaranteed payment date.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="payment-step">
+
+      <div class="payment-step-icon">2</div>
+
+      <div class="payment-step-body">
+
+        <div class="payment-step-title">
+          AdMob Payment Issue
+        </div>
+
+        <div class="payment-step-note">
+          If the payment threshold is reached and there are no payment holds,
+          AdMob normally issues the payment around the 21st.
+        </div>
+
+        <div class="payment-step-date" id="paymentIssueDate">
+          Expected: —
+        </div>
+
+        <div class="payment-countdown">
+          <div class="payment-countdown-label">
+            PAYMENT ISSUE COUNTDOWN
+          </div>
+
+          <div
+            class="payment-countdown-value"
+            id="paymentIssueCountdown"
+          >
+            Calculating...
+          </div>
+
+          <div
+            class="payment-countdown-sub"
+            id="paymentIssueSub"
+          >
+            If the 21st is a weekend or holiday, payment may move to the next business day.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="payment-step">
+
+      <div class="payment-step-icon">3</div>
+
+      <div class="payment-step-body">
+
+        <div class="payment-step-title">
+          Banking Arrival Window
+        </div>
+
+        <div class="payment-step-note">
+          For EFT, Google says the payment can take up to 7 business days
+          after it is issued.
+        </div>
+
+        <div class="payment-step-date" id="paymentArrivalDate">
+          Latest expected window: —
+        </div>
+
+        <div class="payment-countdown">
+          <div class="payment-countdown-label">
+            7-BUSINESS-DAY COUNTDOWN
+          </div>
+
+          <div
+            class="payment-countdown-value"
+            id="paymentArrivalCountdown"
+          >
+            Waiting for payment issue
+          </div>
+
+          <div
+            class="payment-countdown-sub"
+            id="paymentArrivalSub"
+          >
+            Business-day counter excludes Saturday and Sunday. Bank holidays can affect actual arrival.
+          </div>
+        </div>
+
+        <span
+          class="payment-status-pill"
+          id="paymentArrivalStatus"
+        >
+          WAITING FOR ADMOB PAYMENT
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="payment-warning">
+
+      <strong>IMPORTANT PAYMENT NOTICE</strong>
+
+      <span>
+        The countdown shows Google's normal payment cycle only.
+        Payment can be delayed if the account has not reached its payment
+        threshold, a payment hold exists, payment information is incomplete,
+        or a technical/banking issue affects processing. If that happens,
+        the earning remains recorded and the secure backend keeps Collect disabled
+        until payment is confirmed.
+      </span>
+
+    </div>
+
+
+    <div
+      class="payment-error"
+      id="paymentTechnicalNote"
+      style="display:none"
+    >
+
+      <strong>TECHNICAL PAYMENT ISSUE</strong>
+
+      <span id="paymentTechnicalText">
+        The expected payment window has passed, but the secure backend has not
+        confirmed the AdMob payment yet. Your recorded earning remains stored.
+        Please wait for payment confirmation.
+      </span>
+
+    </div>
+
+
+    <div class="payment-source-link">
+      Schedule reference: Google AdMob monthly payment cycle. Exact payment
+      timing depends on account status, threshold, holds, timezone, payment
+      method and banking processing.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     CURRENT MONTH
+======================================================= -->
+
+<section class="month-section">
+
+  <div class="month-heading">
+
+    <strong>
+      Monthly Earnings
+    </strong>
+
+    <span>
+      SEPARATE MONTHLY BUCKETS
+    </span>
+
+  </div>
+
+
+  <div class="month-grid">
+
+
+    <!-- CURRENT MONTH -->
+
+    <div
+      class="month-card current"
+      id="currentMonthCard"
+    >
+
+      <div class="month-top">
+
+        <div class="month-title">
+
+          <strong id="currentMonthTitle">
+            Current Month
+          </strong>
+
+          <span>
+            Earnings being accumulated now
+          </span>
+
+        </div>
+
+
+        <span
+          class="month-pill locked"
+          id="currentMonthPill"
+        >
+          EARNING
+        </span>
+
+      </div>
+
+
+
+      <div
+        class="month-amount"
+        id="currentMonthAmount"
+      >
+        ₹0.00
+      </div>
+
+
+
+      <div class="month-description">
+
+        This amount belongs only to the current month.
+        It is not available through the previous month's
+        Collect button.
+
+      </div>
+
+
+
+      <div class="window-box">
+
+        <div class="window-label">
+          COLLECTION SCHEDULE
+        </div>
+
+        <div
+          class="window-value"
+          id="currentWindowText"
+        >
+          Collection opens from the 1st to 5th of the
+          following month.
+        </div>
+
+        <div
+          class="countdown closed"
+          id="currentCountdown"
+        >
+          Collection not open yet
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- PREVIOUS / COLLECTIBLE BUCKET -->
+
+    <div
+      class="month-card"
+      id="previousMonthCard"
+    >
+
+      <div class="month-top">
+
+        <div class="month-title">
+
+          <strong id="previousMonthTitle">
+            Previous Month
+          </strong>
+
+          <span id="previousMonthSubtitle">
+            Verified amount awaiting collection
+          </span>
+
+        </div>
+
+
+        <span
+          class="month-pill"
+          id="previousMonthPill"
+        >
+          CHECKING
+        </span>
+
+      </div>
+
+
+
+      <div
+        class="month-amount"
+        id="previousMonthAmount"
+      >
+        ₹0.00
+      </div>
+
+
+
+      <div
+        class="month-description"
+        id="previousMonthDescription"
+      >
+        Your previous monthly earnings will appear here.
+
+      </div>
+
+
+
+      <div class="window-box">
+
+        <div class="window-label">
+          COLLECTION WINDOW
+        </div>
+
+        <div
+          class="window-value"
+          id="previousWindowText"
+        >
+          Checking secure collection schedule...
+        </div>
+
+
+        <div
+          class="countdown"
+          id="fiveDayCountdown"
+        >
+          Loading collection window...
+        </div>
+
+      </div>
+
+
+
+      <button
+        class="collect-action"
+        id="monthlyCollectButton"
+        type="button"
+        disabled
+      >
+
+        Collect Previous Month Earnings
+
+      </button>
+
+
+
+      <div
+        class="carry-note"
+        id="carryNote"
+      >
+
+        Your amount remains securely stored if collection is not yet available. It is not deleted while AdMob payment confirmation is pending.
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     ACTIVE 24 HOUR REQUEST
+======================================================= -->
+
+<section
+  class="request-card"
+  id="requestCard"
+>
+
+
+  <div class="request-head">
+
+    <strong>
+      Collection Request
+    </strong>
+
+
+    <span
+      class="request-status"
+      id="requestStatus"
+    >
+      PROCESSING
+    </span>
+
+  </div>
+
+
+
+  <div
+    class="request-amount"
+    id="requestAmount"
+  >
+    ₹0.00
+  </div>
+
+
+
+  <div class="request-text">
+
+    Your collection amount is locked by the secure
+    TaskEarn backend. You cannot change this amount
+    from the app.
+
+  </div>
+
+
+
+  <div class="request-timer-label">
+    24-HOUR PROCESSING TIMER
+  </div>
+
+
+
+  <div
+    class="request-countdown"
+    id="requestCountdown"
+  >
+    24:00:00
+  </div>
+
+
+
+  <div
+    class="request-sub"
+    id="requestSub"
+  >
+    Processing window is active.
+
+  </div>
+
+
+
+  <div class="request-info">
+
+    The request can be processed earlier by the authorized
+    payment system. If it remains eligible after the
+    release time, the secure backend can automatically
+    process it. Duplicate payment protection is handled
+    server-side.
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =======================================================
+     AD BLOCK WARNING
+======================================================= -->
+
+<div
+  class="adblock-warning"
+  id="adBlockWarning"
+>
+
+  <strong>
+    Advertising may be blocked on this device.
+  </strong>
+
+  <br>
+
+  Please disable ad-blocking for the supported TaskEarn
+  advertising environment.
+
+  Ad-block detection is only a warning.
+  A reward is created only when the advertising provider
+  genuinely verifies completion.
+
+</div>
+
+
+
+<!-- =======================================================
+     WATCH AD
+======================================================= -->
+
+<section class="watch-card">
+
+
+  <div class="watch-top">
+
+
+    <div class="watch-title">
+
+
+      <div class="play-icon">
+
+        <svg>
+          <use href="#i-play"></use>
+        </svg>
+
+      </div>
+
+
+      <div>
+
+        <strong>
+          Watch Eligible Ad
+        </strong>
+
+        <span>
+          Complete an available rewarded advertisement
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+    <span class="live-pill">
+      ACTIVE
+    </span>
+
+
+  </div>
+
+
+
+  <p class="watch-description">
+
+    Advertisement genuinely complete hona zaroori hai.
+    Sirf ad open karne se earning create nahi hogi.
+    Provider verification ke baad hi revenue event
+    process hoga.
+
+  </p>
+
+
+
+  <button
+    class="watch-btn"
+    id="watchAdButton"
+    type="button"
+  >
+
+    <span id="watchAdText">
+      Watch Eligible Ad
+    </span>
+
+
+    <svg>
+      <use href="#i-arrow-right"></use>
+    </svg>
+
+  </button>
+
+
+</section>
+
+
+
+<!-- =======================================================
+     HISTORY
+======================================================= -->
+
+<div class="section-title">
+
+  <strong>
+    Ad Revenue History
+  </strong>
+
+
+  <span id="historyCount">
+    0 records
+  </span>
+
+</div>
+
+
+
+<section
+  class="history"
+  id="historyList"
+>
+
+  <div class="history-empty">
+    No ad revenue records yet.
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     TRUST
+======================================================= -->
+
+<section class="trust-card">
+
+  <strong>
+    Verified Revenue • Secure Collection • Transparent Status
+  </strong>
+
+  <span>
+
+    TaskEarn does not allow the browser to decide your
+    earning amount. Provider verification, monthly
+    collection eligibility and final wallet credit must
+    be confirmed by the secure backend.
+
+  </span>
+
+</section>
+
+
+</div>
+
+
+
+<!-- =======================================================
+     TOAST
+======================================================= -->
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+
+<script>
+
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
+
+const SUPABASE_URL =
+  "https://wfvmipwesttejtvwoasj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+
+/* =========================================================
+   SUPABASE CLIENT
+========================================================= */
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+
+/* =========================================================
+   EDGE FUNCTIONS
+========================================================= */
+
+const AD_SESSION_FUNCTION =
+  "ad-revenue-session";
+
+
+const AD_FINALIZE_FUNCTION =
+  "ad-revenue-finalize";
+
+
+const AD_COLLECT_FUNCTION =
+  "ad-revenue-collect";
+
+
+/*
+  IMPORTANT:
+
+  This function must be implemented server-side.
+
+  It must return the authenticated user's:
+  - current monthly bucket
+  - previous collectible/carry-forward buckets
+  - collection window
+  - exact server-approved amount
+  - active 24-hour request
+  - settlement-aware availability
+
+  The browser must NEVER calculate the final
+  collectible amount itself.
+*/
+
+const AD_COLLECT_STATE_FUNCTION =
+  "ad-revenue-collect-state";
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+
+let adEvents = [];
+
+let collectState = null;
+
+let authReady = false;
+
+let authReadyResolve = null;
+
+let countdownTimer = null;
+
+let requestTimer = null;
+
+let selectedBucketId = null;
+
+
+/* =========================================================
+   AUTH READY
+========================================================= */
+
+const authReadyPromise =
+  new Promise(resolve => {
+
+    authReadyResolve =
+      resolve;
+
+  });
+
+
+
+/* =========================================================
+   DOM HELPER
+========================================================= */
+
+function $(id){
+
+  return document.getElementById(id);
+
+}
+
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(
+  message,
+  type=""
+){
+
+  const toast =
+    $("toast");
+
+
+  if(!toast){
+    return;
+  }
+
+
+  toast.textContent =
+    message;
+
+
+  toast.className =
+    "toast show " + type;
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.className =
+          "toast";
+
+      },
+      3400
+    );
+
+}
+
+
+
+/* =========================================================
+   MONEY
+========================================================= */
+
+function money(value){
+
+  const amount =
+    Number(value || 0);
+
+
+  if(!Number.isFinite(amount)){
+    return "₹0.00";
+  }
+
+
+  return (
+    "₹" +
+    amount.toFixed(2)
+  );
+
+}
+
+
+
+/* =========================================================
+   SAFE NUMBER
+========================================================= */
+
+function num(value){
+
+  const n =
+    Number(value || 0);
+
+
+  return Number.isFinite(n)
+    ? n
+    : 0;
+
+}
+
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function dateObject(value){
+
+  if(!value){
+    return null;
+  }
+
+
+  const d =
+    new Date(value);
+
+
+  if(
+    Number.isNaN(
+      d.getTime()
+    )
+  ){
+
+    return null;
+
+  }
+
+
+  return d;
+
+}
+
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(value){
+
+  const date =
+    dateObject(value);
+
+
+  if(!date){
+    return "—";
+  }
+
+
+  return date.toLocaleString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+
+/* =========================================================
+   FORMAT MONTH
+========================================================= */
+
+function formatMonth(value){
+
+  const date =
+    dateObject(value);
+
+
+  if(!date){
+    return "Monthly Earnings";
+  }
+
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      month:"long",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+
+/* =========================================================
+   FORMAT DURATION
+========================================================= */
+
+function formatDuration(
+  milliseconds
+){
+
+  let ms =
+    Math.max(
+      0,
+      Number(milliseconds || 0)
+    );
+
+
+  let totalSeconds =
+    Math.floor(
+      ms / 1000
+    );
+
+
+  const days =
+    Math.floor(
+      totalSeconds / 86400
+    );
+
+
+  totalSeconds %=
+    86400;
+
+
+  const hours =
+    Math.floor(
+      totalSeconds / 3600
+    );
+
+
+  totalSeconds %=
+    3600;
+
+
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
+
+
+  const seconds =
+    totalSeconds % 60;
+
+
+  const hh =
+    String(hours)
+      .padStart(2,"0");
+
+
+  const mm =
+    String(minutes)
+      .padStart(2,"0");
+
+
+  const ss =
+    String(seconds)
+      .padStart(2,"0");
+
+
+  if(days > 0){
+
+    return (
+      days +
+      "d " +
+      hh +
+      ":" +
+      mm +
+      ":" +
+      ss
+    );
+
+  }
+
+
+  return (
+    hh +
+    ":" +
+    mm +
+    ":" +
+    ss
+  );
+
+}
+
+
+
+/* =========================================================
+   CURRENT SESSION
+========================================================= */
+
+async function loadCurrentSession(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    if(error){
+
+      console.error(
+        "getSession:",
+        error
+      );
+
+    }
+
+
+    let session =
+      data?.session || null;
+
+
+    /*
+      Recover an existing session if possible.
+    */
+
+    if(!session){
+
+      try{
+
+        const refresh =
+          await supabaseClient
+            .auth
+            .refreshSession();
+
+
+        if(
+          !refresh.error
+        ){
+
+          session =
+            refresh.data?.session ||
+            null;
+
+        }
+
+      }catch(error){
+
+        console.warn(
+          "refreshSession:",
+          error
+        );
+
+      }
+
+    }
+
+
+    currentUser =
+      session?.user || null;
+
+
+  }catch(error){
+
+    console.error(
+      "Session error:",
+      error
+    );
+
+
+    currentUser =
+      null;
+
+  }
+
+
+  authReady =
+    true;
+
+
+  if(authReadyResolve){
+
+    authReadyResolve(
+      currentUser
+    );
+
+    authReadyResolve =
+      null;
+
+  }
+
+
+  return currentUser;
+
+}
+
+
+
+/* =========================================================
+   GET ACCESS TOKEN
+========================================================= */
+
+async function getAccessToken(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if(error){
+
+    throw new Error(
+      "SESSION_NOT_FOUND"
+    );
+
+  }
+
+
+  const token =
+    data?.session?.access_token;
+
+
+  if(!token){
+
+    throw new Error(
+      "SESSION_NOT_FOUND"
+    );
+
+  }
+
+
+  return token;
+
+}
+
+
+
+/* =========================================================
+   AUTH FETCH
+========================================================= */
+
+async function secureFetch(
+  functionName,
+  body
+){
+
+  const token =
+    await getAccessToken();
+
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/functions/v1/${functionName}`,
+      {
+
+        method:"POST",
+
+        headers:{
+
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            `Bearer ${token}`
+
+        },
+
+        body:
+          JSON.stringify(
+            body || {}
+          )
+
+      }
+    );
+
+
+  const text =
+    await response.text();
+
+
+  let result =
+    null;
+
+
+  try{
+
+    result =
+      text
+        ? JSON.parse(text)
+        : {};
+
+  }catch(error){
+
+    result = {
+      raw:text
+    };
+
+  }
+
+
+  if(!response.ok){
+
+    console.error(
+      functionName,
+      result
+    );
+
+
+    const serverError =
+      result?.error ||
+      result?.message ||
+      "";
+
+
+    throw new Error(
+      serverError ||
+      functionName.toUpperCase() +
+      "_FAILED"
+    );
+
+  }
+
+
+  return result;
+
+}
+
+
+
+/* =========================================================
+   EMPTY DATA
+========================================================= */
+
+function renderEmptyData(){
+
+  adEvents = [];
+
+  collectState = null;
+
+  renderTotals();
+
+  renderHistory();
+
+  renderMonthlyState();
+
+  renderActiveRequest();
+
+  renderSettlementDate();
+
+}
+
+
+
+/* =========================================================
+   LOAD AD REVENUE EVENTS
+========================================================= */
+
+async function loadAdRevenue(){
+
+  if(!currentUser){
+
+    renderEmptyData();
+
+    return;
+
+  }
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "ad_revenue_events"
+        )
+        .select(`
+          id,
+          provider,
+          provider_event_id,
+          status,
+          gross_revenue,
+          user_share,
+          owner_share,
+          currency,
+          created_at,
+          verified_at,
+          expected_settlement_at,
+          settlement_status,
+          settled_at,
+          collected_at
+        `)
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(100);
+
+
+    if(error){
+
+      console.error(
+        "Ad Revenue DB:",
+        error
+      );
+
+
+      adEvents = [];
+
+
+      renderTotals();
+
+      renderHistory();
+
+      renderSettlementDate();
+
+
+      return;
+
+    }
+
+
+    adEvents =
+      data || [];
+
+
+    renderTotals();
+
+    renderHistory();
+
+    renderSettlementDate();
+
+
+  }catch(error){
+
+    console.error(
+      "loadAdRevenue:",
+      error
+    );
+
+
+    adEvents = [];
+
+
+    renderTotals();
+
+    renderHistory();
+
+    renderSettlementDate();
+
+  }
+
+}
+
+
+
+/* =========================================================
+   LOAD SECURE MONTHLY COLLECTION STATE
+========================================================= */
+
+async function loadCollectState(){
+
+  if(!currentUser){
+
+    collectState = null;
+
+    renderMonthlyState();
+
+    renderActiveRequest();
+
+    return;
+
+  }
+
+
+  try{
+
+    const result =
+      await secureFetch(
+        AD_COLLECT_STATE_FUNCTION,
+        {}
+      );
+
+
+    /*
+      Expected server response example:
+
+      {
+        current_month:{
+          earning_month:"2026-09-01",
+          label:"September 2026",
+          amount:123.45
+        },
+
+        previous_buckets:[
+          {
+            id:"uuid",
+            earning_month:"2026-08-01",
+            label:"August 2026",
+            amount:123.45,
+            status:"collectible",
+            window_start:"...",
+            window_end:"..."
+          }
+        ],
+
+        active_request:{
+          id:"uuid",
+          bucket_id:"uuid",
+          amount:123.45,
+          status:"pending",
+          created_at:"...",
+          release_at:"..."
+        },
+
+        total_available:123.45,
+        total_pending:10.00
+      }
+    */
+
+    collectState =
+      result || null;
+
+
+    renderMonthlyState();
+
+    renderActiveRequest();
+
+
+  }catch(error){
+
+    console.error(
+      "Collection state:",
+      error
+    );
+
+
+    /*
+      Do not invent monthly amounts if the secure
+      backend state cannot be loaded.
+    */
+
+    collectState = null;
+
+
+    renderMonthlyState();
+
+    renderActiveRequest();
+
+
+    if(
+      !String(
+        error.message || ""
+      ).includes(
+        "AD_REVENUE_COLLECT_STATE"
+      )
+    ){
+
+      showToast(
+        "Collection schedule could not be loaded.",
+        "error"
+      );
+
+    }
+
+  }
+
+}
+
+
+
+/* =========================================================
+   TOTALS
+========================================================= */
+
+function renderTotals(){
+
+  let totalGross = 0;
+
+  let totalUser = 0;
+
+  let totalAvailable = 0;
+
+  let totalPending = 0;
+
+  let completedAds = 0;
+
+
+  adEvents.forEach(
+    event => {
+
+      const gross =
+        num(
+          event.gross_revenue
+        );
+
+
+      const userShare =
+        num(
+          event.user_share
+        );
+
+
+      if(
+        event.status ===
+        "verified"
+      ){
+
+        totalGross +=
+          gross;
+
+        totalUser +=
+          userShare;
+
+        completedAds++;
+
+      }
+
+
+      if(
+
+        event.status ===
+        "verified"
+
+        &&
+
+        event.settlement_status ===
+        "settled"
+
+        &&
+
+        !event.collected_at
+
+      ){
+
+        totalAvailable +=
+          userShare;
+
+      }
+
+
+      if(
+
+        event.status ===
+        "pending"
+
+        ||
+
+        (
+          event.status ===
+          "verified"
+
+          &&
+
+          event.settlement_status !==
+          "settled"
+        )
+
+      ){
+
+        totalPending +=
+          userShare;
+
+      }
+
+    }
+  );
+
+
+  /*
+    If secure monthly state exists, use the server's
+    collection numbers for collection UI.
+
+    Never calculate the final collectible amount
+    from the browser.
+  */
+
+  if(
+    collectState
+  ){
+
+    if(
+      collectState.total_available !==
+      undefined
+    ){
+
+      totalAvailable =
+        num(
+          collectState.total_available
+        );
+
+    }
+
+
+    if(
+      collectState.total_pending !==
+      undefined
+    ){
+
+      totalPending =
+        num(
+          collectState.total_pending
+        );
+
+    }
+
+  }
+
+
+  $("totalUserShare").textContent =
+    money(totalUser);
+
+
+  $("totalAds").textContent =
+    String(
+      completedAds
+    );
+
+
+  $("totalGross").textContent =
+    money(totalGross);
+
+
+  $("totalAvailable").textContent =
+    money(totalAvailable);
+
+
+  $("totalPending").textContent =
+    money(totalPending);
+
+}
+
+
+
+
+/* =========================================================
+   ADMOB PAYMENT TIMELINE
+========================================================= */
+
+let paymentTimelineTimer = null;
+
+function firstDayOfMonth(value){
+  const d = dateObject(value);
+  if(!d) return null;
+
+  return new Date(
+    d.getFullYear(),
+    d.getMonth(),
+    1,
+    12,
+    0,
+    0,
+    0
+  );
+}
+
+function nextMonthDate(value, day){
+  const d = firstDayOfMonth(value);
+  if(!d) return null;
+
+  return new Date(
+    d.getFullYear(),
+    d.getMonth() + 1,
+    day,
+    12,
+    0,
+    0,
+    0
+  );
+}
+
+function nextBusinessDay(value){
+  const d = dateObject(value);
+  if(!d) return null;
+
+  d.setHours(12,0,0,0);
+
+  while(
+    d.getDay() === 0 ||
+    d.getDay() === 6
+  ){
+    d.setDate(d.getDate() + 1);
+  }
+
+  return d;
+}
+
+function addBusinessDays(value, count){
+  const d = dateObject(value);
+  if(!d) return null;
+
+  d.setHours(12,0,0,0);
+
+  let remaining = Math.max(
+    0,
+    Number(count || 0)
+  );
+
+  while(remaining > 0){
+    d.setDate(d.getDate() + 1);
+
+    if(
+      d.getDay() !== 0 &&
+      d.getDay() !== 6
+    ){
+      remaining--;
+    }
+  }
+
+  return d;
+}
+
+function businessDaysBetween(startValue, endValue){
+  const start = dateObject(startValue);
+  const end = dateObject(endValue);
+
+  if(!start || !end) return 0;
+
+  start.setHours(12,0,0,0);
+  end.setHours(12,0,0,0);
+
+  if(end <= start) return 0;
+
+  let cursor = new Date(start);
+  let count = 0;
+
+  while(cursor < end){
+    cursor.setDate(cursor.getDate() + 1);
+
+    if(
+      cursor.getDay() !== 0 &&
+      cursor.getDay() !== 6
+    ){
+      count++;
+    }
+  }
+
+  return count;
+}
+
+function formatDateOnly(value){
+  const d = dateObject(value);
+
+  if(!d) return "—";
+
+  return d.toLocaleDateString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
+}
+
+function paymentMonthLabel(earningMonth){
+  const d = firstDayOfMonth(earningMonth);
+
+  if(!d) return "PAYMENT SCHEDULE";
+
+  return d.toLocaleDateString(
+    "en-IN",
+    {
+      month:"short",
+      year:"numeric"
+    }
+  ).toUpperCase();
+}
+
+function expectedAdMobDates(earningMonth){
+  const finalizationDate =
+    nextMonthDate(
+      earningMonth,
+      3
+    );
+
+  /*
+    Google says "around the 21st".
+    For a weekend, the issue date moves to the
+    following business day.
+  */
+  const nominalIssueDate =
+    nextMonthDate(
+      earningMonth,
+      21
+    );
+
+  const issueDate =
+    nextBusinessDay(
+      nominalIssueDate
+    );
+
+  /*
+    Google says up to seven business days after issue.
+  */
+  const latestArrivalDate =
+    addBusinessDays(
+      issueDate,
+      7
+    );
+
+  return {
+    finalizationDate,
+    nominalIssueDate,
+    issueDate,
+    latestArrivalDate
+  };
+}
+
+function getPaymentConfirmationState(bucket){
+  /*
+    Backend-authoritative fields supported by this UI.
+    The frontend never invents confirmation.
+
+    Recommended ad-revenue-collect-state response:
+      bucket.admob_payment_status =
+        "pending" | "issued" | "received" | "delayed" | "rolled_over"
+
+      bucket.admob_payment_received_at = ISO timestamp
+      bucket.admob_payment_issue_at = ISO timestamp
+
+    Boolean compatibility:
+      bucket.admob_payment_confirmed === true
+
+    Until the secure backend sends confirmation, Collect
+    remains disabled.
+  */
+
+  const state = String(
+    bucket?.admob_payment_status ||
+    collectState?.admob_payment_status ||
+    ""
+  ).toLowerCase();
+
+  const received =
+    bucket?.admob_payment_confirmed === true ||
+    bucket?.admob_payment_received === true ||
+    state === "received" ||
+    Boolean(
+      bucket?.admob_payment_received_at
+    );
+
+  const issued =
+    received ||
+    bucket?.admob_payment_confirmed === true ||
+    state === "issued";
+
+  const delayed =
+    state === "delayed" ||
+    state === "rolled_over";
+
+  return {
+    state,
+    received,
+    issued,
+    delayed
+  };
+}
+
+function startPaymentTimeline(earningMonth, bucket){
+  clearInterval(paymentTimelineTimer);
+
+  const dates =
+    expectedAdMobDates(
+      earningMonth
+    );
+
+  if(!dates.finalizationDate){
+    return;
+  }
+
+  $("paymentTimelineMonth").textContent =
+    paymentMonthLabel(
+      earningMonth
+    );
+
+  $("paymentTimelinePeriod").innerHTML =
+    "Schedule for <strong>" +
+    paymentMonthLabel(earningMonth) +
+    "</strong> earnings. " +
+    "This timeline describes Google's normal cycle; it does not guarantee a payment date.";
+
+  $("paymentFinalizationDate").textContent =
+    "Expected finalization: " +
+    formatDateOnly(
+      dates.finalizationDate
+    );
+
+  $("paymentIssueDate").textContent =
+    "Expected issue: around " +
+    formatDateOnly(
+      dates.issueDate
+    );
+
+  $("paymentArrivalDate").textContent =
+    "Latest normal EFT window: " +
+    formatDateOnly(
+      dates.latestArrivalDate
+    );
+
+  function update(){
+    const now =
+      new Date();
+
+    const confirmation =
+      getPaymentConfirmationState(
+        bucket
+      );
+
+    /*
+      Finalization countdown
+    */
+    const finalizationRemaining =
+      dates.finalizationDate.getTime() -
+      now.getTime();
+
+    $("paymentFinalizationCountdown").textContent =
+      finalizationRemaining > 0
+        ? formatDuration(finalizationRemaining)
+        : "Finalization date reached";
+
+    /*
+      Payment issue countdown
+    */
+    const issueRemaining =
+      dates.issueDate.getTime() -
+      now.getTime();
+
+    if(issueRemaining > 0){
+      $("paymentIssueCountdown").textContent =
+        formatDuration(
+          issueRemaining
+        );
+
+      $("paymentIssueSub").textContent =
+        "Expected around " +
+        formatDateOnly(
+          dates.issueDate
+        ) +
+        ". Actual timing can move because of weekends, holidays, holds, threshold or account status.";
+
+    }else if(!confirmation.issued){
+      $("paymentIssueCountdown").textContent =
+        "Expected issue window reached";
+
+      $("paymentIssueSub").textContent =
+        "The expected issue date has passed. Waiting for secure payment confirmation.";
+    }else{
+      $("paymentIssueCountdown").textContent =
+        "Payment issued";
+
+      $("paymentIssueSub").textContent =
+        "Secure payment status confirms the payment has been issued.";
+    }
+
+    /*
+      Seven-business-day arrival countdown
+    */
+    if(confirmation.received){
+
+      $("paymentArrivalCountdown").textContent =
+        "Payment received";
+
+      $("paymentArrivalStatus").textContent =
+        "PAYMENT CONFIRMED";
+
+      $("paymentArrivalStatus").className =
+        "payment-status-pill ready";
+
+      $("paymentArrivalSub").textContent =
+        "The secure backend has confirmed the AdMob payment.";
+
+    }else if(confirmation.delayed){
+
+      $("paymentArrivalCountdown").textContent =
+        "Payment delayed / rolled over";
+
+      $("paymentArrivalStatus").textContent =
+        "WAITING FOR CONFIRMATION";
+
+      $("paymentArrivalStatus").className =
+        "payment-status-pill error";
+
+      $("paymentArrivalSub").textContent =
+        "The expected cycle was not confirmed. Your earning remains stored.";
+
+    }else if(confirmation.issued){
+
+      const paymentIssueAt =
+        dateObject(
+          bucket?.admob_payment_issue_at ||
+          bucket?.payment_issue_at ||
+          dates.issueDate
+        );
+
+      const latest =
+        addBusinessDays(
+          paymentIssueAt,
+          7
+        );
+
+      const remaining =
+        latest.getTime() -
+        now.getTime();
+
+      const businessDaysLeft =
+        businessDaysBetween(
+          now,
+          latest
+        );
+
+      $("paymentArrivalCountdown").textContent =
+        remaining > 0
+          ? formatDuration(remaining)
+          : "7-business-day window reached";
+
+      $("paymentArrivalStatus").textContent =
+        "PAYMENT IN BANKING WINDOW";
+
+      $("paymentArrivalStatus").className =
+        "payment-status-pill";
+
+      $("paymentArrivalSub").textContent =
+        remaining > 0
+          ? Math.max(
+              0,
+              businessDaysLeft
+            ) +
+            " business day(s) remaining in the normal EFT arrival window."
+          : "The normal seven-business-day window has been reached. Waiting for confirmation.";
+
+    }else{
+
+      $("paymentArrivalCountdown").textContent =
+        "Waiting for payment issue";
+
+      $("paymentArrivalStatus").textContent =
+        "WAITING FOR ADMOB PAYMENT";
+
+      $("paymentArrivalStatus").className =
+        "payment-status-pill";
+
+      $("paymentArrivalSub").textContent =
+        "The seven-business-day arrival counter starts only after the payment is issued.";
+    }
+
+    /*
+      Technical issue note after the latest expected arrival date,
+      unless payment has already been confirmed.
+    */
+    const technicalNote =
+      $("paymentTechnicalNote");
+
+    if(
+      technicalNote
+      &&
+      now.getTime() > dates.latestArrivalDate.getTime()
+      &&
+      !confirmation.received
+    ){
+      technicalNote.style.display =
+        "block";
+
+      if(
+        confirmation.delayed
+      ){
+        $("paymentTechnicalText").textContent =
+          "The normal payment window has passed and the secure backend has not confirmed payment. Your recorded earning remains stored. Collection stays disabled until payment confirmation.";
+      }else{
+        $("paymentTechnicalText").textContent =
+          "The normal seven-business-day arrival window has passed and the secure backend has not confirmed payment yet. This may be a payment, bank or technical processing delay. Your recorded earning remains stored and Collect stays disabled until confirmation.";
+      }
+
+    }else if(technicalNote){
+      technicalNote.style.display =
+        "none";
+    }
+
+    /*
+      Final collection gate.
+
+      Existing backend eligibility is still required.
+      Payment confirmation is an additional safety gate.
+    */
+    const button =
+      $("monthlyCollectButton");
+
+    if(
+      button &&
+      bucket &&
+      (
+        bucket.status === "collectible" ||
+        bucket.status === "open" ||
+        bucket.collect_enabled === true
+      )
+    ){
+      const backendEligible =
+        bucket.collect_enabled === true;
+
+      button.disabled =
+        !backendEligible ||
+        !confirmation.received;
+    }
+  }
+
+  update();
+
+  paymentTimelineTimer =
+    setInterval(
+      update,
+      1000
+    );
+}
+
+
+/* =========================================================
+   MONTHLY STATE
+========================================================= */
+
+function renderMonthlyState(){
+
+  clearInterval(
+    countdownTimer
+  );
+
+
+  countdownTimer =
+    null;
+
+
+  const current =
+    collectState?.current_month ||
+    null;
+
+
+  const buckets =
+    Array.isArray(
+      collectState?.previous_buckets
+    )
+      ? collectState.previous_buckets
+      : [];
+
+
+  /*
+    CURRENT MONTH
+  */
+
+  if(current){
+
+    $("currentMonthTitle")
+      .textContent =
+      current.label ||
+      formatMonth(
+        current.earning_month
+      );
+
+
+    $("currentMonthAmount")
+      .textContent =
+      money(
+        current.amount
+      );
+
+
+    $("currentWindowText")
+      .textContent =
+      "Collection opens from the 1st to 5th of the following month.";
+
+  }else{
+
+    $("currentMonthTitle")
+      .textContent =
+      "Current Month";
+
+
+    $("currentMonthAmount")
+      .textContent =
+      "₹0.00";
+
+
+    $("currentWindowText")
+      .textContent =
+      "Current monthly earning bucket is not available.";
+
+  }
+
+
+  /*
+    Choose the oldest eligible previous bucket
+    first. This keeps monthly buckets separate.
+  */
+
+  const bucket =
+    buckets.length
+      ? buckets[0]
+      : null;
+
+
+  if(!bucket){
+
+    clearInterval(
+      paymentTimelineTimer
+    );
+
+    paymentTimelineTimer =
+      null;
+
+    $("paymentTimelineMonth").textContent =
+      "WAITING";
+
+    $("paymentTimelinePeriod").textContent =
+      "A verified earning month is required before a payment timeline can be calculated.";
+
+    $("paymentFinalizationDate").textContent =
+      "Expected finalization: —";
+
+    $("paymentIssueDate").textContent =
+      "Expected issue: —";
+
+    $("paymentArrivalDate").textContent =
+      "Latest expected window: —";
+
+    $("paymentFinalizationCountdown").textContent =
+      "Waiting for earning month";
+
+    $("paymentIssueCountdown").textContent =
+      "Waiting for earning month";
+
+    $("paymentArrivalCountdown").textContent =
+      "Waiting for payment issue";
+
+    $("paymentArrivalStatus").textContent =
+      "WAITING FOR ADMOB PAYMENT";
+
+    $("paymentArrivalStatus").className =
+      "payment-status-pill";
+
+    $("paymentTechnicalNote").style.display =
+      "none";
+
+    selectedBucketId =
+      null;
+
+
+    $("previousMonthCard")
+      .className =
+      "month-card";
+
+
+    $("previousMonthTitle")
+      .textContent =
+      "Previous Month";
+
+
+    $("previousMonthSubtitle")
+      .textContent =
+      "No previous collection bucket found";
+
+
+    $("previousMonthAmount")
+      .textContent =
+      "₹0.00";
+
+
+    $("previousMonthPill")
+      .textContent =
+      "WAITING";
+
+
+    $("previousMonthPill")
+      .className =
+      "month-pill locked";
+
+
+    $("previousMonthDescription")
+      .textContent =
+      "Your previous monthly verified earnings will appear here after the secure backend creates the collection bucket.";
+
+
+    $("previousWindowText")
+      .textContent =
+      "No collection bucket is currently available.";
+
+
+    $("fiveDayCountdown")
+      .textContent =
+      "No active collection window";
+
+
+    $("fiveDayCountdown")
+      .className =
+      "countdown closed";
+
+
+    $("monthlyCollectButton")
+      .disabled =
+      true;
+
+
+    $("monthlyCollectButton")
+      .textContent =
+      "Collect Previous Month Earnings";
+
+
+    $("carryNote")
+      .textContent =
+      "If a collection window is missed, the amount remains stored as a separate carried-forward balance.";
+
+
+    return;
+
+  }
+
+
+  selectedBucketId =
+    bucket.id || null;
+
+
+  /*
+    Start the Google AdMob payment timeline for this
+    earning month. The timer is informational; payment
+    confirmation remains backend-authoritative.
+  */
+  startPaymentTimeline(
+    bucket.earning_month,
+    bucket
+  );
+
+
+  const amount =
+    num(
+      bucket.amount ??
+      bucket.eligible_amount
+    );
+
+
+  const status =
+    String(
+      bucket.status ||
+      "locked"
+    ).toLowerCase();
+
+
+  $("previousMonthTitle")
+    .textContent =
+    bucket.label ||
+    formatMonth(
+      bucket.earning_month
+    );
+
+
+  $("previousMonthAmount")
+    .textContent =
+    money(amount);
+
+
+  $("previousMonthSubtitle")
+    .textContent =
+    status === "carried_forward"
+      ? "Carried-forward verified earnings"
+      : "Verified earnings awaiting collection";
+
+
+  $("previousMonthDescription")
+    .textContent =
+    status === "carried_forward"
+      ? "This amount was not collected during its normal 5-day window. It remains stored separately and is still yours."
+      : "This monthly bucket is kept separate from the current month's earnings.";
+
+
+  /*
+    CARRIED FORWARD
+  */
+
+  if(
+    status ===
+    "carried_forward"
+  ){
+
+    $("previousMonthCard")
+      .className =
+      "month-card carried";
+
+
+    $("previousMonthPill")
+      .textContent =
+      "CARRIED FORWARD";
+
+
+    $("previousMonthPill")
+      .className =
+      "month-pill carried";
+
+
+    $("previousWindowText")
+      .textContent =
+      "Normal 5-day window has closed. Your amount remains safely stored for later collection.";
+
+
+    $("fiveDayCountdown")
+      .textContent =
+      "Stored • No expiry from the missed window";
+
+
+    $("fiveDayCountdown")
+      .className =
+      "countdown warning";
+
+
+    /*
+      A carried-forward bucket can be shown for collection
+      according to the backend's eligibility decision.
+
+      The backend remains the authority.
+    */
+
+    const paymentConfirmed =
+      getPaymentConfirmationState(
+        bucket
+      ).received;
+
+    const eligible =
+      bucket.collect_enabled === true &&
+      paymentConfirmed;
+
+
+    $("monthlyCollectButton")
+      .disabled =
+      !eligible;
+
+
+    $("monthlyCollectButton")
+      .textContent =
+      eligible
+        ? "Collect Carried-Forward Earnings"
+        : paymentConfirmed
+          ? "Collection Unavailable"
+          : "Waiting for AdMob Payment";
+
+
+    $("carryNote")
+      .textContent =
+      "You did not lose this money by skipping the previous window. It stays stored as its own monthly balance and will not be mixed with new-month earnings.";
+
+    return;
+
+  }
+
+
+  /*
+    COLLECTIBLE
+  */
+
+  if(
+    status ===
+    "collectible"
+
+    ||
+
+    status ===
+    "open"
+
+    ||
+
+    bucket.collect_enabled ===
+    true
+  ){
+
+    $("previousMonthCard")
+      .className =
+      "month-card collectible";
+
+
+    $("previousMonthPill")
+      .textContent =
+      "COLLECT OPEN";
+
+
+    $("previousMonthPill")
+      .className =
+      "month-pill open";
+
+
+    const paymentConfirmed =
+      getPaymentConfirmationState(
+        bucket
+      ).received;
+
+    $("monthlyCollectButton")
+      .disabled =
+      amount <= 0 ||
+      bucket.collect_enabled !== true ||
+      !paymentConfirmed;
+
+
+    $("monthlyCollectButton")
+      .textContent =
+      amount <= 0
+        ? "No Earnings to Collect"
+        : !paymentConfirmed
+          ? "Waiting for AdMob Payment"
+          : bucket.collect_enabled === true
+            ? "Collect Previous Month Earnings"
+            : "Collection Unavailable";
+
+
+    $("previousWindowText")
+      .textContent =
+      (
+        "Collect is available from " +
+        formatDate(
+          bucket.window_start
+        ) +
+        " until " +
+        formatDate(
+          bucket.window_end
+        ) +
+        "."
+      );
+
+
+    $("carryNote")
+      .textContent =
+      "Collect remains disabled until the secure backend confirms the AdMob payment and collection eligibility.";
+
+
+    startFiveDayCountdown(
+      bucket.window_end
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+    PAID
+  */
+
+  if(
+    status ===
+    "paid"
+
+    ||
+
+    status ===
+    "collected"
+
+    ||
+
+    status ===
+    "completed"
+  ){
+
+    $("previousMonthCard")
+      .className =
+      "month-card";
+
+
+    $("previousMonthPill")
+      .textContent =
+      "COLLECTED";
+
+
+    $("previousMonthPill")
+      .className =
+      "month-pill open";
+
+
+    $("previousWindowText")
+      .textContent =
+      "This monthly bucket has already been collected.";
+
+
+    $("fiveDayCountdown")
+      .textContent =
+      "Collection completed";
+
+
+    $("fiveDayCountdown")
+      .className =
+      "countdown closed";
+
+
+    $("monthlyCollectButton")
+      .disabled =
+      true;
+
+
+    $("monthlyCollectButton")
+      .textContent =
+      "Already Collected";
+
+
+    $("carryNote")
+      .textContent =
+      "This bucket remains separate for accounting history. New-month earnings use a new collection bucket.";
+
+    return;
+
+  }
+
+
+  /*
+    LOCKED / CLOSED
+  */
+
+  $("previousMonthCard")
+    .className =
+    "month-card";
+
+
+  $("previousMonthPill")
+    .textContent =
+    "CLOSED";
+
+
+  $("previousMonthPill")
+    .className =
+    "month-pill locked";
+
+
+  $("monthlyCollectButton")
+    .disabled =
+    true;
+
+
+  $("monthlyCollectButton")
+    .textContent =
+    "Collection Window Closed";
+
+
+  $("previousWindowText")
+    .textContent =
+    bucket.window_start &&
+    bucket.window_end
+      ? (
+        "Collection window: " +
+        formatDate(
+          bucket.window_start
+        ) +
+        " to " +
+        formatDate(
+          bucket.window_end
+        ) +
+        "."
+      )
+      : "The collection window is currently closed.";
+
+
+  $("fiveDayCountdown")
+    .textContent =
+    "5-day collection window closed";
+
+
+  $("fiveDayCountdown")
+    .className =
+    "countdown closed";
+
+
+  $("carryNote")
+    .textContent =
+    "The amount remains stored according to TaskEarn's monthly carry-forward rules. It is not deleted because the 5-day window was missed.";
+
+}
+
+
+
+/* =========================================================
+   5-DAY COUNTDOWN
+========================================================= */
+
+function startFiveDayCountdown(
+  windowEnd
+){
+
+  clearInterval(
+    countdownTimer
+  );
+
+
+  const end =
+    dateObject(
+      windowEnd
+    );
+
+
+  if(!end){
+
+    $("fiveDayCountdown")
+      .textContent =
+      "Collection window date pending";
+
+
+    $("fiveDayCountdown")
+      .className =
+      "countdown closed";
+
+
+    $("monthlyCollectButton")
+      .disabled =
+      true;
+
+
+    return;
+
+  }
+
+
+  function update(){
+
+    const now =
+      Date.now();
+
+
+    const remaining =
+      end.getTime() -
+      now;
+
+
+    if(
+      remaining <= 0
+    ){
+
+      $("fiveDayCountdown")
+        .textContent =
+        "5-day collection window closed";
+
+
+      $("fiveDayCountdown")
+        .className =
+        "countdown closed";
+
+
+      $("monthlyCollectButton")
+        .disabled =
+        true;
+
+
+      $("monthlyCollectButton")
+        .textContent =
+        "Collection Window Closed";
+
+
+      clearInterval(
+        countdownTimer
+      );
+
+
+      /*
+        Refresh from backend because the backend is the
+        final authority after a window closes.
+      */
+
+      loadCollectState();
+
+      return;
+
+    }
+
+
+    $("fiveDayCountdown")
+      .textContent =
+      formatDuration(
+        remaining
+      ) +
+      " remaining";
+
+
+    $("fiveDayCountdown")
+      .className =
+      remaining <
+      24 * 60 * 60 * 1000
+        ? "countdown warning"
+        : "countdown";
+
+  }
+
+
+  update();
+
+
+  countdownTimer =
+    setInterval(
+      update,
+      1000
+    );
+
+}
+
+
+
+/* =========================================================
+   ACTIVE 24-HOUR REQUEST
+========================================================= */
+
+function renderActiveRequest(){
+
+  clearInterval(
+    requestTimer
+  );
+
+
+  requestTimer =
+    null;
+
+
+  const request =
+    collectState?.active_request ||
+    null;
+
+
+  const card =
+    $("requestCard");
+
+
+  if(!request){
+
+    card.classList.remove(
+      "show"
+    );
+
+
+    $("requestAmount")
+      .textContent =
+      "₹0.00";
+
+
+    $("requestCountdown")
+      .textContent =
+      "24:00:00";
+
+
+    $("requestSub")
+      .textContent =
+      "No active collection request.";
+
+    return;
+
+  }
+
+
+  card.classList.add(
+    "show"
+  );
+
+
+  $("requestAmount")
+    .textContent =
+    money(
+      request.amount
+    );
+
+
+  $("requestStatus")
+    .textContent =
+    String(
+      request.status ||
+      "PROCESSING"
+    )
+      .replace(
+        /_/g,
+        " "
+      )
+      .toUpperCase();
+
+
+  const release =
+    dateObject(
+      request.release_at
+    );
+
+
+  if(!release){
+
+    $("requestCountdown")
+      .textContent =
+      "Processing";
+
+
+    $("requestSub")
+      .textContent =
+      "The secure backend is processing this request.";
+
+
+    return;
+
+  }
+
+
+  function update(){
+
+    const remaining =
+      release.getTime() -
+      Date.now();
+
+
+    if(
+      remaining <= 0
+    ){
+
+      $("requestCountdown")
+        .textContent =
+        "RELEASE TIME REACHED";
+
+
+      $("requestSub")
+        .textContent =
+        "The request is now eligible for secure backend processing.";
+
+
+      clearInterval(
+        requestTimer
+      );
+
+
+      /*
+        Refresh shortly after release so the page reflects
+        the real backend result rather than assuming payment.
+      */
+
+      setTimeout(
+        () => {
+          loadCollectState();
+        },
+        1200
+      );
+
+
+      return;
+
+    }
+
+
+    $("requestCountdown")
+      .textContent =
+      formatDuration(
+        remaining
+      );
+
+
+    $("requestSub")
+      .textContent =
+      "Your 24-hour processing window is active.";
+
+  }
+
+
+  update();
+
+
+  requestTimer =
+    setInterval(
+      update,
+      1000
+    );
+
+}
+
+
+
+/* =========================================================
+   SETTLEMENT DATE
+========================================================= */
+
+function renderSettlementDate(){
+
+  const statusEl =
+    $("settlementStatus");
+
+
+  const dateEl =
+    $("settlementDate");
+
+
+  if(
+    !statusEl ||
+    !dateEl
+  ){
+    return;
+  }
+
+
+  const datedEvent =
+    adEvents.find(
+      event =>
+        event.expected_settlement_at
+    );
+
+
+  if(!datedEvent){
+
+    statusEl.textContent =
+      "WAITING FOR SETTLEMENT";
+
+
+    dateEl.className =
+      "settlement-date empty";
+
+
+    dateEl.textContent =
+      "Actual payment date will appear here after the advertising provider confirms the settlement date.";
+
+    return;
+
+  }
+
+
+  const settlementDate =
+    dateObject(
+      datedEvent.expected_settlement_at
+    );
+
+
+  if(!settlementDate){
+
+    statusEl.textContent =
+      "DATE NOT CONFIRMED";
+
+
+    dateEl.className =
+      "settlement-date empty";
+
+
+    dateEl.textContent =
+      "The provider has not supplied a valid settlement date yet.";
+
+    return;
+
+  }
+
+
+  if(
+    datedEvent.settlement_status ===
+    "settled"
+  ){
+
+    statusEl.textContent =
+      "PAYMENT RECEIVED";
+
+
+    dateEl.className =
+      "settlement-date";
+
+
+    dateEl.textContent =
+      "Payment received on " +
+      formatDate(
+        datedEvent.settled_at ||
+        datedEvent.expected_settlement_at
+      );
+
+
+    return;
+
+  }
+
+
+  statusEl.textContent =
+    "EXPECTED PAYMENT DATE";
+
+
+  dateEl.className =
+    "settlement-date";
+
+
+  dateEl.textContent =
+    formatDate(
+      datedEvent.expected_settlement_at
+    );
+
+}
+
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function renderHistory(){
+
+  const list =
+    $("historyList");
+
+
+  const count =
+    $("historyCount");
+
+
+  if(!list){
+    return;
+  }
+
+
+  if(count){
+
+    count.textContent =
+      adEvents.length +
+      (
+        adEvents.length === 1
+          ? " record"
+          : " records"
+      );
+
+  }
+
+
+  if(
+    adEvents.length === 0
+  ){
+
+    list.innerHTML = `
+
+      <div class="history-empty">
+
+        No ad revenue records yet.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    adEvents
+      .map(
+        event => {
+
+          const gross =
+            num(
+              event.gross_revenue
+            );
+
+
+          const userShare =
+            num(
+              event.user_share
+            );
+
+
+          const status =
+            String(
+              event.status ||
+              "pending"
+            )
+              .toLowerCase();
+
+
+          let statusClass =
+            "status-pending";
+
+
+          let statusText =
+            "PROCESSING";
+
+
+          if(
+
+            status ===
+            "verified"
+
+            &&
+
+            event.settlement_status ===
+            "settled"
+
+            &&
+
+            !event.collected_at
+
+          ){
+
+            statusClass =
+              "status-verified";
+
+
+            statusText =
+              "AVAILABLE";
+
+          }
+
+
+          if(
+
+            status ===
+            "verified"
+
+            &&
+
+            event.settlement_status !==
+            "settled"
+
+          ){
+
+            statusClass =
+              "status-pending";
+
+
+            statusText =
+              "SETTLEMENT PENDING";
+
+          }
+
+
+          if(
+            event.collected_at
+          ){
+
+            statusClass =
+              "status-collected";
+
+
+            statusText =
+              "COLLECTED";
+
+          }
+
+
+          if(
+            status ===
+            "rejected"
+          ){
+
+            statusClass =
+              "status-rejected";
+
+
+            statusText =
+              "REJECTED";
+
+          }
+
+
+          return `
+
+            <div class="history-item">
+
+
+              <div class="history-left">
+
+
+                <div class="history-icon">
+
+                  <svg>
+
+                    <use
+                      href="#i-chart"
+                    ></use>
+
+                  </svg>
+
+                </div>
+
+
+                <div class="history-name">
+
+                  <strong>
+                    Rewarded Advertisement
+                  </strong>
+
+
+                  <span>
+
+                    Revenue
+                    ${money(gross)}
+
+                    •
+                    ${formatDate(
+                      event.created_at
+                    )}
+
+                  </span>
+
+                </div>
+
+
+              </div>
+
+
+              <div class="history-right">
+
+
+                <strong>
+
+                  +${money(
+                    userShare
+                  )}
+
+                </strong>
+
+
+                <span
+                  class="${statusClass}"
+                >
+
+                  ${statusText}
+
+                </span>
+
+
+              </div>
+
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+
+/* =========================================================
+   AD BLOCK DETECTION
+========================================================= */
+
+async function detectAdBlocker(){
+
+  try{
+
+    const bait =
+      document.createElement(
+        "div"
+      );
+
+
+    bait.className =
+      "adsbox ad-banner ad-placeholder";
+
+
+    bait.style.cssText = `
+
+      position:absolute!important;
+      left:-9999px!important;
+      top:-9999px!important;
+      width:1px!important;
+      height:1px!important;
+      overflow:hidden!important;
+
+    `;
+
+
+    document.body.appendChild(
+      bait
+    );
+
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          100
+        )
+    );
+
+
+    const blocked =
+      bait.offsetParent === null
+      ||
+      bait.offsetHeight === 0
+      ||
+      bait.clientHeight === 0;
+
+
+    bait.remove();
+
+
+    if(blocked){
+
+      $("adBlockWarning")
+        .classList
+        .add("show");
+
+
+      return true;
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Ad block detection:",
+      error
+    );
+
+  }
+
+
+  return false;
+
+}
+
+
+
+/* =========================================================
+   CREATE SECURE AD SESSION
+========================================================= */
+
+async function createAdSession(){
+
+  if(!currentUser){
+
+    throw new Error(
+      "USER_NOT_AUTHENTICATED"
+    );
+
+  }
+
+
+  return await secureFetch(
+    AD_SESSION_FUNCTION,
+    {
+      user_id:
+        currentUser.id
+    }
+  );
+
+}
+
+
+
+/* =========================================================
+   NATIVE AD BRIDGE
+
+   IMPORTANT — READ BEFORE CHANGING:
+
+   TaskEarnBridge.java#showRewardedAd() is fire-and-forget.
+   It returns a synchronous JSON string like
+   {"ok":true,"started":true,"session_id":"..."} the instant
+   the ad STARTS loading/showing — long before the user has
+   actually watched or completed it.
+
+   The real outcome arrives later, asynchronously, through
+   these JS callbacks that the native layer calls via
+   webView.evaluateJavascript(...):
+
+     window.TaskEarnNativeAdLoading(true)
+     window.TaskEarnNativeAdReady(true)
+     window.TaskEarnNativeAdStarted(true)
+     window.TaskEarnNativeAdShown(true)
+     window.TaskEarnNativeRewardEarned({ earned, reward_item_amount, ... })
+     window.TaskEarnNativeAdCompleted(true|false)   <-- fires on dismiss
+     window.TaskEarnNativeAdError("message")
+
+   Previously this bridge just awaited the synchronous
+   "started" response and treated it as the finished result,
+   so ad-revenue-finalize was called before the ad was even
+   watched — this is exactly what produced
+   "The advertisement could not be verified."
+
+   Fixed version below: showRewardedAd() returns a Promise
+   that only resolves once TaskEarnNativeAdCompleted(true)
+   (backed by TaskEarnNativeRewardEarned data) actually
+   fires, and rejects on AdError / AdCompleted(false) / a
+   safety timeout.
+========================================================= */
+
+let pendingAdResolve = null;
+let pendingAdReject = null;
+let pendingRewardData = null;
+let pendingAdTimeoutId = null;
+
+function clearPendingAdHandlers(){
+
+  pendingAdResolve = null;
+  pendingAdReject = null;
+  pendingRewardData = null;
+
+  if(pendingAdTimeoutId){
+    clearTimeout(pendingAdTimeoutId);
+    pendingAdTimeoutId = null;
+  }
+
+}
+
+
+/*
+  Native -> JS callbacks.
+  These are called by TaskEarnBridge.java via
+  webView.evaluateJavascript("window.<name>(...)").
+*/
+
+window.TaskEarnNativeAdLoading = function(){};
+
+window.TaskEarnNativeAdReady = function(){};
+
+window.TaskEarnNativeAdStarted = function(){
+
+  console.log(
+    "TaskEarn: native ad started"
+  );
+
+};
+
+window.TaskEarnNativeAdShown = function(){
+
+  console.log(
+    "TaskEarn: native ad shown"
+  );
+
+};
+
+window.TaskEarnNativeRewardEarned = function(
+  data
+){
+
+  try{
+
+    pendingRewardData =
+      typeof data === "string"
+        ? JSON.parse(data)
+        : data;
+
+  }catch(error){
+
+    pendingRewardData = {
+      earned:true
+    };
+
+  }
+
+};
+
+window.TaskEarnNativeAdCompleted = function(
+  rewardEarnedFlag
+){
+
+  const earned =
+    rewardEarnedFlag === true ||
+    rewardEarnedFlag === "true";
+
+
+  const resolve = pendingAdResolve;
+  const reject = pendingAdReject;
+  const rewardData = pendingRewardData;
+
+  clearPendingAdHandlers();
+
+
+  if(!resolve && !reject){
+    /*
+      No pending watchVerifiedAd() call is waiting
+      (stray or duplicate native callback). Ignore.
+    */
+    return;
+  }
+
+
+  if(earned){
+
+    resolve(
+      rewardData || { earned:true }
+    );
+
+  }else{
+
+    reject(
+      new Error("AD_NOT_COMPLETED")
+    );
+
+  }
+
+};
+
+window.TaskEarnNativeAdError = function(
+  message
+){
+
+  const reject = pendingAdReject;
+
+  clearPendingAdHandlers();
+
+
+  if(reject){
+
+    reject(
+      new Error(
+        message || "AD_NATIVE_ERROR"
+      )
+    );
+
+  }
+
+};
+
+
+/*
+  Maximum time to wait for a real completion/error
+  callback after the ad is asked to start. Prevents the
+  UI from hanging forever if the native layer never
+  calls back (e.g. WebView bridge lost, app backgrounded).
+*/
+
+const AD_COMPLETION_TIMEOUT_MS =
+  180000; // 3 minutes
+
+
+window.TaskEarnAdBridge = {
+
+  showRewardedAd(
+    adSession
+  ){
+
+    return new Promise(
+      (resolve, reject) => {
+
+        if(
+
+          !window.AndroidTaskEarnAds
+
+          ||
+
+          typeof
+          window.AndroidTaskEarnAds
+            .showRewardedAd
+          !==
+          "function"
+
+        ){
+
+          reject(
+            new Error(
+              "AD_PROVIDER_NOT_CONFIGURED"
+            )
+          );
+
+          return;
+
+        }
+
+
+        if(pendingAdResolve || pendingAdReject){
+
+          reject(
+            new Error(
+              "AD_ALREADY_IN_PROGRESS"
+            )
+          );
+
+          return;
+
+        }
+
+
+        pendingAdResolve = resolve;
+        pendingAdReject = reject;
+        pendingRewardData = null;
+
+
+        pendingAdTimeoutId =
+          setTimeout(
+            () => {
+
+              const timeoutReject =
+                pendingAdReject;
+
+              clearPendingAdHandlers();
+
+              if(timeoutReject){
+
+                timeoutReject(
+                  new Error("AD_TIMEOUT")
+                );
+
+              }
+
+            },
+            AD_COMPLETION_TIMEOUT_MS
+          );
+
+
+        /*
+          This call only STARTS the native ad flow.
+          It resolves synchronously with a "started" ack —
+          NOT the reward result. The real result comes
+          through the callbacks registered above.
+        */
+
+        let startAck = null;
+
+        try{
+
+          startAck =
+            window.AndroidTaskEarnAds
+              .showRewardedAd(
+
+                adSession.session_id,
+
+                adSession.nonce
+
+              );
+
+        }catch(error){
+
+          const startReject =
+            pendingAdReject;
+
+          clearPendingAdHandlers();
+
+          if(startReject){
+
+            startReject(
+              new Error(
+                "AD_NATIVE_CALL_FAILED"
+              )
+            );
+
+          }
+
+          return;
+
+        }
+
+
+        try{
+
+          const parsedAck =
+            typeof startAck === "string"
+              ? JSON.parse(startAck)
+              : startAck;
+
+
+          if(
+            parsedAck &&
+            parsedAck.ok === false
+          ){
+
+            const startFailReject =
+              pendingAdReject;
+
+            clearPendingAdHandlers();
+
+            if(startFailReject){
+
+              startFailReject(
+                new Error(
+                  parsedAck.error ||
+                  "AD_START_FAILED"
+                )
+              );
+
+            }
+
+          }
+
+          /*
+            If ok === true / started === true, do
+            nothing further here — wait for the
+            native completion callback.
+          */
+
+        }catch(error){
+
+          /*
+            Ack wasn't parseable JSON. Non-fatal —
+            still wait for the real completion
+            callback rather than failing the flow.
+          */
+
+        }
+
+      }
+    );
+
+  }
+
+};
+
+
+
+/* =========================================================
+   FINALIZE WITH RETRY
+
+   AdMob's SSV callback can arrive a few seconds after
+   onUserEarnedReward fires on-device (network round trip
+   to Google, then to ad-revenue-ssv). If ad-revenue-finalize
+   is called the instant the ad closes, the verified
+   ad_revenue_events row may not exist yet on the backend.
+
+   This retries finalize a few times with a short delay
+   ONLY when the backend reports the event isn't verified
+   yet — any other error (auth, session, etc.) fails fast.
+
+   ad-revenue-finalize should return / throw an error code
+   the frontend recognises as "not yet verified" — the
+   matches below cover the common namings. Adjust the
+   substrings here to match whatever the Edge Function
+   actually returns if it differs.
+========================================================= */
+
+const FINALIZE_RETRY_ATTEMPTS = 6;
+
+const FINALIZE_RETRY_DELAY_MS = 2500;
+
+
+function isRetryableFinalizeError(
+  message
+){
+
+  const text =
+    String(
+      message || ""
+    ).toUpperCase();
+
+
+  return (
+
+    text.includes("NOT_VERIFIED")
+
+    ||
+
+    text.includes("NOT_FOUND")
+
+    ||
+
+    text.includes("PENDING")
+
+    ||
+
+    text.includes("SSV")
+
+    ||
+
+    text.includes("AWAITING")
+
+    ||
+
+    text.includes("RETRY")
+
+  );
+
+}
+
+
+async function finalizeWithRetry(
+  sessionId,
+  providerResult
+){
+
+  let lastError = null;
+
+
+  for(
+
+    let attempt = 0;
+
+    attempt < FINALIZE_RETRY_ATTEMPTS;
+
+    attempt++
+
+  ){
+
+    try{
+
+      return await secureFetch(
+        AD_FINALIZE_FUNCTION,
+        {
+
+          session_id:
+            sessionId,
+
+          provider_event_id:
+            providerResult?.provider_event_id ||
+            null,
+
+          completion_token:
+            providerResult?.completion_token ||
+            null
+
+        }
+      );
+
+    }catch(error){
+
+      lastError = error;
+
+
+      const retryable =
+        isRetryableFinalizeError(
+          error.message
+        );
+
+
+      const isLastAttempt =
+        attempt ===
+        FINALIZE_RETRY_ATTEMPTS - 1;
+
+
+      if(!retryable || isLastAttempt){
+
+        throw error;
+
+      }
+
+
+      showToast(
+        "Verifying with AdMob... please wait.",
+        ""
+      );
+
+
+      await new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            FINALIZE_RETRY_DELAY_MS
+          )
+      );
+
+    }
+
+  }
+
+
+  throw (
+    lastError ||
+    new Error("AD_REVENUE_FINALIZE_FAILED")
+  );
+
+}
+
+
+
+/* =========================================================
+   WATCH VERIFIED AD
+========================================================= */
+
+async function watchVerifiedAd(){
+
+  await authReadyPromise;
+
+
+  const button =
+    $("watchAdButton");
+
+
+  const text =
+    $("watchAdText");
+
+
+  if(!currentUser){
+
+    showToast(
+      "Please login first to watch rewarded ads.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+
+  text.innerHTML =
+    `<span class="spin"></span>`;
+
+
+  try{
+
+    /*
+      STEP 1
+      Create secure session.
+    */
+
+    const adSession =
+      await createAdSession();
+
+
+    if(
+      !adSession ||
+      !adSession.session_id ||
+      !adSession.nonce
+    ){
+
+      throw new Error(
+        "AD_SESSION_FAILED"
+      );
+
+    }
+
+
+    /*
+      STEP 2
+      Show actual rewarded advertisement.
+
+      This now genuinely waits for the native
+      TaskEarnNativeAdCompleted(true) callback —
+      i.e. the user actually watched and completed
+      the ad — before resolving. It does NOT resolve
+      on the synchronous "started" ack.
+    */
+
+    const providerResult =
+      await
+      window.TaskEarnAdBridge
+        .showRewardedAd(
+          adSession
+        );
+
+
+    /*
+      STEP 3
+      Verify with backend.
+
+      Retries a few times if the backend hasn't
+      reconciled the AdMob SSV callback yet.
+    */
+
+    const result =
+      await finalizeWithRetry(
+        adSession.session_id,
+        providerResult
+      );
+
+
+    if(
+      result.status ===
+      "verified"
+    ){
+
+      showToast(
+        "Ad verified. Revenue is now being processed.",
+        "success"
+      );
+
+    }else{
+
+      showToast(
+        "Ad completed. Provider settlement is pending.",
+        ""
+      );
+
+    }
+
+
+    await Promise.all([
+      loadAdRevenue(),
+      loadCollectState()
+    ]);
+
+
+  }catch(error){
+
+    console.error(
+      "Watch Ad:",
+      error
+    );
+
+
+    const message =
+      String(
+        error.message || ""
+      );
+
+
+    if(
+      message ===
+      "AD_PROVIDER_NOT_CONFIGURED"
+    ){
+
+      showToast(
+        "Rewarded ad provider is not connected yet.",
+        "error"
+      );
+
+    }else if(
+      message ===
+      "AD_SESSION_FAILED"
+    ){
+
+      showToast(
+        "Secure ad session could not be created.",
+        "error"
+      );
+
+    }else if(
+      message ===
+      "SESSION_NOT_FOUND"
+    ){
+
+      showToast(
+        "Login session expired. Please login again.",
+        "error"
+      );
+
+    }else if(
+      message ===
+      "USER_NOT_AUTHENTICATED"
+    ){
+
+      showToast(
+        "Please login first.",
+        "error"
+      );
+
+    }else if(
+      message ===
+      "AD_NOT_COMPLETED"
+    ){
+
+      showToast(
+        "Ad was closed before it finished. No reward was earned.",
+        "error"
+      );
+
+    }else if(
+      message ===
+      "AD_TIMEOUT"
+    ){
+
+      showToast(
+        "Ad did not report completion in time. Please try again.",
+        "error"
+      );
+
+    }else if(
+      message ===
+      "AD_ALREADY_IN_PROGRESS"
+    ){
+
+      showToast(
+        "An ad is already in progress.",
+        "error"
+      );
+
+    }else if(
+      message ===
+      "AD_NATIVE_CALL_FAILED"
+      ||
+      message ===
+      "AD_START_FAILED"
+    ){
+
+      showToast(
+        "The ad could not be started. Please try again.",
+        "error"
+      );
+
+    }else{
+
+      showToast(
+        "The advertisement could not be verified.",
+        "error"
+      );
+
+    }
+
+  }finally{
+
+    button.disabled =
+      false;
+
+
+    text.textContent =
+      "Watch Eligible Ad";
+
+  }
+
+}
+
+
+
+/* =========================================================
+   COLLECT MONTHLY BUCKET
+========================================================= */
+
+async function collectMonthlyBucket(){
+
+  await authReadyPromise;
+
+
+  if(!currentUser){
+
+    showToast(
+      "Please login first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!selectedBucketId){
+
+    showToast(
+      "No collectible monthly bucket is available.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    $("monthlyCollectButton");
+
+
+  if(button.disabled){
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+
+  button.innerHTML =
+    `<span class="spin"></span>`;
+
+
+  try{
+
+    /*
+      IMPORTANT:
+
+      Only bucket_id is sent.
+
+      The browser NEVER sends:
+      - amount
+      - reward
+      - gross revenue
+      - wallet credit
+
+      Backend must calculate and lock the exact amount.
+    */
+
+    const result =
+      await secureFetch(
+        AD_COLLECT_FUNCTION,
+        {
+          bucket_id:
+            selectedBucketId
+        }
+      );
+
+
+    if(
+      result.status ===
+      "collected"
+    ){
+
+      showToast(
+        `${money(
+          result.amount
+        )} collection request created successfully.`,
+        "success"
+      );
+
+    }else if(
+      result.status ===
+      "pending"
+    ){
+
+      showToast(
+        "Your collection request is now processing.",
+        "success"
+      );
+
+    }else if(
+      result.status ===
+      "already_requested"
+    ){
+
+      showToast(
+        "A collection request already exists for this monthly bucket.",
+        ""
+      );
+
+    }else if(
+      result.status ===
+      "already_paid"
+    ){
+
+      showToast(
+        "This monthly bucket has already been collected.",
+        ""
+      );
+
+    }else{
+
+      showToast(
+        "Collection status updated.",
+        ""
+      );
+
+    }
+
+
+    /*
+      Always reload from secure backend.
+
+      Do not assume that clicking the button means
+      wallet credit has already happened.
+    */
+
+    await loadCollectState();
+
+    await loadAdRevenue();
+
+
+  }catch(error){
+
+    console.error(
+      "Collect:",
+      error
+    );
+
+
+    const message =
+      String(
+        error.message || ""
+      );
+
+
+    if(
+      message ===
+      "SESSION_NOT_FOUND"
+    ){
+
+      showToast(
+        "Login session expired. Please login again.",
+        "error"
+      );
+
+    }else if(
+      message.includes(
+        "WINDOW_CLOSED"
+      )
+    ){
+
+      showToast(
+        "The collection window is closed or payment confirmation is still pending.",
+        "error"
+      );
+
+
+    }else if(
+      message.includes(
+        "ALREADY"
+      )
+    ){
+
+      showToast(
+        "This monthly earning has already been requested.",
+        ""
+      );
+
+
+    }else if(
+      message.includes(
+        "NOT_ELIGIBLE"
+      )
+    ){
+
+      showToast(
+        "This amount is not currently eligible for collection.",
+        "error"
+      );
+
+
+    }else{
+
+      showToast(
+        "Collection could not be completed.",
+        "error"
+      );
+
+    }
+
+  }finally{
+
+    /*
+      Backend state decides whether it should be enabled
+      again. Reload state before enabling manually.
+    */
+
+    setTimeout(
+      () => {
+
+        if(
+          !collectState?.active_request
+        ){
+
+          renderMonthlyState();
+
+        }
+
+      },
+      300
+    );
+
+  }
+
+}
+
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+$("backButton")
+  .addEventListener(
+    "click",
+    function(){
+
+      /*
+        ONLY manual Back goes Home.
+
+        No automatic login redirect.
+        No automatic home redirect.
+      */
+
+      window.location.href =
+        "home.html";
+
+    }
+  );
+
+
+
+/* =========================================================
+   WATCH BUTTON
+========================================================= */
+
+$("watchAdButton")
+  .addEventListener(
+    "click",
+    watchVerifiedAd
+  );
+
+
+
+/* =========================================================
+   COLLECT BUTTON
+========================================================= */
+
+$("monthlyCollectButton")
+  .addEventListener(
+    "click",
+    collectMonthlyBucket
+  );
+
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (event, session) => {
+
+      console.log(
+        "TaskEarn Auth Event:",
+        event
+      );
+
+
+      currentUser =
+        session?.user || null;
+
+
+      /*
+        IMPORTANT:
+
+        Never redirect automatically.
+      */
+
+      if(currentUser){
+
+        setTimeout(
+          async () => {
+
+            await loadAdRevenue();
+
+            await loadCollectState();
+
+          },
+          0
+        );
+
+      }else{
+
+        renderEmptyData();
+
+      }
+
+    }
+  );
+
+
+
+/* =========================================================
+   PAGE START
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async function(){
+
+    /*
+      Initialise authentication first.
+    */
+
+    await loadCurrentSession();
+
+
+    /*
+      Detect possible ad blocking.
+    */
+
+    await detectAdBlocker();
+
+
+    /*
+      NO LOGIN REDIRECT.
+      NO HOME REDIRECT.
+    */
+
+    if(currentUser){
+
+      await loadAdRevenue();
+
+      await loadCollectState();
+
+    }else{
+
+      renderEmptyData();
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>

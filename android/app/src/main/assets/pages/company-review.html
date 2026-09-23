@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+>
+
+<meta name="theme-color" content="#080a1b">
+
+<title>TaskEarn — Company Review</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#080a1b;
+  color:#f4f6ff;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button,a{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+:root{
+  --bg:#080a1b;
+  --card:#101327;
+  --card2:#14182d;
+  --line:rgba(255,255,255,.07);
+  --blue:#718cff;
+  --purple:#936fff;
+  --green:#38dfad;
+  --yellow:#ffd05a;
+  --red:#ff647d;
+  --muted:#858eaa;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(83,105,255,.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 25%,
+      rgba(143,93,255,.15),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #090b20,
+      #070918 75%,
+      #080a1b
+    );
+}
+
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    );
+
+  background-size:42px 42px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 90%
+    );
+}
+
+/* HEADER */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  min-height:68px;
+
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+
+  padding:10px 16px;
+
+  background:rgba(8,10,27,.91);
+
+  backdrop-filter:blur(18px);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.07);
+}
+
+.back{
+  width:44px;
+  height:44px;
+
+  flex:0 0 44px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:14px;
+
+  color:#edf0ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #181c38,
+      #0e1126
+    );
+
+  border:
+    1px solid rgba(255,255,255,.10);
+
+  transition:
+    transform .16s ease,
+    filter .16s ease;
+}
+
+.back:active{
+  transform:scale(.91);
+  filter:brightness(.85);
+}
+
+.back svg{
+  width:22px;
+  height:22px;
+}
+
+.header-title{
+  min-width:0;
+  flex:1;
+
+  font-size:19px;
+  font-weight:900;
+
+  letter-spacing:-.5px;
+}
+
+.header-title span{
+  color:#718cff;
+}
+
+/* PAGE */
+
+.page{
+  width:100%;
+  max-width:780px;
+
+  margin:auto;
+
+  padding:
+    16px
+    15px
+    45px;
+}
+
+/* INTRO */
+
+.intro{
+  position:relative;
+  overflow:hidden;
+
+  padding:21px;
+
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(113,140,255,.22),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      #181c3d,
+      #101326
+    );
+
+  border:
+    1px solid rgba(113,140,255,.18);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.24);
+
+  animation:
+    fadeUp .35s ease both;
+}
+
+.intro:after{
+  content:"";
+
+  position:absolute;
+
+  width:150px;
+  height:150px;
+
+  right:-70px;
+  bottom:-80px;
+
+  border-radius:50%;
+
+  background:
+    rgba(147,111,255,.08);
+}
+
+.intro-content{
+  position:relative;
+  z-index:1;
+}
+
+.intro-badge{
+  display:inline-flex;
+  align-items:center;
+
+  gap:7px;
+
+  padding:7px 10px;
+
+  border-radius:9px;
+
+  color:#a9b5ff;
+
+  background:
+    rgba(113,140,255,.10);
+
+  border:
+    1px solid rgba(113,140,255,.12);
+
+  font-size:10px;
+  font-weight:900;
+
+  letter-spacing:.35px;
+}
+
+.badge-dot{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#718cff;
+
+  box-shadow:
+    0 0 9px
+    rgba(113,140,255,.8);
+}
+
+.intro h1{
+  margin:
+    13px
+    0
+    7px;
+
+  font-size:25px;
+  line-height:1.2;
+
+  letter-spacing:-.7px;
+}
+
+.intro p{
+  margin:0;
+
+  max-width:620px;
+
+  color:#9099b3;
+
+  font-size:13px;
+  line-height:1.65;
+}
+
+/* STATUS CARD */
+
+.status-card{
+  margin-top:13px;
+
+  padding:18px;
+
+  border-radius:19px;
+
+  background:
+    rgba(14,17,35,.94);
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  animation:
+    fadeUp .4s ease both;
+}
+
+.status-head{
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+}
+
+.status-icon{
+  width:44px;
+  height:44px;
+
+  flex:0 0 44px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:13px;
+
+  color:#8ea0ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #202958,
+      #11162f
+    );
+
+  border:
+    1px solid
+    rgba(113,140,255,.17);
+}
+
+.status-icon svg{
+  width:22px;
+  height:22px;
+}
+
+.status-main{
+  min-width:0;
+  flex:1;
+}
+
+.status-label{
+  color:#737d98;
+
+  font-size:9px;
+  font-weight:900;
+
+  letter-spacing:.55px;
+}
+
+.status-title{
+  margin-top:3px;
+
+  color:#edf0fb;
+
+  font-size:17px;
+  font-weight:950;
+}
+
+.status-pill{
+  flex:0 0 auto;
+
+  padding:7px 10px;
+
+  border-radius:9px;
+
+  color:#ffd875;
+
+  background:
+    rgba(255,208,90,.08);
+
+  border:
+    1px solid
+    rgba(255,208,90,.12);
+
+  font-size:9px;
+  font-weight:950;
+
+  letter-spacing:.3px;
+}
+
+.status-pill.approved{
+  color:#38dfad;
+
+  background:
+    rgba(56,223,173,.08);
+
+  border-color:
+    rgba(56,223,173,.14);
+}
+
+.status-pill.rejected{
+  color:#ff7187;
+
+  background:
+    rgba(255,100,125,.08);
+
+  border-color:
+    rgba(255,100,125,.14);
+}
+
+/* TIMER */
+
+.timer-box{
+  margin-top:14px;
+
+  padding:15px;
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(113,140,255,.07),
+      rgba(147,111,255,.05)
+    );
+
+  border:
+    1px solid
+    rgba(113,140,255,.10);
+}
+
+.timer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+}
+
+.timer-label{
+  color:#cdd2e6;
+
+  font-size:12px;
+  font-weight:850;
+}
+
+.timer-value{
+  color:#8ea1ff;
+
+  font-size:18px;
+  font-weight:950;
+
+  letter-spacing:.4px;
+}
+
+.timer-note{
+  margin-top:7px;
+
+  color:#747e99;
+
+  font-size:10px;
+  line-height:1.5;
+}
+
+/* SUBMISSION */
+
+.submission{
+  margin-top:13px;
+
+  padding:18px;
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,24,45,.98),
+      rgba(13,16,34,.98)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.065);
+
+  box-shadow:
+    0 12px 30px
+    rgba(0,0,0,.13);
+
+  animation:
+    fadeUp .45s ease both;
+}
+
+.section-title{
+  color:#edf0fa;
+
+  font-size:16px;
+  font-weight:950;
+
+  letter-spacing:-.25px;
+}
+
+.section-sub{
+  margin-top:4px;
+
+  color:#747e99;
+
+  font-size:11px;
+  line-height:1.5;
+}
+
+/* FILE INFO */
+
+.file-card{
+  margin-top:13px;
+
+  padding:13px;
+
+  display:flex;
+  align-items:center;
+
+  gap:11px;
+
+  border-radius:14px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid
+    rgba(255,255,255,.045);
+}
+
+.file-icon{
+  width:40px;
+  height:40px;
+
+  flex:0 0 40px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:11px;
+
+  color:#8ea0ff;
+
+  background:
+    rgba(113,140,255,.09);
+
+  border:
+    1px solid
+    rgba(113,140,255,.12);
+}
+
+.file-icon svg{
+  width:20px;
+  height:20px;
+}
+
+.file-main{
+  min-width:0;
+  flex:1;
+}
+
+.file-name{
+  color:#dce0ef;
+
+  font-size:12px;
+  font-weight:850;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.file-meta{
+  margin-top:3px;
+
+  color:#737d97;
+
+  font-size:10px;
+}
+
+/* DETAILS */
+
+.details{
+  margin-top:10px;
+
+  display:grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap:8px;
+}
+
+.detail{
+  padding:11px;
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid
+    rgba(255,255,255,.045);
+}
+
+.detail-label{
+  color:#68728c;
+
+  font-size:9px;
+  font-weight:800;
+}
+
+.detail-value{
+  margin-top:3px;
+
+  color:#cfd4e6;
+
+  font-size:11px;
+  font-weight:850;
+
+  word-break:break-word;
+}
+
+/* REASON */
+
+.reason{
+  margin-top:11px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,100,125,.045);
+
+  border:
+    1px solid
+    rgba(255,100,125,.09);
+
+  display:none;
+}
+
+.reason.show{
+  display:block;
+}
+
+.reason-title{
+  color:#ff8195;
+
+  font-size:11px;
+  font-weight:900;
+}
+
+.reason-text{
+  margin-top:4px;
+
+  color:#9c7180;
+
+  font-size:10.5px;
+  line-height:1.5;
+}
+
+/* INFO NOTICE */
+
+.info-notice{
+  margin-top:13px;
+
+  padding:14px;
+
+  display:flex;
+  align-items:flex-start;
+
+  gap:10px;
+
+  border-radius:15px;
+
+  background:
+    rgba(113,140,255,.035);
+
+  border:
+    1px solid
+    rgba(113,140,255,.08);
+}
+
+.info-icon{
+  width:32px;
+  height:32px;
+
+  flex:0 0 32px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:9px;
+
+  color:#8ea0ff;
+
+  background:
+    rgba(113,140,255,.08);
+}
+
+.info-icon svg{
+  width:17px;
+  height:17px;
+}
+
+.info-title{
+  color:#d9dceb;
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.info-text{
+  margin-top:3px;
+
+  color:#7c859f;
+
+  font-size:10.5px;
+  line-height:1.55;
+}
+
+/* BUTTON */
+
+.action-btn{
+  position:relative;
+  overflow:hidden;
+
+  width:100%;
+  min-height:50px;
+
+  margin-top:13px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  border:0;
+  border-radius:14px;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #718cff,
+      #536edc
+    );
+
+  box-shadow:
+    0 12px 28px
+    rgba(76,101,222,.20);
+
+  font-size:13px;
+  font-weight:950;
+
+  transition:
+    transform .16s ease,
+    filter .16s ease,
+    box-shadow .16s ease;
+}
+
+.action-btn:before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-110%;
+
+  width:65%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.16),
+      transparent
+    );
+
+  transform:skewX(-18deg);
+
+  transition:left .55s ease;
+}
+
+.action-btn:hover:before{
+  left:140%;
+}
+
+.action-btn:hover{
+  filter:brightness(1.07);
+
+  box-shadow:
+    0 15px 32px
+    rgba(76,101,222,.27);
+}
+
+.action-btn:active{
+  transform:
+    scale(.965)
+    translateY(1px);
+
+  filter:brightness(.86);
+}
+
+.action-btn svg{
+  width:18px;
+  height:18px;
+}
+
+/* EMPTY */
+
+.empty{
+  margin-top:13px;
+
+  padding:24px 17px;
+
+  text-align:center;
+
+  border-radius:19px;
+
+  background:
+    rgba(14,17,35,.94);
+
+  border:
+    1px solid
+    rgba(255,255,255,.065);
+
+  display:none;
+}
+
+.empty.show{
+  display:block;
+}
+
+.empty-icon{
+  width:48px;
+  height:48px;
+
+  margin:0 auto 10px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:14px;
+
+  color:#8ea0ff;
+
+  background:
+    rgba(113,140,255,.09);
+
+  border:
+    1px solid
+    rgba(113,140,255,.12);
+}
+
+.empty-icon svg{
+  width:23px;
+  height:23px;
+}
+
+.empty-title{
+  color:#dce0ef;
+
+  font-size:14px;
+  font-weight:900;
+}
+
+.empty-text{
+  margin-top:5px;
+
+  color:#747e99;
+
+  font-size:11px;
+  line-height:1.55;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+  bottom:22px;
+
+  z-index:300;
+
+  width:max-content;
+
+  max-width:
+    calc(100% - 30px);
+
+  padding:12px 16px;
+
+  border-radius:13px;
+
+  background:#171b32;
+
+  border:
+    1px solid
+    rgba(255,255,255,.11);
+
+  color:#edf0ff;
+
+  font-size:12px;
+  font-weight:800;
+
+  text-align:center;
+
+  opacity:0;
+  pointer-events:none;
+
+  transform:
+    translate(-50%,18px);
+
+  transition:
+    opacity .22s ease,
+    transform .22s ease;
+
+  box-shadow:
+    0 15px 35px
+    rgba(0,0,0,.45);
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,0);
+}
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+/* MOBILE */
+
+@media(max-width:520px){
+
+  .header{
+    min-height:66px;
+    padding:9px 13px;
+  }
+
+  .header-title{
+    font-size:18px;
+  }
+
+  .page{
+    padding:
+      14px
+      12px
+      40px;
+  }
+
+  .intro{
+    padding:18px;
+    border-radius:20px;
+  }
+
+  .intro h1{
+    font-size:22px;
+  }
+
+  .intro p{
+    font-size:12px;
+  }
+
+  .status-card,
+  .submission{
+    padding:16px;
+  }
+
+  .status-title{
+    font-size:15px;
+  }
+
+}
+
+@media(max-width:360px){
+
+  .page{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .status-head{
+    gap:8px;
+  }
+
+  .status-icon{
+    width:40px;
+    height:40px;
+    flex-basis:40px;
+  }
+
+  .status-pill{
+    padding:6px 7px;
+    font-size:8px;
+  }
+
+  .details{
+    gap:6px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- ICONS -->
+
+<svg
+  width="0"
+  height="0"
+  style="position:absolute"
+>
+
+<symbol id="back" viewBox="0 0 24 24">
+
+<path
+  d="M15 5 8 12l7 7"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+</symbol>
+
+
+<symbol id="file" viewBox="0 0 24 24">
+
+<path
+  d="M6 3h8l4 4v14H6z"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linejoin="round"
+/>
+
+<path
+  d="M14 3v5h5M9 13h6M9 17h6"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+/>
+
+</symbol>
+
+
+<symbol id="clock" viewBox="0 0 24 24">
+
+<circle
+  cx="12"
+  cy="12"
+  r="8.5"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+/>
+
+<path
+  d="M12 7v5l3 2"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+/>
+
+</symbol>
+
+
+<symbol id="check" viewBox="0 0 24 24">
+
+<path
+  d="m5 12 4 4L19 6"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+</symbol>
+
+
+<symbol id="x" viewBox="0 0 24 24">
+
+<path
+  d="m7 7 10 10M17 7 7 17"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+/>
+
+</symbol>
+
+
+<symbol id="refresh" viewBox="0 0 24 24">
+
+<path
+  d="M20 11a8 8 0 0 0-14.8-4L4 9"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<path
+  d="M4 5v4h4"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<path
+  d="M4 13a8 8 0 0 0 14.8 4L20 15"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<path
+  d="M20 19v-4h-4"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+</symbol>
+
+</svg>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+<button
+  class="back"
+  id="backBtn"
+  aria-label="Back"
+>
+
+<svg>
+<use href="#back"></use>
+</svg>
+
+</button>
+
+
+<div class="header-title">
+
+Task<span>Earn</span> — Company Review
+
+</div>
+
+</header>
+
+
+<!-- PAGE -->
+
+<main class="page">
+
+
+<!-- INTRO -->
+
+<section class="intro">
+
+<div class="intro-content">
+
+<div class="intro-badge">
+
+<span class="badge-dot"></span>
+
+COMPANY QUALIFICATION
+
+</div>
+
+
+<h1>
+Quality & Activity Review
+</h1>
+
+
+<p>
+Your TaskEarn promotional advertisement and
+qualification activity are reviewed before
+company projects are unlocked.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- STATUS -->
+
+<section class="status-card">
+
+<div class="status-head">
+
+<div class="status-icon" id="statusIcon">
+
+<svg>
+<use href="#clock"></use>
+</svg>
+
+</div>
+
+
+<div class="status-main">
+
+<div class="status-label">
+CURRENT STATUS
+</div>
+
+<div
+  class="status-title"
+  id="statusTitle"
+>
+Loading review status...
+</div>
+
+</div>
+
+
+<div
+  class="status-pill"
+  id="statusPill"
+>
+CHECKING
+</div>
+
+</div>
+
+
+<!-- TIMER -->
+
+<div
+  class="timer-box"
+  id="timerBox"
+>
+
+<div class="timer-head">
+
+<div class="timer-label">
+Review Processing Window
+</div>
+
+<div
+  class="timer-value"
+  id="timerValue"
+>
+--:--:--
+</div>
+
+</div>
+
+
+<div
+  class="timer-note"
+  id="timerNote"
+>
+Checking the review deadline from the secure
+TaskEarn backend...
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SUBMISSION -->
+
+<section
+  class="submission"
+  id="submissionCard"
+  style="display:none"
+>
+
+<div class="section-title">
+Advertisement Submission
+</div>
+
+
+<div class="section-sub">
+Your submitted TaskEarn advertisement is shown
+below. Review status comes directly from Supabase.
+</div>
+
+
+<div class="file-card">
+
+<div class="file-icon">
+
+<svg>
+<use href="#file"></use>
+</svg>
+
+</div>
+
+
+<div class="file-main">
+
+<div
+  class="file-name"
+  id="fileName"
+>
+Loading...
+</div>
+
+
+<div
+  class="file-meta"
+  id="fileMeta"
+>
+Checking submission...
+</div>
+
+</div>
+
+</div>
+
+
+<div class="details">
+
+<div class="detail">
+
+<div class="detail-label">
+SUBMITTED
+</div>
+
+<div
+  class="detail-value"
+  id="submittedAt"
+>
+—
+</div>
+
+</div>
+
+
+<div class="detail">
+
+<div class="detail-label">
+REVIEW SOURCE
+</div>
+
+<div
+  class="detail-value"
+  id="reviewSource"
+>
+Pending
+</div>
+
+</div>
+
+</div>
+
+
+<!-- REJECTION -->
+
+<div
+  class="reason"
+  id="reasonBox"
+>
+
+<div class="reason-title">
+Review Feedback
+</div>
+
+<div
+  class="reason-text"
+  id="reasonText"
+>
+—
+</div>
+
+</div>
+
+
+<!-- INFO -->
+
+<div class="info-notice">
+
+<div class="info-icon">
+
+<svg>
+<use href="#clock"></use>
+</svg>
+
+</div>
+
+
+<div>
+
+<div class="info-title">
+What happens next?
+</div>
+
+<div
+  class="info-text"
+  id="nextText"
+>
+Your advertisement remains under review.
+If it is approved and all other qualification
+requirements are complete, company projects
+can become available.
+</div>
+
+</div>
+
+</div>
+
+
+<button
+  class="action-btn"
+  id="refreshBtn"
+>
+
+<svg>
+<use href="#refresh"></use>
+</svg>
+
+<span>
+Refresh Review Status
+</span>
+
+</button>
+
+</section>
+
+
+<!-- EMPTY -->
+
+<section
+  class="empty"
+  id="emptyCard"
+>
+
+<div class="empty-icon">
+
+<svg>
+<use href="#file"></use>
+</svg>
+
+</div>
+
+
+<div class="empty-title">
+No Advertisement Submitted
+</div>
+
+
+<div class="empty-text">
+Complete the advertisement submission first.
+After submitting your TaskEarn advertisement,
+return here to track its review status.
+</div>
+
+
+<button
+  class="action-btn"
+  id="submitAdBtn"
+>
+
+<span>
+Submit Advertisement
+</span>
+
+</button>
+
+</section>
+
+
+</main>
+
+
+<!-- TOAST -->
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+/* =========================================================
+   TASK EARN — COMPANY REVIEW
+   SAME SUPABASE CONNECTION
+========================================================= */
+
+
+const SUPABASE_URL =
+  "https://wfvmipwesttejtvwoasj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   ROUTES
+========================================================= */
+
+const ROUTES = {
+
+  back:
+    "company-projects.html",
+
+  advertisement:
+    "company-ad.html",
+
+  home:
+    "home.html"
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+
+let latestSubmission = null;
+
+let timerInterval = null;
+
+let pollingInterval = null;
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+document
+  .getElementById("backBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      window.location.replace(
+        ROUTES.back
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   GET SESSION
+========================================================= */
+
+async function getCurrentUser(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    if(error){
+
+      console.error(
+        "Session error:",
+        error
+      );
+
+      return null;
+
+    }
+
+
+    return (
+      data &&
+      data.session &&
+      data.session.user
+    )
+      ? data.session.user
+      : null;
+
+
+  }catch(error){
+
+    console.error(
+      "Session exception:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(
+  value
+){
+
+  if(!value)
+    return "—";
+
+
+  const date =
+    new Date(value);
+
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+
+    return "—";
+
+  }
+
+
+  return date.toLocaleString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT FILE SIZE
+========================================================= */
+
+function formatBytes(
+  bytes
+){
+
+  const size =
+    Number(bytes || 0);
+
+
+  if(size <= 0)
+    return "Size unavailable";
+
+
+  if(size < 1024)
+    return size + " B";
+
+
+  if(size < 1024 * 1024)
+    return (
+      (size / 1024)
+        .toFixed(1)
+      + " KB"
+    );
+
+
+  if(size < 1024 * 1024 * 1024)
+    return (
+      (size / (1024 * 1024))
+        .toFixed(1)
+      + " MB"
+    );
+
+
+  return (
+    (size / (1024 * 1024 * 1024))
+      .toFixed(1)
+    + " GB"
+  );
+
+}
+
+
+/* =========================================================
+   NORMALIZE STATUS
+========================================================= */
+
+function normalizeStatus(
+  value
+){
+
+  return String(
+    value || "pending"
+  )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+/* =========================================================
+   LOAD LATEST AD SUBMISSION
+========================================================= */
+
+async function loadLatestSubmission(){
+
+  if(!currentUser)
+    return null;
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("company_ads")
+        .select(
+          "id,user_id,file_path,file_name,file_type,file_size,status,rejection_reason,submitted_at,reviewed_at,reviewed_by,auto_review_due_at,auto_reviewed_at,review_source"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .order(
+          "submitted_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(1)
+        .maybeSingle();
+
+
+    if(error){
+
+      console.error(
+        "Company ad status error:",
+        error
+      );
+
+      showToast(
+        "Unable to load review status."
+      );
+
+      return null;
+
+    }
+
+
+    return data || null;
+
+
+  }catch(error){
+
+    console.error(
+      "Company ad exception:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER EMPTY
+========================================================= */
+
+function renderEmpty(){
+
+  document
+    .getElementById(
+      "submissionCard"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "emptyCard"
+    )
+    .classList
+    .add("show");
+
+
+  setStatus(
+    "No submission",
+    "NOT SUBMITTED",
+    "empty"
+  );
+
+
+  stopTimer();
+
+}
+
+
+/* =========================================================
+   RENDER SUBMISSION
+========================================================= */
+
+function renderSubmission(
+  submission
+){
+
+  if(!submission){
+
+    renderEmpty();
+
+    return;
+
+  }
+
+
+  latestSubmission =
+    submission;
+
+
+  document
+    .getElementById(
+      "emptyCard"
+    )
+    .classList
+    .remove("show");
+
+
+  document
+    .getElementById(
+      "submissionCard"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "fileName"
+    )
+    .textContent =
+      submission.file_name ||
+      "Submitted advertisement";
+
+
+  document
+    .getElementById(
+      "fileMeta"
+    )
+    .textContent =
+      (
+        submission.file_type ||
+        "File"
+      )
+      +
+      " • " +
+      formatBytes(
+        submission.file_size
+      );
+
+
+  document
+    .getElementById(
+      "submittedAt"
+    )
+    .textContent =
+      formatDate(
+        submission.submitted_at
+      );
+
+
+  document
+    .getElementById(
+      "reviewSource"
+    )
+    .textContent =
+      submission.review_source ||
+      (
+        submission.auto_reviewed_at
+          ? "Automatic review"
+          : "Pending review"
+      );
+
+
+  const status =
+    normalizeStatus(
+      submission.status
+    );
+
+
+  const reasonBox =
+    document.getElementById(
+      "reasonBox"
+    );
+
+
+  const reasonText =
+    document.getElementById(
+      "reasonText"
+    );
+
+
+  reasonBox.classList.remove(
+    "show"
+  );
+
+
+  if(
+    status === "approved" ||
+    status === "accepted"
+  ){
+
+    setStatus(
+      "Advertisement approved",
+      "APPROVED",
+      "approved"
+    );
+
+
+    document
+      .getElementById(
+        "nextText"
+      )
+      .textContent =
+        "Your advertisement has been approved. The remaining qualification requirements must also be verified before company projects unlock.";
+
+
+    stopTimer();
+
+
+    return;
+
+  }
+
+
+  if(
+    status === "rejected" ||
+    status === "declined"
+  ){
+
+    setStatus(
+      "Advertisement rejected",
+      "REJECTED",
+      "rejected"
+    );
+
+
+    reasonBox.classList.add(
+      "show"
+    );
+
+
+    reasonText.textContent =
+      submission.rejection_reason ||
+      "The submitted advertisement was not approved. Please review the feedback and submit a genuine TaskEarn advertisement again.";
+
+
+    document
+      .getElementById(
+        "nextText"
+      )
+      .textContent =
+        "Please correct the issue mentioned in the review feedback and submit a new advertisement through the advertisement page.";
+
+
+    stopTimer();
+
+
+    return;
+
+  }
+
+
+  /* PENDING */
+
+  setStatus(
+    "Advertisement under review",
+    "PENDING",
+    "pending"
+  );
+
+
+  document
+    .getElementById(
+      "nextText"
+    )
+    .textContent =
+      "Your advertisement is currently under review. The review deadline shown below comes from the Supabase backend.";
+
+
+  startDeadlineTimer(
+    submission.auto_review_due_at
+  );
+
+}
+
+
+/* =========================================================
+   SET STATUS
+========================================================= */
+
+function setStatus(
+  title,
+  pillText,
+  type
+){
+
+  const titleElement =
+    document.getElementById(
+      "statusTitle"
+    );
+
+
+  const pill =
+    document.getElementById(
+      "statusPill"
+    );
+
+
+  const icon =
+    document.getElementById(
+      "statusIcon"
+    );
+
+
+  titleElement.textContent =
+    title;
+
+
+  pill.textContent =
+    pillText;
+
+
+  pill.classList.remove(
+    "approved",
+    "rejected"
+  );
+
+
+  if(type === "approved"){
+
+    pill.classList.add(
+      "approved"
+    );
+
+
+    icon.innerHTML =
+      '<svg>' +
+      '<use href="#check"></use>' +
+      '</svg>';
+
+  }
+  else if(type === "rejected"){
+
+    pill.classList.add(
+      "rejected"
+    );
+
+
+    icon.innerHTML =
+      '<svg>' +
+      '<use href="#x"></use>' +
+      '</svg>';
+
+  }
+  else{
+
+    icon.innerHTML =
+      '<svg>' +
+      '<use href="#clock"></use>' +
+      '</svg>';
+
+  }
+
+}
+
+
+/* =========================================================
+   DEADLINE TIMER
+========================================================= */
+
+function startDeadlineTimer(
+  deadline
+){
+
+  stopTimer();
+
+
+  const timerBox =
+    document.getElementById(
+      "timerBox"
+    );
+
+
+  const timerValue =
+    document.getElementById(
+      "timerValue"
+    );
+
+
+  const timerNote =
+    document.getElementById(
+      "timerNote"
+    );
+
+
+  if(!deadline){
+
+    timerBox.style.display =
+      "block";
+
+
+    timerValue.textContent =
+      "--:--:--";
+
+
+    timerNote.textContent =
+      "The review deadline has not been provided by the backend yet.";
+
+
+    return;
+
+  }
+
+
+  const deadlineMs =
+    new Date(
+      deadline
+    ).getTime();
+
+
+  if(
+    Number.isNaN(
+      deadlineMs
+    )
+  ){
+
+    timerValue.textContent =
+      "--:--:--";
+
+
+    timerNote.textContent =
+      "Unable to read the review deadline.";
+
+
+    return;
+
+  }
+
+
+  function update(){
+
+    const remaining =
+      Math.max(
+        0,
+        deadlineMs -
+        Date.now()
+      );
+
+
+    const totalSeconds =
+      Math.floor(
+        remaining / 1000
+      );
+
+
+    const days =
+      Math.floor(
+        totalSeconds / 86400
+      );
+
+
+    const hours =
+      Math.floor(
+        (totalSeconds % 86400)
+        / 3600
+      );
+
+
+    const minutes =
+      Math.floor(
+        (totalSeconds % 3600)
+        / 60
+      );
+
+
+    const seconds =
+      totalSeconds % 60;
+
+
+    if(days > 0){
+
+      timerValue.textContent =
+        String(days) +
+        "d " +
+        String(hours).padStart(2,"0") +
+        ":" +
+        String(minutes).padStart(2,"0") +
+        ":" +
+        String(seconds).padStart(2,"0");
+
+    }else{
+
+      timerValue.textContent =
+        String(hours).padStart(2,"0") +
+        ":" +
+        String(minutes).padStart(2,"0") +
+        ":" +
+        String(seconds).padStart(2,"0");
+
+    }
+
+
+    if(remaining <= 0){
+
+      timerValue.textContent =
+        "REVIEW DUE";
+
+
+      timerNote.textContent =
+        "The 24-hour review window has reached its backend deadline. Refresh to check the latest review result.";
+
+
+      stopTimerOnly();
+
+
+      return;
+
+    }
+
+
+    timerNote.textContent =
+      "Review deadline: " +
+      formatDate(
+        deadline
+      );
+
+  }
+
+
+  update();
+
+
+  timerInterval =
+    setInterval(
+      update,
+      1000
+    );
+
+}
+
+
+/* =========================================================
+   STOP TIMER
+========================================================= */
+
+function stopTimerOnly(){
+
+  if(timerInterval){
+
+    clearInterval(
+      timerInterval
+    );
+
+    timerInterval =
+      null;
+
+  }
+
+}
+
+
+function stopTimer(){
+
+  stopTimerOnly();
+
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+async function refreshReview(){
+
+  const button =
+    document.getElementById(
+      "refreshBtn"
+    );
+
+
+  if(button){
+
+    button.disabled =
+      true;
+
+    button.style.opacity =
+      ".65";
+
+  }
+
+
+  const submission =
+    await loadLatestSubmission();
+
+
+  renderSubmission(
+    submission
+  );
+
+
+  if(button){
+
+    button.disabled =
+      false;
+
+    button.style.opacity =
+      "1";
+
+  }
+
+}
+
+
+/* =========================================================
+   POLLING
+========================================================= */
+
+function startPolling(){
+
+  if(pollingInterval)
+    clearInterval(
+      pollingInterval
+    );
+
+
+  pollingInterval =
+    setInterval(
+      async function(){
+
+        const submission =
+          await loadLatestSubmission();
+
+
+        renderSubmission(
+          submission
+        );
+
+      },
+      15000
+    );
+
+}
+
+
+/* =========================================================
+   REFRESH BUTTON
+========================================================= */
+
+document
+  .getElementById(
+    "refreshBtn"
+  )
+  .addEventListener(
+    "click",
+    refreshReview
+  );
+
+
+/* =========================================================
+   SUBMIT AD BUTTON
+========================================================= */
+
+document
+  .getElementById(
+    "submitAdBtn"
+  )
+  .addEventListener(
+    "click",
+    function(){
+
+      window.location.href =
+        ROUTES.advertisement;
+
+    }
+  );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(
+  message
+){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+
+  window.toastTimer =
+    setTimeout(
+      function(){
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2800
+    );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+async function init(){
+
+  currentUser =
+    await getCurrentUser();
+
+
+  if(!currentUser){
+
+    setStatus(
+      "Login required",
+      "LOGIN",
+      "rejected"
+    );
+
+
+    document
+      .getElementById(
+        "timerValue"
+      )
+      .textContent =
+        "--:--:--";
+
+
+    document
+      .getElementById(
+        "timerNote"
+      )
+      .textContent =
+        "Please log in to view your company qualification review.";
+
+
+    return;
+
+  }
+
+
+  const submission =
+    await loadLatestSubmission();
+
+
+  renderSubmission(
+    submission
+  );
+
+
+  startPolling();
+
+}
+
+
+init();
+
+
+/* =========================================================
+   CLEANUP
+========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    stopTimer();
+
+
+    if(pollingInterval){
+
+      clearInterval(
+        pollingInterval
+      );
+
+      pollingInterval =
+        null;
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>

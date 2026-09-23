@@ -1,0 +1,3456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+>
+
+<meta name="theme-color" content="#050a14">
+
+<title>TaskEarn — Rewards</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =========================================================
+   TASK EARN — PREMIUM REWARDS
+   CLEAN VERSION — NO EXTRA ANIMATIONS
+   ========================================================= */
+
+:root{
+    --bg:#040812;
+    --surface:#07111f;
+    --surface-2:#091629;
+    --surface-3:#0c1b30;
+
+    --border:rgba(105,180,255,.13);
+    --border-strong:rgba(83,194,255,.25);
+
+    --blue:#299cff;
+    --cyan:#27ddff;
+    --cyan-light:#74ecff;
+
+    --violet:#795dff;
+    --purple:#a66dff;
+
+    --green:#42e5a4;
+    --yellow:#ffd166;
+    --red:#ff607c;
+
+    --white:#f7fbff;
+    --text:#dce9f8;
+    --muted:#8092ab;
+    --muted-2:#5e7089;
+
+    --radius-xl:32px;
+    --radius-lg:25px;
+    --radius-md:19px;
+
+    --shadow:0 25px 80px rgba(0,0,0,.38);
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    color:var(--white);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 10% -5%,
+            rgba(28,154,255,.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 100% 12%,
+            rgba(116,83,255,.16),
+            transparent 31%
+        ),
+        radial-gradient(
+            circle at 50% 70%,
+            rgba(24,104,178,.07),
+            transparent 36%
+        ),
+        linear-gradient(
+            180deg,
+            #030710 0%,
+            #06101d 50%,
+            #030710 100%
+        );
+
+    overflow-x:hidden;
+}
+
+button{
+    font:inherit;
+}
+
+button,
+a{
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+
+/* =========================================================
+   AMBIENT LIGHT
+   ========================================================= */
+
+.bg-light{
+    position:fixed;
+
+    width:260px;
+    height:260px;
+
+    border-radius:50%;
+
+    filter:blur(90px);
+
+    pointer-events:none;
+
+    z-index:-2;
+
+    opacity:.22;
+}
+
+.bg-light.one{
+    left:-130px;
+    top:100px;
+    background:#168fff;
+}
+
+.bg-light.two{
+    right:-130px;
+    top:470px;
+    background:#7451ff;
+}
+
+.bg-light.three{
+    left:35%;
+    bottom:-160px;
+    background:#17bfff;
+    opacity:.12;
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app{
+    width:100%;
+    max-width:620px;
+
+    min-height:100vh;
+
+    margin:auto;
+
+    position:relative;
+
+    padding-bottom:42px;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.topbar{
+    position:sticky;
+    top:0;
+
+    z-index:100;
+
+    height:72px;
+
+    display:flex;
+    align-items:center;
+
+    padding:12px 17px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,8,16,.96),
+            rgba(3,8,16,.76)
+        );
+
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+
+    border-bottom:
+        1px solid
+        rgba(120,190,255,.07);
+}
+
+.back-button{
+    width:44px;
+    height:44px;
+
+    display:grid;
+    place-items:center;
+
+    border:
+        1px solid
+        rgba(120,190,255,.13);
+
+    border-radius:15px;
+
+    color:#dceeff;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14,31,52,.9),
+            rgba(7,17,30,.9)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.035);
+
+    cursor:pointer;
+}
+
+.back-button:active{
+    transform:scale(.94);
+}
+
+.back-button svg{
+    width:20px;
+    height:20px;
+
+    fill:none;
+
+    stroke:currentColor;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.content{
+    padding:
+        19px
+        15px
+        0;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:var(--radius-xl);
+
+    padding:
+        26px
+        21px
+        23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,31,54,.98),
+            rgba(7,17,31,.98)
+        );
+
+    border:
+        1px solid
+        rgba(78,180,255,.19);
+
+    box-shadow:var(--shadow);
+}
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:260px;
+    height:260px;
+
+    right:-145px;
+    top:-150px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(38,202,255,.23),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    left:-150px;
+    bottom:-160px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(122,88,255,.18),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+.hero-inner{
+    position:relative;
+    z-index:2;
+}
+
+.hero-label{
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#5fdcff;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:1.9px;
+
+    text-transform:uppercase;
+
+    margin-bottom:12px;
+}
+
+.live{
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#40e4a4;
+
+    box-shadow:
+        0 0 14px
+        rgba(64,228,164,.8);
+}
+
+.hero h1{
+    font-size:30px;
+
+    line-height:1.05;
+
+    letter-spacing:-1.25px;
+
+    max-width:490px;
+
+    margin-bottom:12px;
+}
+
+.hero-description{
+    color:#91a4bd;
+
+    font-size:12px;
+
+    line-height:1.65;
+
+    max-width:480px;
+}
+
+
+/* =========================================================
+   COUNTDOWN
+   ========================================================= */
+
+.countdown{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:8px;
+
+    margin-top:20px;
+}
+
+.count-box{
+    padding:
+        11px
+        5px
+        10px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+    background:
+        rgba(2,9,18,.52);
+
+    border:
+        1px solid
+        rgba(112,183,255,.10);
+}
+
+.count-number{
+    display:block;
+
+    font-size:20px;
+
+    line-height:1;
+
+    font-weight:950;
+
+    letter-spacing:-.7px;
+}
+
+.count-label{
+    display:block;
+
+    margin-top:6px;
+
+    color:#63758d;
+
+    font-size:7px;
+
+    font-weight:850;
+
+    letter-spacing:1.2px;
+
+    text-transform:uppercase;
+}
+
+
+/* =========================================================
+   MASTER CARD
+   ========================================================= */
+
+.master-card{
+    position:relative;
+
+    margin-top:13px;
+
+    overflow:hidden;
+
+    border-radius:29px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(9,21,38,.98),
+            rgba(6,14,27,.98)
+        );
+
+    border:
+        1px solid
+        rgba(109,181,255,.11);
+
+    box-shadow:
+        0 20px 65px
+        rgba(0,0,0,.26);
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section{
+    padding:
+        20px 18px;
+
+    position:relative;
+}
+
+.section + .section{
+    border-top:
+        1px solid
+        rgba(120,180,255,.075);
+}
+
+.section-heading{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin-bottom:14px;
+}
+
+.section-heading h2{
+    font-size:15px;
+
+    letter-spacing:-.25px;
+
+    font-weight:900;
+}
+
+.section-heading .mini{
+    color:#62758e;
+
+    font-size:9px;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+.progress-box{
+    padding:18px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,39,66,.64),
+            rgba(8,20,37,.62)
+        );
+
+    border:
+        1px solid
+        rgba(64,178,255,.12);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.progress-top{
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+}
+
+.progress-number{
+    font-size:31px;
+
+    line-height:1;
+
+    font-weight:950;
+
+    letter-spacing:-1.5px;
+}
+
+.progress-number span{
+    font-size:13px;
+
+    color:#63758d;
+
+    font-weight:800;
+
+    letter-spacing:0;
+}
+
+.progress-percent{
+    font-size:12px;
+
+    font-weight:900;
+
+    color:#5bdcff;
+}
+
+.progress-track{
+    position:relative;
+
+    height:10px;
+
+    margin-top:15px;
+
+    overflow:hidden;
+
+    border-radius:100px;
+
+    background:#030914;
+
+    border:
+        1px solid
+        rgba(100,175,255,.08);
+}
+
+.progress-fill{
+    width:0%;
+
+    height:100%;
+
+    border-radius:100px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1e9cff,
+            #35ddff,
+            #8063ff
+        );
+
+    box-shadow:
+        0 0 20px
+        rgba(43,190,255,.36);
+}
+
+.progress-bottom{
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:9px;
+
+    color:#63758e;
+
+    font-size:9px;
+
+    font-weight:750;
+}
+
+
+/* =========================================================
+   WATCH CARD
+   ========================================================= */
+
+.watch-card{
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:14px;
+
+    border-radius:21px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(11,31,53,.8),
+            rgba(8,18,33,.8)
+        );
+
+    border:
+        1px solid
+        rgba(60,175,255,.11);
+}
+
+.watch-icon{
+    flex:0 0 47px;
+
+    width:47px;
+    height:47px;
+
+    border-radius:16px;
+
+    display:grid;
+
+    place-items:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(28,157,255,.16),
+            rgba(91,86,255,.10)
+        );
+
+    border:
+        1px solid
+        rgba(57,187,255,.16);
+}
+
+.watch-icon svg{
+    width:21px;
+    height:21px;
+
+    fill:none;
+
+    stroke:#5bdcff;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.watch-copy{
+    flex:1;
+
+    min-width:0;
+}
+
+.watch-copy strong{
+    display:block;
+
+    font-size:13px;
+
+    font-weight:900;
+
+    margin-bottom:4px;
+}
+
+.watch-copy span{
+    display:block;
+
+    color:#70839c;
+
+    font-size:9px;
+
+    line-height:1.5;
+}
+
+.watch-button{
+    flex:0 0 auto;
+
+    min-width:98px;
+
+    height:41px;
+
+    border-radius:13px;
+
+    border:
+        1px solid
+        rgba(67,191,255,.27);
+
+    color:#eaf9ff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(27,119,185,.72),
+            rgba(54,74,157,.72)
+        );
+
+    box-shadow:
+        0 7px 23px
+        rgba(27,124,210,.13);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+.watch-button:active{
+    transform:scale(.94);
+}
+
+.watch-button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status{
+    margin-top:10px;
+
+    padding:
+        11px 13px;
+
+    border-radius:14px;
+
+    color:#6f829b;
+
+    background:
+        rgba(2,8,16,.42);
+
+    border:
+        1px solid
+        rgba(108,175,245,.065);
+
+    font-size:9px;
+
+    line-height:1.55;
+}
+
+.status.success{
+    color:#7de8bd;
+
+    background:
+        rgba(43,150,105,.065);
+
+    border-color:
+        rgba(61,225,161,.15);
+}
+
+.status.warning{
+    color:#e9c875;
+
+    background:
+        rgba(180,130,30,.055);
+
+    border-color:
+        rgba(255,200,87,.14);
+}
+
+.status.error{
+    color:#ff879b;
+
+    background:
+        rgba(180,42,65,.055);
+
+    border-color:
+        rgba(255,86,117,.14);
+}
+
+
+/* =========================================================
+   MYSTERY BOX
+   ========================================================= */
+
+.box-stage{
+    min-height:225px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:24px;
+
+    background:
+        radial-gradient(
+            circle at 50% 47%,
+            rgba(43,178,255,.08),
+            transparent 42%
+        );
+}
+
+.box-stage::before{
+    content:"";
+
+    position:absolute;
+
+    width:170px;
+    height:170px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(71,192,255,.08);
+}
+
+.box-stage::after{
+    content:"";
+
+    position:absolute;
+
+    width:230px;
+    height:230px;
+
+    border-radius:50%;
+
+    border:
+        1px dashed
+        rgba(124,91,255,.07);
+}
+
+.mystery-box{
+    position:relative;
+
+    width:165px;
+    height:170px;
+
+    border:0;
+
+    background:transparent;
+
+    cursor:pointer;
+
+    z-index:5;
+}
+
+.mystery-box:active{
+    transform:scale(.96);
+}
+
+.mystery-box:disabled{
+    cursor:not-allowed;
+}
+
+.box-shadow{
+    position:absolute;
+
+    width:120px;
+    height:25px;
+
+    left:22px;
+    bottom:16px;
+
+    border-radius:50%;
+
+    background:
+        rgba(25,165,255,.15);
+
+    filter:blur(15px);
+}
+
+.box-glow{
+    position:absolute;
+
+    width:170px;
+    height:170px;
+
+    left:-3px;
+    top:0;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(45,205,255,.19),
+            transparent 64%
+        );
+
+    opacity:0;
+}
+
+.box-body{
+    position:absolute;
+
+    width:96px;
+    height:76px;
+
+    left:34px;
+    bottom:30px;
+
+    border-radius:
+        8px
+        8px
+        17px
+        17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1aaeff,
+            #396dff 58%,
+            #725cff
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.18),
+
+        0 20px 40px
+        rgba(31,139,255,.25);
+
+    z-index:2;
+}
+
+.box-lid{
+    position:absolute;
+
+    width:108px;
+    height:31px;
+
+    left:28px;
+    top:60px;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #42d8ff,
+            #557eff 58%,
+            #835cff
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.22),
+
+        0 10px 24px
+        rgba(44,148,255,.25);
+
+    z-index:5;
+}
+
+.box-band{
+    position:absolute;
+
+    width:19px;
+    height:76px;
+
+    left:72px;
+    bottom:30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.25),
+            rgba(255,255,255,.08)
+        );
+
+    z-index:6;
+}
+
+.box-band::after{
+    content:"";
+
+    position:absolute;
+
+    width:19px;
+    height:20px;
+
+    left:0;
+    top:-1px;
+
+    background:
+        rgba(255,255,255,.18);
+}
+
+.ribbon{
+    position:absolute;
+
+    width:44px;
+    height:40px;
+
+    left:62px;
+    top:48px;
+
+    z-index:8;
+}
+
+.ribbon::before,
+.ribbon::after{
+    content:"";
+
+    position:absolute;
+
+    width:24px;
+    height:24px;
+
+    border:
+        4px solid
+        #dffbff;
+
+    border-radius:
+        50%
+        50%
+        50%
+        0;
+
+    box-shadow:
+        0 0 12px
+        rgba(111,234,255,.4);
+}
+
+.ribbon::before{
+    left:-3px;
+    transform:rotate(35deg);
+}
+
+.ribbon::after{
+    right:-3px;
+    transform:rotate(145deg);
+}
+
+.box-text{
+    position:absolute;
+
+    left:0;
+    right:0;
+
+    bottom:0;
+
+    text-align:center;
+
+    color:#667b96;
+
+    font-size:9px;
+
+    font-weight:850;
+
+    letter-spacing:.3px;
+
+    z-index:10;
+}
+
+.mystery-box.unlocked .box-glow{
+    opacity:1;
+}
+
+.mystery-box.unlocked .box-text{
+    color:#63ddff;
+}
+
+
+/* =========================================================
+   REWARD PANEL
+   ========================================================= */
+
+.reward-panel{
+    display:none;
+
+    margin-top:11px;
+
+    padding:18px;
+
+    text-align:center;
+
+    border-radius:21px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(21,70,96,.45),
+            rgba(63,46,105,.38)
+        );
+
+    border:
+        1px solid
+        rgba(80,204,255,.17);
+
+    box-shadow:
+        0 12px 40px
+        rgba(30,139,255,.08);
+}
+
+.reward-panel.show{
+    display:block;
+}
+
+.reward-label{
+    color:#68819c;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+}
+
+.reward-amount{
+    margin-top:5px;
+
+    font-size:34px;
+
+    font-weight:950;
+
+    letter-spacing:-1.5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #54ddff,
+            #9b7cff
+        );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    color:transparent;
+}
+
+.reward-state{
+    margin-top:4px;
+
+    color:#71859f;
+
+    font-size:9px;
+
+    line-height:1.55;
+}
+
+
+/* =========================================================
+   BOX INFO
+   ========================================================= */
+
+.box-info{
+    text-align:center;
+
+    margin-top:10px;
+
+    color:#61758f;
+
+    font-size:9px;
+
+    line-height:1.55;
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+    position:fixed;
+
+    z-index:1000;
+
+    left:50%;
+
+    bottom:22px;
+
+    width:
+        calc(100% - 30px);
+
+    max-width:420px;
+
+    padding:
+        13px
+        15px;
+
+    border-radius:16px;
+
+    background:
+        rgba(9,21,37,.97);
+
+    border:
+        1px solid
+        rgba(93,183,255,.16);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.5);
+
+    color:#eaf6ff;
+
+    font-size:10px;
+
+    font-weight:750;
+
+    opacity:0;
+
+    transform:
+        translate(-50%,25px);
+
+    pointer-events:none;
+}
+
+.toast.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer-note{
+    padding:
+        17px
+        10px
+        0;
+
+    text-align:center;
+
+    color:#4f6179;
+
+    font-size:8px;
+
+    line-height:1.65;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:370px){
+
+    .hero h1{
+        font-size:26px;
+    }
+
+    .hero{
+        padding:
+            23px
+            18px
+            21px;
+    }
+
+    .watch-card{
+        gap:9px;
+    }
+
+    .watch-button{
+        min-width:88px;
+    }
+
+    .progress-number{
+        font-size:27px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="bg-light one"></div>
+<div class="bg-light two"></div>
+<div class="bg-light three"></div>
+
+
+<div class="app">
+
+
+<header class="topbar">
+
+    <button
+        class="back-button"
+        id="backButton"
+        type="button"
+        aria-label="Go back">
+
+        <svg viewBox="0 0 24 24">
+
+            <path d="M15 18L9 12L15 6"></path>
+
+            <path d="M9 12H20"></path>
+
+        </svg>
+
+    </button>
+
+</header>
+
+
+<main class="content">
+
+
+<!-- ======================================================
+     HERO
+     ====================================================== -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div class="hero-label">
+
+            <span class="live"></span>
+
+            MONTHLY REWARD EVENT
+
+        </div>
+
+
+        <h1>
+            Complete your monthly goal.
+            Unlock the Mystery Box.
+        </h1>
+
+
+        <p class="hero-description">
+
+            Every verified rewarded session
+            contributes to your monthly progress.
+            Reach the configured target and unlock
+            your Mystery Box.
+
+        </p>
+
+
+        <div class="countdown">
+
+            <div class="count-box">
+
+                <span
+                    class="count-number"
+                    id="days">
+                    --
+                </span>
+
+                <span class="count-label">
+                    Days
+                </span>
+
+            </div>
+
+
+            <div class="count-box">
+
+                <span
+                    class="count-number"
+                    id="hours">
+                    --
+                </span>
+
+                <span class="count-label">
+                    Hours
+                </span>
+
+            </div>
+
+
+            <div class="count-box">
+
+                <span
+                    class="count-number"
+                    id="minutes">
+                    --
+                </span>
+
+                <span class="count-label">
+                    Minutes
+                </span>
+
+            </div>
+
+
+            <div class="count-box">
+
+                <span
+                    class="count-number"
+                    id="seconds">
+                    --
+                </span>
+
+                <span class="count-label">
+                    Seconds
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     MASTER CARD
+     ====================================================== -->
+
+<section class="master-card">
+
+
+<!-- ======================================================
+     MONTHLY PROGRESS
+     ====================================================== -->
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <h2>
+            Monthly Progress
+        </h2>
+
+        <span
+            class="mini"
+            id="monthLabel">
+            —
+        </span>
+
+    </div>
+
+
+    <div class="progress-box">
+
+        <div class="progress-top">
+
+            <div class="progress-number">
+
+                <span id="monthlyCompleted">
+                    0
+                </span>
+
+                <span>
+                    /
+                    <span id="monthlyTarget">
+                        500
+                    </span>
+                </span>
+
+            </div>
+
+
+            <div
+                class="progress-percent"
+                id="progressPercent">
+
+                0%
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-track">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+
+        <div class="progress-bottom">
+
+            <span>
+                Verified sessions
+            </span>
+
+            <span id="remainingText">
+                500 remaining
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     WATCH ADS
+     ====================================================== -->
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <h2>
+            Watch & Continue
+        </h2>
+
+        <span
+            class="mini"
+            id="todayProgress">
+
+            Today 0/17
+
+        </span>
+
+    </div>
+
+
+    <div class="watch-card">
+
+        <div class="watch-icon">
+
+            <svg viewBox="0 0 24 24">
+
+                <path d="M8 5v14l11-7z"></path>
+
+                <path d="M4 5v14"></path>
+
+            </svg>
+
+        </div>
+
+
+        <div class="watch-copy">
+
+            <strong>
+                Watch Rewarded Ad
+            </strong>
+
+            <span>
+                Complete an opted-in session.
+                Only server-verified sessions count.
+            </span>
+
+        </div>
+
+
+        <button
+            class="watch-button"
+            id="watchButton"
+            type="button">
+
+            Watch Ad
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="status"
+        id="adStatus">
+
+        Ready for a verified rewarded session.
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     MYSTERY BOX
+     ====================================================== -->
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <h2>
+            Mystery Box
+        </h2>
+
+        <span
+            class="mini"
+            id="boxState">
+
+            LOCKED
+
+        </span>
+
+    </div>
+
+
+    <div class="box-stage">
+
+        <button
+            class="mystery-box"
+            id="mysteryBox"
+            type="button"
+            aria-label="Mystery Box">
+
+            <div class="box-glow"></div>
+
+            <div class="box-shadow"></div>
+
+            <div class="box-body"></div>
+
+            <div class="box-band"></div>
+
+            <div class="box-lid"></div>
+
+            <div class="ribbon"></div>
+
+            <div
+                class="box-text"
+                id="boxText">
+
+                Complete 3 verified ads
+
+            </div>
+
+        </button>
+
+    </div>
+
+
+    <!-- REWARD -->
+
+    <div
+        class="reward-panel"
+        id="rewardPanel">
+
+        <div class="reward-label">
+            Mystery Reward
+        </div>
+
+
+        <div
+            class="reward-amount"
+            id="rewardAmount">
+
+            Pending
+
+        </div>
+
+
+        <div
+            class="reward-state"
+            id="rewardState">
+
+            Waiting for backend settlement.
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="box-info"
+        id="boxInfo">
+
+        Complete the required verified
+        sessions to unlock your Mystery Box.
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     SECURITY
+     ====================================================== -->
+
+<div class="section">
+
+    <div class="status">
+
+        <b>
+            Secure verification
+        </b>
+
+        <br>
+
+        Progress is loaded from TaskEarn's
+        verified backend records. This page does
+        not create or increase ad counts locally.
+
+    </div>
+
+</div>
+
+
+</section>
+
+
+<div class="footer-note">
+
+    TaskEarn Rewards • Monthly limits and reward
+    settings are controlled by the backend.
+
+</div>
+
+
+</main>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<script>
+
+/* =========================================================
+   TASK EARN — REWARDS
+   FIXED VERSION
+   ========================================================= */
+
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-OsR_MzRg_lgbbqbV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================================
+   DEFAULT SETTINGS
+   ========================================================= */
+
+const DEFAULTS = {
+
+    monthlyLimit:500,
+
+    dailyLimit:17,
+
+    adsPerBox:3
+
+};
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+const STATE = {
+
+    user:null,
+
+    monthlyAds:0,
+
+    todayAds:0,
+
+    monthlyLimit:
+        DEFAULTS.monthlyLimit,
+
+    dailyLimit:
+        DEFAULTS.dailyLimit,
+
+    adsPerBox:
+        DEFAULTS.adsPerBox,
+
+    roundAds:0,
+
+    boxUnlocked:false,
+
+    rewardAmount:null,
+
+    rewardStatus:"pending",
+
+    roundId:null
+
+};
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function $(id){
+
+    return document.getElementById(id);
+
+}
+
+
+function safeNumber(
+    value,
+    fallback=0
+){
+
+    const n =
+        Number(value);
+
+    return Number.isFinite(n)
+        ? n
+        : fallback;
+
+}
+
+
+function firstValue(
+    object,
+    keys,
+    fallback=null
+){
+
+    if(
+        !object ||
+        typeof object !== "object"
+    ){
+
+        return fallback;
+
+    }
+
+
+    for(
+        const key of keys
+    ){
+
+        if(
+            object[key] !== undefined &&
+            object[key] !== null &&
+            object[key] !== ""
+        ){
+
+            return object[key];
+
+        }
+
+    }
+
+
+    return fallback;
+
+}
+
+
+function showToast(message){
+
+    const toast =
+        $("toast");
+
+    if(!toast){
+        return;
+    }
+
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+
+    clearTimeout(
+        showToast.timer
+    );
+
+
+    showToast.timer =
+        setTimeout(
+            ()=>{
+                toast.classList.remove("show");
+            },
+            3000
+        );
+
+}
+
+
+function monthStart(){
+
+    const now =
+        new Date();
+
+
+    return new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        1
+    );
+
+}
+
+
+function monthName(){
+
+    return new Intl.DateTimeFormat(
+        "en-IN",
+        {
+            month:"long",
+            year:"numeric"
+        }
+    ).format(
+        new Date()
+    );
+
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+$("backButton").addEventListener(
+    "click",
+    ()=>{
+
+        window.location.href =
+            "home.html";
+
+    }
+);
+
+
+/* =========================================================
+   MONTH COUNTDOWN
+   ========================================================= */
+
+function nextMonth(){
+
+    const now =
+        new Date();
+
+
+    return new Date(
+        now.getFullYear(),
+        now.getMonth()+1,
+        1,
+        0,
+        0,
+        0,
+        0
+    );
+
+}
+
+
+function updateCountdown(){
+
+    let diff =
+        Math.max(
+            0,
+            nextMonth().getTime() -
+            Date.now()
+        );
+
+
+    const days =
+        Math.floor(
+            diff /
+            86400000
+        );
+
+
+    diff %= 86400000;
+
+
+    const hours =
+        Math.floor(
+            diff /
+            3600000
+        );
+
+
+    diff %= 3600000;
+
+
+    const minutes =
+        Math.floor(
+            diff /
+            60000
+        );
+
+
+    diff %= 60000;
+
+
+    const seconds =
+        Math.floor(
+            diff /
+            1000
+        );
+
+
+    $("days").textContent =
+        String(days).padStart(2,"0");
+
+
+    $("hours").textContent =
+        String(hours).padStart(2,"0");
+
+
+    $("minutes").textContent =
+        String(minutes).padStart(2,"0");
+
+
+    $("seconds").textContent =
+        String(seconds).padStart(2,"0");
+
+}
+
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
+
+updateCountdown();
+
+
+/* =========================================================
+   SESSION
+   ========================================================= */
+
+async function getSession(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if(error){
+
+            console.error(
+                "Session error:",
+                error
+            );
+
+            return null;
+
+        }
+
+
+        return data?.session || null;
+
+    }catch(error){
+
+        console.error(
+            "Session failed:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+async function loadSettings(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("ad_reward_settings")
+                .select("*")
+                .limit(1)
+                .maybeSingle();
+
+
+        if(error){
+
+            console.warn(
+                "Settings:",
+                error.message
+            );
+
+            updateStaticUI();
+
+            return;
+
+        }
+
+
+        if(data){
+
+            const monthly =
+                safeNumber(
+                    firstValue(
+                        data,
+                        [
+                            "monthly_limit",
+                            "monthly_ads",
+                            "monthly_target",
+                            "max_ads_month",
+                            "ads_per_month"
+                        ],
+                        DEFAULTS.monthlyLimit
+                    ),
+                    DEFAULTS.monthlyLimit
+                );
+
+
+            const daily =
+                safeNumber(
+                    firstValue(
+                        data,
+                        [
+                            "daily_limit",
+                            "daily_ads",
+                            "max_ads_day",
+                            "ads_per_day"
+                        ],
+                        DEFAULTS.dailyLimit
+                    ),
+                    DEFAULTS.dailyLimit
+                );
+
+
+            const box =
+                safeNumber(
+                    firstValue(
+                        data,
+                        [
+                            "ads_per_box",
+                            "required_ads",
+                            "box_ads",
+                            "required_ads_per_box"
+                        ],
+                        DEFAULTS.adsPerBox
+                    ),
+                    DEFAULTS.adsPerBox
+                );
+
+
+            if(monthly > 0){
+                STATE.monthlyLimit = monthly;
+            }
+
+
+            if(daily > 0){
+                STATE.dailyLimit = daily;
+            }
+
+
+            if(box > 0){
+                STATE.adsPerBox = box;
+            }
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "Settings failed:",
+            error
+        );
+
+    }
+
+
+    updateStaticUI();
+
+}
+
+
+/* =========================================================
+   STATIC UI
+   ========================================================= */
+
+function updateStaticUI(){
+
+    $("monthlyTarget").textContent =
+        STATE.monthlyLimit;
+
+    $("monthLabel").textContent =
+        monthName();
+
+}
+
+
+/* =========================================================
+   MYSTERY STATUS
+   ========================================================= */
+
+async function loadMysteryStatus(){
+
+    if(!STATE.user){
+
+        return false;
+
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .rpc(
+                    "get_my_mystery_status"
+                );
+
+
+        if(error){
+
+            console.warn(
+                "Mystery RPC:",
+                error.message
+            );
+
+            return false;
+
+        }
+
+
+        let row =
+            data;
+
+
+        if(Array.isArray(data)){
+
+            row =
+                data[0] || {};
+
+        }
+
+
+        if(
+            row &&
+            row.data &&
+            typeof row.data === "object"
+        ){
+
+            row =
+                row.data;
+
+        }
+
+
+        /* MONTHLY */
+
+        STATE.monthlyAds =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "monthly_ads",
+                        "completed_ads",
+                        "month_ads",
+                        "ads_completed",
+                        "monthly_completed",
+                        "verified_ads"
+                    ],
+                    0
+                )
+            );
+
+
+        /* TODAY */
+
+        STATE.todayAds =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "daily_ads",
+                        "today_ads",
+                        "ads_today",
+                        "today_completed"
+                    ],
+                    0
+                )
+            );
+
+
+        /* SETTINGS */
+
+        const monthly =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "monthly_limit",
+                        "monthly_target"
+                    ],
+                    0
+                )
+            );
+
+
+        if(monthly > 0){
+
+            STATE.monthlyLimit =
+                monthly;
+
+        }
+
+
+        const daily =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "daily_limit"
+                    ],
+                    0
+                )
+            );
+
+
+        if(daily > 0){
+
+            STATE.dailyLimit =
+                daily;
+
+        }
+
+
+        const adsPerBox =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "required_ads",
+                        "ads_per_box"
+                    ],
+                    0
+                )
+            );
+
+
+        if(adsPerBox > 0){
+
+            STATE.adsPerBox =
+                adsPerBox;
+
+        }
+
+
+        /* ROUND */
+
+        STATE.roundAds =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "current_round_ads",
+                        "round_completed_ads",
+                        "box_progress"
+                    ],
+                    STATE.monthlyAds %
+                    Math.max(
+                        1,
+                        STATE.adsPerBox
+                    )
+                )
+            );
+
+
+        /* REWARD */
+
+        const reward =
+            firstValue(
+                row,
+                [
+                    "reward_amount",
+                    "pending_reward",
+                    "reward"
+                ],
+                null
+            );
+
+
+        if(reward !== null){
+
+            STATE.rewardAmount =
+                reward;
+
+        }
+
+
+        /* STATUS */
+
+        STATE.rewardStatus =
+            String(
+                firstValue(
+                    row,
+                    [
+                        "reward_status",
+                        "status"
+                    ],
+                    STATE.rewardStatus
+                )
+            );
+
+
+        /* ROUND ID */
+
+        STATE.roundId =
+            firstValue(
+                row,
+                [
+                    "round_id",
+                    "current_round_id"
+                ],
+                null
+            );
+
+
+        /* BOX */
+
+        STATE.boxUnlocked =
+            (
+                STATE.roundAds >=
+                STATE.adsPerBox
+            )
+            ||
+            (
+                STATE.monthlyAds >=
+                STATE.monthlyLimit
+            );
+
+
+        updateUI();
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "Mystery status failed:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FALLBACK
+   ========================================================= */
+
+async function fallbackCount(){
+
+    if(!STATE.user){
+
+        return;
+
+    }
+
+
+    try{
+
+        const start =
+            monthStart()
+                .toISOString();
+
+
+        const {
+            count,
+            error
+        } =
+            await supabaseClient
+                .from("ad_watch_events")
+                .select(
+                    "id",
+                    {
+                        count:"exact",
+                        head:true
+                    }
+                )
+                .eq(
+                    "user_id",
+                    STATE.user.id
+                )
+                .eq(
+                    "status",
+                    "verified"
+                )
+                .gte(
+                    "watched_at",
+                    start
+                )
+                .eq(
+                    "is_mystery_box",
+                    true
+                );
+
+
+        if(error){
+
+            console.warn(
+                "Fallback:",
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        STATE.monthlyAds =
+            safeNumber(count);
+
+
+        STATE.roundAds =
+            STATE.monthlyAds %
+            Math.max(
+                1,
+                STATE.adsPerBox
+            );
+
+
+        STATE.boxUnlocked =
+            STATE.roundAds >=
+            STATE.adsPerBox;
+
+
+        updateUI();
+
+    }catch(error){
+
+        console.warn(
+            "Fallback failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UI UPDATE
+   ========================================================= */
+
+function updateUI(){
+
+    const target =
+        Math.max(
+            1,
+            STATE.monthlyLimit
+        );
+
+
+    const completed =
+        Math.min(
+            Math.max(
+                0,
+                STATE.monthlyAds
+            ),
+            target
+        );
+
+
+    const percent =
+        Math.min(
+            100,
+            (completed / target) * 100
+        );
+
+
+    const remaining =
+        Math.max(
+            0,
+            target - completed
+        );
+
+
+    $("monthlyCompleted").textContent =
+        completed;
+
+
+    $("monthlyTarget").textContent =
+        target;
+
+
+    $("progressPercent").textContent =
+        Math.round(percent) +
+        "%";
+
+
+    $("progressFill").style.width =
+        percent +
+        "%";
+
+
+    $("remainingText").textContent =
+        remaining +
+        " remaining";
+
+
+    $("todayProgress").textContent =
+        "Today " +
+        STATE.todayAds +
+        "/" +
+        STATE.dailyLimit;
+
+
+    updateBox();
+
+}
+
+
+/* =========================================================
+   BOX UI
+   ========================================================= */
+
+function updateBox(){
+
+    const box =
+        $("mysteryBox");
+
+
+    if(!box){
+
+        return;
+
+    }
+
+
+    if(STATE.boxUnlocked){
+
+        box.disabled =
+            false;
+
+
+        box.classList.add(
+            "unlocked"
+        );
+
+
+        $("boxState").textContent =
+            "READY";
+
+
+        $("boxState").style.color =
+            "#62ddff";
+
+
+        $("boxText").textContent =
+            "Tap to open";
+
+
+        $("boxInfo").innerHTML =
+            "<b>Mystery Box unlocked.</b> Tap the box to reveal the reward status.";
+
+    }else{
+
+        box.disabled =
+            false;
+
+
+        box.classList.remove(
+            "unlocked"
+        );
+
+
+        $("boxState").textContent =
+            "LOCKED";
+
+
+        $("boxState").style.color =
+            "";
+
+
+        const completed =
+            Math.max(
+                0,
+                STATE.roundAds
+            );
+
+
+        const remaining =
+            Math.max(
+                1,
+                STATE.adsPerBox -
+                completed
+            );
+
+
+        $("boxText").textContent =
+            "Complete " +
+            remaining +
+            " more verified ads";
+
+
+        $("boxInfo").innerHTML =
+            "Complete <b>" +
+            remaining +
+            "</b> more verified " +
+            (
+                remaining === 1
+                    ? "session"
+                    : "sessions"
+            ) +
+            " to unlock the Mystery Box.";
+
+    }
+
+}
+
+
+/* =========================================================
+   REWARDED BRIDGE
+   ========================================================= */
+
+function hasRewardedBridge(){
+
+    return !!(
+
+        (
+            window.AndroidAds &&
+            (
+                typeof window.AndroidAds.showRewarded ===
+                    "function"
+
+                ||
+
+                typeof window.AndroidAds.showRewardedAd ===
+                    "function"
+            )
+        )
+
+        ||
+
+        (
+            window.TaskEarnAds &&
+            (
+                typeof window.TaskEarnAds.showRewarded ===
+                    "function"
+
+                ||
+
+                typeof window.TaskEarnAds.showRewardedAd ===
+                    "function"
+            )
+        )
+
+    );
+
+}
+
+
+function openRewardedBridge(){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            try{
+
+                let fn = null;
+
+
+                if(
+                    window.AndroidAds &&
+                    typeof window.AndroidAds.showRewarded ===
+                        "function"
+                ){
+
+                    fn =
+                        window.AndroidAds
+                            .showRewarded
+                            .bind(
+                                window.AndroidAds
+                            );
+
+                }
+
+                else if(
+                    window.AndroidAds &&
+                    typeof window.AndroidAds.showRewardedAd ===
+                        "function"
+                ){
+
+                    fn =
+                        window.AndroidAds
+                            .showRewardedAd
+                            .bind(
+                                window.AndroidAds
+                            );
+
+                }
+
+                else if(
+                    window.TaskEarnAds &&
+                    typeof window.TaskEarnAds.showRewarded ===
+                        "function"
+                ){
+
+                    fn =
+                        window.TaskEarnAds
+                            .showRewarded
+                            .bind(
+                                window.TaskEarnAds
+                            );
+
+                }
+
+                else if(
+                    window.TaskEarnAds &&
+                    typeof window.TaskEarnAds.showRewardedAd ===
+                        "function"
+                ){
+
+                    fn =
+                        window.TaskEarnAds
+                            .showRewardedAd
+                            .bind(
+                                window.TaskEarnAds
+                            );
+
+                }
+
+
+                if(!fn){
+
+                    reject(
+                        new Error(
+                            "Rewarded bridge unavailable"
+                        )
+                    );
+
+                    return;
+
+                }
+
+
+                const result =
+                    fn(
+                        "mystery_box"
+                    );
+
+
+                if(
+                    result &&
+                    typeof result.then ===
+                        "function"
+                ){
+
+                    result
+                        .then(resolve)
+                        .catch(reject);
+
+                }else{
+
+                    resolve(result);
+
+                }
+
+            }catch(error){
+
+                reject(error);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   WATCH BUTTON
+   ========================================================= */
+
+$("watchButton").addEventListener(
+    "click",
+    async()=>{
+
+        if(!STATE.user){
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        if(
+            STATE.todayAds >=
+            STATE.dailyLimit
+        ){
+
+            showToast(
+                "Today's ad limit is complete."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            STATE.monthlyAds >=
+            STATE.monthlyLimit
+        ){
+
+            showToast(
+                "This month's target is complete."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !hasRewardedBridge()
+        ){
+
+            $("adStatus").textContent =
+                "Rewarded ad SDK is not connected. No fake completion was created.";
+
+            $("adStatus").className =
+                "status warning";
+
+
+            showToast(
+                "Rewarded ad SDK is not connected."
+            );
+
+            return;
+
+        }
+
+
+        const accepted =
+            window.confirm(
+                "Watch 1 rewarded ad session?\n\nOnly a verified completed session will count."
+            );
+
+
+        if(!accepted){
+
+            return;
+
+        }
+
+
+        const button =
+            $("watchButton");
+
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "Opening…";
+
+
+        $("adStatus").textContent =
+            "Rewarded ad opened. Waiting for verification…";
+
+        $("adStatus").className =
+            "status";
+
+
+        const before =
+            STATE.monthlyAds;
+
+
+        try{
+
+            await openRewardedBridge();
+
+
+            $("adStatus").textContent =
+                "Ad finished. Checking verified backend record…";
+
+
+            for(
+                let attempt=0;
+                attempt<6;
+                attempt++
+            ){
+
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            1800
+                        )
+                );
+
+
+                await loadMysteryStatus();
+
+
+                if(
+                    STATE.monthlyAds >
+                    before
+                ){
+
+                    $("adStatus").textContent =
+                        "Verified session added successfully.";
+
+                    $("adStatus").className =
+                        "status success";
+
+
+                    showToast(
+                        "Verified progress updated."
+                    );
+
+
+                    break;
+
+                }
+
+            }
+
+
+            if(
+                STATE.monthlyAds <=
+                before
+            ){
+
+                $("adStatus").textContent =
+                    "Ad completed, but verification is still pending. Progress will update after backend verification.";
+
+                $("adStatus").className =
+                    "status warning";
+
+            }
+
+        }catch(error){
+
+            console.error(
+                "Rewarded error:",
+                error
+            );
+
+
+            $("adStatus").textContent =
+                "Rewarded session was not verified.";
+
+            $("adStatus").className =
+                "status error";
+
+
+            showToast(
+                "Rewarded session could not be verified."
+            );
+
+        }
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Watch Ad";
+
+    }
+);
+
+
+/* =========================================================
+   MYSTERY BOX TAP — FIXED
+   ========================================================= */
+
+$("mysteryBox").addEventListener(
+    "click",
+    async()=>{
+
+        /* LOCKED */
+
+        if(!STATE.boxUnlocked){
+
+            const completed =
+                Math.max(
+                    0,
+                    STATE.roundAds
+                );
+
+
+            const remaining =
+                Math.max(
+                    1,
+                    STATE.adsPerBox -
+                    completed
+                );
+
+
+            showToast(
+                "Complete " +
+                remaining +
+                " more verified ad" +
+                (
+                    remaining === 1
+                        ? ""
+                        : "s"
+                ) +
+                " first."
+            );
+
+
+            return;
+
+        }
+
+
+        /* REFRESH BACKEND */
+
+        const loaded =
+            await loadMysteryStatus();
+
+
+        if(
+            !loaded &&
+            !STATE.boxUnlocked
+        ){
+
+            showToast(
+                "Unable to verify Mystery Box status."
+            );
+
+            return;
+
+        }
+
+
+        if(!STATE.boxUnlocked){
+
+            showToast(
+                "Box is not verified yet."
+            );
+
+            return;
+
+        }
+
+
+        /* DIRECTLY SHOW REWARD PANEL */
+
+        const amount =
+            STATE.rewardAmount;
+
+
+        $("rewardPanel")
+            .classList.add(
+                "show"
+            );
+
+
+        if(amount !== null){
+
+            const text =
+                String(amount);
+
+
+            $("rewardAmount").textContent =
+                text.startsWith("₹")
+                    ? text
+                    : "₹" + text;
+
+        }else{
+
+            $("rewardAmount").textContent =
+                "Pending";
+
+        }
+
+
+        $("rewardState").textContent =
+            amount !== null
+                ? (
+                    "Reward recorded by backend. Settlement status: " +
+                    STATE.rewardStatus
+                )
+                : (
+                    "Mystery Box unlocked. Reward settlement is pending in the backend."
+                );
+
+
+        $("boxInfo").innerHTML =
+            "<b>Mystery Box opened.</b> Your reward status is shown above.";
+
+
+        showToast(
+            "Mystery Box opened."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   AUTH LISTENER
+   ========================================================= */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        async(
+            event,
+            session
+        )=>{
+
+            if(
+                event ===
+                "SIGNED_IN" &&
+                session
+            ){
+
+                STATE.user =
+                    session.user;
+
+
+                $("watchButton").disabled =
+                    false;
+
+
+                $("watchButton").textContent =
+                    "Watch Ad";
+
+
+                await loadSettings();
+
+                const loaded =
+                    await loadMysteryStatus();
+
+
+                if(!loaded){
+
+                    await fallbackCount();
+
+                }
+
+            }
+
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                STATE.user =
+                    null;
+
+
+                window.location.href =
+                    "login.html";
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+async function init(){
+
+    /* INITIAL UI */
+
+    updateStaticUI();
+
+    updateCountdown();
+
+
+    /* SESSION */
+
+    const session =
+        await getSession();
+
+
+    if(!session){
+
+        const button =
+            $("watchButton");
+
+
+        button.textContent =
+            "Login";
+
+
+        button.onclick =
+            ()=>{
+                window.location.href =
+                    "login.html";
+            };
+
+
+        $("adStatus").textContent =
+            "Login is required before starting a rewarded session.";
+
+        $("adStatus").className =
+            "status warning";
+
+
+        /* Box can still display locked state */
+
+        updateUI();
+
+
+        return;
+
+    }
+
+
+    /* USER */
+
+    STATE.user =
+        session.user;
+
+
+    /* SETTINGS */
+
+    await loadSettings();
+
+
+    /* MYSTERY STATUS */
+
+    const loaded =
+        await loadMysteryStatus();
+
+
+    /* FALLBACK */
+
+    if(!loaded){
+
+        await fallbackCount();
+
+    }
+
+
+    /* FINAL UI */
+
+    updateStaticUI();
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   START APP
+   ========================================================= */
+
+init();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>TaskEarn — Submission Status</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+    --bg:#080a1b;
+    --card:#101327;
+    --card2:#14182d;
+    --line:rgba(255,255,255,.07);
+
+    --blue:#718cff;
+    --purple:#936fff;
+    --green:#38dfad;
+    --yellow:#ffd05a;
+    --red:#ff647d;
+
+    --text:#f4f6ff;
+    --muted:#858eaa;
+
+    --shadow:0 18px 50px rgba(0,0,0,.28);
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    background:var(--bg);
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 20% -10%,rgba(113,140,255,.13),transparent 32%),
+        radial-gradient(circle at 90% 10%,rgba(147,111,255,.10),transparent 30%),
+        var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+button,
+a{
+    font:inherit;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+.app{
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    padding-bottom:40px;
+}
+
+/* HEADER */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:20;
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    padding:18px 20px;
+
+    background:rgba(8,10,27,.88);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border-bottom:1px solid var(--line);
+}
+
+.back-btn{
+    width:52px;
+    height:52px;
+    flex:0 0 52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(113,140,255,.15),
+            rgba(147,111,255,.06)
+        );
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:
+        transform .16s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.back-btn:active{
+    transform:scale(.93);
+}
+
+.back-btn svg{
+    width:23px;
+    height:23px;
+    stroke:currentColor;
+    fill:none;
+    stroke-width:2.2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.header-title{
+    min-width:0;
+}
+
+.header-title h1{
+    margin:0;
+
+    font-size:21px;
+    line-height:1.2;
+    font-weight:800;
+    letter-spacing:-.4px;
+}
+
+.header-title h1 span{
+    color:var(--blue);
+}
+
+.header-title p{
+    margin:5px 0 0;
+
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* CONTENT */
+
+.content{
+    padding:24px 20px 0;
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+
+    padding:25px 22px;
+
+    border:1px solid rgba(113,140,255,.18);
+    border-radius:26px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(113,140,255,.13),
+            rgba(147,111,255,.07) 48%,
+            rgba(16,19,39,.96)
+        );
+
+    box-shadow:var(--shadow);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    right:-80px;
+    top:-90px;
+
+    border-radius:50%;
+
+    background:rgba(113,140,255,.11);
+    filter:blur(2px);
+}
+
+.hero-badge{
+    position:relative;
+
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    padding:8px 12px;
+
+    border-radius:999px;
+
+    background:rgba(113,140,255,.10);
+    border:1px solid rgba(113,140,255,.17);
+
+    color:#9aaaFF;
+
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.8px;
+}
+
+.hero-badge svg{
+    width:14px;
+    height:14px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+}
+
+.hero h2{
+    position:relative;
+
+    margin:17px 0 7px;
+
+    font-size:27px;
+    line-height:1.12;
+
+    letter-spacing:-.8px;
+}
+
+.hero p{
+    position:relative;
+
+    margin:0;
+
+    color:var(--muted);
+
+    font-size:14px;
+    line-height:1.55;
+}
+
+/* STATUS */
+
+.status-card{
+    margin-top:18px;
+
+    padding:21px;
+
+    border:1px solid var(--line);
+    border-radius:23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.035),
+            rgba(255,255,255,.015)
+        );
+
+    box-shadow:var(--shadow);
+}
+
+.status-top{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.status-icon{
+    width:54px;
+    height:54px;
+    flex:0 0 54px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:17px;
+
+    background:rgba(255,208,90,.10);
+    border:1px solid rgba(255,208,90,.16);
+
+    color:var(--yellow);
+}
+
+.status-icon svg{
+    width:25px;
+    height:25px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.status-info{
+    min-width:0;
+    flex:1;
+}
+
+.status-label{
+    margin:0 0 5px;
+
+    color:var(--muted);
+
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.status-value{
+    margin:0;
+
+    font-size:20px;
+    font-weight:850;
+}
+
+/* STATUS COLORS */
+
+.status-card.pending .status-icon{
+    color:var(--yellow);
+    background:rgba(255,208,90,.10);
+    border-color:rgba(255,208,90,.17);
+}
+
+.status-card.pending .status-value{
+    color:var(--yellow);
+}
+
+.status-card.approved .status-icon{
+    color:var(--green);
+    background:rgba(56,223,173,.10);
+    border-color:rgba(56,223,173,.17);
+}
+
+.status-card.approved .status-value{
+    color:var(--green);
+}
+
+.status-card.rejected .status-icon{
+    color:var(--red);
+    background:rgba(255,100,125,.10);
+    border-color:rgba(255,100,125,.17);
+}
+
+.status-card.rejected .status-value{
+    color:var(--red);
+}
+
+/* TIMER */
+
+.timer-box{
+    margin-top:19px;
+
+    padding:20px;
+
+    border-radius:19px;
+
+    background:rgba(255,255,255,.025);
+    border:1px solid rgba(255,208,90,.13);
+
+    text-align:center;
+}
+
+.timer-label{
+    color:var(--muted);
+
+    font-size:11px;
+    font-weight:800;
+
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.timer{
+    margin-top:7px;
+
+    color:var(--yellow);
+
+    font-size:31px;
+    font-weight:900;
+
+    letter-spacing:1px;
+    font-variant-numeric:tabular-nums;
+}
+
+.timer-note{
+    margin-top:7px;
+
+    color:var(--muted);
+
+    font-size:12px;
+    line-height:1.4;
+}
+
+/* DETAILS */
+
+.section-title{
+    margin:27px 2px 12px;
+
+    font-size:16px;
+    font-weight:850;
+}
+
+.details-card{
+    overflow:hidden;
+
+    border:1px solid var(--line);
+    border-radius:22px;
+
+    background:var(--card);
+
+    box-shadow:var(--shadow);
+}
+
+.detail-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    padding:16px 18px;
+
+    border-bottom:1px solid var(--line);
+}
+
+.detail-row:last-child{
+    border-bottom:0;
+}
+
+.detail-icon{
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:rgba(113,140,255,.09);
+    color:#9aaaFF;
+}
+
+.detail-icon svg{
+    width:19px;
+    height:19px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.detail-text{
+    min-width:0;
+    flex:1;
+}
+
+.detail-name{
+    color:var(--muted);
+
+    font-size:11px;
+    font-weight:750;
+
+    text-transform:uppercase;
+    letter-spacing:.7px;
+}
+
+.detail-value{
+    margin-top:4px;
+
+    color:var(--text);
+
+    font-size:14px;
+    font-weight:700;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+/* REJECTION */
+
+.rejection{
+    display:none;
+
+    margin-top:18px;
+
+    padding:18px;
+
+    border-radius:20px;
+
+    background:rgba(255,100,125,.07);
+    border:1px solid rgba(255,100,125,.15);
+}
+
+.rejection.show{
+    display:block;
+}
+
+.rejection-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    color:var(--red);
+
+    font-size:14px;
+    font-weight:850;
+}
+
+.rejection-title svg{
+    width:19px;
+    height:19px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.rejection-text{
+    margin:9px 0 0;
+
+    color:#aeb5ca;
+
+    font-size:13px;
+    line-height:1.55;
+}
+
+/* SUCCESS */
+
+.success{
+    display:none;
+
+    margin-top:18px;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    background:rgba(56,223,173,.065);
+    border:1px solid rgba(56,223,173,.15);
+}
+
+.success.show{
+    display:block;
+}
+
+.success-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    color:var(--green);
+
+    font-size:15px;
+    font-weight:850;
+}
+
+.success-title svg{
+    width:21px;
+    height:21px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2.3;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.success p{
+    margin:9px 0 0;
+
+    color:#aeb5ca;
+
+    font-size:13px;
+    line-height:1.55;
+}
+
+/* ACTIONS */
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+
+    margin-top:23px;
+}
+
+.action-btn{
+    min-height:56px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    border-radius:17px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(113,140,255,.18),
+            rgba(147,111,255,.13)
+        );
+
+    color:#f5f6ff;
+
+    font-size:15px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        filter .2s ease,
+        border-color .2s ease;
+}
+
+.action-btn:active{
+    transform:scale(.97);
+}
+
+.action-btn.secondary{
+    background:rgba(255,255,255,.025);
+}
+
+.action-btn svg{
+    width:20px;
+    height:20px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+/* LOADING */
+
+.loading{
+    min-height:300px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    color:var(--muted);
+}
+
+.loader{
+    width:38px;
+    height:38px;
+
+    border-radius:50%;
+
+    border:3px solid rgba(255,255,255,.08);
+    border-top-color:var(--blue);
+
+    animation:spin .8s linear infinite;
+}
+
+.loading p{
+    margin-top:14px;
+
+    font-size:13px;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* ERROR */
+
+.error{
+    display:none;
+
+    margin-top:20px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    border:1px solid rgba(255,100,125,.16);
+
+    background:rgba(255,100,125,.06);
+
+    color:#c2c7d8;
+
+    font-size:13px;
+    line-height:1.55;
+}
+
+.error.show{
+    display:block;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+
+    left:50%;
+    bottom:25px;
+
+    z-index:100;
+
+    width:calc(100% - 40px);
+    max-width:500px;
+
+    padding:14px 17px;
+
+    transform:
+        translate(-50%,20px)
+        scale(.97);
+
+    opacity:0;
+    pointer-events:none;
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:15px;
+
+    background:rgba(20,24,45,.96);
+    backdrop-filter:blur(18px);
+
+    color:#fff;
+
+    font-size:13px;
+    font-weight:700;
+
+    text-align:center;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.toast.show{
+    opacity:1;
+    transform:
+        translate(-50%,0)
+        scale(1);
+}
+
+/* MOBILE */
+
+@media(max-width:430px){
+
+    .header{
+        padding:16px 16px;
+    }
+
+    .content{
+        padding:20px 16px 0;
+    }
+
+    .hero{
+        padding:22px 18px;
+        border-radius:23px;
+    }
+
+    .hero h2{
+        font-size:24px;
+    }
+
+    .status-card{
+        padding:18px;
+    }
+
+    .timer{
+        font-size:28px;
+    }
+
+    .detail-row{
+        padding:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <button
+            class="back-btn"
+            id="backBtn"
+            aria-label="Back">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6"></path>
+            </svg>
+
+        </button>
+
+        <div class="header-title">
+            <h1>Task<span>Earn</span></h1>
+            <p>Advertisement Submission</p>
+        </div>
+
+    </header>
+
+
+    <main class="content">
+
+        <!-- LOADING -->
+        <div class="loading" id="loading">
+
+            <div class="loader"></div>
+
+            <p>Loading your submission...</p>
+
+        </div>
+
+
+        <!-- MAIN CONTENT -->
+        <div id="mainContent" style="display:none;">
+
+            <!-- HERO -->
+            <section class="hero">
+
+                <div class="hero-badge">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 4h16v16H4z"></path>
+                        <path d="M8 12h8"></path>
+                        <path d="M8 8h5"></path>
+                        <path d="M8 16h6"></path>
+                    </svg>
+
+                    COMPANY REVIEW
+
+                </div>
+
+                <h2>Advertisement Submission</h2>
+
+                <p>
+                    Your TaskEarn promotional advertisement has been
+                    submitted successfully. Keep checking this page for
+                    the latest review status.
+                </p>
+
+            </section>
+
+
+            <!-- STATUS -->
+            <section
+                class="status-card pending"
+                id="statusCard">
+
+                <div class="status-top">
+
+                    <div class="status-icon" id="statusIcon">
+
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M12 7v5l3 2"></path>
+                        </svg>
+
+                    </div>
+
+                    <div class="status-info">
+
+                        <p class="status-label">
+                            Submission Status
+                        </p>
+
+                        <p
+                            class="status-value"
+                            id="statusValue">
+                            Pending Review
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TIMER -->
+                <div
+                    class="timer-box"
+                    id="timerBox">
+
+                    <div class="timer-label">
+                        REVIEW WINDOW
+                    </div>
+
+                    <div
+                        class="timer"
+                        id="timer">
+                        24:00:00
+                    </div>
+
+                    <div class="timer-note">
+                        The review window is calculated from
+                        the server submission deadline.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUBMISSION DETAILS -->
+            <h3 class="section-title">
+                Submission Details
+            </h3>
+
+            <section class="details-card">
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 4h16v16H4z"></path>
+                            <path d="M8 8h8"></path>
+                            <path d="M8 12h8"></path>
+                            <path d="M8 16h5"></path>
+                        </svg>
+
+                    </div>
+
+                    <div class="detail-text">
+
+                        <div class="detail-name">
+                            File Name
+                        </div>
+
+                        <div
+                            class="detail-value"
+                            id="fileName">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 7h16"></path>
+                            <path d="M7 4v6"></path>
+                            <path d="M17 4v6"></path>
+                            <rect
+                                x="4"
+                                y="5"
+                                width="16"
+                                height="15"
+                                rx="2">
+                            </rect>
+                        </svg>
+
+                    </div>
+
+                    <div class="detail-text">
+
+                        <div class="detail-name">
+                            File Type
+                        </div>
+
+                        <div
+                            class="detail-value"
+                            id="fileType">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3v18"></path>
+                            <path d="M5 8h14"></path>
+                            <path d="M5 16h14"></path>
+                        </svg>
+
+                    </div>
+
+                    <div class="detail-text">
+
+                        <div class="detail-name">
+                            File Size
+                        </div>
+
+                        <div
+                            class="detail-value"
+                            id="fileSize">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <svg viewBox="0 0 24 24">
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9">
+                            </circle>
+                            <path d="M12 7v5l3 2"></path>
+                        </svg>
+
+                    </div>
+
+                    <div class="detail-text">
+
+                        <div class="detail-name">
+                            Submitted
+                        </div>
+
+                        <div
+                            class="detail-value"
+                            id="submittedAt">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"></path>
+                            <path d="M9 12l2 2 4-4"></path>
+                        </svg>
+
+                    </div>
+
+                    <div class="detail-text">
+
+                        <div class="detail-name">
+                            Review Source
+                        </div>
+
+                        <div
+                            class="detail-value"
+                            id="reviewSource">
+                            Company Review
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- REJECTION -->
+            <section
+                class="rejection"
+                id="rejectionBox">
+
+                <div class="rejection-title">
+
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M15 9l-6 6"></path>
+                        <path d="M9 9l6 6"></path>
+                    </svg>
+
+                    Submission Rejected
+
+                </div>
+
+                <p
+                    class="rejection-text"
+                    id="rejectionText">
+                    —
+                </p>
+
+            </section>
+
+
+            <!-- APPROVED -->
+            <section
+                class="success"
+                id="successBox">
+
+                <div class="success-title">
+
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M8 12l2.5 2.5L16 9"></path>
+                    </svg>
+
+                    Advertisement Approved
+
+                </div>
+
+                <p>
+                    Your advertisement has passed the company
+                    review. Your company-project qualification can
+                    now continue if the remaining requirements are
+                    completed.
+                </p>
+
+            </section>
+
+
+            <!-- ERROR -->
+            <div
+                class="error"
+                id="errorBox">
+            </div>
+
+
+            <!-- ACTIONS -->
+            <div class="actions">
+
+                <a
+                    href="company-ad.html"
+                    class="action-btn">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 5v14"></path>
+                        <path d="M5 12l7-7 7 7"></path>
+                    </svg>
+
+                    Submit Another Advertisement
+
+                </a>
+
+
+                <a
+                    href="company-projects.html"
+                    class="action-btn secondary">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 6h16"></path>
+                        <path d="M4 12h16"></path>
+                        <path d="M4 18h16"></path>
+                    </svg>
+
+                    Company Projects
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<script>
+/* =========================================================
+   TASK EARN — COMPANY SUBMISSION STATUS
+   ========================================================= */
+
+/* EXACT SUPABASE CONNECTION — DO NOT CHANGE */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const loading =
+    document.getElementById("loading");
+
+const mainContent =
+    document.getElementById("mainContent");
+
+const errorBox =
+    document.getElementById("errorBox");
+
+const statusCard =
+    document.getElementById("statusCard");
+
+const statusIcon =
+    document.getElementById("statusIcon");
+
+const statusValue =
+    document.getElementById("statusValue");
+
+const timerBox =
+    document.getElementById("timerBox");
+
+const timer =
+    document.getElementById("timer");
+
+const fileName =
+    document.getElementById("fileName");
+
+const fileType =
+    document.getElementById("fileType");
+
+const fileSize =
+    document.getElementById("fileSize");
+
+const submittedAt =
+    document.getElementById("submittedAt");
+
+const reviewSource =
+    document.getElementById("reviewSource");
+
+const rejectionBox =
+    document.getElementById("rejectionBox");
+
+const rejectionText =
+    document.getElementById("rejectionText");
+
+const successBox =
+    document.getElementById("successBox");
+
+const toast =
+    document.getElementById("toast");
+
+
+let currentSubmission = null;
+let timerInterval = null;
+let pollInterval = null;
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function showToast(message){
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2600);
+}
+
+
+function showError(message){
+
+    errorBox.textContent = message;
+    errorBox.classList.add("show");
+
+}
+
+
+function clearError(){
+
+    errorBox.textContent = "";
+    errorBox.classList.remove("show");
+
+}
+
+
+function escapeText(value){
+
+    if(value === null || value === undefined){
+        return "—";
+    }
+
+    return String(value);
+}
+
+
+function formatBytes(bytes){
+
+    if(
+        bytes === null ||
+        bytes === undefined ||
+        Number(bytes) <= 0
+    ){
+        return "—";
+    }
+
+    const size =
+        Number(bytes);
+
+    if(size < 1024){
+        return size + " B";
+    }
+
+    if(size < 1024 * 1024){
+        return (size / 1024).toFixed(1) + " KB";
+    }
+
+    if(size < 1024 * 1024 * 1024){
+        return (size / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    return (
+        size /
+        (1024 * 1024 * 1024)
+    ).toFixed(2) + " GB";
+}
+
+
+function formatDate(value){
+
+    if(!value){
+        return "—";
+    }
+
+    const date =
+        new Date(value);
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+        return "—";
+    }
+
+    return date.toLocaleString(
+        undefined,
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+}
+
+
+/* =========================================================
+   STATUS ICONS
+   ========================================================= */
+
+function setPendingIcon(){
+
+    statusIcon.innerHTML = `
+        <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+        </svg>
+    `;
+}
+
+
+function setApprovedIcon(){
+
+    statusIcon.innerHTML = `
+        <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M8 12l2.5 2.5L16 9"></path>
+        </svg>
+    `;
+}
+
+
+function setRejectedIcon(){
+
+    statusIcon.innerHTML = `
+        <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M15 9l-6 6"></path>
+            <path d="M9 9l6 6"></path>
+        </svg>
+    `;
+}
+
+
+/* =========================================================
+   STATUS UI
+   ========================================================= */
+
+function updateStatusUI(row){
+
+    const rawStatus =
+        String(
+            row.status || "pending"
+        ).toLowerCase().trim();
+
+
+    statusCard.classList.remove(
+        "pending",
+        "approved",
+        "rejected"
+    );
+
+
+    rejectionBox.classList.remove("show");
+    successBox.classList.remove("show");
+
+
+    if(rawStatus === "approved"){
+
+        statusCard.classList.add("approved");
+
+        statusValue.textContent =
+            "Approved";
+
+        setApprovedIcon();
+
+        timerBox.style.display =
+            "none";
+
+        successBox.classList.add(
+            "show"
+        );
+
+        stopTimer();
+
+        return;
+    }
+
+
+    if(rawStatus === "rejected"){
+
+        statusCard.classList.add("rejected");
+
+        statusValue.textContent =
+            "Rejected";
+
+        setRejectedIcon();
+
+        timerBox.style.display =
+            "none";
+
+        const reason =
+            row.rejection_reason ||
+            "The company has rejected this advertisement submission.";
+
+        rejectionText.textContent =
+            reason;
+
+        rejectionBox.classList.add(
+            "show"
+        );
+
+        stopTimer();
+
+        return;
+    }
+
+
+    /* DEFAULT = PENDING */
+
+    statusCard.classList.add(
+        "pending"
+    );
+
+    statusValue.textContent =
+        "Pending Review";
+
+    setPendingIcon();
+
+    timerBox.style.display =
+        "block";
+
+
+    startReviewTimer(
+        row.auto_review_due_at
+    );
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function stopTimer(){
+
+    if(timerInterval){
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval = null;
+    }
+}
+
+
+function startReviewTimer(deadline){
+
+    stopTimer();
+
+
+    if(!deadline){
+
+        timer.textContent =
+            "24:00:00";
+
+        return;
+    }
+
+
+    function update(){
+
+        const end =
+            new Date(deadline)
+                .getTime();
+
+        const now =
+            Date.now();
+
+        let diff =
+            end - now;
+
+
+        if(diff <= 0){
+
+            timer.textContent =
+                "00:00:00";
+
+            timer.style.color =
+                "var(--yellow)";
+
+            stopTimer();
+
+            return;
+        }
+
+
+        const totalSeconds =
+            Math.floor(
+                diff / 1000
+            );
+
+        const hours =
+            Math.floor(
+                totalSeconds / 3600
+            );
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        timer.textContent =
+            String(hours).padStart(2,"0")
+            + ":"
+            + String(minutes).padStart(2,"0")
+            + ":"
+            + String(seconds).padStart(2,"0");
+    }
+
+
+    update();
+
+    timerInterval =
+        setInterval(
+            update,
+            1000
+        );
+}
+
+
+/* =========================================================
+   LOAD CURRENT USER
+   ========================================================= */
+
+async function getCurrentUser(){
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+    if(error){
+        throw error;
+    }
+
+
+    const session =
+        data?.session;
+
+
+    if(!session?.user){
+
+        window.location.href =
+            "login.html";
+
+        return null;
+    }
+
+
+    return session.user;
+}
+
+
+/* =========================================================
+   GET SUBMISSION ID
+   ========================================================= */
+
+function getSubmissionId(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const id =
+        params.get("id");
+
+    return id;
+}
+
+
+/* =========================================================
+   LOAD SPECIFIC SUBMISSION
+   ========================================================= */
+
+async function loadSpecificSubmission(
+    userId,
+    submissionId
+){
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("company_ads")
+            .select(`
+                id,
+                user_id,
+                file_path,
+                file_name,
+                file_type,
+                file_size,
+                status,
+                rejection_reason,
+                submitted_at,
+                reviewed_at,
+                reviewed_by,
+                auto_review_due_at,
+                auto_reviewed_at,
+                review_source
+            `)
+            .eq(
+                "id",
+                submissionId
+            )
+            .eq(
+                "user_id",
+                userId
+            )
+            .maybeSingle();
+
+
+    if(error){
+        throw error;
+    }
+
+
+    return data;
+}
+
+
+/* =========================================================
+   LOAD LATEST USER SUBMISSION
+   ========================================================= */
+
+async function loadLatestSubmission(
+    userId
+){
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("company_ads")
+            .select(`
+                id,
+                user_id,
+                file_path,
+                file_name,
+                file_type,
+                file_size,
+                status,
+                rejection_reason,
+                submitted_at,
+                reviewed_at,
+                reviewed_by,
+                auto_review_due_at,
+                auto_reviewed_at,
+                review_source
+            `)
+            .eq(
+                "user_id",
+                userId
+            )
+            .order(
+                "submitted_at",
+                {
+                    ascending:false
+                }
+            )
+            .limit(1)
+            .maybeSingle();
+
+
+    if(error){
+        throw error;
+    }
+
+
+    return data;
+}
+
+
+/* =========================================================
+   RENDER SUBMISSION
+   ========================================================= */
+
+function renderSubmission(row){
+
+    currentSubmission =
+        row;
+
+
+    fileName.textContent =
+        escapeText(
+            row.file_name
+        );
+
+
+    fileType.textContent =
+        escapeText(
+            row.file_type ||
+            "Unknown"
+        );
+
+
+    fileSize.textContent =
+        formatBytes(
+            row.file_size
+        );
+
+
+    submittedAt.textContent =
+        formatDate(
+            row.submitted_at
+        );
+
+
+    reviewSource.textContent =
+        row.review_source
+        ? String(
+            row.review_source
+        )
+        : "Company Review";
+
+
+    updateStatusUI(
+        row
+    );
+}
+
+
+/* =========================================================
+   LOAD
+   ========================================================= */
+
+async function loadSubmission(){
+
+    try{
+
+        clearError();
+
+
+        const user =
+            await getCurrentUser();
+
+
+        if(!user){
+            return;
+        }
+
+
+        const submissionId =
+            getSubmissionId();
+
+
+        let row = null;
+
+
+        if(submissionId){
+
+            row =
+                await loadSpecificSubmission(
+                    user.id,
+                    submissionId
+                );
+
+        }else{
+
+            row =
+                await loadLatestSubmission(
+                    user.id
+                );
+        }
+
+
+        if(!row){
+
+            loading.style.display =
+                "none";
+
+            mainContent.style.display =
+                "block";
+
+            showError(
+                "No advertisement submission was found for your account. Please submit your TaskEarn advertisement first."
+            );
+
+            timerBox.style.display =
+                "none";
+
+            return;
+        }
+
+
+        renderSubmission(
+            row
+        );
+
+
+        loading.style.display =
+            "none";
+
+        mainContent.style.display =
+            "block";
+
+
+    }catch(error){
+
+        console.error(
+            "Company submission error:",
+            error
+        );
+
+
+        loading.style.display =
+            "none";
+
+        mainContent.style.display =
+            "block";
+
+
+        showError(
+            "Unable to load your submission right now. Please check your internet connection and try again."
+        );
+    }
+}
+
+
+/* =========================================================
+   REFRESH STATUS
+   ========================================================= */
+
+async function refreshSubmission(){
+
+    try{
+
+        const user =
+            await getCurrentUser();
+
+
+        if(!user){
+            return;
+        }
+
+
+        let row = null;
+
+        const submissionId =
+            getSubmissionId();
+
+
+        if(submissionId){
+
+            row =
+                await loadSpecificSubmission(
+                    user.id,
+                    submissionId
+                );
+
+        }else{
+
+            row =
+                await loadLatestSubmission(
+                    user.id
+                );
+        }
+
+
+        if(row){
+
+            renderSubmission(
+                row
+            );
+        }
+
+    }catch(error){
+
+        console.error(
+            "Status refresh failed:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   START POLLING
+   ========================================================= */
+
+function startPolling(){
+
+    if(pollInterval){
+        clearInterval(
+            pollInterval
+        );
+    }
+
+
+    pollInterval =
+        setInterval(
+            refreshSubmission,
+            15000
+        );
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+document
+    .getElementById("backBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "company-ad.html";
+
+        }
+    );
+
+
+/* =========================================================
+   PAGE START
+   ========================================================= */
+
+loadSubmission();
+
+startPolling();
+
+
+/* =========================================================
+   CLEANUP
+   ========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        stopTimer();
+
+        if(pollInterval){
+            clearInterval(
+                pollInterval
+            );
+        }
+
+    }
+);
+</script>
+
+</body>
+</html>

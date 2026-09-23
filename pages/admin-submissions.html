@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Admin Submissions - TaskEarn</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+
+    background:#070b18;
+
+    color:#fff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:15px 18px;
+
+    background:
+        rgba(9,13,28,.96);
+
+    backdrop-filter:
+        blur(15px);
+
+    border-bottom:
+        1px solid #202744;
+}
+
+.back-btn{
+
+    width:48px;
+
+    height:48px;
+
+    border:
+        1px solid #34405f;
+
+    border-radius:15px;
+
+    background:#151b2d;
+
+    color:#fff;
+
+    font-size:25px;
+
+    cursor:pointer;
+}
+
+.logo{
+
+    font-size:20px;
+
+    font-weight:900;
+}
+
+.logo span{
+
+    color:#ffbd00;
+}
+
+.admin-badge{
+
+    margin-left:auto;
+
+    padding:7px 11px;
+
+    border-radius:20px;
+
+    background:#291b45;
+
+    border:
+        1px solid #6942a5;
+
+    color:#c99cff;
+
+    font-size:11px;
+
+    font-weight:800;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+
+    max-width:850px;
+
+    margin:auto;
+
+    padding:20px;
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.page-title{
+
+    margin-bottom:20px;
+}
+
+.page-title h1{
+
+    margin:0 0 7px;
+
+    font-size:29px;
+}
+
+.page-title p{
+
+    margin:0;
+
+    color:#8994b0;
+
+    line-height:1.5;
+}
+
+
+/* =========================
+   FILTERS
+========================= */
+
+.filters{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:20px;
+
+    overflow-x:auto;
+
+    padding-bottom:3px;
+}
+
+.filter-btn{
+
+    flex-shrink:0;
+
+    padding:11px 16px;
+
+    border:
+        1px solid #303b5a;
+
+    border-radius:14px;
+
+    background:#101627;
+
+    color:#aeb8d0;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.filter-btn.active{
+
+    background:
+        linear-gradient(
+            90deg,
+            #1a5271,
+            #303060
+        );
+
+    color:#fff;
+
+    border-color:#20cfff;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+
+    text-align:center;
+
+    padding:80px 20px;
+
+    color:#aeb7cc;
+}
+
+.spinner{
+
+    width:48px;
+
+    height:48px;
+
+    margin:
+        0 auto 18px;
+
+    border:
+        5px solid #252c42;
+
+    border-top-color:
+        #20cfff;
+
+    border-right-color:
+        #704cff;
+
+    border-radius:50%;
+
+    animation:
+        spin 1s linear infinite;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================
+   SUBMISSION CARD
+========================= */
+
+.submission-card{
+
+    margin-bottom:16px;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    background:#101627;
+
+    border:
+        1px solid #222c47;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.20);
+}
+
+.card-top{
+
+    display:flex;
+
+    justify-content:
+        space-between;
+
+    align-items:flex-start;
+
+    gap:15px;
+}
+
+.task-title{
+
+    margin:0;
+
+    font-size:19px;
+
+    line-height:1.4;
+}
+
+.company{
+
+    margin-top:6px;
+
+    color:#8d98b1;
+
+    font-size:13px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+
+    flex-shrink:0;
+
+    padding:7px 11px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+}
+
+.status.pending{
+
+    background:#3a2c0b;
+
+    color:#ffd35a;
+
+    border:
+        1px solid #6d5517;
+}
+
+.status.approved{
+
+    background:#0d3928;
+
+    color:#55e5a4;
+
+    border:
+        1px solid #1d7652;
+}
+
+.status.rejected{
+
+    background:#3b151c;
+
+    color:#ff8390;
+
+    border:
+        1px solid #7c2733;
+}
+
+
+/* =========================
+   INFO
+========================= */
+
+.info-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+
+    margin-top:17px;
+}
+
+.info{
+
+    padding:13px;
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+}
+
+.info small{
+
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#77829c;
+
+    font-size:11px;
+}
+
+.info strong{
+
+    color:#e8ebf5;
+
+    font-size:14px;
+
+    word-break:break-all;
+}
+
+.reward{
+
+    color:#ffd000 !important;
+
+    font-size:18px !important;
+}
+
+
+/* =========================
+   PROOF
+========================= */
+
+.proof-box{
+
+    margin-top:16px;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:#0a1020;
+
+    border:
+        1px solid #293451;
+}
+
+.proof-box h3{
+
+    margin:
+        0 0 10px;
+
+    font-size:15px;
+}
+
+.proof-text{
+
+    color:#c5cce0;
+
+    line-height:1.7;
+
+    white-space:pre-line;
+
+    word-break:break-word;
+}
+
+.proof-link{
+
+    display:block;
+
+    margin-top:12px;
+
+    color:#40d8ff;
+
+    text-decoration:none;
+
+    word-break:break-all;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:10px;
+
+    margin-top:17px;
+}
+
+.action-btn{
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+.approve-btn{
+
+    background:
+        linear-gradient(
+            90deg,
+            #16b978,
+            #0e9661
+        );
+
+    color:#fff;
+}
+
+.reject-btn{
+
+    background:#321922;
+
+    color:#ff9aa5;
+
+    border:
+        1px solid #65303c;
+}
+
+.action-btn:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+
+    text-align:center;
+
+    padding:70px 20px;
+
+    border-radius:22px;
+
+    background:#101627;
+
+    border:
+        1px solid #222c47;
+}
+
+.empty-icon{
+
+    font-size:45px;
+
+    margin-bottom:10px;
+}
+
+.empty h2{
+
+    margin:0 0 8px;
+}
+
+.empty p{
+
+    margin:0;
+
+    color:#8994b0;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error{
+
+    text-align:center;
+
+    padding:50px 20px;
+
+    color:#ff9aa5;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:500;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(0,0,0,.75);
+}
+
+.modal.show{
+
+    display:flex;
+}
+
+.modal-box{
+
+    width:100%;
+
+    max-width:500px;
+
+    padding:22px;
+
+    border-radius:22px;
+
+    background:#101627;
+
+    border:
+        1px solid #303b5a;
+}
+
+.modal-box h2{
+
+    margin-top:0;
+}
+
+.modal-box textarea{
+
+    width:100%;
+
+    min-height:120px;
+
+    resize:vertical;
+
+    padding:14px;
+
+    border:
+        1px solid #303b5a;
+
+    border-radius:14px;
+
+    background:#070b18;
+
+    color:#fff;
+
+    outline:none;
+
+    font-family:inherit;
+}
+
+.modal-actions{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.cancel-btn{
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:14px;
+
+    background:#252e44;
+
+    color:#fff;
+
+    font-weight:800;
+}
+
+.confirm-btn{
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:14px;
+
+    background:#a93245;
+
+    color:#fff;
+
+    font-weight:900;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <button
+        class="back-btn"
+        type="button"
+        onclick="goBack()">
+
+        ←
+
+    </button>
+
+
+    <div class="logo">
+
+        Task<span>Earn</span>
+
+    </div>
+
+
+    <div class="admin-badge">
+
+        ADMIN
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <div class="page-title">
+
+        <h1>
+            Submission Review
+        </h1>
+
+        <p>
+            Review user work and approve or reject
+            task submissions.
+        </p>
+
+    </div>
+
+
+    <div class="filters">
+
+        <button
+            class="filter-btn active"
+            data-status="pending">
+
+            Pending
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-status="approved">
+
+            Approved
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-status="rejected">
+
+            Rejected
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            data-status="all">
+
+            All
+
+        </button>
+
+    </div>
+
+
+    <div id="content">
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            <h3>
+                Loading submissions...
+            </h3>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================
+     REJECT MODAL
+========================= -->
+
+<div
+    id="rejectModal"
+    class="modal">
+
+    <div class="modal-box">
+
+        <h2>
+            Reject Submission
+        </h2>
+
+        <p style="color:#8994b0">
+
+            Add a reason for the user.
+
+        </p>
+
+
+        <textarea
+            id="rejectReason"
+            placeholder="Reason for rejection..."
+        ></textarea>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="cancel-btn"
+                onclick="closeRejectModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                class="confirm-btn"
+                onclick="confirmReject()">
+
+                Reject Submission
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let allSubmissions = [];
+
+let currentFilter =
+    "pending";
+
+let rejectSubmissionId =
+    null;
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   ADMIN CHECK
+===================================================== */
+
+async function checkAdmin(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .auth
+        .getSession();
+
+
+    if(error){
+
+        throw error;
+
+    }
+
+
+    const session =
+        data?.session;
+
+
+    if(
+        !session ||
+        !session.user
+    ){
+
+        window.location.href =
+            "login.html";
+
+        return false;
+
+    }
+
+
+    const {
+        data:isAdmin,
+        error:adminError
+    } =
+    await supabaseClient
+        .rpc(
+            "is_admin"
+        );
+
+
+    if(adminError){
+
+        throw adminError;
+
+    }
+
+
+    if(!isAdmin){
+
+        document.getElementById(
+            "content"
+        ).innerHTML = `
+
+            <div class="error">
+
+                <h2>
+                    🚫 Admin Access Required
+                </h2>
+
+                <p>
+                    This page is only available
+                    to TaskEarn administrators.
+                </p>
+
+            </div>
+
+        `;
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   LOAD SUBMISSIONS
+===================================================== */
+
+async function loadSubmissions(){
+
+    const isAdmin =
+        await checkAdmin();
+
+
+    if(!isAdmin){
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+
+            .from(
+                "task_completions"
+            )
+
+            .select(`
+                *,
+                tasks (
+                    title,
+                    reward
+                )
+            `)
+
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        allSubmissions =
+            data || [];
+
+
+        renderSubmissions();
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Admin submissions error:",
+            error
+        );
+
+
+        document.getElementById(
+            "content"
+        ).innerHTML = `
+
+            <div class="error">
+
+                <h2>
+                    ⚠️ Unable to load submissions
+                </h2>
+
+                <p>
+                    ${escapeHtml(
+                        error.message
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderSubmissions(){
+
+    let list =
+        allSubmissions;
+
+
+    if(
+        currentFilter !==
+        "all"
+    ){
+
+        list =
+            allSubmissions.filter(
+                function(item){
+
+                    return (
+                        item.status ===
+                        currentFilter
+                    );
+
+                }
+            );
+
+    }
+
+
+    const content =
+        document.getElementById(
+            "content"
+        );
+
+
+    if(
+        list.length === 0
+    ){
+
+        content.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ${
+                        currentFilter ===
+                        "pending"
+                        ? "🎉"
+                        : "📭"
+                    }
+                </div>
+
+                <h2>
+                    No ${
+                        currentFilter ===
+                        "all"
+                        ? ""
+                        : currentFilter
+                    } submissions
+                </h2>
+
+                <p>
+                    There is nothing to review here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    content.innerHTML =
+        list.map(
+            renderCard
+        ).join("");
+
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+function renderCard(item){
+
+    const task =
+        item.tasks || {};
+
+
+    const reward =
+        Number(
+            item.reward ??
+            task.reward ??
+            0
+        );
+
+
+    const status =
+        String(
+            item.status ||
+            "pending"
+        );
+
+
+    const created =
+        item.created_at
+        ? new Date(
+            item.created_at
+          ).toLocaleString()
+        : "Unknown";
+
+
+    const proofText =
+        item.proof_text ||
+        "No proof text provided.";
+
+
+    const proofUrl =
+        item.proof_url ||
+        "";
+
+
+    return `
+
+        <article
+            class="submission-card">
+
+            <div class="card-top">
+
+                <div>
+
+                    <h2
+                        class="task-title">
+
+                        ${escapeHtml(
+                            task.title ||
+                            "Task"
+                        )}
+
+                    </h2>
+
+                    <div
+                        class="company">
+
+                        Submitted:
+                        ${escapeHtml(
+                            created
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="status ${escapeHtml(status)}">
+
+                    ${escapeHtml(status)}
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="info-grid">
+
+                <div class="info">
+
+                    <small>
+                        REWARD
+                    </small>
+
+                    <strong
+                        class="reward">
+
+                        ₹${reward.toFixed(0)}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="info">
+
+                    <small>
+                        USER ID
+                    </small>
+
+                    <strong>
+
+                        ${escapeHtml(
+                            item.user_id
+                        )}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="proof-box">
+
+                <h3>
+                    📋 User Proof
+                </h3>
+
+                <div
+                    class="proof-text">
+
+                    ${escapeHtml(
+                        proofText
+                    )}
+
+                </div>
+
+
+                ${
+                    proofUrl
+                    ?
+                    `
+                    <a
+                        class="proof-link"
+                        href="${escapeHtml(
+                            proofUrl
+                        )}"
+                        target="_blank"
+                        rel="noopener">
+
+                        🔗 Open Proof Link
+
+                    </a>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+
+            ${
+                status ===
+                "pending"
+                ?
+                `
+
+                <div class="actions">
+
+                    <button
+                        class="action-btn approve-btn"
+                        onclick="approveSubmission(
+                            '${escapeHtml(item.id)}'
+                        )">
+
+                        ✅ Approve
+
+                    </button>
+
+
+                    <button
+                        class="action-btn reject-btn"
+                        onclick="openRejectModal(
+                            '${escapeHtml(item.id)}'
+                        )">
+
+                        ❌ Reject
+
+                    </button>
+
+                </div>
+
+                `
+                :
+                ""
+            }
+
+        </article>
+
+    `;
+
+}
+
+
+/* =====================================================
+   APPROVE
+===================================================== */
+
+async function approveSubmission(
+    submissionId
+){
+
+    const confirmed =
+        confirm(
+            "Approve this submission?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            error
+        } =
+        await supabaseClient
+
+            .from(
+                "task_completions"
+            )
+
+            .update({
+
+                status:
+                    "approved"
+
+            })
+
+            .eq(
+                "id",
+                submissionId
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        alert(
+            "Submission approved successfully."
+        );
+
+
+        await loadSubmissions();
+
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to approve submission."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   REJECT MODAL
+===================================================== */
+
+function openRejectModal(
+    submissionId
+){
+
+    rejectSubmissionId =
+        submissionId;
+
+
+    document.getElementById(
+        "rejectReason"
+    ).value = "";
+
+
+    document.getElementById(
+        "rejectModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+function closeRejectModal(){
+
+    rejectSubmissionId =
+        null;
+
+
+    document.getElementById(
+        "rejectModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   CONFIRM REJECT
+===================================================== */
+
+async function confirmReject(){
+
+    if(!rejectSubmissionId){
+
+        return;
+
+    }
+
+
+    const reason =
+        document.getElementById(
+            "rejectReason"
+        )
+        .value
+        .trim();
+
+
+    if(!reason){
+
+        alert(
+            "Please enter a rejection reason."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            error
+        } =
+        await supabaseClient
+
+            .from(
+                "task_completions"
+            )
+
+            .update({
+
+                status:
+                    "rejected",
+
+                rejection_reason:
+                    reason
+
+            })
+
+            .eq(
+                "id",
+                rejectSubmissionId
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        closeRejectModal();
+
+
+        alert(
+            "Submission rejected."
+        );
+
+
+        await loadSubmissions();
+
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to reject submission."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   FILTER BUTTONS
+===================================================== */
+
+document
+    .querySelectorAll(
+        ".filter-btn"
+    )
+    .forEach(
+        function(button){
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    document
+                        .querySelectorAll(
+                            ".filter-btn"
+                        )
+                        .forEach(
+                            function(btn){
+
+                                btn.classList
+                                    .remove(
+                                        "active"
+                                    );
+
+                            }
+                        );
+
+
+                    button.classList
+                        .add(
+                            "active"
+                        );
+
+
+                    currentFilter =
+                        button.dataset.status;
+
+
+                    renderSubmissions();
+
+                }
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+function goBack(){
+
+    if(
+        window.history.length > 1
+    ){
+
+        window.history.back();
+
+    }
+    else{
+
+        window.location.href =
+            "admin.html";
+
+    }
+
+}
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        function(
+            event
+        ){
+
+            console.log(
+                "Admin auth:",
+                event
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadSubmissions();
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,3917 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>TaskEarn — Submission Status</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
+    background:#050917;
+    color:#f5f7ff;
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button,
+a{
+    font-family:inherit;
+}
+
+button{
+    border:0;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.page-bg{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+}
+
+.glow{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.20;
+}
+
+.glow.one{
+    width:300px;
+    height:300px;
+    top:-130px;
+    right:-100px;
+    background:#4658ff;
+}
+
+.glow.two{
+    width:280px;
+    height:280px;
+    left:-150px;
+    top:420px;
+    background:#00d9ff;
+}
+
+.glow.three{
+    width:240px;
+    height:240px;
+    right:-130px;
+    bottom:80px;
+    background:#7a42ff;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+    position:relative;
+    z-index:2;
+    height:112px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 28px;
+    border-bottom:1px solid rgba(120,140,220,.20);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(8,13,31,.98),
+            rgba(6,10,25,.94)
+        );
+}
+
+.brand-area{
+    display:flex;
+    align-items:center;
+    gap:24px;
+}
+
+.back-btn{
+    width:54px;
+    height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    border:1px solid rgba(100,130,220,.30);
+    background:rgba(25,35,66,.55);
+    color:#fff;
+    font-size:36px;
+    line-height:1;
+    transition:.2s ease;
+}
+
+.back-btn:active{
+    transform:scale(.94);
+}
+
+.brand{
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:-1.2px;
+}
+
+.brand span{
+    color:#607cff;
+}
+
+.wallet-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 16px;
+    border-radius:14px;
+    border:1px solid rgba(96,124,255,.30);
+    background:rgba(96,124,255,.10);
+    color:#dfe5ff;
+    font-size:14px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    padding:40px 28px 60px;
+}
+
+
+/* =========================================================
+   STATUS CARD
+========================================================= */
+
+.status-card{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(110,135,220,.28);
+    border-radius:32px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25,35,66,.92),
+            rgba(8,14,31,.96)
+        );
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.32),
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.status-card::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    top:-180px;
+    right:-100px;
+    border-radius:50%;
+    background:rgba(75,102,255,.11);
+    pointer-events:none;
+}
+
+.status-inner{
+    position:relative;
+    z-index:1;
+    padding:52px 32px 34px;
+}
+
+
+/* =========================================================
+   STATUS ICON
+========================================================= */
+
+.status-icon{
+    width:150px;
+    height:150px;
+    margin:0 auto 28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    border:1px solid rgba(255,206,91,.42);
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,190,65,.16),
+            rgba(255,190,65,.035) 65%,
+            transparent 70%
+        );
+    box-shadow:
+        0 0 0 14px rgba(255,190,65,.025),
+        0 0 45px rgba(255,190,65,.08);
+}
+
+.status-icon-inner{
+    font-size:42px;
+    font-weight:900;
+}
+
+.status-icon.pending .status-icon-inner{
+    letter-spacing:5px;
+    color:#ffd35e;
+    animation:pulseDots 1.2s infinite ease-in-out;
+}
+
+.status-icon.approved{
+    border-color:rgba(57,230,157,.45);
+    background:
+        radial-gradient(
+            circle,
+            rgba(57,230,157,.17),
+            rgba(57,230,157,.035) 65%,
+            transparent 70%
+        );
+    box-shadow:
+        0 0 0 14px rgba(57,230,157,.025),
+        0 0 50px rgba(57,230,157,.10);
+}
+
+.status-icon.approved .status-icon-inner{
+    color:#42e7a1;
+}
+
+.status-icon.rejected{
+    border-color:rgba(255,83,111,.42);
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,83,111,.16),
+            rgba(255,83,111,.03) 65%,
+            transparent 70%
+        );
+}
+
+.status-icon.rejected .status-icon-inner{
+    color:#ff617a;
+}
+
+.status-icon.test-complete{
+    border-color:rgba(96,124,255,.45);
+    background:
+        radial-gradient(
+            circle,
+            rgba(96,124,255,.18),
+            rgba(96,124,255,.035) 65%,
+            transparent 70%
+        );
+    box-shadow:
+        0 0 0 14px rgba(96,124,255,.025),
+        0 0 50px rgba(96,124,255,.10);
+}
+
+.status-icon.test-complete .status-icon-inner{
+    color:#6f8aff;
+}
+
+@keyframes pulseDots{
+
+    0%,100%{
+        opacity:.35;
+        transform:scale(.95);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.04);
+    }
+
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.status-title{
+    margin:0;
+    text-align:center;
+    font-size:42px;
+    line-height:1.08;
+    letter-spacing:-1.5px;
+}
+
+.status-description{
+    max-width:610px;
+    margin:22px auto 0;
+    text-align:center;
+    color:#9ba8c9;
+    font-size:18px;
+    line-height:1.65;
+}
+
+
+/* =========================================================
+   INFO BOX
+========================================================= */
+
+.info-box{
+    margin-top:36px;
+    padding:26px;
+    border:1px solid rgba(100,125,205,.26);
+    border-radius:24px;
+    background:rgba(4,10,25,.60);
+}
+
+.info-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:16px 0;
+    border-bottom:1px solid rgba(110,130,190,.13);
+}
+
+.info-row:last-child{
+    border-bottom:0;
+}
+
+.info-label{
+    color:#9da9c7;
+    font-size:17px;
+}
+
+.info-value{
+    max-width:62%;
+    text-align:right;
+    color:#f5f7ff;
+    font-size:17px;
+    font-weight:850;
+    word-break:break-word;
+}
+
+.reward{
+    color:#46e5a0;
+    font-size:27px;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:36px;
+    padding:7px 13px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.badge.pending{
+    color:#ffd35e;
+    background:rgba(255,194,66,.10);
+    border:1px solid rgba(255,194,66,.22);
+}
+
+.badge.approved{
+    color:#4ce6a2;
+    background:rgba(57,230,157,.10);
+    border:1px solid rgba(57,230,157,.23);
+}
+
+.badge.rejected{
+    color:#ff6b82;
+    background:rgba(255,83,111,.10);
+    border:1px solid rgba(255,83,111,.23);
+}
+
+.badge.test{
+    color:#7791ff;
+    background:rgba(96,124,255,.10);
+    border:1px solid rgba(96,124,255,.24);
+}
+
+
+/* =========================================================
+   PROCESSING TIMER
+========================================================= */
+
+.timer-section{
+    margin-top:26px;
+    padding:28px 22px;
+    border-radius:24px;
+    border:1px solid rgba(255,194,66,.22);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,190,65,.075),
+            rgba(255,190,65,.018)
+        );
+    text-align:center;
+}
+
+.timer-section.complete{
+    border-color:rgba(57,230,157,.24);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(57,230,157,.08),
+            rgba(57,230,157,.018)
+        );
+}
+
+.timer-label{
+    color:#aab5d0;
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+}
+
+.timer{
+    margin-top:9px;
+    color:#ffd45f;
+    font-size:50px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:2px;
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 25px rgba(255,205,78,.14);
+}
+
+.timer-section.complete .timer{
+    color:#48e5a0;
+    text-shadow:0 0 25px rgba(57,230,157,.14);
+}
+
+.timer-sub{
+    margin-top:12px;
+    color:#8996b7;
+    font-size:13px;
+    line-height:1.5;
+}
+
+
+/* =========================================================
+   PROCESSING DETAILS
+========================================================= */
+
+.processing-detail{
+    margin-top:16px;
+    padding:15px 16px;
+    border-radius:16px;
+    border:1px solid rgba(100,125,205,.18);
+    background:rgba(20,29,55,.40);
+    color:#aeb9d4;
+    font-size:13px;
+    line-height:1.55;
+    text-align:center;
+}
+
+.processing-detail strong{
+    color:#e9edff;
+}
+
+
+/* =========================================================
+   APPROVAL BOX
+========================================================= */
+
+.approval-box{
+    display:none;
+    margin-top:26px;
+    padding:28px 22px;
+    text-align:center;
+    border-radius:24px;
+    border:1px solid rgba(57,230,157,.24);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(57,230,157,.09),
+            rgba(57,230,157,.018)
+        );
+}
+
+.approval-box.show{
+    display:block;
+}
+
+.approval-icon{
+    font-size:42px;
+}
+
+.approval-title{
+    margin-top:10px;
+    font-size:25px;
+    font-weight:950;
+}
+
+.approval-text{
+    margin-top:9px;
+    color:#9caaca;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   TEST BOX
+========================================================= */
+
+.test-box{
+    display:none;
+    margin-top:26px;
+    padding:26px 22px;
+    text-align:center;
+    border-radius:24px;
+    border:1px solid rgba(96,124,255,.25);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(96,124,255,.09),
+            rgba(96,124,255,.018)
+        );
+}
+
+.test-box.show{
+    display:block;
+}
+
+.test-icon{
+    font-size:38px;
+}
+
+.test-title{
+    margin-top:9px;
+    font-size:22px;
+    font-weight:950;
+}
+
+.test-text{
+    margin-top:9px;
+    color:#9caaca;
+    line-height:1.6;
+    font-size:14px;
+}
+
+
+/* =========================================================
+   AD FLOW
+========================================================= */
+
+.ad-flow{
+    display:none;
+    margin-top:26px;
+    padding:30px 22px;
+    border-radius:24px;
+    border:1px solid rgba(96,124,255,.28);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(70,88,255,.10),
+            rgba(70,88,255,.025)
+        );
+    text-align:center;
+}
+
+.ad-flow.show{
+    display:block;
+}
+
+.ad-label{
+    color:#8795ba;
+    font-size:12px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:1.3px;
+}
+
+.ad-number{
+    margin-top:12px;
+    font-size:29px;
+    font-weight:950;
+}
+
+.ad-loader{
+    width:55px;
+    height:55px;
+    margin:22px auto;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.09);
+    border-top-color:#6682ff;
+    animation:adSpin .8s linear infinite;
+}
+
+@keyframes adSpin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+.ad-message{
+    color:#9ba8c7;
+    font-size:14px;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   REJECTION
+========================================================= */
+
+.rejection-box{
+    display:none;
+    margin-top:26px;
+    padding:22px;
+    border-radius:20px;
+    border:1px solid rgba(255,83,111,.23);
+    background:rgba(255,83,111,.055);
+}
+
+.rejection-box.show{
+    display:block;
+}
+
+.rejection-title{
+    color:#ff7186;
+    font-size:16px;
+    font-weight:900;
+}
+
+.rejection-reason{
+    margin-top:9px;
+    color:#b9c1d6;
+    font-size:14px;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-box{
+    display:none;
+    margin-top:26px;
+    padding:20px;
+    border-radius:18px;
+    border:1px solid rgba(255,83,111,.25);
+    background:rgba(255,83,111,.06);
+    color:#ff8498;
+    text-align:center;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.error-box.show{
+    display:block;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.actions{
+    margin-top:28px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+}
+
+.primary-btn,
+.secondary-btn{
+    width:100%;
+    min-height:58px;
+    border-radius:17px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.primary-btn{
+    color:#fff;
+    background:
+        linear-gradient(
+            135deg,
+            #526cff,
+            #7255ff
+        );
+    box-shadow:0 12px 30px rgba(82,108,255,.18);
+}
+
+.secondary-btn{
+    color:#dfe5ff;
+    border:1px solid rgba(100,125,205,.27);
+    background:rgba(30,40,70,.48);
+}
+
+.primary-btn:active,
+.secondary-btn:active{
+    transform:scale(.975);
+}
+
+.primary-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.secure-note{
+    margin-top:25px;
+    text-align:center;
+    color:#657291;
+    font-size:12px;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.page-loader{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#050917;
+}
+
+.page-loader.hidden{
+    display:none;
+}
+
+.loader-wrap{
+    text-align:center;
+}
+
+.loader-ring{
+    width:52px;
+    height:52px;
+    margin:0 auto 18px;
+    border:4px solid rgba(255,255,255,.08);
+    border-top-color:#637cff;
+    border-radius:50%;
+    animation:loaderSpin .8s linear infinite;
+}
+
+@keyframes loaderSpin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+.loader-text{
+    color:#8996b7;
+    font-size:14px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+    position:fixed;
+    z-index:300;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,30px);
+    width:calc(100% - 40px);
+    max-width:520px;
+    padding:15px 18px;
+    border-radius:15px;
+    background:#151e38;
+    border:1px solid rgba(110,135,220,.28);
+    color:#eaf0ff;
+    text-align:center;
+    font-size:13px;
+    font-weight:750;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s ease;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+    .header{
+        height:108px;
+        padding:20px 18px;
+    }
+
+    .brand-area{
+        gap:15px;
+    }
+
+    .back-btn{
+        width:54px;
+        height:54px;
+    }
+
+    .brand{
+        font-size:29px;
+    }
+
+    .wallet-btn{
+        padding:11px 12px;
+        font-size:12px;
+    }
+
+    .main{
+        padding:26px 14px 45px;
+    }
+
+    .status-inner{
+        padding:40px 17px 25px;
+    }
+
+    .status-card{
+        border-radius:28px;
+    }
+
+    .status-icon{
+        width:140px;
+        height:140px;
+    }
+
+    .status-title{
+        font-size:36px;
+    }
+
+    .status-description{
+        font-size:16px;
+        line-height:1.6;
+    }
+
+    .info-box{
+        padding:19px;
+        border-radius:21px;
+    }
+
+    .info-row{
+        padding:14px 0;
+    }
+
+    .info-label,
+    .info-value{
+        font-size:15px;
+    }
+
+    .reward{
+        font-size:24px;
+    }
+
+    .timer{
+        font-size:43px;
+    }
+
+    .timer-section{
+        padding:25px 15px;
+    }
+
+}
+
+@media(max-width:390px){
+
+    .brand{
+        font-size:25px;
+    }
+
+    .wallet-btn{
+        display:none;
+    }
+
+    .status-title{
+        font-size:31px;
+    }
+
+    .timer{
+        font-size:37px;
+        letter-spacing:1px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY LONG TIMER
+========================================================= */
+
+@media(min-width:601px){
+
+    .timer{
+        font-size:54px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     BACKGROUND
+======================================================= -->
+
+<div class="page-bg">
+
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
+
+</div>
+
+
+<!-- =======================================================
+     PAGE LOADER
+======================================================= -->
+
+<div
+    class="page-loader"
+    id="pageLoader"
+>
+
+    <div class="loader-wrap">
+
+        <div class="loader-ring"></div>
+
+        <div class="loader-text">
+            Checking submission...
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="header">
+
+    <div class="brand-area">
+
+        <a
+            href="home.html"
+            class="back-btn"
+            aria-label="Back to home"
+        >
+            ‹
+        </a>
+
+        <a
+            href="home.html"
+            class="brand"
+        >
+            Task<span>Earn</span>
+        </a>
+
+    </div>
+
+
+    <a
+        href="wallet.html"
+        class="wallet-btn"
+    >
+
+        <span>▣</span>
+
+        <span>Wallet</span>
+
+    </a>
+
+</header>
+
+
+<!-- =======================================================
+     MAIN
+======================================================= -->
+
+<main class="main">
+
+<section class="status-card">
+
+<div class="status-inner">
+
+
+<!-- =====================================================
+     STATUS ICON
+===================================================== -->
+
+<div
+    class="status-icon pending"
+    id="statusIcon"
+>
+
+    <div
+        class="status-icon-inner"
+        id="statusIconInner"
+    >
+        •••
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TITLE
+===================================================== -->
+
+<h1
+    class="status-title"
+    id="statusTitle"
+>
+    Proof Submitted
+</h1>
+
+
+<p
+    class="status-description"
+    id="statusDescription"
+>
+    Your proof has been submitted successfully.
+    The company is reviewing your submission.
+</p>
+
+
+<!-- =====================================================
+     TASK INFO
+===================================================== -->
+
+<div class="info-box">
+
+
+    <div class="info-row">
+
+        <span class="info-label">
+            Task
+        </span>
+
+        <span
+            class="info-value"
+            id="taskTitle"
+        >
+            Loading...
+        </span>
+
+    </div>
+
+
+    <div class="info-row">
+
+        <span class="info-label">
+            Status
+        </span>
+
+        <span
+            class="info-value"
+            id="statusValue"
+        >
+
+            <span class="badge pending">
+                Processing
+            </span>
+
+        </span>
+
+    </div>
+
+
+    <div class="info-row">
+
+        <span class="info-label">
+            Reward
+        </span>
+
+        <span
+            class="info-value reward"
+            id="rewardValue"
+        >
+            ₹0
+        </span>
+
+    </div>
+
+
+    <div class="info-row">
+
+        <span class="info-label">
+            Company Time
+        </span>
+
+        <span
+            class="info-value"
+            id="processingValue"
+        >
+            Calculating...
+        </span>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     PROCESSING TIMER
+===================================================== -->
+
+<div
+    class="timer-section"
+    id="timerSection"
+>
+
+    <div class="timer-label">
+        Company Processing Time
+    </div>
+
+
+    <div
+        class="timer"
+        id="timer"
+    >
+        --:--:--
+    </div>
+
+
+    <div
+        class="timer-sub"
+        id="timerSub"
+    >
+        Waiting for submission time...
+    </div>
+
+
+    <div
+        class="processing-detail"
+        id="processingDetail"
+    >
+        Processing time is calculated from the
+        successful proof submission.
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     APPROVAL BOX
+===================================================== -->
+
+<div
+    class="approval-box"
+    id="approvalBox"
+>
+
+    <div class="approval-icon">
+        🎉
+    </div>
+
+
+    <div class="approval-title">
+        Reward Approved
+    </div>
+
+
+    <div
+        class="approval-text"
+        id="approvalText"
+    >
+        Your submission has been approved.
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TEST TASK BOX
+===================================================== -->
+
+<div
+    class="test-box"
+    id="testBox"
+>
+
+    <div class="test-icon">
+        ✓
+    </div>
+
+
+    <div class="test-title">
+        Test Processing Complete
+    </div>
+
+
+    <div class="test-text">
+        This is a TaskEarn test task.
+        The processing flow is being demonstrated.
+        No ₹250 reward will be added to your wallet.
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     AD FLOW
+===================================================== -->
+
+<div
+    class="ad-flow"
+    id="adFlow"
+>
+
+    <div class="ad-label">
+        Advertisement
+    </div>
+
+
+    <div
+        class="ad-number"
+        id="adNumber"
+    >
+        Ad 1 of 3
+    </div>
+
+
+    <div class="ad-loader"></div>
+
+
+    <div
+        class="ad-message"
+        id="adMessage"
+    >
+        Please wait for the advertisement to finish.
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     REJECTION
+===================================================== -->
+
+<div
+    class="rejection-box"
+    id="rejectionBox"
+>
+
+    <div class="rejection-title">
+        Submission Rejected
+    </div>
+
+
+    <div
+        class="rejection-reason"
+        id="rejectionReason"
+    >
+        Your submission was not approved.
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ERROR
+===================================================== -->
+
+<div
+    class="error-box"
+    id="errorBox"
+></div>
+
+
+<!-- =====================================================
+     ACTIONS
+===================================================== -->
+
+<div class="actions">
+
+
+    <a
+        href="tasks.html"
+        class="secondary-btn"
+    >
+        Back to Tasks
+    </a>
+
+
+    <a
+        href="wallet.html"
+        class="primary-btn"
+        id="walletBtn"
+        style="display:none;"
+    >
+        Open Wallet
+    </a>
+
+
+    <button
+        type="button"
+        class="primary-btn"
+        id="retryBtn"
+        style="display:none;"
+    >
+        Check Again
+    </button>
+
+
+</div>
+
+
+<div class="secure-note">
+
+    TaskEarn checks your submission status securely.
+    The processing countdown is based on the processing
+    time configured for this task.
+
+</div>
+
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =======================================================
+     TOAST
+======================================================= -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<script>
+
+/* =========================================================
+   TASK EARN — SUBMISSION STATUS
+   CONNECTED VERSION
+========================================================= */
+
+
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+const POLL_INTERVAL_MS = 5000;
+
+const TOTAL_ADS = 3;
+
+
+/*
+   CURRENT TEST TASK
+
+   Your current TaskEarn test task is ID 4.
+
+   This avoids depending on a non-existing
+   tasks.is_test column.
+*/
+
+const TEST_TASK_IDS = new Set([
+    4
+]);
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentSession = null;
+
+let currentSubmission = null;
+
+let currentTask = null;
+
+let timerInterval = null;
+
+let pollingInterval = null;
+
+let rewardFlowRunning = false;
+
+let currentAdNumber = 0;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const pageLoader =
+    document.getElementById("pageLoader");
+
+const statusIcon =
+    document.getElementById("statusIcon");
+
+const statusIconInner =
+    document.getElementById("statusIconInner");
+
+const statusTitle =
+    document.getElementById("statusTitle");
+
+const statusDescription =
+    document.getElementById("statusDescription");
+
+const taskTitle =
+    document.getElementById("taskTitle");
+
+const statusValue =
+    document.getElementById("statusValue");
+
+const rewardValue =
+    document.getElementById("rewardValue");
+
+const processingValue =
+    document.getElementById("processingValue");
+
+const timerSection =
+    document.getElementById("timerSection");
+
+const timer =
+    document.getElementById("timer");
+
+const timerSub =
+    document.getElementById("timerSub");
+
+const processingDetail =
+    document.getElementById("processingDetail");
+
+const approvalBox =
+    document.getElementById("approvalBox");
+
+const approvalText =
+    document.getElementById("approvalText");
+
+const testBox =
+    document.getElementById("testBox");
+
+const adFlow =
+    document.getElementById("adFlow");
+
+const adNumber =
+    document.getElementById("adNumber");
+
+const adMessage =
+    document.getElementById("adMessage");
+
+const rejectionBox =
+    document.getElementById("rejectionBox");
+
+const rejectionReason =
+    document.getElementById("rejectionReason");
+
+const errorBox =
+    document.getElementById("errorBox");
+
+const walletBtn =
+    document.getElementById("walletBtn");
+
+const retryBtn =
+    document.getElementById("retryBtn");
+
+const toast =
+    document.getElementById("toast");
+
+
+/* =========================================================
+   TEST TASK CHECK
+========================================================= */
+function isCurrentTaskTest(){
+
+    if(!currentTask){
+        return false;
+    }
+
+    return (
+        currentTask.is_test === true ||
+        currentTask.is_test_task === true
+    );
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    clearTimeout(
+        showToast.timeout
+    );
+
+    showToast.timeout =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showError(message){
+
+    errorBox.textContent =
+        message ||
+        "Something went wrong.";
+
+    errorBox.classList.add(
+        "show"
+    );
+
+    retryBtn.style.display =
+        "flex";
+}
+
+
+function hideError(){
+
+    errorBox.classList.remove(
+        "show"
+    );
+
+    retryBtn.style.display =
+        "none";
+}
+
+
+/* =========================================================
+   MONEY
+========================================================= */
+
+function formatMoney(value){
+
+    const number =
+        Number(value || 0);
+
+    return "₹" +
+        number.toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits:0,
+                maximumFractionDigits:2
+            }
+        );
+}
+
+
+/* =========================================================
+   TIMER FORMAT
+========================================================= */
+
+function formatTime(totalSeconds){
+
+    totalSeconds =
+        Math.max(
+            0,
+            Math.floor(totalSeconds)
+        );
+
+
+    const days =
+        Math.floor(
+            totalSeconds / 86400
+        );
+
+
+    const hours =
+        Math.floor(
+            (totalSeconds % 86400) / 3600
+        );
+
+
+    const minutes =
+        Math.floor(
+            (totalSeconds % 3600) / 60
+        );
+
+
+    const seconds =
+        totalSeconds % 60;
+
+
+    if(days > 0){
+
+        return (
+            days +
+            "d " +
+            String(hours).padStart(2,"0") +
+            ":" +
+            String(minutes).padStart(2,"0") +
+            ":" +
+            String(seconds).padStart(2,"0")
+        );
+
+    }
+
+
+    return (
+        String(hours).padStart(2,"0") +
+        ":" +
+        String(minutes).padStart(2,"0") +
+        ":" +
+        String(seconds).padStart(2,"0")
+    );
+}
+
+
+/* =========================================================
+   PROCESSING TIME FORMAT
+========================================================= */
+
+function formatProcessingTime(minutes){
+
+    minutes =
+        Number(minutes);
+
+
+    if(
+        !Number.isFinite(minutes) ||
+        minutes <= 0
+    ){
+
+        return "Processing time unavailable";
+
+    }
+
+
+    if(
+        minutes % 1440 === 0
+    ){
+
+        const days =
+            minutes / 1440;
+
+        return (
+            days +
+            (
+                days === 1
+                    ? " day"
+                    : " days"
+            )
+        );
+
+    }
+
+
+    if(
+        minutes % 60 === 0
+    ){
+
+        const hours =
+            minutes / 60;
+
+        return (
+            hours +
+            (
+                hours === 1
+                    ? " hour"
+                    : " hours"
+            )
+        );
+
+    }
+
+
+    return (
+        minutes +
+        (
+            minutes === 1
+                ? " minute"
+                : " minutes"
+        )
+    );
+}
+
+
+/* =========================================================
+   URL TASK ID
+========================================================= */
+
+function getTaskIdFromURL(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const taskId =
+        params.get("task_id");
+
+
+    if(!taskId){
+
+        return null;
+
+    }
+
+
+    const number =
+        Number(taskId);
+
+
+    return Number.isFinite(number)
+        ? number
+        : null;
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+async function getCurrentSession(){
+
+    const result =
+        await supabaseClient.auth.getSession();
+
+
+    if(result.error){
+
+        throw result.error;
+
+    }
+
+
+    return result.data.session;
+}
+
+
+/* =========================================================
+   FIND SUBMISSION
+========================================================= */
+
+async function findSubmission(){
+
+    if(
+        !currentSession ||
+        !currentSession.user
+    ){
+
+        return null;
+
+    }
+
+
+    const taskId =
+        getTaskIdFromURL();
+
+
+    let query =
+        supabaseClient
+            .from("task_submissions")
+            .select(
+                "id,task_id,user_id,proof,status,reward,submitted_at,reviewed_at"
+            )
+            .eq(
+                "user_id",
+                currentSession.user.id
+            );
+
+
+    if(taskId !== null){
+
+        query =
+            query.eq(
+                "task_id",
+                taskId
+            );
+
+    }
+
+
+    const result =
+        await query
+            .order(
+                "submitted_at",
+                {
+                    ascending:false
+                }
+            )
+            .limit(1)
+            .maybeSingle();
+
+
+    if(result.error){
+
+        throw result.error;
+
+    }
+
+
+    return result.data;
+}
+
+
+/* =========================================================
+   LOAD TASK
+========================================================= */
+
+async function loadTask(taskId){
+
+    if(!taskId){
+
+        return null;
+
+    }
+
+
+    /*
+       IMPORTANT:
+
+       Do NOT request is_test here because
+       the current tasks table does not have
+       a confirmed is_test column.
+    */
+
+    const result =
+        await supabaseClient
+            .from("tasks")
+            .select(
+                "id,title,reward,description,category,task_type,processing_minutes"
+            )
+            .eq(
+                "id",
+                taskId
+            )
+            .maybeSingle();
+
+
+    if(result.error){
+
+        console.error(
+            "Task loading error:",
+            result.error
+        );
+
+        throw result.error;
+
+    }
+
+
+    return result.data;
+}
+
+
+/* =========================================================
+   UPDATE BASIC UI
+========================================================= */
+
+function updateBasicUI(){
+
+    if(!currentSubmission){
+
+        return;
+
+    }
+
+
+    /*
+       Submission reward is the actual user reward.
+
+       This page does not calculate or add money.
+    */
+
+    const reward =
+        Number(
+            currentSubmission.reward || 0
+        );
+
+
+    rewardValue.textContent =
+        formatMoney(reward);
+
+
+    taskTitle.textContent =
+        currentTask?.title ||
+        (
+            "Task #" +
+            currentSubmission.task_id
+        );
+
+
+    const processingMinutes =
+        Number(
+            currentTask?.processing_minutes
+        );
+
+
+    if(
+        Number.isFinite(processingMinutes) &&
+        processingMinutes > 0
+    ){
+
+        processingValue.textContent =
+            formatProcessingTime(
+                processingMinutes
+            );
+
+    }
+    else{
+
+        processingValue.textContent =
+            "Not configured";
+
+    }
+
+
+    updateStatusUI(
+        currentSubmission.status
+    );
+}
+
+
+/* =========================================================
+   STATUS UI
+========================================================= */
+
+function updateStatusUI(status){
+
+    const normalized =
+        String(
+            status || "pending"
+        ).toLowerCase();
+
+
+    statusIcon.classList.remove(
+        "pending",
+        "approved",
+        "rejected",
+        "test-complete"
+    );
+
+
+    const isTestTask =
+        isCurrentTaskTest();
+
+
+    /* ======================================================
+       TEST TASK
+    ====================================================== */
+
+    if(
+        normalized === "approved" &&
+        isTestTask
+    ){
+
+        statusIcon.classList.add(
+            "test-complete"
+        );
+
+        statusIconInner.textContent =
+            "✓";
+
+
+        statusTitle.textContent =
+            "Test Processing Complete";
+
+
+        statusDescription.textContent =
+            "This test task has completed its processing flow. No test reward will be added to your wallet.";
+
+
+        statusValue.innerHTML =
+            '<span class="badge test">Test Complete</span>';
+
+
+        timerSection.style.display =
+            "none";
+
+
+        approvalBox.classList.remove(
+            "show"
+        );
+
+
+        testBox.classList.add(
+            "show"
+        );
+
+
+        adFlow.classList.remove(
+            "show"
+        );
+
+
+        rejectionBox.classList.remove(
+            "show"
+        );
+
+
+        walletBtn.style.display =
+            "none";
+
+
+        return;
+    }
+
+
+    /* ======================================================
+       APPROVED
+    ====================================================== */
+
+    if(
+        normalized === "approved"
+    ){
+
+        statusIcon.classList.add(
+            "approved"
+        );
+
+        statusIconInner.textContent =
+            "✓";
+
+
+        statusTitle.textContent =
+            "Reward Approved";
+
+
+        statusDescription.textContent =
+            "Your submission has been approved. Your reward process is starting.";
+
+
+        statusValue.innerHTML =
+            '<span class="badge approved">Approved</span>';
+
+
+        timerSection.style.display =
+            "none";
+
+
+        approvalBox.classList.add(
+            "show"
+        );
+
+
+        rejectionBox.classList.remove(
+            "show"
+        );
+
+
+        testBox.classList.remove(
+            "show"
+        );
+
+
+        return;
+    }
+
+
+    /* ======================================================
+       REJECTED
+    ====================================================== */
+
+    if(
+        normalized === "rejected"
+    ){
+
+        statusIcon.classList.add(
+            "rejected"
+        );
+
+        statusIconInner.textContent =
+            "×";
+
+
+        statusTitle.textContent =
+            "Submission Rejected";
+
+
+        statusDescription.textContent =
+            "Your submitted proof was not approved.";
+
+
+        statusValue.innerHTML =
+            '<span class="badge rejected">Rejected</span>';
+
+
+        timerSection.style.display =
+            "none";
+
+
+        approvalBox.classList.remove(
+            "show"
+        );
+
+
+        testBox.classList.remove(
+            "show"
+        );
+
+
+        adFlow.classList.remove(
+            "show"
+        );
+
+
+        rejectionBox.classList.add(
+            "show"
+        );
+
+
+        walletBtn.style.display =
+            "none";
+
+
+        setRejectionReason();
+
+
+        return;
+    }
+
+
+    /* ======================================================
+       PENDING
+    ====================================================== */
+
+    statusIcon.classList.add(
+        "pending"
+    );
+
+    statusIconInner.textContent =
+        "•••";
+
+
+    statusTitle.textContent =
+        "Proof Submitted";
+
+
+    statusDescription.textContent =
+        "Your proof has been submitted successfully. The company is reviewing your submission during the processing period.";
+
+
+    statusValue.innerHTML =
+        '<span class="badge pending">Processing</span>';
+
+
+    timerSection.style.display =
+        "block";
+
+
+    approvalBox.classList.remove(
+        "show"
+    );
+
+
+    testBox.classList.remove(
+        "show"
+    );
+
+
+    rejectionBox.classList.remove(
+        "show"
+    );
+
+
+    adFlow.classList.remove(
+        "show"
+    );
+
+
+    walletBtn.style.display =
+        "none";
+}
+
+
+/* =========================================================
+   REJECTION REASON
+========================================================= */
+
+function setRejectionReason(){
+
+    let reason =
+        "Your submission was not approved.";
+
+
+    try{
+
+        if(
+            currentSubmission &&
+            currentSubmission.proof
+        ){
+
+            const proof =
+                typeof currentSubmission.proof === "string"
+                    ? JSON.parse(
+                        currentSubmission.proof
+                    )
+                    : currentSubmission.proof;
+
+
+            if(
+                proof &&
+                proof.rejection_reason
+            ){
+
+                reason =
+                    proof.rejection_reason;
+
+            }
+            else if(
+                proof &&
+                proof.validation_reason
+            ){
+
+                reason =
+                    proof.validation_reason;
+
+            }
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "Rejection reason parse error:",
+            error
+        );
+
+    }
+
+
+    rejectionReason.textContent =
+        reason;
+}
+
+
+/* =========================================================
+   START PROCESSING TIMER
+========================================================= */
+
+function startReviewTimer(){
+
+    stopReviewTimer();
+
+
+    if(!currentSubmission){
+
+        return;
+
+    }
+
+
+    const status =
+        String(
+            currentSubmission.status ||
+            "pending"
+        ).toLowerCase();
+
+
+    if(
+        status !== "pending"
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        !currentSubmission.submitted_at
+    ){
+
+        timer.textContent =
+            "--:--:--";
+
+        timerSub.textContent =
+            "Submission time is not available yet.";
+
+        processingDetail.textContent =
+            "Please wait while the submission timestamp is loaded.";
+
+        return;
+
+    }
+
+
+    const processingMinutes =
+        Number(
+            currentTask?.processing_minutes
+        );
+
+
+    if(
+        !Number.isFinite(processingMinutes) ||
+        processingMinutes <= 0
+    ){
+
+        timer.textContent =
+            "--:--:--";
+
+        timerSub.textContent =
+            "Company processing time is not configured for this task.";
+
+        processingValue.textContent =
+            "Not configured";
+
+        return;
+
+    }
+
+
+    const processingText =
+        formatProcessingTime(
+            processingMinutes
+        );
+
+
+    processingValue.textContent =
+        processingText;
+
+
+    processingDetail.innerHTML =
+        "Company processing time: <strong>" +
+        processingText +
+        "</strong>. The countdown started after successful proof submission.";
+
+
+    timerSub.textContent =
+        "Your proof is being checked. The countdown follows the company processing time for this task.";
+
+
+    const submittedAt =
+        new Date(
+            currentSubmission.submitted_at
+        ).getTime();
+
+
+    if(
+        !Number.isFinite(submittedAt)
+    ){
+
+        timer.textContent =
+            "--:--:--";
+
+        timerSub.textContent =
+            "Invalid submission time.";
+
+        return;
+
+    }
+
+
+    const processingMilliseconds =
+        processingMinutes *
+        60 *
+        1000;
+
+
+    const endTime =
+        submittedAt +
+        processingMilliseconds;
+
+
+    function updateTimer(){
+
+        const now =
+            Date.now();
+
+
+        const remainingMilliseconds =
+            endTime -
+            now;
+
+
+        const remainingSeconds =
+            Math.ceil(
+                remainingMilliseconds /
+                1000
+            );
+
+
+        if(
+            remainingSeconds <= 0
+        ){
+
+            timer.textContent =
+                "00:00:00";
+
+
+            timerSection.classList.add(
+                "complete"
+            );
+
+
+            timerSub.textContent =
+                "The company processing time has ended. Final submission status is controlled by the backend.";
+
+
+            processingDetail.innerHTML =
+                "Processing countdown completed. Waiting for the final submission decision.";
+
+
+            stopReviewTimer();
+
+
+            return;
+
+        }
+
+
+        timer.textContent =
+            formatTime(
+                remainingSeconds
+            );
+    }
+
+
+    timerSection.classList.remove(
+        "complete"
+    );
+
+
+    updateTimer();
+
+
+    timerInterval =
+        setInterval(
+            updateTimer,
+            1000
+        );
+}
+
+
+/* =========================================================
+   STOP TIMER
+========================================================= */
+
+function stopReviewTimer(){
+
+    if(timerInterval){
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval =
+            null;
+
+    }
+}
+
+
+/* =========================================================
+   CHECK SUBMISSION
+========================================================= */
+
+async function checkSubmission(){
+
+    const submission =
+        await findSubmission();
+
+
+    if(!submission){
+
+        throw new Error(
+            "No submission was found for this account."
+        );
+
+    }
+
+
+    currentSubmission =
+        submission;
+
+
+    currentTask =
+        await loadTask(
+            submission.task_id
+        );
+
+
+    if(!currentTask){
+
+        throw new Error(
+            "Task information could not be loaded."
+        );
+
+    }
+
+
+    updateBasicUI();
+
+
+    return submission;
+}
+
+
+/* =========================================================
+   POLLING
+========================================================= */
+
+function startPolling(){
+
+    stopPolling();
+
+
+    pollingInterval =
+        setInterval(
+            async () => {
+
+                try{
+
+                    if(
+                        !currentSession
+                    ){
+
+                        return;
+
+                    }
+
+
+                    const oldStatus =
+                        String(
+                            currentSubmission?.status ||
+                            "pending"
+                        ).toLowerCase();
+
+
+                    const submission =
+                        await findSubmission();
+
+
+                    if(!submission){
+
+                        return;
+
+                    }
+
+
+                    currentSubmission =
+                        submission;
+
+
+                    currentTask =
+                        await loadTask(
+                            submission.task_id
+                        );
+
+
+                    updateBasicUI();
+
+
+                    const newStatus =
+                        String(
+                            submission.status ||
+                            "pending"
+                        ).toLowerCase();
+
+
+                    /* APPROVED */
+
+                    if(
+                        oldStatus !== newStatus &&
+                        newStatus === "approved"
+                    ){
+
+                        stopPolling();
+
+
+                        if(
+                            isCurrentTaskTest()
+                        ){
+
+                            stopReviewTimer();
+
+                            updateStatusUI(
+                                "approved"
+                            );
+
+                            showToast(
+                                "Test processing completed."
+                            );
+
+                            return;
+                        }
+
+
+                        await handleApproved();
+
+                    }
+
+
+                    /* REJECTED */
+
+                    else if(
+                        oldStatus !== newStatus &&
+                        newStatus === "rejected"
+                    ){
+
+                        stopPolling();
+
+                        stopReviewTimer();
+
+
+                        updateStatusUI(
+                            "rejected"
+                        );
+
+
+                        showToast(
+                            "Submission was rejected."
+                        );
+
+                    }
+
+
+                    /* STILL PENDING */
+
+                    else if(
+                        newStatus === "pending"
+                    ){
+
+                        startReviewTimer();
+
+                    }
+
+                }catch(error){
+
+                    console.log(
+                        "Submission polling error:",
+                        error
+                    );
+
+                }
+
+            },
+            POLL_INTERVAL_MS
+        );
+}
+
+
+/* =========================================================
+   STOP POLLING
+========================================================= */
+
+function stopPolling(){
+
+    if(pollingInterval){
+
+        clearInterval(
+            pollingInterval
+        );
+
+        pollingInterval =
+            null;
+
+    }
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+async function sendRewardNotification(){
+
+    if(!currentSubmission){
+
+        return;
+
+    }
+
+
+    if(
+        isCurrentTaskTest()
+    ){
+
+        return;
+
+    }
+
+
+    const key =
+        "taskearn_reward_notification_" +
+        currentSubmission.id;
+
+
+    if(
+        localStorage.getItem(key) === "sent"
+    ){
+
+        return;
+
+    }
+
+
+    const reward =
+        Number(
+            currentSubmission.reward || 0
+        );
+
+
+    const title =
+        "TaskEarn — Reward Approved";
+
+
+    const message =
+        "Your " +
+        formatMoney(reward) +
+        " reward has been approved.";
+
+
+    let sent =
+        false;
+
+
+    /* ANDROID */
+
+    try{
+
+        if(
+            window.AndroidNotify &&
+            typeof window.AndroidNotify.notify ===
+            "function"
+        ){
+
+            await Promise.resolve(
+                window.AndroidNotify.notify(
+                    title,
+                    message
+                )
+            );
+
+            sent =
+                true;
+        }
+
+    }catch(error){
+
+        console.log(
+            "Android notification error:",
+            error
+        );
+
+    }
+
+
+    /* ALTERNATIVE */
+
+    if(!sent){
+
+        try{
+
+            if(
+                window.TaskEarnNotify &&
+                typeof window.TaskEarnNotify.notify ===
+                "function"
+            ){
+
+                await Promise.resolve(
+                    window.TaskEarnNotify.notify(
+                        title,
+                        message
+                    )
+                );
+
+                sent =
+                    true;
+            }
+
+        }catch(error){
+
+            console.log(
+                "TaskEarn notification error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* BROWSER */
+
+    if(
+        !sent &&
+        "Notification" in window
+    ){
+
+        try{
+
+            if(
+                Notification.permission ===
+                "granted"
+            ){
+
+                new Notification(
+                    title,
+                    {
+                        body:message
+                    }
+                );
+
+                sent =
+                    true;
+
+            }
+            else if(
+                Notification.permission !==
+                "denied"
+            ){
+
+                const permission =
+                    await Notification.requestPermission();
+
+
+                if(
+                    permission ===
+                    "granted"
+                ){
+
+                    new Notification(
+                        title,
+                        {
+                            body:message
+                        }
+                    );
+
+                    sent =
+                        true;
+                }
+
+            }
+
+        }catch(error){
+
+            console.log(
+                "Browser notification error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    if(sent){
+
+        localStorage.setItem(
+            key,
+            "sent"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   NATIVE INTERSTITIAL AD
+========================================================= */
+
+async function showAutomaticAd(){
+
+    /*
+       Android native bridge.
+
+       Supported:
+
+       AndroidAds.showInterstitial()
+
+       OR
+
+       TaskEarnAds.showInterstitial()
+    */
+
+    if(
+        window.AndroidAds &&
+        typeof window.AndroidAds.showInterstitial ===
+        "function"
+    ){
+
+        const result =
+            await Promise.resolve(
+                window.AndroidAds.showInterstitial()
+            );
+
+
+        if(result === false){
+
+            throw new Error(
+                "The advertisement could not be displayed."
+            );
+
+        }
+
+
+        return true;
+    }
+
+
+    if(
+        window.TaskEarnAds &&
+        typeof window.TaskEarnAds.showInterstitial ===
+        "function"
+    ){
+
+        const result =
+            await Promise.resolve(
+                window.TaskEarnAds.showInterstitial()
+            );
+
+
+        if(result === false){
+
+            throw new Error(
+                "The advertisement could not be displayed."
+            );
+
+        }
+
+
+        return true;
+    }
+
+
+    throw new Error(
+        "Automatic ad service is not connected to this APK yet."
+    );
+}
+
+
+/* =========================================================
+   REWARD FLOW KEY
+========================================================= */
+
+function getRewardFlowKey(){
+
+    if(!currentSubmission){
+
+        return null;
+
+    }
+
+
+    return (
+        "taskearn_reward_flow_" +
+        currentSubmission.id
+    );
+}
+
+
+/* =========================================================
+   SAVED AD NUMBER
+========================================================= */
+
+function getSavedAdNumber(){
+
+    const key =
+        getRewardFlowKey();
+
+
+    if(!key){
+
+        return 0;
+
+    }
+
+
+    const value =
+        Number(
+            localStorage.getItem(key) || 0
+        );
+
+
+    if(
+        value < 0 ||
+        value > TOTAL_ADS
+    ){
+
+        return 0;
+
+    }
+
+
+    return value;
+}
+
+
+/* =========================================================
+   SAVE AD NUMBER
+========================================================= */
+
+function saveAdNumber(number){
+
+    const key =
+        getRewardFlowKey();
+
+
+    if(!key){
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        key,
+        String(number)
+    );
+}
+
+
+/* =========================================================
+   MARK COMPLETE
+========================================================= */
+
+function markRewardFlowComplete(){
+
+    const key =
+        getRewardFlowKey();
+
+
+    if(!key){
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        key,
+        String(TOTAL_ADS)
+    );
+
+
+    localStorage.setItem(
+        key + "_complete",
+        "yes"
+    );
+}
+
+
+/* =========================================================
+   CHECK COMPLETE
+========================================================= */
+
+function isRewardFlowComplete(){
+
+    const key =
+        getRewardFlowKey();
+
+
+    if(!key){
+
+        return false;
+
+    }
+
+
+    return (
+        localStorage.getItem(
+            key + "_complete"
+        ) === "yes"
+    );
+}
+
+
+/* =========================================================
+   SHOW AD UI
+========================================================= */
+
+function showAdFlowUI(number){
+
+    adFlow.classList.add(
+        "show"
+    );
+
+
+    adNumber.textContent =
+        "Ad " +
+        number +
+        " of " +
+        TOTAL_ADS;
+
+
+    adMessage.textContent =
+        "Please wait for the advertisement to finish.";
+}
+
+
+/* =========================================================
+   RUN THREE ADS
+========================================================= */
+
+async function runThreeAds(){
+
+    /*
+       TEST TASK = NO AD FLOW
+    */
+
+    if(
+        isCurrentTaskTest()
+    ){
+
+        adFlow.classList.remove(
+            "show"
+        );
+
+        rewardFlowRunning =
+            false;
+
+        return;
+    }
+
+
+    if(rewardFlowRunning){
+
+        return;
+
+    }
+
+
+    rewardFlowRunning =
+        true;
+
+
+    hideError();
+
+
+    walletBtn.style.display =
+        "none";
+
+
+    retryBtn.style.display =
+        "none";
+
+
+    adFlow.classList.add(
+        "show"
+    );
+
+
+    let savedNumber =
+        getSavedAdNumber();
+
+
+    if(
+        isRewardFlowComplete()
+    ){
+
+        rewardFlowRunning =
+            false;
+
+        goToWallet();
+
+        return;
+
+    }
+
+
+    currentAdNumber =
+        savedNumber + 1;
+
+
+    try{
+
+        for(
+            let i = currentAdNumber;
+
+            i <= TOTAL_ADS;
+
+            i++
+        ){
+
+            currentAdNumber =
+                i;
+
+
+            showAdFlowUI(i);
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        500
+                    )
+            );
+
+
+            await showAutomaticAd();
+
+
+            saveAdNumber(i);
+
+
+            if(
+                i < TOTAL_ADS
+            ){
+
+                adMessage.textContent =
+                    "Next advertisement is starting...";
+
+
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            700
+                        )
+                );
+
+            }
+
+        }
+
+
+        markRewardFlowComplete();
+
+
+        adNumber.textContent =
+            "3 Ads Completed ✓";
+
+
+        adMessage.textContent =
+            "Reward process complete. Opening wallet...";
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    900
+                )
+        );
+
+
+        rewardFlowRunning =
+            false;
+
+
+        goToWallet();
+
+
+    }catch(error){
+
+        console.error(
+            "Ad flow error:",
+            error
+        );
+
+
+        rewardFlowRunning =
+            false;
+
+
+        showError(
+            error?.message ||
+            "Advertisement could not be displayed. Please try again."
+        );
+
+
+        adMessage.textContent =
+            "Ad service could not continue. Tap Check Again to retry.";
+    }
+}
+
+
+/* =========================================================
+   APPROVED HANDLER
+========================================================= */
+
+async function handleApproved(){
+
+    stopReviewTimer();
+
+
+    /*
+       TEST TASK:
+       NEVER open wallet reward flow.
+    */
+
+    if(
+        isCurrentTaskTest()
+    ){
+
+        updateStatusUI(
+            "approved"
+        );
+
+
+        showToast(
+            "Test processing completed."
+        );
+
+
+        return;
+    }
+
+
+    updateStatusUI(
+        "approved"
+    );
+
+
+    showToast(
+        "Reward approved."
+    );
+
+
+    await sendRewardNotification();
+
+
+    setTimeout(
+        () => {
+
+            runThreeAds();
+
+        },
+        700
+    );
+}
+
+
+/* =========================================================
+   GO TO WALLET
+========================================================= */
+
+function goToWallet(){
+
+    /*
+       IMPORTANT:
+
+       This page does NOT directly
+       insert/add money into wallet.
+
+       Wallet/backend controls balance.
+    */
+
+    window.location.href =
+        "wallet.html";
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize(){
+
+    try{
+
+        hideError();
+
+
+        currentSession =
+            await getCurrentSession();
+
+
+        if(!currentSession){
+
+            pageLoader.classList.add(
+                "hidden"
+            );
+
+
+            statusTitle.textContent =
+                "Login Required";
+
+
+            statusDescription.textContent =
+                "Please log in to view your submission status.";
+
+
+            timerSection.style.display =
+                "none";
+
+
+            taskTitle.textContent =
+                "No active account";
+
+
+            statusValue.innerHTML =
+                '<span class="badge rejected">Not Logged In</span>';
+
+
+            return;
+        }
+
+
+        /*
+           LOAD SUBMISSION
+        */
+
+        await checkSubmission();
+
+
+        pageLoader.classList.add(
+            "hidden"
+        );
+
+
+        const status =
+            String(
+                currentSubmission.status ||
+                "pending"
+            ).toLowerCase();
+
+
+        /* ==================================================
+           APPROVED
+        ================================================== */
+
+        if(
+            status === "approved"
+        ){
+
+            stopReviewTimer();
+
+
+            updateStatusUI(
+                "approved"
+            );
+
+
+            /*
+               TEST TASK:
+               NO WALLET
+               NO AD FLOW
+            */
+
+            if(
+                isCurrentTaskTest()
+            ){
+
+                showToast(
+                    "Test processing completed."
+                );
+
+
+                return;
+            }
+
+
+            /*
+               REAL TASK
+            */
+
+            await sendRewardNotification();
+
+
+            if(
+                isRewardFlowComplete()
+            ){
+
+                goToWallet();
+
+            }
+            else{
+
+                setTimeout(
+                    () => {
+
+                        runThreeAds();
+
+                    },
+                    500
+                );
+
+            }
+
+
+            return;
+        }
+
+
+        /* ==================================================
+           REJECTED
+        ================================================== */
+
+        if(
+            status === "rejected"
+        ){
+
+            stopReviewTimer();
+
+
+            updateStatusUI(
+                "rejected"
+            );
+
+
+            return;
+        }
+
+
+        /* ==================================================
+           PENDING
+        ================================================== */
+
+        updateStatusUI(
+            "pending"
+        );
+
+
+        startReviewTimer();
+
+
+        startPolling();
+
+
+    }catch(error){
+
+        console.error(
+            "Submission page error:",
+            error
+        );
+
+
+        pageLoader.classList.add(
+            "hidden"
+        );
+
+
+        showError(
+            error?.message ||
+            "Unable to load submission status."
+        );
+    }
+}
+
+
+/* =========================================================
+   RETRY BUTTON
+========================================================= */
+
+retryBtn.addEventListener(
+    "click",
+    async () => {
+
+        retryBtn.disabled =
+            true;
+
+
+        hideError();
+
+
+        try{
+
+            await checkSubmission();
+
+
+            const status =
+                String(
+                    currentSubmission.status ||
+                    "pending"
+                ).toLowerCase();
+
+
+            /* APPROVED */
+
+            if(
+                status === "approved"
+            ){
+
+                stopPolling();
+                stopReviewTimer();
+
+
+                if(
+                    isCurrentTaskTest()
+                ){
+
+                    updateStatusUI(
+                        "approved"
+                    );
+
+
+                    showToast(
+                        "Test processing completed."
+                    );
+
+                }
+                else{
+
+                    await handleApproved();
+
+                }
+
+            }
+
+
+            /* REJECTED */
+
+            else if(
+                status === "rejected"
+            ){
+
+                stopPolling();
+                stopReviewTimer();
+
+
+                updateStatusUI(
+                    "rejected"
+                );
+
+            }
+
+
+            /* PENDING */
+
+            else{
+
+                updateStatusUI(
+                    "pending"
+                );
+
+
+                startReviewTimer();
+
+
+                startPolling();
+
+
+                showToast(
+                    "Still under review."
+                );
+            }
+
+
+        }catch(error){
+
+            console.error(
+                error
+            );
+
+
+            showError(
+                error?.message ||
+                "Could not check submission."
+            );
+
+
+        }finally{
+
+            retryBtn.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PAGE VISIBILITY
+========================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    async () => {
+
+        if(
+            document.visibilityState !==
+            "visible"
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            !currentSession
+        ){
+
+            return;
+
+        }
+
+
+        try{
+
+            const submission =
+                await findSubmission();
+
+
+            if(!submission){
+
+                return;
+
+            }
+
+
+            const oldStatus =
+                String(
+                    currentSubmission?.status ||
+                    "pending"
+                ).toLowerCase();
+
+
+            const newStatus =
+                String(
+                    submission.status ||
+                    "pending"
+                ).toLowerCase();
+
+
+            currentSubmission =
+                submission;
+
+
+            currentTask =
+                await loadTask(
+                    submission.task_id
+                );
+
+
+            updateBasicUI();
+
+
+            /* APPROVED AFTER RETURN */
+
+            if(
+                oldStatus !== "approved" &&
+                newStatus === "approved"
+            ){
+
+                stopPolling();
+
+
+                if(
+                    isCurrentTaskTest()
+                ){
+
+                    stopReviewTimer();
+
+
+                    updateStatusUI(
+                        "approved"
+                    );
+
+
+                    showToast(
+                        "Test processing completed."
+                    );
+
+                }
+                else{
+
+                    await handleApproved();
+
+                }
+
+
+                return;
+            }
+
+
+            /* PENDING */
+
+            if(
+                newStatus === "pending"
+            ){
+
+                startReviewTimer();
+
+                startPolling();
+
+            }
+
+        }catch(error){
+
+            console.log(
+                "Visibility status check error:",
+                error
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CLEANUP
+========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        stopReviewTimer();
+
+        stopPolling();
+
+    }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+initialize();
+
+</script>
+
+</body>
+</html>

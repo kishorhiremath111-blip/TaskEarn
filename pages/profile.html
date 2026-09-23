@@ -1,0 +1,3840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta
+    name="theme-color"
+    content="#050914"
+>
+
+<meta
+    name="color-scheme"
+    content="dark"
+>
+
+<title>TaskEarn — Profile</title>
+
+
+<style>
+
+/* =========================================================
+   TASKEARN — PREMIUM PROFILE
+   CLEAN / LUXURY / DARK GLASS UI
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+:root{
+
+    --bg:#040711;
+    --bg2:#070d1b;
+
+    --surface:#0b1223;
+    --surface2:#101a31;
+
+    --glass:rgba(17,27,49,.72);
+
+    --line:rgba(255,255,255,.075);
+    --line-soft:rgba(255,255,255,.045);
+
+    --text:#f7f9ff;
+    --muted:#7d8ba8;
+    --muted2:#596781;
+
+    --cyan:#25d5ff;
+    --cyan-soft:#67ddff;
+
+    --violet:#7358ff;
+    --violet-soft:#9b88ff;
+
+    --green:#3ee0a4;
+    --red:#ff7c8d;
+
+    --gold:#e7c86b;
+
+    --radius-xl:30px;
+    --radius-lg:23px;
+    --radius-md:18px;
+}
+
+body{
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    padding-bottom:35px;
+
+    color:var(--text);
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:
+
+        radial-gradient(
+            circle at 5% -8%,
+            rgba(37,213,255,.13),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 105% 10%,
+            rgba(115,88,255,.18),
+            transparent 34%
+        ),
+
+        radial-gradient(
+            circle at 50% 105%,
+            rgba(45,87,255,.07),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            145deg,
+            #030610 0%,
+            #070c1a 48%,
+            #050813 100%
+        );
+}
+
+button{
+
+    font:inherit;
+
+    border:0;
+
+    color:inherit;
+
+    cursor:pointer;
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    user-select:none;
+
+    -webkit-user-select:none;
+}
+
+button:active{
+    transform:scale(.975);
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+svg{
+    display:block;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+
+    width:100%;
+
+    max-width:620px;
+
+    min-height:100vh;
+
+    margin:0 auto;
+
+    position:relative;
+
+    z-index:2;
+}
+
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:13px 15px;
+
+    background:
+        rgba(4,7,17,.88);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+
+    backdrop-filter:
+        blur(30px);
+
+    -webkit-backdrop-filter:
+        blur(30px);
+}
+
+.back-button{
+
+    width:46px;
+
+    height:46px;
+
+    flex:0 0 46px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.065),
+            rgba(255,255,255,.025)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.04),
+
+        0 10px 25px
+        rgba(0,0,0,.20);
+}
+
+.back-button svg{
+
+    width:21px;
+
+    height:21px;
+
+    stroke:#edf2ff;
+}
+
+.header-title{
+
+    flex:1;
+
+    min-width:0;
+}
+
+.header-title small{
+
+    display:block;
+
+    margin-bottom:4px;
+
+    color:#5f718f;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:2.5px;
+}
+
+.header-title strong{
+
+    display:block;
+
+    font-size:19px;
+
+    line-height:1.05;
+
+    font-weight:900;
+
+    letter-spacing:-.4px;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.profile-page{
+
+    padding:
+        22px 15px 30px;
+}
+
+
+/* =========================================================
+   PREMIUM PROFILE HERO
+========================================================= */
+
+.profile-hero{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:23px 20px 19px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.095);
+
+    border-radius:
+        var(--radius-xl);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(22,35,67,.96),
+            rgba(8,14,30,.98)
+        );
+
+    box-shadow:
+
+        0 30px 80px
+        rgba(0,0,0,.38),
+
+        inset 0 1px 0
+        rgba(255,255,255,.045);
+}
+
+.profile-hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:310px;
+
+    height:310px;
+
+    right:-165px;
+
+    top:-185px;
+
+    border-radius:50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(37,213,255,.19),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+.profile-hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+
+    height:250px;
+
+    left:-180px;
+
+    bottom:-180px;
+
+    border-radius:50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(115,88,255,.16),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+.hero-top-line{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:20px;
+}
+
+.hero-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#71819e;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+}
+
+.hero-brand-line{
+
+    width:22px;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(37,213,255,.75)
+        );
+}
+
+.hero-status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    padding:
+        6px 9px;
+
+    border:
+        1px solid
+        rgba(62,224,164,.16);
+
+    border-radius:999px;
+
+    background:
+        rgba(62,224,164,.045);
+
+    color:#61dfad;
+
+    font-size:6px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+}
+
+.hero-status-dot{
+
+    width:5px;
+
+    height:5px;
+
+    border-radius:50%;
+
+    background:#3ee0a4;
+
+    box-shadow:
+        0 0 10px
+        rgba(62,224,164,.8);
+}
+
+.profile-top{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+}
+
+.avatar{
+
+    position:relative;
+
+    width:82px;
+
+    height:82px;
+
+    flex:0 0 82px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    border-radius:25px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #20d5ff 0%,
+            #347eff 48%,
+            #7656ff 100%
+        );
+
+    box-shadow:
+
+        0 18px 42px
+        rgba(46,103,255,.28),
+
+        inset 0 1px 0
+        rgba(255,255,255,.25);
+
+    cursor:pointer;
+
+    animation:none !important;
+
+    transform:none !important;
+}
+
+.avatar:active{
+    transform:scale(.95) !important;
+}
+
+.avatar svg{
+
+    width:36px;
+
+    height:36px;
+
+    stroke:#fff;
+}
+
+#profilePhoto{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:3;
+
+    display:none;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:inherit;
+}
+
+.avatar.has-photo #profilePhoto{
+    display:block;
+}
+
+.avatar.has-photo .default-avatar{
+    display:none;
+}
+
+.avatar-edit{
+
+    position:absolute;
+
+    right:4px;
+
+    bottom:4px;
+
+    z-index:6;
+
+    width:27px;
+
+    height:27px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.25);
+
+    border-radius:9px;
+
+    background:
+        rgba(3,7,17,.82);
+
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+
+    box-shadow:
+        0 5px 15px
+        rgba(0,0,0,.35);
+}
+
+.avatar-edit svg{
+
+    width:14px;
+
+    height:14px;
+
+    stroke:#fff;
+}
+
+.profile-info{
+
+    min-width:0;
+
+    flex:1;
+}
+
+.profile-info small{
+
+    display:block;
+
+    margin-bottom:6px;
+
+    color:var(--cyan-soft);
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:1.8px;
+}
+
+.profile-info h1{
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    font-size:24px;
+
+    line-height:1.08;
+
+    font-weight:900;
+
+    letter-spacing:-.8px;
+}
+
+.profile-info p{
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    margin-top:7px;
+
+    color:#7f8daa;
+
+    font-size:9px;
+}
+
+.account-strip{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin-top:22px;
+
+    padding-top:15px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.065);
+}
+
+.account-label{
+
+    color:#596985;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+}
+
+.account-value-wrap{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    min-width:0;
+}
+
+.account-value{
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    color:#aebbd3;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:.6px;
+}
+
+.copy-id{
+
+    width:27px;
+
+    height:27px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex:0 0 27px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.copy-id svg{
+
+    width:13px;
+
+    height:13px;
+
+    stroke:#91a1be;
+}
+
+
+/* =========================================================
+   PREMIUM POINTS CARD — NEW
+========================================================= */
+
+.points-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    margin-top:12px;
+
+    padding:18px;
+
+    border:
+        1px solid
+        rgba(37,213,255,.13);
+
+    border-radius:23px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(20,38,67,.88),
+            rgba(9,15,30,.94)
+        );
+
+    box-shadow:
+
+        0 22px 55px
+        rgba(0,0,0,.25),
+
+        inset 0 1px 0
+        rgba(255,255,255,.035);
+}
+
+.points-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    right:-100px;
+
+    top:-110px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37,213,255,.18),
+            transparent 70%
+        );
+}
+
+.points-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+
+    height:130px;
+
+    left:-85px;
+
+    bottom:-90px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(115,88,255,.14),
+            transparent 70%
+        );
+}
+
+.points-top{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+}
+
+.points-icon{
+
+    width:48px;
+
+    height:48px;
+
+    flex:0 0 48px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(37,213,255,.20);
+
+    border-radius:16px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(37,213,255,.13),
+            rgba(115,88,255,.13)
+        );
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.05),
+
+        0 8px 25px
+        rgba(37,128,255,.08);
+}
+
+.points-icon svg{
+
+    width:23px;
+
+    height:23px;
+
+    stroke:#75e5ff;
+}
+
+.points-text{
+
+    min-width:0;
+
+    flex:1;
+}
+
+.points-text small{
+
+    display:block;
+
+    color:#6e7d99;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:1.8px;
+}
+
+.points-text strong{
+
+    display:block;
+
+    margin-top:4px;
+
+    font-size:20px;
+
+    line-height:1;
+
+    font-weight:950;
+
+    letter-spacing:-.5px;
+}
+
+.points-text span{
+
+    display:block;
+
+    margin-top:5px;
+
+    color:#71819d;
+
+    font-size:7px;
+}
+
+.points-arrow{
+
+    width:34px;
+
+    height:34px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex:0 0 34px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:11px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#7f90ad;
+}
+
+.points-arrow svg{
+
+    width:16px;
+
+    height:16px;
+
+    stroke:currentColor;
+}
+
+.points-bottom{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-top:14px;
+
+    padding-top:13px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.055);
+}
+
+.points-note{
+
+    color:#62718d;
+
+    font-size:7px;
+
+    line-height:1.5;
+}
+
+.points-leader{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    color:#a99cff;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   ACCOUNT SUMMARY
+========================================================= */
+
+.summary-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    margin-top:12px;
+
+    padding:17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:22px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(20,31,56,.72),
+            rgba(10,16,31,.72)
+        );
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.20);
+}
+
+.summary-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+
+    height:130px;
+
+    right:-75px;
+
+    top:-75px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37,213,255,.11),
+            transparent 70%
+        );
+}
+
+.summary-top{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.summary-icon{
+
+    width:43px;
+
+    height:43px;
+
+    flex:0 0 43px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(37,213,255,.14);
+
+    border-radius:14px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(37,213,255,.10),
+            rgba(115,88,255,.10)
+        );
+}
+
+.summary-icon svg{
+
+    width:20px;
+
+    height:20px;
+
+    stroke:#a9dff0;
+}
+
+.summary-text{
+
+    min-width:0;
+}
+
+.summary-text strong{
+
+    display:block;
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+.summary-text small{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#667590;
+
+    font-size:8px;
+}
+
+.summary-check{
+
+    margin-left:auto;
+
+    color:#4edca7;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:.8px;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-label{
+
+    margin:
+        30px 3px 6px;
+
+    color:#5edfff;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:2.2px;
+}
+
+.section-title{
+
+    margin:
+        0 3px 14px;
+
+    font-size:23px;
+
+    line-height:1.12;
+
+    font-weight:900;
+
+    letter-spacing:-.6px;
+}
+
+
+/* =========================================================
+   ACCOUNT MENU
+========================================================= */
+
+.menu-card{
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:23px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(17,27,49,.72),
+            rgba(8,14,28,.82)
+        );
+
+    box-shadow:
+
+        0 22px 55px
+        rgba(0,0,0,.23),
+
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.menu-item{
+
+    width:100%;
+
+    min-height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:
+        11px 14px;
+
+    border:0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+
+    background:transparent;
+
+    text-align:left;
+
+    color:#fff;
+}
+
+.menu-item:last-child{
+    border-bottom:0;
+}
+
+.menu-item:active{
+
+    background:
+        rgba(255,255,255,.045);
+}
+
+.menu-icon{
+
+    width:45px;
+
+    height:45px;
+
+    flex:0 0 45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(89,105,255,.17);
+
+    border-radius:14px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(37,128,255,.12),
+            rgba(115,88,255,.11)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.menu-icon svg{
+
+    width:20px;
+
+    height:20px;
+
+    stroke:#cbd8f1;
+}
+
+.menu-text{
+
+    flex:1;
+
+    min-width:0;
+}
+
+.menu-text strong{
+
+    display:block;
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+.menu-text small{
+
+    display:block;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    margin-top:4px;
+
+    color:#687692;
+
+    font-size:8px;
+}
+
+.menu-arrow{
+
+    width:31px;
+
+    height:31px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#71809b;
+}
+
+.menu-arrow svg{
+
+    width:16px;
+
+    height:16px;
+
+    stroke:currentColor;
+}
+
+
+/* =========================================================
+   SECURITY CARD
+========================================================= */
+
+.security-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    margin-top:13px;
+
+    padding:18px;
+
+    border:
+        1px solid
+        rgba(62,224,164,.13);
+
+    border-radius:22px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(25,103,82,.12),
+            rgba(11,18,33,.62)
+        );
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.20);
+}
+
+.security-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+
+    height:150px;
+
+    right:-100px;
+
+    top:-100px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(62,224,164,.10),
+            transparent 70%
+        );
+}
+
+.security-top{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.security-icon{
+
+    width:45px;
+
+    height:45px;
+
+    flex:0 0 45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(62,224,164,.16);
+
+    border-radius:14px;
+
+    background:
+        rgba(62,224,164,.055);
+}
+
+.security-icon svg{
+
+    width:21px;
+
+    height:21px;
+
+    stroke:#69e5b1;
+}
+
+.security-text{
+
+    min-width:0;
+}
+
+.security-text strong{
+
+    display:block;
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+.security-text small{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#697792;
+
+    font-size:8px;
+}
+
+.security-status{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-top:14px;
+
+    padding-top:13px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.055);
+}
+
+.security-status span{
+
+    color:#6b7892;
+
+    font-size:8px;
+}
+
+.security-status strong{
+
+    color:#58dfa9;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:.8px;
+}
+
+
+/* =========================================================
+   EXTRA GRID
+========================================================= */
+
+.extra-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+
+    margin-top:13px;
+}
+
+.extra-button{
+
+    min-height:82px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    padding:13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:20px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.048),
+            rgba(255,255,255,.016)
+        );
+
+    text-align:left;
+
+    color:#fff;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.extra-button:active{
+
+    background:
+        rgba(255,255,255,.07);
+}
+
+.extra-icon{
+
+    width:42px;
+
+    height:42px;
+
+    flex:0 0 42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(86,104,255,.16);
+
+    border-radius:13px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(38,117,255,.11),
+            rgba(112,76,255,.10)
+        );
+}
+
+.extra-icon svg{
+
+    width:19px;
+
+    height:19px;
+
+    stroke:#cbd7ef;
+}
+
+.extra-content{
+
+    min-width:0;
+}
+
+.extra-content strong{
+
+    display:block;
+
+    font-size:11px;
+
+    font-weight:900;
+}
+
+.extra-content small{
+
+    display:block;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    margin-top:4px;
+
+    color:#687692;
+
+    font-size:7px;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-button{
+
+    width:100%;
+
+    min-height:54px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    margin-top:14px;
+
+    border:
+        1px solid
+        rgba(255,92,111,.15);
+
+    border-radius:18px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,70,90,.055),
+            rgba(255,70,90,.025)
+        );
+
+    color:#ff9aa7;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:.4px;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.018);
+}
+
+.logout-button svg{
+
+    width:17px;
+
+    height:17px;
+
+    stroke:currentColor;
+}
+
+.logout-button:active{
+
+    background:
+        rgba(255,70,90,.10);
+}
+
+.footer{
+
+    padding:
+        25px 0 6px;
+
+    text-align:center;
+
+    color:#46536d;
+
+    font-size:7px;
+
+    letter-spacing:1px;
+}
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:25px;
+
+    z-index:3000;
+
+    max-width:
+        calc(100% - 36px);
+
+    padding:
+        12px 16px;
+
+    transform:
+        translate(-50%,20px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius:14px;
+
+    background:
+        rgba(10,16,31,.97);
+
+    color:#f7f9ff;
+
+    font-size:9px;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.45);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+@media(max-width:400px){
+
+    .profile-page{
+
+        padding-left:13px;
+
+        padding-right:13px;
+    }
+
+    .profile-hero{
+
+        padding:
+            20px 17px 17px;
+    }
+
+    .avatar{
+
+        width:70px;
+
+        height:70px;
+
+        flex-basis:70px;
+
+        border-radius:22px;
+    }
+
+    .profile-info h1{
+
+        font-size:20px;
+    }
+
+    .profile-info p{
+
+        font-size:8px;
+    }
+
+    .extra-grid{
+
+        gap:8px;
+    }
+
+    .extra-button{
+
+        padding:11px;
+
+    }
+
+    .extra-icon{
+
+        width:38px;
+
+        height:38px;
+
+        flex-basis:38px;
+    }
+
+    .extra-content strong{
+
+        font-size:10px;
+    }
+
+}
+
+.profile-page,
+.profile-hero,
+.avatar,
+.profile-top,
+.profile-info,
+.summary-card{
+
+    animation:none !important;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<header class="topbar">
+
+    <button
+        class="back-button"
+        id="backButton"
+        type="button"
+        aria-label="Back"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <path d="M19 12H5"/>
+            <path d="m12 19-7-7 7-7"/>
+
+        </svg>
+
+    </button>
+
+
+    <div class="header-title">
+
+        <small>TASKEARN</small>
+
+        <strong>My Profile</strong>
+
+    </div>
+
+</header>
+
+
+<main class="profile-page">
+
+
+<section class="profile-hero">
+
+
+    <div class="hero-top-line">
+
+        <div class="hero-brand">
+
+            <span class="hero-brand-line"></span>
+
+            TASKEARN ACCOUNT
+
+        </div>
+
+
+        <div class="hero-status">
+
+            <span class="hero-status-dot"></span>
+
+            ACTIVE
+
+        </div>
+
+    </div>
+
+
+    <div class="profile-top">
+
+
+        <div
+            class="avatar"
+            id="profileAvatar"
+            role="button"
+            tabindex="0"
+            aria-label="Change profile photo"
+        >
+
+
+            <div class="default-avatar">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <circle cx="12" cy="8" r="3.5"/>
+
+                    <path
+                        d="M5 20c.7-3.5 3-5.5 7-5.5s6.3 2 7 5.5"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <img
+                id="profilePhoto"
+                alt="Profile Photo"
+            >
+
+
+            <div class="avatar-edit">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"
+                    />
+
+                    <path d="m13.5 6.5 4 4"/>
+
+                </svg>
+
+            </div>
+
+
+            <input
+                type="file"
+                id="profilePhotoInput"
+                accept="image/*"
+                hidden
+            >
+
+        </div>
+
+
+        <div class="profile-info">
+
+            <small>TASK EARNER</small>
+
+            <h1 id="profileName">
+                TaskEarn User
+            </h1>
+
+            <p id="profileEmail">
+                Loading account...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="account-strip">
+
+        <span class="account-label">
+            ACCOUNT ID
+        </span>
+
+
+        <div class="account-value-wrap">
+
+            <strong
+                class="account-value"
+                id="accountId"
+            >
+                TE-XXXXXXXX
+            </strong>
+
+
+            <button
+                class="copy-id"
+                id="copyIdButton"
+                type="button"
+                aria-label="Copy account ID"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <rect
+                        x="8"
+                        y="8"
+                        width="11"
+                        height="11"
+                        rx="2"
+                    />
+
+                    <path
+                        d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
+                    />
+
+                </svg>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     MY POINTS — NEW
+======================================================= -->
+
+<section
+    class="points-card"
+    id="pointsCard"
+    role="button"
+    tabindex="0"
+    aria-label="Open points and leaderboard"
+>
+
+    <div class="points-top">
+
+        <div class="points-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <circle cx="12" cy="12" r="8"/>
+
+                <path d="M12 7v10"/>
+                <path d="M9.5 9.5c0-1 1-1.7 2.5-1.7s2.5.7 2.5 1.7c0 1.1-1 1.5-2.5 1.9s-2.5.8-2.5 1.9c0 1 1 1.7 2.5 1.7s2.5-.7 2.5-1.7"/>
+
+            </svg>
+
+        </div>
+
+
+        <div class="points-text">
+
+            <small>MY TASK POINTS</small>
+
+            <strong id="myPoints">
+                Points
+            </strong>
+
+            <span>
+                Earned separately from your cash rewards
+            </span>
+
+        </div>
+
+
+        <div class="points-arrow">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path d="m9 18 6-6-6-6"/>
+
+            </svg>
+
+        </div>
+
+    </div>
+
+
+    <div class="points-bottom">
+
+        <div class="points-note">
+            Complete eligible activities to collect points.
+        </div>
+
+        <div class="points-leader">
+            TOP 10
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="summary-card">
+
+
+    <div class="summary-top">
+
+
+        <div class="summary-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path
+                    d="M12 3 20 6v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3Z"
+                />
+
+                <path
+                    d="m8.5 12 2.2 2.2 4.8-5"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="summary-text">
+
+            <strong>
+                Account protected
+            </strong>
+
+            <small>
+                Your TaskEarn account is active and secure
+            </small>
+
+        </div>
+
+
+        <div class="summary-check">
+            VERIFIED
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="section-label">
+    ACCOUNT CENTER
+</div>
+
+
+<h2 class="section-title">
+    Manage your account
+</h2>
+
+
+<section class="menu-card">
+
+
+    <!-- =====================================================
+         LEADERBOARD — NEW
+    ====================================================== -->
+
+    <button
+        class="menu-item"
+        id="leaderboardButton"
+        type="button"
+    >
+
+        <div class="menu-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path d="M6 20V10"/>
+                <path d="M12 20V5"/>
+                <path d="M18 20v-7"/>
+
+                <path
+                    d="M4 20h16"
+                />
+
+                <path
+                    d="M9 5h6"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="menu-text">
+
+            <strong>
+                Leaderboard
+            </strong>
+
+            <small>
+                View TaskEarn Top 10 points ranking
+            </small>
+
+        </div>
+
+
+        <div class="menu-arrow">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path d="m9 18 6-6-6-6"/>
+
+            </svg>
+
+        </div>
+
+    </button>
+
+
+    <!-- SECURITY -->
+
+    <button
+        class="menu-item"
+        id="securityButton"
+        type="button"
+    >
+
+        <div class="menu-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <rect
+                    x="5"
+                    y="10"
+                    width="14"
+                    height="10"
+                    rx="2"
+                />
+
+                <path
+                    d="M8 10V7a4 4 0 0 1 8 0v3"
+                />
+
+                <circle
+                    cx="12"
+                    cy="15"
+                    r="1"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="menu-text">
+
+            <strong>
+                Account Security
+            </strong>
+
+            <small>
+                Password & account protection
+            </small>
+
+        </div>
+
+
+        <div class="menu-arrow">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path d="m9 18 6-6-6-6"/>
+
+            </svg>
+
+        </div>
+
+    </button>
+
+
+    <!-- PROFILE INFORMATION -->
+
+    <button
+        class="menu-item"
+        id="profileInfoButton"
+        type="button"
+    >
+
+        <div class="menu-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <circle
+                    cx="12"
+                    cy="8"
+                    r="3"
+                />
+
+                <path
+                    d="M5 20c.6-3.3 3-5.2 7-5.2s6.4 1.9 7 5.2"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="menu-text">
+
+            <strong>
+                Profile Information
+            </strong>
+
+            <small>
+                Your account details
+            </small>
+
+        </div>
+
+
+        <div class="menu-arrow">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path d="m9 18 6-6-6-6"/>
+
+            </svg>
+
+        </div>
+
+    </button>
+
+
+    <!-- ACCOUNT STATUS -->
+
+    <button
+        class="menu-item"
+        id="statusButton"
+        type="button"
+    >
+
+        <div class="menu-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="8"
+                />
+
+                <path
+                    d="m8.5 12 2.3 2.3 4.8-5"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="menu-text">
+
+            <strong>
+                Account Status
+            </strong>
+
+            <small>
+                Your account is currently active
+            </small>
+
+        </div>
+
+
+        <div class="menu-arrow">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path d="m9 18 6-6-6-6"/>
+
+            </svg>
+
+        </div>
+
+    </button>
+
+
+</section>
+
+
+<section class="security-card">
+
+
+    <div class="security-top">
+
+
+        <div class="security-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path
+                    d="M12 3 20 6v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3Z"
+                />
+
+                <path
+                    d="m8.5 12 2.2 2.2 4.8-5"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="security-text">
+
+            <strong>
+                Secure Account
+            </strong>
+
+            <small>
+                Authentication is active for this account
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="security-status">
+
+        <span>
+            Authentication status
+        </span>
+
+        <strong>
+            SECURE
+        </strong>
+
+    </div>
+
+</section>
+
+
+<section class="extra-grid">
+
+
+    <button
+        class="extra-button"
+        id="historyButton"
+        type="button"
+    >
+
+        <div class="extra-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path
+                    d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
+                />
+
+                <path
+                    d="M6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13A2.5 2.5 0 0 1 6.5 3Z"
+                />
+
+                <path d="M8 7h8"/>
+                <path d="M8 11h8"/>
+                <path d="M8 15h5"/>
+
+            </svg>
+
+        </div>
+
+
+        <div class="extra-content">
+
+            <strong>
+                History
+            </strong>
+
+            <small>
+                Account activity
+            </small>
+
+        </div>
+
+    </button>
+
+
+    <button
+        class="extra-button"
+        id="supportButton"
+        type="button"
+    >
+
+        <div class="extra-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path
+                    d="M20 11.5a8 8 0 0 1-8 8H8l-4 2v-5a8 8 0 1 1 16-5Z"
+                />
+
+                <path d="M8 11h8"/>
+                <path d="M8 8h5"/>
+
+            </svg>
+
+        </div>
+
+
+        <div class="extra-content">
+
+            <strong>
+                Support
+            </strong>
+
+            <small>
+                Get help
+            </small>
+
+        </div>
+
+    </button>
+
+
+    <button
+        class="extra-button"
+        id="termsButton"
+        type="button"
+    >
+
+        <div class="extra-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path
+                    d="M6 3h9l3 3v15H6z"
+                />
+
+                <path d="M15 3v4h4"/>
+                <path d="M9 11h6"/>
+                <path d="M9 15h6"/>
+                <path d="M9 7h2"/>
+
+            </svg>
+
+        </div>
+
+
+        <div class="extra-content">
+
+            <strong>
+                Terms
+            </strong>
+
+            <small>
+                Terms of service
+            </small>
+
+        </div>
+
+    </button>
+
+
+    <button
+        class="extra-button"
+        id="privacyButton"
+        type="button"
+    >
+
+        <div class="extra-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <rect
+                    x="4"
+                    y="10"
+                    width="16"
+                    height="10"
+                    rx="2"
+                />
+
+                <path
+                    d="M7 10V7a5 5 0 0 1 10 0v3"
+                />
+
+                <circle
+                    cx="12"
+                    cy="15"
+                    r="1"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="extra-content">
+
+            <strong>
+                Privacy
+            </strong>
+
+            <small>
+                Privacy policy
+            </small>
+
+        </div>
+
+    </button>
+
+
+</section>
+
+
+<button
+    class="logout-button"
+    id="logoutButton"
+    type="button"
+>
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    >
+
+        <path d="M10 17l5-5-5-5"/>
+        <path d="M15 12H3"/>
+        <path d="M21 4v16"/>
+
+    </svg>
+
+    Log Out
+
+</button>
+
+
+<div class="footer">
+
+    TASKEARN • EARN. WATCH. GROW.
+
+</div>
+
+
+</main>
+
+
+<div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+>
+    Done
+</div>
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   SUPABASE — SAME CONNECTION
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true
+            }
+        }
+    );
+
+
+/* =========================================================
+   ROUTES
+========================================================= */
+
+const ROUTES = {
+
+    home:
+        "home.html",
+
+    history:
+        "history.html",
+
+    support:
+        "support.html",
+
+    terms:
+        "terms.html",
+
+    privacy:
+        "privacy.html",
+
+    login:
+        "login.html",
+
+    leaderboard:
+        "leaderboard.html"
+
+};
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    if(!toast){
+        return;
+    }
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.taskEarnToast
+    );
+
+
+    window.taskEarnToast =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2400
+        );
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function goTo(page){
+
+    if(
+        !ROUTES[page]
+    ){
+        return;
+    }
+
+
+    window.location.href =
+        ROUTES[page];
+
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+async function getSession(){
+
+    try{
+
+        const result =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if(
+            result.error
+        ){
+
+            console.error(
+                result.error
+            );
+
+            return null;
+
+        }
+
+
+        return (
+            result.data &&
+            result.data.session
+        ) || null;
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   PROFILE PHOTO
+========================================================= */
+
+const profileAvatar =
+    document.getElementById(
+        "profileAvatar"
+    );
+
+const profilePhotoInput =
+    document.getElementById(
+        "profilePhotoInput"
+    );
+
+const profilePhoto =
+    document.getElementById(
+        "profilePhoto"
+    );
+
+
+function loadLocalPhoto(){
+
+    const saved =
+        localStorage.getItem(
+            "taskearn_profile_photo"
+        );
+
+
+    if(
+        saved &&
+        profilePhoto &&
+        profileAvatar
+    ){
+
+        profilePhoto.src =
+            saved;
+
+        profileAvatar.classList.add(
+            "has-photo"
+        );
+
+    }
+
+}
+
+
+function openPhotoPicker(){
+
+    if(
+        profilePhotoInput
+    ){
+
+        profilePhotoInput.click();
+
+    }
+
+}
+
+
+if(profileAvatar){
+
+    profileAvatar.addEventListener(
+        "click",
+        openPhotoPicker
+    );
+
+
+    profileAvatar.addEventListener(
+        "keydown",
+        function(event){
+
+            if(
+                event.key === "Enter" ||
+                event.key === " "
+            ){
+
+                event.preventDefault();
+
+                openPhotoPicker();
+
+            }
+
+        }
+    );
+
+}
+
+
+if(profilePhotoInput){
+
+    profilePhotoInput.addEventListener(
+        "change",
+        function(event){
+
+            const file =
+                event.target.files?.[0];
+
+
+            if(!file){
+                return;
+            }
+
+
+            if(
+                !file.type.startsWith(
+                    "image/"
+                )
+            ){
+
+                showToast(
+                    "Please select an image."
+                );
+
+                return;
+
+            }
+
+
+            if(
+                file.size >
+                5 * 1024 * 1024
+            ){
+
+                showToast(
+                    "Photo must be under 5 MB."
+                );
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(){
+
+                    const data =
+                        reader.result;
+
+
+                    if(
+                        profilePhoto &&
+                        profileAvatar
+                    ){
+
+                        profilePhoto.src =
+                            data;
+
+                        profileAvatar.classList.add(
+                            "has-photo"
+                        );
+
+                    }
+
+
+                    localStorage.setItem(
+                        "taskearn_profile_photo",
+                        data
+                    );
+
+
+                    showToast(
+                        "Profile photo updated."
+                    );
+
+                };
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+    const session =
+        await getSession();
+
+
+    if(
+        !session ||
+        !session.user
+    ){
+
+        window.location.replace(
+            ROUTES.login
+        );
+
+        return;
+
+    }
+
+
+    const user =
+        session.user;
+
+
+    const metadata =
+        user.user_metadata || {};
+
+
+    const name =
+
+        metadata.full_name ||
+
+        metadata.name ||
+
+        metadata.username ||
+
+        (
+            user.email
+                ? user.email.split("@")[0]
+                : "TaskEarn User"
+        );
+
+
+    const profileName =
+        document.getElementById(
+            "profileName"
+        );
+
+
+    if(profileName){
+
+        profileName.textContent =
+            name;
+
+    }
+
+
+    const profileEmail =
+        document.getElementById(
+            "profileEmail"
+        );
+
+
+    if(profileEmail){
+
+        profileEmail.textContent =
+            user.email ||
+            "Account email";
+
+    }
+
+
+    const accountId =
+        document.getElementById(
+            "accountId"
+        );
+
+
+    if(accountId){
+
+        accountId.textContent =
+
+            "TE-" +
+
+            String(
+                user.id
+            )
+            .replaceAll(
+                "-",
+                ""
+            )
+            .substring(
+                0,
+                10
+            )
+            .toUpperCase();
+
+    }
+
+}
+
+
+/* =========================================================
+   MY POINTS
+========================================================= */
+
+/*
+   Points are awarded by the backend when a task/project
+   submission is created.
+
+   We intentionally do NOT generate fake points here.
+   The actual points source will be connected from the
+   points/leaderboard backend without changing this UI.
+*/
+
+function loadPointsDisplay(){
+
+    const points =
+        document.getElementById(
+            "myPoints"
+        );
+
+
+    if(points){
+
+        points.textContent =
+            "View Points";
+
+    }
+
+}
+
+
+/* =========================================================
+   POINTS CARD
+========================================================= */
+
+const pointsCard =
+    document.getElementById(
+        "pointsCard"
+    );
+
+
+if(pointsCard){
+
+    pointsCard.addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "leaderboard"
+            );
+
+        }
+    );
+
+
+    pointsCard.addEventListener(
+        "keydown",
+        function(event){
+
+            if(
+                event.key === "Enter" ||
+                event.key === " "
+            ){
+
+                event.preventDefault();
+
+                goTo(
+                    "leaderboard"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LEADERBOARD
+========================================================= */
+
+const leaderboardButton =
+    document.getElementById(
+        "leaderboardButton"
+    );
+
+
+if(leaderboardButton){
+
+    leaderboardButton.addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "leaderboard"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   COPY ACCOUNT ID
+========================================================= */
+
+const copyIdButton =
+    document.getElementById(
+        "copyIdButton"
+    );
+
+
+if(copyIdButton){
+
+    copyIdButton.addEventListener(
+        "click",
+        async function(){
+
+            const accountId =
+                document.getElementById(
+                    "accountId"
+                );
+
+
+            if(!accountId){
+                return;
+            }
+
+
+            const text =
+                accountId.textContent.trim();
+
+
+            try{
+
+                await navigator.clipboard.writeText(
+                    text
+                );
+
+
+                showToast(
+                    "Account ID copied."
+                );
+
+            }catch(error){
+
+                showToast(
+                    "Unable to copy Account ID."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+const backButton =
+    document.getElementById(
+        "backButton"
+    );
+
+
+if(backButton){
+
+    backButton.addEventListener(
+        "click",
+        function(){
+
+            if(
+                document.referrer &&
+                history.length > 1
+            ){
+
+                history.back();
+
+            }else{
+
+                goTo(
+                    "home"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+const securityButton =
+    document.getElementById(
+        "securityButton"
+    );
+
+
+if(securityButton){
+
+    securityButton.addEventListener(
+        "click",
+        function(){
+
+            showToast(
+                "Your account authentication is active."
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PROFILE INFORMATION
+========================================================= */
+
+const profileInfoButton =
+    document.getElementById(
+        "profileInfoButton"
+    );
+
+
+if(profileInfoButton){
+
+    profileInfoButton.addEventListener(
+        "click",
+        function(){
+
+            showToast(
+                "Your profile information is shown above."
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ACCOUNT STATUS
+========================================================= */
+
+const statusButton =
+    document.getElementById(
+        "statusButton"
+    );
+
+
+if(statusButton){
+
+    statusButton.addEventListener(
+        "click",
+        function(){
+
+            showToast(
+                "Your TaskEarn account is active."
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+const historyButton =
+    document.getElementById(
+        "historyButton"
+    );
+
+
+if(historyButton){
+
+    historyButton.addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "history"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SUPPORT
+========================================================= */
+
+const supportButton =
+    document.getElementById(
+        "supportButton"
+    );
+
+
+if(supportButton){
+
+    supportButton.addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "support"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TERMS
+========================================================= */
+
+const termsButton =
+    document.getElementById(
+        "termsButton"
+    );
+
+
+if(termsButton){
+
+    termsButton.addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "terms"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PRIVACY
+========================================================= */
+
+const privacyButton =
+    document.getElementById(
+        "privacyButton"
+    );
+
+
+if(privacyButton){
+
+    privacyButton.addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "privacy"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
+
+
+if(logoutButton){
+
+    logoutButton.addEventListener(
+        "click",
+        async function(){
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to log out?"
+                );
+
+
+            if(!confirmed){
+                return;
+            }
+
+
+            logoutButton.disabled =
+                true;
+
+
+            try{
+
+                const result =
+                    await supabaseClient
+                        .auth
+                        .signOut();
+
+
+                if(
+                    result.error
+                ){
+
+                    console.error(
+                        result.error
+                    );
+
+
+                    showToast(
+                        "Logout failed. Please try again."
+                    );
+
+
+                    logoutButton.disabled =
+                        false;
+
+                    return;
+
+                }
+
+
+                window.location.replace(
+                    ROUTES.login
+                );
+
+            }catch(error){
+
+                console.error(
+                    error
+                );
+
+
+                showToast(
+                    "Something went wrong."
+                );
+
+
+                logoutButton.disabled =
+                    false;
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        function(event){
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                window.location.replace(
+                    ROUTES.login
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadLocalPhoto();
+
+loadProfile();
+
+loadPointsDisplay();
+
+</script>
+
+</body>
+
+</html>

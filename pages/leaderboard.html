@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<title>Leaderboard • TaskEarn</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+    --bg:#06080d;
+    --card:rgba(17,21,30,.82);
+    --text:#f7f9ff;
+    --muted:#8f98aa;
+    --green:#39e58c;
+    --gold:#ffd34d;
+    --silver:#cfd6df;
+    --metal:#aeb7c2;
+}
+
+html,body{
+    width:100%;
+    min-height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(57,229,140,.14),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 0% 35%,
+            rgba(67,110,255,.07),
+            transparent 28%
+        ),
+        #06080d;
+}
+
+.page{
+    width:100%;
+    max-width:620px;
+    margin:0 auto;
+    padding:
+        calc(18px + env(safe-area-inset-top))
+        16px
+        calc(35px + env(safe-area-inset-bottom));
+}
+
+/* TOP BAR */
+
+.topbar{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    margin-bottom:20px;
+}
+
+.back-btn{
+    width:43px;
+    height:43px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    background:rgba(255,255,255,.045);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-size:23px;
+    transition:.2s ease;
+}
+
+.back-btn:active{
+    transform:scale(.94);
+}
+
+.title-area{
+    flex:1;
+}
+
+.title{
+    font-size:23px;
+    font-weight:800;
+    letter-spacing:-.5px;
+}
+
+.subtitle{
+    margin-top:3px;
+    font-size:12px;
+    color:var(--muted);
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(57,229,140,.16);
+    border-radius:24px;
+    padding:23px 20px;
+    margin-bottom:18px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25,185,107,.13),
+            rgba(17,21,30,.92) 55%
+        );
+    box-shadow:
+        0 18px 50px rgba(0,0,0,.32),
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.hero:before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    right:-80px;
+    top:-90px;
+    background:rgba(57,229,140,.09);
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.hero-label{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-size:11px;
+    color:var(--green);
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1.1px;
+}
+
+.live-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px rgba(57,229,140,.75);
+}
+
+.hero h1{
+    margin-top:9px;
+    font-size:28px;
+    line-height:1.08;
+    font-weight:900;
+    letter-spacing:-.9px;
+}
+
+.hero p{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* MONTH */
+
+.month-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:13px 15px;
+    margin-bottom:16px;
+    border-radius:17px;
+    border:1px solid rgba(255,255,255,.065);
+    background:rgba(17,21,30,.72);
+}
+
+.month-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.month-icon{
+    width:35px;
+    height:35px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(57,229,140,.1);
+    color:var(--green);
+    font-size:17px;
+}
+
+.month-label{
+    font-size:10px;
+    color:#707a8d;
+}
+
+.month-name{
+    margin-top:2px;
+    font-size:12px;
+    font-weight:800;
+}
+
+.month-badge{
+    font-size:9px;
+    font-weight:800;
+    color:var(--green);
+    padding:6px 9px;
+    border-radius:9px;
+    background:rgba(57,229,140,.08);
+}
+
+/* YOUR POINTS */
+
+.points-card{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:17px;
+    margin-bottom:20px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.08);
+    background:var(--card);
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.points-icon{
+    width:53px;
+    height:53px;
+    flex:0 0 53px;
+    border-radius:17px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(57,229,140,.20),
+            rgba(57,229,140,.055)
+        );
+    border:1px solid rgba(57,229,140,.16);
+}
+
+.points-icon svg{
+    width:31px;
+    height:31px;
+}
+
+.points-info{
+    flex:1;
+}
+
+.points-small{
+    color:var(--muted);
+    font-size:11px;
+    font-weight:700;
+}
+
+.points-value{
+    margin-top:2px;
+    font-size:23px;
+    font-weight:900;
+}
+
+.points-name{
+    margin-top:1px;
+    font-size:11px;
+    color:#687285;
+}
+
+/* SECTION */
+
+.section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:4px 3px 11px;
+}
+
+.section-title{
+    font-size:14px;
+    font-weight:850;
+}
+
+.section-note{
+    font-size:10px;
+    color:#697385;
+}
+
+/* TOP THREE */
+
+.top-three{
+    display:grid;
+    grid-template-columns:1fr 1.14fr 1fr;
+    align-items:end;
+    gap:9px;
+    margin-bottom:22px;
+}
+
+.podium{
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:15px 8px 17px;
+    background:var(--card);
+    box-shadow:0 13px 32px rgba(0,0,0,.22);
+}
+
+.podium.first{
+    padding-top:20px;
+    padding-bottom:21px;
+    border-color:rgba(255,211,77,.22);
+    background:
+        linear-gradient(
+            150deg,
+            rgba(255,211,77,.10),
+            rgba(17,21,30,.88)
+        );
+}
+
+.podium.second{
+    border-color:rgba(207,214,223,.14);
+}
+
+.podium.third{
+    border-color:rgba(174,183,194,.18);
+}
+
+.medal{
+    width:49px;
+    height:49px;
+    margin:0 auto 9px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+    font-weight:950;
+    border:2px solid rgba(255,255,255,.13);
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.28),
+        inset 0 2px 4px rgba(255,255,255,.25);
+}
+
+.first .medal{
+    width:57px;
+    height:57px;
+    color:#6c5000;
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            #fff6b5,
+            #ffd34d 48%,
+            #c99a16
+        );
+    border-color:#ffe483;
+}
+
+.second .medal{
+    color:#424954;
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            #ffffff,
+            #cfd6df 48%,
+            #8e97a4
+        );
+    border-color:#e6eaf0;
+}
+
+/* 3RD METALLIC / ALUMINIUM */
+
+.third .medal{
+    color:#303741;
+    background:
+        linear-gradient(
+            145deg,
+            #f3f5f7 0%,
+            #b9c1ca 28%,
+            #7e8995 52%,
+            #dce1e6 75%,
+            #8c96a1 100%
+        );
+    border-color:#dfe4e9;
+}
+
+.rank{
+    font-size:10px;
+    font-weight:900;
+    color:#727c8d;
+    margin-bottom:4px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+}
+
+.podium-name{
+    font-size:11px;
+    font-weight:850;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.podium-points{
+    margin-top:5px;
+    font-size:12px;
+    font-weight:900;
+}
+
+.first .podium-points{
+    color:var(--gold);
+}
+
+.second .podium-points{
+    color:var(--silver);
+}
+
+.third .podium-points{
+    color:#c8d0d8;
+}
+
+/* LIST */
+
+.leaderboard{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.user-row{
+    display:flex;
+    align-items:center;
+    min-height:67px;
+    gap:11px;
+    padding:10px 12px;
+    border-radius:17px;
+    border:1px solid rgba(255,255,255,.065);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(22,27,38,.84),
+            rgba(12,15,22,.9)
+        );
+    transition:.18s ease;
+}
+
+.user-row:active{
+    transform:scale(.985);
+}
+
+.user-rank{
+    width:29px;
+    flex:0 0 29px;
+    text-align:center;
+    font-size:12px;
+    color:#687285;
+    font-weight:900;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    flex:0 0 40px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(57,229,140,.16),
+            rgba(57,229,140,.045)
+        );
+    border:1px solid rgba(57,229,140,.12);
+    color:#a8ffcf;
+    font-size:13px;
+    font-weight:900;
+}
+
+.user-info{
+    flex:1;
+    min-width:0;
+}
+
+.user-name{
+    font-size:13px;
+    font-weight:800;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.user-label{
+    margin-top:3px;
+    font-size:10px;
+    color:#687285;
+}
+
+.user-points{
+    text-align:right;
+    font-size:13px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.user-points span{
+    display:block;
+    margin-top:3px;
+    color:#697385;
+    font-size:9px;
+    font-weight:700;
+}
+
+.row-gold{
+    border-color:rgba(255,211,77,.18);
+}
+
+.row-silver{
+    border-color:rgba(207,214,223,.13);
+}
+
+.row-metal{
+    border-color:rgba(174,183,194,.16);
+}
+
+.row-gold .user-rank{
+    color:var(--gold);
+}
+
+.row-silver .user-rank{
+    color:var(--silver);
+}
+
+.row-metal .user-rank{
+    color:#c1cad3;
+}
+
+/* FOOTER */
+
+.info-box{
+    margin-top:17px;
+    padding:13px 14px;
+    border-radius:15px;
+    border:1px solid rgba(255,255,255,.055);
+    background:rgba(255,255,255,.025);
+    color:#687285;
+    font-size:10px;
+    line-height:1.5;
+    text-align:center;
+}
+
+@media(max-width:380px){
+
+    .page{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .hero h1{
+        font-size:25px;
+    }
+
+    .top-three{
+        gap:6px;
+    }
+
+    .podium{
+        padding-left:5px;
+        padding-right:5px;
+    }
+
+    .podium-name{
+        font-size:10px;
+    }
+
+    .podium-points{
+        font-size:10px;
+    }
+
+    .medal{
+        width:44px;
+        height:44px;
+    }
+
+    .first .medal{
+        width:51px;
+        height:51px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <a href="profile.html"
+           class="back-btn"
+           aria-label="Back">
+            ‹
+        </a>
+
+        <div class="title-area">
+            <div class="title">Leaderboard</div>
+            <div class="subtitle">Top TaskEarn earners</div>
+        </div>
+
+    </div>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-label">
+                <span class="live-dot"></span>
+                TaskEarn Rankings
+            </div>
+
+            <h1>Top 10 Earners 🏆</h1>
+
+            <p>
+                Complete tasks, collect points and climb
+                higher every month.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- MONTH -->
+
+    <section class="month-card">
+
+        <div class="month-left">
+
+            <div class="month-icon">
+                📅
+            </div>
+
+            <div>
+
+                <div class="month-label">
+                    CURRENT RANKING
+                </div>
+
+                <div
+                    class="month-name"
+                    id="currentMonth">
+                    Loading...
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="month-badge">
+            MONTHLY
+        </div>
+
+    </section>
+
+
+    <!-- YOUR POINTS -->
+
+    <section class="points-card">
+
+        <div class="points-icon">
+
+            <svg
+                viewBox="0 0 64 64"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <circle
+                    cx="32"
+                    cy="32"
+                    r="23"
+                    fill="rgba(57,229,140,.16)"
+                    stroke="#39e58c"
+                    stroke-width="2"/>
+
+                <path
+                    d="M32 18V46"
+                    stroke="#39e58c"
+                    stroke-width="3"
+                    stroke-linecap="round"/>
+
+                <path
+                    d="M39 23.5C37.5 21.7 35.2 20.7 32.4 20.7C28.8 20.7 26 22.7 26 25.5C26 28.4 28.3 29.5 32.2 30.5C36.1 31.5 38.5 32.8 38.5 35.8C38.5 38.9 35.7 41.2 32 41.2C29.2 41.2 26.6 40 25 37.9"
+                    stroke="#39e58c"
+                    stroke-width="3"
+                    stroke-linecap="round"/>
+
+            </svg>
+
+        </div>
+
+        <div class="points-info">
+
+            <div class="points-small">
+                YOUR POINTS
+            </div>
+
+            <div
+                class="points-value"
+                id="yourPoints">
+                0
+            </div>
+
+            <div
+                class="points-name"
+                id="yourName">
+                TaskEarn Member
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TOP 3 -->
+
+    <div class="section-head">
+
+        <div class="section-title">
+            Top 3
+        </div>
+
+        <div class="section-note">
+            Highest points
+        </div>
+
+    </div>
+
+
+    <section class="top-three">
+
+        <!-- #2 -->
+
+        <div class="podium second">
+
+            <div class="medal">
+                2
+            </div>
+
+            <div class="rank">
+                2ND
+            </div>
+
+            <div class="podium-name">
+                disha nerle
+            </div>
+
+            <div class="podium-points">
+                24,780
+            </div>
+
+        </div>
+
+
+        <!-- #1 -->
+
+        <div class="podium first">
+
+            <div class="medal">
+                1
+            </div>
+
+            <div class="rank">
+                1ST • CHAMPION
+            </div>
+
+            <div class="podium-name">
+                pramod potdar
+            </div>
+
+            <div class="podium-points">
+                29,628
+            </div>
+
+        </div>
+
+
+        <!-- #3 -->
+
+        <div class="podium third">
+
+            <div class="medal">
+                3
+            </div>
+
+            <div class="rank">
+                3RD
+            </div>
+
+            <div class="podium-name">
+                arman nadaf
+            </div>
+
+            <div class="podium-points">
+                21,450
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TOP 10 -->
+
+    <div class="section-head">
+
+        <div class="section-title">
+            Top 10
+        </div>
+
+        <div class="section-note">
+            All rankings
+        </div>
+
+    </div>
+
+
+    <section
+        class="leaderboard"
+        id="leaderboard">
+    </section>
+
+
+    <div class="info-box">
+        Points ranking is updated monthly. Keep completing
+        tasks to increase your score and climb the leaderboard.
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   TASKEARN LEADERBOARD
+   ========================================================= */
+
+/*
+   TOP 3 ARE KEPT EXACTLY AS REQUESTED.
+
+   #1  pramod potdar  = 29,628
+   #2  disha nerle    = 24,780
+   #3  arman nadaf    = 21,450
+
+   #4 - #10 use proper names.
+*/
+
+
+const BASE_LEADERBOARD = [
+
+    {
+        rank:1,
+        name:"pramod potdar",
+        points:29628
+    },
+
+    {
+        rank:2,
+        name:"disha nerle",
+        points:24780
+    },
+
+    {
+        rank:3,
+        name:"arman nadaf",
+        points:21450
+    },
+
+    {
+        rank:4,
+        name:"Payal",
+        points:18920
+    },
+
+    {
+        rank:5,
+        name:"Samay",
+        points:17640
+    },
+
+    {
+        rank:6,
+        name:"Sneha",
+        points:15850
+    },
+
+    {
+        rank:7,
+        name:"Rahul",
+        points:14320
+    },
+
+    {
+        rank:8,
+        name:"Aarav",
+        points:12890
+    },
+
+    {
+        rank:9,
+        name:"Neha",
+        points:11260
+    },
+
+    {
+        rank:10,
+        name:"Aditya",
+        points:9860
+    }
+
+];
+
+
+/*
+   MONTHLY POINT INCREASE
+
+   Every new calendar month, #4-#10 get additional points.
+
+   The Top 3 displayed current values are NOT changed.
+   This keeps your requested Top 3 exactly the same.
+
+   Month 0 = current values
+   Month 1 = + monthly increase
+   Month 2 = + another monthly increase
+   etc.
+*/
+
+
+const MONTHLY_INCREASE = {
+
+    4:1200,
+    5:1100,
+    6:1000,
+    7:900,
+    8:850,
+    9:800,
+    10:750
+
+};
+
+
+function getMonthNumber(){
+
+    const now = new Date();
+
+    return (
+        (now.getFullYear() - 2026) * 12 +
+        now.getMonth()
+    );
+
+}
+
+
+function getLeaderboard(){
+
+    const monthNumber =
+        Math.max(0,getMonthNumber());
+
+    return BASE_LEADERBOARD.map(user=>{
+
+        const copy = {
+            ...user
+        };
+
+        /*
+           Top 3 untouched.
+        */
+
+        if(user.rank <= 3){
+
+            copy.points = user.points;
+
+            return copy;
+
+        }
+
+        const increase =
+            MONTHLY_INCREASE[user.rank] || 0;
+
+        copy.points =
+            user.points +
+            (increase * monthNumber);
+
+        return copy;
+
+    });
+
+}
+
+
+/* FORMAT POINTS */
+
+function formatPoints(value){
+
+    return Number(value || 0)
+        .toLocaleString("en-IN");
+
+}
+
+
+/* INITIALS */
+
+function initials(name){
+
+    const parts =
+        String(name)
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+    if(!parts.length){
+        return "TE";
+    }
+
+    if(parts.length === 1){
+
+        return parts[0]
+            .slice(0,2)
+            .toUpperCase();
+
+    }
+
+    return (
+        parts[0][0] +
+        parts[parts.length - 1][0]
+    ).toUpperCase();
+
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* LOAD LIST */
+
+function loadLeaderboard(){
+
+    const list =
+        document.getElementById("leaderboard");
+
+    if(!list){
+        return;
+    }
+
+    const data =
+        getLeaderboard();
+
+    list.innerHTML = "";
+
+    data.forEach(user=>{
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "user-row";
+
+        if(user.rank === 1){
+
+            row.classList.add("row-gold");
+
+        }
+
+        if(user.rank === 2){
+
+            row.classList.add("row-silver");
+
+        }
+
+        if(user.rank === 3){
+
+            row.classList.add("row-metal");
+
+        }
+
+
+        let label =
+            "Active Member";
+
+        if(user.rank === 1){
+
+            label = "Champion";
+
+        }else if(user.rank <= 3){
+
+            label = "Elite Earner";
+
+        }else if(user.rank <= 5){
+
+            label = "Rising Earner";
+
+        }
+
+
+        row.innerHTML = `
+
+            <div class="user-rank">
+                ${String(user.rank).padStart(2,"0")}
+            </div>
+
+            <div class="avatar">
+                ${initials(user.name)}
+            </div>
+
+            <div class="user-info">
+
+                <div class="user-name">
+                    ${escapeHTML(user.name)}
+                </div>
+
+                <div class="user-label">
+                    ${label}
+                </div>
+
+            </div>
+
+            <div class="user-points">
+
+                ${formatPoints(user.points)}
+
+                <span>
+                    POINTS
+                </span>
+
+            </div>
+
+        `;
+
+        list.appendChild(row);
+
+    });
+
+}
+
+
+/* CURRENT MONTH */
+
+function loadCurrentMonth(){
+
+    const element =
+        document.getElementById("currentMonth");
+
+    if(!element){
+        return;
+    }
+
+    const now =
+        new Date();
+
+    element.textContent =
+        now.toLocaleDateString(
+            "en-IN",
+            {
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+}
+
+
+/* YOUR LOCAL POINTS */
+
+function loadYourPoints(){
+
+    let points = 0;
+
+    const keys = [
+
+        "taskearn_points",
+        "points",
+        "user_points",
+        "total_points"
+
+    ];
+
+    for(const key of keys){
+
+        const value =
+            localStorage.getItem(key);
+
+        if(
+            value !== null &&
+            value !== "" &&
+            !Number.isNaN(Number(value))
+        ){
+
+            points =
+                Number(value);
+
+            break;
+
+        }
+
+    }
+
+    const element =
+        document.getElementById("yourPoints");
+
+    if(element){
+
+        element.textContent =
+            formatPoints(points);
+
+    }
+
+}
+
+
+/* INITIALIZE */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadCurrentMonth();
+
+        loadLeaderboard();
+
+        loadYourPoints();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

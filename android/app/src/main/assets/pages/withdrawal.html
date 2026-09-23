@@ -1,0 +1,4454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta
+    name="theme-color"
+    content="#050914">
+
+<title>TaskEarn — Withdraw</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    color:#f7f9ff;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 8% -8%,
+            rgba(0,205,255,.16),
+            transparent 29%
+        ),
+
+        radial-gradient(
+            circle at 105% 18%,
+            rgba(111,76,255,.19),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 45% 100%,
+            rgba(20,120,255,.09),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            145deg,
+            #030610 0%,
+            #070c1b 48%,
+            #050813 100%
+        );
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    border:0;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.975);
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.bg-layer{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-1;
+
+    overflow:hidden;
+
+    pointer-events:none;
+}
+
+.glow{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(85px);
+
+    opacity:.20;
+}
+
+.glow-a{
+
+    width:280px;
+    height:280px;
+
+    left:-160px;
+    top:130px;
+
+    background:#00c8ff;
+}
+
+.glow-b{
+
+    width:320px;
+    height:320px;
+
+    right:-180px;
+    top:450px;
+
+    background:#654cff;
+}
+
+.glow-c{
+
+    width:230px;
+    height:230px;
+
+    left:35%;
+    bottom:-150px;
+
+    background:#168cff;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.container{
+
+    width:100%;
+
+    max-width:700px;
+
+    margin:auto;
+
+    padding-bottom:45px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    min-height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:11px 16px;
+
+    background:
+        rgba(3,6,16,.90);
+
+    border-bottom:
+        1px solid
+        rgba(110,150,220,.10);
+
+    backdrop-filter:
+        blur(24px);
+
+    -webkit-backdrop-filter:
+        blur(24px);
+}
+
+.back{
+
+    width:46px;
+    height:46px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(120,155,225,.22);
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #17213a,
+            #0b1224
+        );
+
+    color:#fff;
+
+    transition:.18s ease;
+}
+
+.back svg{
+
+    width:22px;
+    height:22px;
+
+    stroke:currentColor;
+
+    fill:none;
+
+    stroke-width:2.5;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+}
+
+.header-title{
+
+    color:#f8faff;
+
+    font-size:20px;
+
+    font-weight:950;
+
+    letter-spacing:-.5px;
+}
+
+.header-title span{
+
+    color:#ffbd00;
+}
+
+
+/* =========================================================
+   BALANCE CARD
+   SCREENSHOT MATCH:
+   DARK NAVY + SUBTLE CYAN + VIOLET
+========================================================= */
+
+.balance-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    margin:19px 16px;
+
+    padding:25px;
+
+    border:
+        1px solid
+        rgba(105,145,215,.22);
+
+    border-radius:27px;
+
+    background:
+
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(39,184,226,.12),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 0% 100%,
+            rgba(105,76,255,.18),
+            transparent 42%
+        ),
+
+        linear-gradient(
+            145deg,
+            #111a2e 0%,
+            #10182a 48%,
+            #0b1221 100%
+        );
+
+    box-shadow:
+
+        0 25px 60px
+        rgba(0,0,0,.28),
+
+        inset 0 1px 0
+        rgba(255,255,255,.045);
+}
+
+.balance-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+    height:250px;
+
+    right:-130px;
+    top:-135px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(43,195,232,.16),
+            rgba(43,195,232,.05) 35%,
+            transparent 70%
+        );
+
+    filter:blur(3px);
+}
+
+.balance-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:190px;
+    height:190px;
+
+    left:-105px;
+    bottom:-120px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(104,76,255,.23),
+            transparent 68%
+        );
+
+    filter:blur(8px);
+}
+
+.balance-content{
+
+    position:relative;
+
+    z-index:2;
+}
+
+.balance-label{
+
+    color:
+        #5edcff;
+
+    font-size:9px;
+
+    font-weight:950;
+
+    letter-spacing:1.8px;
+}
+
+.balance{
+
+    margin-top:9px;
+
+    color:#f5f8ff;
+
+    font-size:40px;
+
+    line-height:1;
+
+    font-weight:950;
+
+    letter-spacing:-1.6px;
+
+    text-shadow:
+        0 2px 18px
+        rgba(0,0,0,.25);
+}
+
+.balance small{
+
+    font-size:13px;
+
+    color:
+        rgba(220,230,248,.48);
+
+    letter-spacing:0;
+}
+
+.balance-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    margin-top:11px;
+
+    color:
+        rgba(175,188,211,.64);
+
+    font-size:9px;
+}
+
+.balance-dot{
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#55e5b2;
+
+    box-shadow:
+        0 0 12px
+        rgba(85,229,178,.55);
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card{
+
+    margin:16px;
+
+    padding:20px;
+
+    border:
+        1px solid
+        rgba(105,145,215,.15);
+
+    border-radius:25px;
+
+    background:
+
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(112,76,255,.08),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            145deg,
+            rgba(17,26,50,.94),
+            rgba(7,13,28,.98)
+        );
+
+    box-shadow:
+        0 18px 50px
+        rgba(0,0,0,.20),
+
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.title{
+
+    margin-bottom:17px;
+
+    color:#f7f9ff;
+
+    font-size:19px;
+
+    font-weight:950;
+
+    letter-spacing:-.4px;
+}
+
+
+/* =========================================================
+   WITHDRAWAL METHODS
+========================================================= */
+
+.methods{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:11px;
+}
+
+.method{
+
+    position:relative;
+
+    min-height:108px;
+
+    padding:14px;
+
+    border:
+        1px solid
+        rgba(105,140,205,.17);
+
+    border-radius:18px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(23,32,57,.90),
+            rgba(12,19,38,.95)
+        );
+
+    cursor:pointer;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        background .18s ease,
+        box-shadow .18s ease;
+}
+
+.method.active{
+
+    border-color:
+        rgba(35,211,174,.70);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(13,53,48,.94),
+            rgba(9,32,34,.97)
+        );
+
+    box-shadow:
+
+        0 0 0 1px
+        rgba(35,211,174,.08),
+
+        0 14px 32px
+        rgba(0,210,170,.08);
+}
+
+.method-check{
+
+    position:absolute;
+
+    top:10px;
+    right:10px;
+
+    width:19px;
+    height:19px;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#20c997;
+
+    color:#03150f;
+}
+
+.method.active .method-check{
+
+    display:flex;
+}
+
+.method-check svg{
+
+    width:11px;
+    height:11px;
+
+    stroke:currentColor;
+
+    fill:none;
+
+    stroke-width:3;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+}
+
+
+/* =========================================================
+   METHOD ICON
+========================================================= */
+
+.method-icon{
+
+    width:43px;
+    height:43px;
+
+    margin-bottom:9px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(120,160,220,.17);
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30,48,76,.80),
+            rgba(10,19,37,.90)
+        );
+
+    color:#b9eaff;
+}
+
+.method-icon svg{
+
+    width:22px;
+    height:22px;
+
+    stroke:currentColor;
+
+    fill:none;
+
+    stroke-width:1.9;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+}
+
+.method-name{
+
+    color:#f2f6ff;
+
+    font-size:14px;
+
+    font-weight:900;
+}
+
+.method-sub{
+
+    margin-top:4px;
+
+    color:#74819b;
+
+    font-size:9px;
+
+    line-height:1.35;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group{
+
+    margin-top:18px;
+}
+
+label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#cbd3e3;
+
+    font-size:11px;
+
+    font-weight:800;
+}
+
+input{
+
+    width:100%;
+
+    height:52px;
+
+    padding:0 14px;
+
+    border:
+        1px solid
+        rgba(105,140,190,.18);
+
+    border-radius:14px;
+
+    outline:none;
+
+    background:
+        rgba(5,11,22,.82);
+
+    color:#fff;
+
+    font-size:14px;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+input::placeholder{
+
+    color:#66728a;
+}
+
+input:focus{
+
+    border-color:#19c9f5;
+
+    background:
+        rgba(5,14,27,.94);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(25,201,245,.07);
+}
+
+input:disabled{
+
+    opacity:.65;
+}
+
+.amount-row,
+.verify-row{
+
+    position:relative;
+}
+
+.amount-symbol{
+
+    position:absolute;
+
+    left:14px;
+    top:16px;
+
+    color:#7c879b;
+
+    font-size:14px;
+
+    z-index:2;
+}
+
+.amount-row input{
+
+    padding-left:31px;
+
+    padding-right:75px;
+}
+
+.max-btn,
+.verify-btn{
+
+    position:absolute;
+
+    right:7px;
+    top:7px;
+
+    height:38px;
+
+    padding:0 12px;
+
+    border:0;
+
+    border-radius:10px;
+
+    font-size:10px;
+
+    font-weight:950;
+
+    transition:.18s ease;
+}
+
+.max-btn{
+
+    background:
+        rgba(38,67,66,.80);
+
+    color:#46dcae;
+}
+
+.max-btn:disabled{
+
+    opacity:.4;
+
+    cursor:not-allowed;
+}
+
+.verify-btn{
+
+    background:
+        linear-gradient(
+            135deg,
+            #25d6ad,
+            #18b992
+        );
+
+    color:#04130e;
+}
+
+.verify-btn:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden{
+    display:none !important;
+}
+
+
+/* =========================================================
+   VERIFICATION
+========================================================= */
+
+.verification{
+
+    display:none;
+
+    margin-top:10px;
+
+    padding:14px;
+
+    border:
+        1px solid
+        rgba(105,140,205,.16);
+
+    border-radius:15px;
+
+    background:
+        rgba(8,15,29,.75);
+}
+
+.verification.show{
+    display:block;
+}
+
+.verification.ok{
+
+    border-color:
+        rgba(35,211,174,.45);
+
+    background:
+        rgba(11,46,40,.72);
+}
+
+.verification.bad{
+
+    border-color:
+        rgba(255,83,100,.40);
+
+    background:
+        rgba(48,18,25,.72);
+}
+
+.verify-status{
+
+    font-size:11px;
+
+    font-weight:950;
+}
+
+.verification.ok .verify-status{
+    color:#4be0ad;
+}
+
+.verification.bad .verify-status{
+    color:#ff7d8c;
+}
+
+.verify-name{
+
+    margin-top:7px;
+
+    color:#f3f7ff;
+
+    font-size:16px;
+
+    font-weight:950;
+}
+
+.verify-meta{
+
+    margin-top:5px;
+
+    color:#8190a8;
+
+    font-size:10px;
+
+    line-height:1.5;
+
+    word-break:break-word;
+}
+
+.confirm-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    margin-top:12px;
+}
+
+.confirm-row input{
+
+    width:17px;
+    height:17px;
+
+    accent-color:#20c997;
+}
+
+.confirm-row label{
+
+    margin:0;
+
+    color:#cbd4e1;
+
+    font-size:10px;
+}
+
+
+/* =========================================================
+   NOTE
+========================================================= */
+
+.note{
+
+    margin-top:13px;
+
+    padding:14px;
+
+    border:
+        1px solid
+        rgba(105,140,205,.10);
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(26,34,53,.78),
+            rgba(15,22,38,.82)
+        );
+
+    color:#8491a8;
+
+    font-size:10px;
+
+    line-height:1.7;
+}
+
+.note strong{
+
+    color:#cbd4e5;
+}
+
+.note .green{
+    color:#58dfae;
+}
+
+.note .gold{
+    color:#ffc857;
+}
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+.submit-btn{
+
+    width:100%;
+
+    min-height:55px;
+
+    margin-top:17px;
+
+    border:
+        1px solid
+        rgba(100,225,255,.15);
+
+    border-radius:16px;
+
+    background:
+
+        linear-gradient(
+            100deg,
+            #08bff0,
+            #467cff 55%,
+            #714cff
+        );
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:950;
+
+    box-shadow:
+        0 15px 35px
+        rgba(46,109,255,.20);
+
+    transition:
+        filter .2s ease,
+        transform .15s ease,
+        opacity .2s ease;
+}
+
+.submit-btn:hover{
+
+    filter:brightness(1.07);
+}
+
+.submit-btn:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    filter:none;
+
+    box-shadow:none;
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+.history-item{
+
+    padding:16px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+}
+
+.history-item:last-child{
+    border-bottom:0;
+}
+
+.history-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+}
+
+.history-amount{
+
+    color:#f4f7ff;
+
+    font-size:17px;
+
+    font-weight:950;
+}
+
+.status{
+
+    padding:5px 10px;
+
+    border-radius:9px;
+
+    font-size:8px;
+
+    font-weight:950;
+
+    text-transform:uppercase;
+
+    letter-spacing:.4px;
+}
+
+.pending{
+
+    background:
+        rgba(255,200,87,.09);
+
+    color:#ffc857;
+
+    border:
+        1px solid
+        rgba(255,200,87,.12);
+}
+
+.approved{
+
+    background:
+        rgba(66,227,169,.09);
+
+    color:#42e3a9;
+
+    border:
+        1px solid
+        rgba(66,227,169,.12);
+}
+
+.rejected{
+
+    background:
+        rgba(255,125,140,.09);
+
+    color:#ff7d8c;
+
+    border:
+        1px solid
+        rgba(255,125,140,.12);
+}
+
+.processing{
+
+    background:
+        rgba(71,160,255,.10);
+
+    color:#64c8ff;
+
+    border:
+        1px solid
+        rgba(71,160,255,.13);
+}
+
+.history-bottom{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-top:8px;
+
+    color:#63708a;
+
+    font-size:8px;
+}
+
+.history-id{
+
+    max-width:55%;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   EMPTY HISTORY
+========================================================= */
+
+.empty-history{
+
+    padding:20px 5px;
+
+    text-align:center;
+}
+
+.empty-icon{
+
+    width:48px;
+    height:48px;
+
+    margin:0 auto 10px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(100,150,220,.15);
+
+    border-radius:15px;
+
+    background:
+        rgba(20,32,56,.65);
+
+    color:#71809a;
+}
+
+.empty-icon svg{
+
+    width:23px;
+    height:23px;
+
+    fill:none;
+
+    stroke:currentColor;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+}
+
+.empty-title{
+
+    color:#cbd4e5;
+
+    font-size:12px;
+
+    font-weight:850;
+}
+
+.empty-sub{
+
+    margin-top:5px;
+
+    color:#5d6a82;
+
+    font-size:9px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    margin:
+        28px 16px 0;
+
+    padding:
+        22px 0 0;
+
+    border-top:
+        1px solid
+        rgba(75,100,165,.18);
+
+    text-align:center;
+}
+
+.footer-logo{
+
+    color:#f8faff;
+
+    font-size:20px;
+
+    font-weight:950;
+
+    letter-spacing:-.5px;
+}
+
+.footer-logo span{
+
+    color:#ffbd00;
+}
+
+.footer-sub{
+
+    margin-top:7px;
+
+    color:#4e5b74;
+
+    font-size:8px;
+
+    letter-spacing:.7px;
+}
+
+.footer-security{
+
+    margin-top:12px;
+
+    color:#536079;
+
+    font-size:7px;
+}
+
+.footer-security .secure-dot{
+
+    color:#5ce2aa;
+}
+
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+.loader{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+        rgba(3,6,15,.94);
+
+    z-index:500;
+
+    backdrop-filter:
+        blur(15px);
+}
+
+.loader-box{
+
+    min-width:180px;
+
+    padding:
+        25px 30px;
+
+    border:
+        1px solid
+        rgba(105,145,215,.18);
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #141d35,
+            #0a1124
+        );
+
+    text-align:center;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.35);
+}
+
+.spinner{
+
+    width:31px;
+    height:31px;
+
+    margin:auto;
+
+    border:
+        3px solid
+        rgba(255,255,255,.07);
+
+    border-top-color:#12c9f4;
+
+    border-right-color:#704cff;
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+
+    position:fixed;
+
+    left:16px;
+    right:16px;
+
+    bottom:20px;
+
+    z-index:600;
+
+    display:none;
+
+    padding:14px;
+
+    border:
+        1px solid
+        rgba(105,145,215,.20);
+
+    border-radius:14px;
+
+    background:
+        rgba(17,26,46,.97);
+
+    color:#edf2ff;
+
+    text-align:center;
+
+    font-size:11px;
+
+    line-height:1.45;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.35);
+
+    backdrop-filter:blur(15px);
+}
+
+.toast.show{
+    display:block;
+}
+
+.toast.success{
+
+    border-color:
+        rgba(35,211,174,.45);
+}
+
+.toast.error{
+
+    border-color:
+        rgba(255,83,100,.45);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:420px){
+
+    .card{
+
+        margin-left:12px;
+        margin-right:12px;
+
+        padding:17px;
+    }
+
+    .balance-card{
+
+        margin-left:12px;
+        margin-right:12px;
+
+        padding:22px;
+    }
+
+    .footer{
+
+        margin-left:12px;
+        margin-right:12px;
+    }
+
+    .method{
+
+        min-height:105px;
+    }
+
+}
+
+@media(max-width:350px){
+
+    .methods{
+
+        gap:8px;
+    }
+
+    .method{
+
+        padding:12px;
+    }
+
+    .method-name{
+
+        font-size:13px;
+    }
+
+    .balance{
+
+        font-size:35px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="bg-layer">
+
+    <div class="glow glow-a"></div>
+
+    <div class="glow glow-b"></div>
+
+    <div class="glow glow-c"></div>
+
+</div>
+
+
+<!-- =======================================================
+     LOADER
+======================================================= -->
+
+<div
+    id="loader"
+    class="loader">
+
+    <div class="loader-box">
+
+        <div class="spinner"></div>
+
+        <div
+            style="
+                margin-top:12px;
+                color:#9ba8c0;
+                font-size:10px;
+            ">
+
+            Securing wallet...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="header">
+
+    <button
+        class="back"
+        type="button"
+        onclick="goBack()"
+        aria-label="Go back">
+
+        <svg viewBox="0 0 24 24">
+            <path d="M15 18l-6-6 6-6"></path>
+        </svg>
+
+    </button>
+
+
+    <div class="header-title">
+
+        Task<span>Earn</span> Withdraw
+
+    </div>
+
+</header>
+
+
+<!-- =======================================================
+     BALANCE
+======================================================= -->
+
+<section class="balance-card">
+
+    <div class="balance-content">
+
+        <div class="balance-label">
+
+            AVAILABLE BALANCE
+
+        </div>
+
+
+        <div class="balance">
+
+            ₹<span id="balance">0.00</span>
+
+            <small> INR</small>
+
+        </div>
+
+
+        <div class="balance-status">
+
+            <span class="balance-dot"></span>
+
+            Eligible rewards available for withdrawal
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     WITHDRAWAL CARD
+======================================================= -->
+
+<section class="card">
+
+
+    <div class="title">
+
+        Choose Withdrawal Method
+
+    </div>
+
+
+    <div class="methods">
+
+
+        <!-- UPI -->
+
+        <div
+            class="method active"
+            data-method="UPI"
+            onclick="selectMethod('UPI')">
+
+            <div class="method-check">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 12l4 4L19 6"></path>
+                </svg>
+
+            </div>
+
+
+            <div class="method-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <rect
+                        x="6"
+                        y="2.8"
+                        width="12"
+                        height="18.4"
+                        rx="2.5">
+                    </rect>
+
+                    <path d="M9 6h6"></path>
+
+                    <path d="M10 18h4"></path>
+
+                </svg>
+
+            </div>
+
+
+            <div class="method-name">
+
+                UPI
+
+            </div>
+
+
+            <div class="method-sub">
+
+                Verify UPI account
+
+            </div>
+
+        </div>
+
+
+        <!-- BANK -->
+
+        <div
+            class="method"
+            data-method="BANK"
+            onclick="selectMethod('BANK')">
+
+            <div class="method-check">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 12l4 4L19 6"></path>
+                </svg>
+
+            </div>
+
+
+            <div class="method-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M3 10l9-6 9 6"></path>
+
+                    <path d="M5 10v8"></path>
+
+                    <path d="M9 10v8"></path>
+
+                    <path d="M15 10v8"></path>
+
+                    <path d="M19 10v8"></path>
+
+                    <path d="M3 20h18"></path>
+
+                </svg>
+
+            </div>
+
+
+            <div class="method-name">
+
+                Bank Transfer
+
+            </div>
+
+
+            <div class="method-sub">
+
+                Verify bank account
+
+            </div>
+
+        </div>
+
+
+        <!-- PAYPAL -->
+
+        <div
+            class="method"
+            data-method="PAYPAL"
+            onclick="selectMethod('PAYPAL')">
+
+            <div class="method-check">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 12l4 4L19 6"></path>
+                </svg>
+
+            </div>
+
+
+            <div class="method-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M7 19l2.1-11h6.1c2.2 0 3.7 1.3 3.3 3.3-.4 2.1-2.2 3.4-4.5 3.4h-3.3"></path>
+
+                    <path d="M6 16l-1 5h3l.9-5"></path>
+
+                </svg>
+
+            </div>
+
+
+            <div class="method-name">
+
+                PayPal
+
+            </div>
+
+
+            <div class="method-sub">
+
+                Email verification
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         AMOUNT
+    ====================================================== -->
+
+    <div class="form-group">
+
+        <label for="amount">
+
+            Withdrawal Amount
+
+        </label>
+
+
+        <div class="amount-row">
+
+            <span class="amount-symbol">
+
+                ₹
+
+            </span>
+
+
+            <input
+                id="amount"
+                type="number"
+                min="1"
+                step="0.01"
+                inputmode="decimal"
+                placeholder="Enter amount"
+                autocomplete="off">
+
+
+            <button
+                id="maxBtn"
+                type="button"
+                class="max-btn"
+                onclick="setMax()">
+
+                MAX
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         UPI
+    ====================================================== -->
+
+    <div
+        id="upiDetails"
+        class="form-group">
+
+
+        <label for="upiId">
+
+            UPI ID
+
+        </label>
+
+
+        <div class="verify-row">
+
+            <input
+                id="upiId"
+                type="text"
+                placeholder="example@upi"
+                autocomplete="off"
+                spellcheck="false"
+                maxlength="100">
+
+
+            <button
+                id="verifyUpiBtn"
+                type="button"
+                class="verify-btn"
+                onclick="verifyUPI()">
+
+                VERIFY
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="upiVerification"
+            class="verification">
+
+
+            <div
+                id="upiVerifyStatus"
+                class="verify-status">
+            </div>
+
+
+            <div
+                id="upiVerifyName"
+                class="verify-name">
+            </div>
+
+
+            <div
+                id="upiVerifyMeta"
+                class="verify-meta">
+            </div>
+
+
+            <div
+                id="upiConfirmRow"
+                class="confirm-row hidden">
+
+
+                <input
+                    id="upiConfirm"
+                    type="checkbox">
+
+
+                <label for="upiConfirm">
+
+                    Yes, this is my UPI account.
+
+                </label>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         BANK
+    ====================================================== -->
+
+    <div
+        id="bankDetails"
+        class="hidden">
+
+
+        <div class="form-group">
+
+            <label for="bankName">
+
+                Account Holder Name
+
+            </label>
+
+
+            <input
+                id="bankName"
+                type="text"
+                placeholder="Enter account holder name"
+                autocomplete="name"
+                maxlength="100">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="accountNumber">
+
+                Bank Account Number
+
+            </label>
+
+
+            <input
+                id="accountNumber"
+                type="text"
+                inputmode="numeric"
+                placeholder="Enter account number"
+                autocomplete="off"
+                maxlength="20">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="ifsc">
+
+                IFSC Code
+
+            </label>
+
+
+            <div class="verify-row">
+
+                <input
+                    id="ifsc"
+                    type="text"
+                    placeholder="SBIN0001234"
+                    autocomplete="off"
+                    spellcheck="false"
+                    maxlength="11">
+
+
+                <button
+                    id="verifyBankBtn"
+                    type="button"
+                    class="verify-btn"
+                    onclick="verifyBank()">
+
+                    VERIFY
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="bankVerification"
+                class="verification">
+
+
+                <div
+                    id="bankVerifyStatus"
+                    class="verify-status">
+                </div>
+
+
+                <div
+                    id="bankVerifyName"
+                    class="verify-name">
+                </div>
+
+
+                <div
+                    id="bankVerifyMeta"
+                    class="verify-meta">
+                </div>
+
+
+                <div
+                    id="bankConfirmRow"
+                    class="confirm-row hidden">
+
+
+                    <input
+                        id="bankConfirm"
+                        type="checkbox">
+
+
+                    <label for="bankConfirm">
+
+                        Yes, this is my bank account.
+
+                    </label>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         PAYPAL
+    ====================================================== -->
+
+    <div
+        id="paypalDetails"
+        class="hidden">
+
+
+        <div class="form-group">
+
+            <label for="paypalEmail">
+
+                PayPal Email
+
+            </label>
+
+
+            <input
+                id="paypalEmail"
+                type="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+                maxlength="160">
+
+        </div>
+
+
+        <div class="note">
+
+            PayPal withdrawals require a valid PayPal
+            account email.
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         SECURITY NOTICE
+    ====================================================== -->
+
+    <div class="note">
+
+        <strong>
+
+            Security notice
+
+        </strong>
+
+        <br>
+
+        Never enter your
+        <span class="gold">UPI PIN</span>,
+        ATM PIN, CVV or OTP on TaskEarn.
+
+        <br><br>
+
+        Your payment account must be verified before
+        submitting a withdrawal request.
+
+        <br><br>
+
+        <span class="green">
+
+            TaskEarn will never ask for your banking PIN
+            to process a withdrawal.
+
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUBMIT
+    ====================================================== -->
+
+    <button
+        id="submitBtn"
+        class="submit-btn"
+        type="button"
+        onclick="submitWithdrawal()"
+        disabled>
+
+        Verify payment method first
+
+    </button>
+
+
+</section>
+
+
+<!-- =======================================================
+     HISTORY
+======================================================= -->
+
+<section class="card">
+
+
+    <div class="title">
+
+        Withdrawal History
+
+    </div>
+
+
+    <div id="history">
+
+        <div
+            style="
+                color:#68758e;
+                font-size:10px;
+            ">
+
+            Loading history...
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+<footer class="footer">
+
+
+    <div class="footer-logo">
+
+        Task<span>Earn</span>
+
+    </div>
+
+
+    <div class="footer-sub">
+
+        Earn • Watch • Grow
+
+    </div>
+
+
+    <div class="footer-security">
+
+        <span class="secure-dot">●</span>
+
+        Secure wallet
+
+        &nbsp;•&nbsp;
+
+        Verified account required
+
+    </div>
+
+
+</footer>
+
+
+</div>
+
+
+<!-- =======================================================
+     TOAST
+======================================================= -->
+
+<div
+    id="toast"
+    class="toast">
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true
+            }
+        }
+    );
+
+
+/* =========================================================
+   ROUTES
+========================================================= */
+
+const ROUTES = {
+
+    HOME:
+        "home.html",
+
+    WALLET:
+        "wallet.html",
+
+    LOGIN:
+        "login.html"
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser =
+    null;
+
+let currentBalance =
+    0;
+
+let selectedMethod =
+    "UPI";
+
+let withdrawalSubmitting =
+    false;
+
+let verification = {
+
+    UPI:null,
+
+    BANK:null,
+
+    PAYPAL:false
+
+};
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    init
+);
+
+
+async function init(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            !data.session ||
+            !data.session.user
+        ){
+
+            window.location.replace(
+                ROUTES.LOGIN
+            );
+
+            return;
+
+        }
+
+
+        currentUser =
+            data.session.user;
+
+
+        await loadWallet();
+
+
+        await loadHistory();
+
+
+        selectMethod("UPI");
+
+
+        hideLoader();
+
+
+    }catch(error){
+
+        console.error(
+            "Withdrawal initialization:",
+            error
+        );
+
+
+        hideLoader();
+
+
+        showToast(
+            "Unable to securely load withdrawal page.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+function hideLoader(){
+
+    const loader =
+        document.getElementById(
+            "loader"
+        );
+
+    if(loader){
+
+        loader.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   WALLET
+========================================================= */
+
+async function loadWallet(){
+
+    if(!currentUser){
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("user_wallets")
+        .select("balance")
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .maybeSingle();
+
+
+    if(error){
+
+        console.error(
+            "Wallet error:",
+            error
+        );
+
+        currentBalance =
+            0;
+
+        updateBalanceUI();
+
+        return;
+
+    }
+
+
+    currentBalance =
+        normalizeMoney(
+            data?.balance
+        );
+
+
+    updateBalanceUI();
+
+}
+
+
+/* =========================================================
+   BALANCE UI
+========================================================= */
+
+function updateBalanceUI(){
+
+    const balance =
+        document.getElementById(
+            "balance"
+        );
+
+    if(balance){
+
+        balance.textContent =
+            currentBalance.toFixed(2);
+
+    }
+
+
+    const maxBtn =
+        document.getElementById(
+            "maxBtn"
+        );
+
+    if(maxBtn){
+
+        maxBtn.disabled =
+            currentBalance <= 0;
+
+    }
+
+}
+
+
+/* =========================================================
+   MONEY
+========================================================= */
+
+function normalizeMoney(value){
+
+    const number =
+        Number(value);
+
+    if(
+        !Number.isFinite(number) ||
+        number < 0
+    ){
+
+        return 0;
+
+    }
+
+    return Math.round(
+        number * 100
+    ) / 100;
+
+}
+
+
+/* =========================================================
+   SELECT METHOD
+========================================================= */
+
+function selectMethod(method){
+
+    const allowed = [
+        "UPI",
+        "BANK",
+        "PAYPAL"
+    ];
+
+
+    if(
+        !allowed.includes(
+            method
+        )
+    ){
+
+        return;
+
+    }
+
+
+    selectedMethod =
+        method;
+
+
+    document
+        .querySelectorAll(
+            ".method"
+        )
+        .forEach(
+            function(element){
+
+                element.classList.toggle(
+                    "active",
+                    element.dataset.method ===
+                    method
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "upiDetails"
+        )
+        .classList.toggle(
+            "hidden",
+            method !== "UPI"
+        );
+
+
+    document
+        .getElementById(
+            "bankDetails"
+        )
+        .classList.toggle(
+            "hidden",
+            method !== "BANK"
+        );
+
+
+    document
+        .getElementById(
+            "paypalDetails"
+        )
+        .classList.toggle(
+            "hidden",
+            method !== "PAYPAL"
+        );
+
+
+    updateSubmitButton();
+
+}
+
+
+/* =========================================================
+   MAX
+========================================================= */
+
+function setMax(){
+
+    if(
+        currentBalance <= 0
+    ){
+
+        showToast(
+            "No available balance.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "amount"
+        )
+        .value =
+            currentBalance.toFixed(2);
+
+
+    updateSubmitButton();
+
+}
+
+
+/* =========================================================
+   AMOUNT VALIDATION
+========================================================= */
+
+function getValidAmount(){
+
+    const raw =
+        document
+            .getElementById(
+                "amount"
+            )
+            .value
+            .trim();
+
+
+    if(!raw){
+
+        return null;
+
+    }
+
+
+    const amount =
+        Number(raw);
+
+
+    if(
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ){
+
+        return null;
+
+    }
+
+
+    if(
+        !Number.isInteger(
+            Math.round(amount * 100)
+        )
+    ){
+
+        return null;
+
+    }
+
+
+    return normalizeMoney(
+        amount
+    );
+
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+function updateSubmitButton(){
+
+    const button =
+        document.getElementById(
+            "submitBtn"
+        );
+
+
+    if(!button){
+
+        return;
+
+    }
+
+
+    if(withdrawalSubmitting){
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "Submitting...";
+
+        return;
+
+    }
+
+
+    const amount =
+        getValidAmount();
+
+
+    if(
+        !amount ||
+        amount > currentBalance
+    ){
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            amount &&
+            amount > currentBalance
+
+            ?
+
+            "Insufficient balance"
+
+            :
+
+            "Enter withdrawal amount";
+
+        return;
+
+    }
+
+
+    if(
+        selectedMethod ===
+        "UPI"
+    ){
+
+        const verified =
+            verification.UPI &&
+            verification.UPI.verified === true;
+
+
+        const confirmed =
+            document
+                .getElementById(
+                    "upiConfirm"
+                )
+                .checked;
+
+
+        if(
+            verified &&
+            confirmed
+        ){
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Request Withdrawal";
+
+        }else{
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Verify UPI first";
+
+        }
+
+        return;
+
+    }
+
+
+    if(
+        selectedMethod ===
+        "BANK"
+    ){
+
+        const verified =
+            verification.BANK &&
+            verification.BANK.verified === true;
+
+
+        const confirmed =
+            document
+                .getElementById(
+                    "bankConfirm"
+                )
+                .checked;
+
+
+        if(
+            verified &&
+            confirmed
+        ){
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Request Withdrawal";
+
+        }else{
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Verify bank account first";
+
+        }
+
+        return;
+
+    }
+
+
+    if(
+        selectedMethod ===
+        "PAYPAL"
+    ){
+
+        const email =
+            document
+                .getElementById(
+                    "paypalEmail"
+                )
+                .value
+                .trim();
+
+
+        const valid =
+            isValidEmail(
+                email
+            );
+
+
+        verification.PAYPAL =
+            valid;
+
+
+        button.disabled =
+            !valid;
+
+
+        button.textContent =
+            valid
+
+            ?
+
+            "Request Withdrawal"
+
+            :
+
+            "Enter PayPal email";
+
+    }
+
+}
+
+
+/* =========================================================
+   EMAIL VALIDATION
+========================================================= */
+
+function isValidEmail(email){
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
+
+}
+
+
+/* =========================================================
+   UPI INPUT
+========================================================= */
+
+document
+    .getElementById(
+        "upiId"
+    )
+    .addEventListener(
+        "input",
+        function(){
+
+            verification.UPI =
+                null;
+
+
+            document
+                .getElementById(
+                    "upiConfirm"
+                )
+                .checked =
+                    false;
+
+
+            resetVerification(
+                "upiVerification"
+            );
+
+
+            updateSubmitButton();
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "upiConfirm"
+    )
+    .addEventListener(
+        "change",
+        updateSubmitButton
+    );
+
+
+/* =========================================================
+   BANK INPUT
+========================================================= */
+
+[
+    "bankName",
+    "accountNumber",
+    "ifsc"
+]
+.forEach(
+    function(id){
+
+        document
+            .getElementById(
+                id
+            )
+            .addEventListener(
+                "input",
+                function(){
+
+                    verification.BANK =
+                        null;
+
+
+                    document
+                        .getElementById(
+                            "bankConfirm"
+                        )
+                        .checked =
+                            false;
+
+
+                    resetVerification(
+                        "bankVerification"
+                    );
+
+
+                    updateSubmitButton();
+
+                }
+            );
+
+    }
+);
+
+
+document
+    .getElementById(
+        "bankConfirm"
+    )
+    .addEventListener(
+        "change",
+        updateSubmitButton
+    );
+
+
+/* =========================================================
+   PAYPAL INPUT
+========================================================= */
+
+document
+    .getElementById(
+        "paypalEmail"
+    )
+    .addEventListener(
+        "input",
+        updateSubmitButton
+    );
+
+
+/* =========================================================
+   AMOUNT INPUT
+========================================================= */
+
+document
+    .getElementById(
+        "amount"
+    )
+    .addEventListener(
+        "input",
+        updateSubmitButton
+    );
+
+
+/* =========================================================
+   RESET VERIFICATION
+========================================================= */
+
+function resetVerification(id){
+
+    const box =
+        document.getElementById(
+            id
+        );
+
+
+    if(!box){
+
+        return;
+
+    }
+
+
+    box.className =
+        "verification";
+
+    box.querySelectorAll(
+        ".verify-status,.verify-name,.verify-meta"
+    )
+    .forEach(
+        function(element){
+
+            element.textContent =
+                "";
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   UPI VERIFY
+========================================================= */
+
+async function verifyUPI(){
+
+    const input =
+        document.getElementById(
+            "upiId"
+        );
+
+
+    const upi =
+        input
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const validUPI =
+        /^[a-zA-Z0-9._-]{2,}@[a-zA-Z0-9._-]{2,}$/
+            .test(
+                upi
+            );
+
+
+    if(!validUPI){
+
+        showToast(
+            "Enter a valid UPI ID.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "verifyUpiBtn"
+        );
+
+
+    const box =
+        document.getElementById(
+            "upiVerification"
+        );
+
+
+    const status =
+        document.getElementById(
+            "upiVerifyStatus"
+        );
+
+
+    const name =
+        document.getElementById(
+            "upiVerifyName"
+        );
+
+
+    const meta =
+        document.getElementById(
+            "upiVerifyMeta"
+        );
+
+
+    const confirmRow =
+        document.getElementById(
+            "upiConfirmRow"
+        );
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "VERIFYING...";
+
+
+    verification.UPI =
+        null;
+
+
+    document
+        .getElementById(
+            "upiConfirm"
+        )
+        .checked =
+            false;
+
+
+    confirmRow
+        .classList
+        .add(
+            "hidden"
+        );
+
+
+    resetVerification(
+        "upiVerification"
+    );
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .functions
+            .invoke(
+                "verify-payment-account",
+                {
+                    body:{
+                        type:"UPI",
+                        upi_id:upi
+                    }
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            data.verified !== true
+        ){
+
+            throw new Error(
+                data?.message ||
+                "UPI account could not be verified."
+            );
+
+        }
+
+
+        verification.UPI = {
+
+            verified:true,
+
+            upi_id:upi,
+
+            account_name:
+                data.account_name ||
+                "",
+
+            reference_id:
+                data.reference_id ||
+                null
+
+        };
+
+
+        box.className =
+            "verification show ok";
+
+
+        status.textContent =
+            "UPI account verified";
+
+
+        name.textContent =
+            data.account_name ||
+            "Account name unavailable";
+
+
+        meta.textContent =
+            upi;
+
+
+        confirmRow
+            .classList
+            .remove(
+                "hidden"
+            );
+
+
+        showToast(
+            "UPI account verified.",
+            "success"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "UPI verification:",
+            error
+        );
+
+
+        verification.UPI =
+            null;
+
+
+        box.className =
+            "verification show bad";
+
+
+        status.textContent =
+            "Verification failed";
+
+
+        name.textContent =
+            "";
+
+
+        meta.textContent =
+            error?.message ||
+            "Unable to verify UPI ID.";
+
+
+        confirmRow
+            .classList
+            .add(
+                "hidden"
+            );
+
+    }
+
+
+    button.disabled =
+        false;
+
+    button.textContent =
+        "VERIFY";
+
+
+    updateSubmitButton();
+
+}
+
+
+/* =========================================================
+   BANK VERIFY
+========================================================= */
+
+async function verifyBank(){
+
+    const holder =
+        document
+            .getElementById(
+                "bankName"
+            )
+            .value
+            .trim();
+
+
+    const account =
+        document
+            .getElementById(
+                "accountNumber"
+            )
+            .value
+            .trim();
+
+
+    const ifsc =
+        document
+            .getElementById(
+                "ifsc"
+            )
+            .value
+            .trim()
+            .toUpperCase();
+
+
+    const validHolder =
+        holder.length >= 2 &&
+        holder.length <= 100;
+
+
+    const validAccount =
+        /^[0-9]{6,20}$/
+            .test(
+                account
+            );
+
+
+    const validIFSC =
+        /^[A-Z]{4}0[A-Z0-9]{6}$/
+            .test(
+                ifsc
+            );
+
+
+    if(
+        !validHolder ||
+        !validAccount ||
+        !validIFSC
+    ){
+
+        showToast(
+            "Enter valid bank details.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "verifyBankBtn"
+        );
+
+
+    const box =
+        document.getElementById(
+            "bankVerification"
+        );
+
+
+    const status =
+        document.getElementById(
+            "bankVerifyStatus"
+        );
+
+
+    const name =
+        document.getElementById(
+            "bankVerifyName"
+        );
+
+
+    const meta =
+        document.getElementById(
+            "bankVerifyMeta"
+        );
+
+
+    const confirmRow =
+        document.getElementById(
+            "bankConfirmRow"
+        );
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "VERIFYING...";
+
+
+    verification.BANK =
+        null;
+
+
+    document
+        .getElementById(
+            "bankConfirm"
+        )
+        .checked =
+            false;
+
+
+    confirmRow
+        .classList
+        .add(
+            "hidden"
+        );
+
+
+    resetVerification(
+        "bankVerification"
+    );
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .functions
+            .invoke(
+                "verify-payment-account",
+                {
+                    body:{
+
+                        type:"BANK",
+
+                        account_holder:
+                            holder,
+
+                        account_number:
+                            account,
+
+                        ifsc:
+                            ifsc
+
+                    }
+                }
+            );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(
+            !data ||
+            data.verified !== true
+        ){
+
+            throw new Error(
+                data?.message ||
+                "Bank account could not be verified."
+            );
+
+        }
+
+
+        verification.BANK = {
+
+            verified:true,
+
+            account_holder:
+                holder,
+
+            account_name:
+                data.account_name ||
+                holder,
+
+            account_number:
+                account,
+
+            ifsc:
+                ifsc,
+
+            bank_name:
+                data.bank_name ||
+                "",
+
+            reference_id:
+                data.reference_id ||
+                null
+
+        };
+
+
+        box.className =
+            "verification show ok";
+
+
+        status.textContent =
+            "Bank account verified";
+
+
+        name.textContent =
+            data.account_name ||
+            holder;
+
+
+        meta.textContent =
+            (
+                data.bank_name
+                ?
+
+                data.bank_name +
+                " • "
+
+                :
+
+                ""
+            ) +
+            ifsc;
+
+
+        confirmRow
+            .classList
+            .remove(
+                "hidden"
+            );
+
+
+        showToast(
+            "Bank account verified.",
+            "success"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Bank verification:",
+            error
+        );
+
+
+        verification.BANK =
+            null;
+
+
+        box.className =
+            "verification show bad";
+
+
+        status.textContent =
+            "Verification failed";
+
+
+        name.textContent =
+            "";
+
+
+        meta.textContent =
+            error?.message ||
+            "Unable to verify bank account.";
+
+
+        confirmRow
+            .classList
+            .add(
+                "hidden"
+            );
+
+    }
+
+
+    button.disabled =
+        false;
+
+    button.textContent =
+        "VERIFY";
+
+
+    updateSubmitButton();
+
+}
+
+
+/* =========================================================
+   SUBMIT WITHDRAWAL
+========================================================= */
+
+async function submitWithdrawal(){
+
+    if(withdrawalSubmitting){
+
+        return;
+
+    }
+
+
+    if(!currentUser){
+
+        window.location.replace(
+            ROUTES.LOGIN
+        );
+
+        return;
+
+    }
+
+
+    const amount =
+        getValidAmount();
+
+
+    if(!amount){
+
+        showToast(
+            "Enter a valid withdrawal amount.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        amount >
+        currentBalance
+    ){
+
+        showToast(
+            "Insufficient wallet balance.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /*
+       IMPORTANT:
+
+       Frontend never deducts wallet balance.
+
+       The request is created as pending.
+       Final approval/deduction must be controlled
+       by secure backend/admin logic and Supabase RLS.
+    */
+
+
+    if(
+        selectedMethod ===
+        "UPI"
+    ){
+
+        if(
+            !verification.UPI?.verified ||
+            !document
+                .getElementById(
+                    "upiConfirm"
+                )
+                .checked
+        ){
+
+            showToast(
+                "Verify and confirm your UPI account first.",
+                "error"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if(
+        selectedMethod ===
+        "BANK"
+    ){
+
+        if(
+            !verification.BANK?.verified ||
+            !document
+                .getElementById(
+                    "bankConfirm"
+                )
+                .checked
+        ){
+
+            showToast(
+                "Verify and confirm your bank account first.",
+                "error"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if(
+        selectedMethod ===
+        "PAYPAL"
+    ){
+
+        const email =
+            document
+                .getElementById(
+                    "paypalEmail"
+                )
+                .value
+                .trim();
+
+
+        if(
+            !isValidEmail(
+                email
+            )
+        ){
+
+            showToast(
+                "Enter a valid PayPal email.",
+                "error"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    withdrawalSubmitting =
+        true;
+
+
+    updateSubmitButton();
+
+
+    try{
+
+        let paymentDetails = null;
+
+
+        if(
+            selectedMethod ===
+            "UPI"
+        ){
+
+            paymentDetails = {
+
+                method:
+                    "UPI",
+
+                upi_id:
+                    verification
+                        .UPI
+                        .upi_id,
+
+                account_name:
+                    verification
+                        .UPI
+                        .account_name,
+
+                verification_status:
+                    "verified",
+
+                reference_id:
+                    verification
+                        .UPI
+                        .reference_id
+
+            };
+
+        }
+
+
+        if(
+            selectedMethod ===
+            "BANK"
+        ){
+
+            paymentDetails = {
+
+                method:
+                    "BANK",
+
+                account_holder:
+                    verification
+                        .BANK
+                        .account_holder,
+
+                account_name:
+                    verification
+                        .BANK
+                        .account_name,
+
+                account_number:
+                    verification
+                        .BANK
+                        .account_number,
+
+                ifsc:
+                    verification
+                        .BANK
+                        .ifsc,
+
+                bank_name:
+                    verification
+                        .BANK
+                        .bank_name,
+
+                verification_status:
+                    "verified",
+
+                reference_id:
+                    verification
+                        .BANK
+                        .reference_id
+
+            };
+
+        }
+
+
+        if(
+            selectedMethod ===
+            "PAYPAL"
+        ){
+
+            paymentDetails = {
+
+                method:
+                    "PAYPAL",
+
+                paypal_email:
+                    document
+                        .getElementById(
+                            "paypalEmail"
+                        )
+                        .value
+                        .trim()
+
+            };
+
+        }
+
+
+        const destination =
+            JSON.stringify(
+                paymentDetails
+            );
+
+
+        /*
+           Existing database structure is preserved:
+
+           user_id
+           amount
+           upi_id
+           status
+        */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from(
+                "withdrawal_requests"
+            )
+            .insert({
+
+                user_id:
+                    currentUser.id,
+
+                amount:
+                    amount,
+
+                upi_id:
+                    destination,
+
+                status:
+                    "pending"
+
+            })
+            .select(
+                "id,amount,status,created_at"
+            )
+            .single();
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        showToast(
+            "Withdrawal request submitted successfully.",
+            "success"
+        );
+
+
+        document
+            .getElementById(
+                "amount"
+            )
+            .value =
+                "";
+
+
+        verification.UPI =
+            null;
+
+        verification.BANK =
+            null;
+
+        verification.PAYPAL =
+            false;
+
+
+        document
+            .getElementById(
+                "upiConfirm"
+            )
+            .checked =
+                false;
+
+
+        document
+            .getElementById(
+                "bankConfirm"
+            )
+            .checked =
+                false;
+
+
+        resetVerification(
+            "upiVerification"
+        );
+
+        resetVerification(
+            "bankVerification"
+        );
+
+
+        await loadWallet();
+
+        await loadHistory();
+
+
+    }catch(error){
+
+        console.error(
+            "Withdrawal request:",
+            error
+        );
+
+
+        showToast(
+            error?.message ||
+            "Withdrawal request failed.",
+            "error"
+        );
+
+    }
+
+
+    withdrawalSubmitting =
+        false;
+
+
+    updateSubmitButton();
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+async function loadHistory(){
+
+    const history =
+        document.getElementById(
+            "history"
+        );
+
+
+    if(
+        !history ||
+        !currentUser
+    ){
+
+        return;
+
+    }
+
+
+    history.innerHTML = `
+
+        <div
+            style="
+                color:#68758e;
+                font-size:10px;
+            ">
+
+            Loading history...
+
+        </div>
+
+    `;
+
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+
+        .from(
+            "withdrawal_requests"
+        )
+
+        .select(
+            "id,amount,status,created_at"
+        )
+
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "History error:",
+            error
+        );
+
+
+        history.innerHTML = `
+
+            <div
+                style="
+                    color:#ff7d8c;
+                    font-size:10px;
+                    line-height:1.6;
+                ">
+
+                Unable to load withdrawal history.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    if(
+        !data ||
+        data.length === 0
+    ){
+
+        history.innerHTML = `
+
+            <div class="empty-history">
+
+                <div class="empty-icon">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <rect
+                            x="4"
+                            y="4"
+                            width="16"
+                            height="16"
+                            rx="3">
+                        </rect>
+
+                        <path d="M8 9h8"></path>
+
+                        <path d="M8 13h5"></path>
+
+                        <path d="M8 17h3"></path>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="empty-title">
+
+                    No withdrawal requests
+
+                </div>
+
+
+                <div class="empty-sub">
+
+                    Your withdrawal activity will appear here.
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    history.innerHTML =
+        "";
+
+
+    data.forEach(
+        function(item){
+
+            const status =
+                String(
+                    item.status ||
+                    "pending"
+                )
+                .toLowerCase();
+
+
+            let statusClass =
+                "pending";
+
+
+            if(
+                status ===
+                "approved"
+            ){
+
+                statusClass =
+                    "approved";
+
+            }
+
+
+            if(
+                status ===
+                "rejected"
+            ){
+
+                statusClass =
+                    "rejected";
+
+            }
+
+
+            if(
+                status ===
+                "processing"
+            ){
+
+                statusClass =
+                    "processing";
+
+            }
+
+
+            const amount =
+                normalizeMoney(
+                    item.amount
+                );
+
+
+            const date =
+                item.created_at
+
+                ?
+
+                new Date(
+                    item.created_at
+                )
+                .toLocaleString(
+                    "en-IN",
+                    {
+                        day:"2-digit",
+                        month:"short",
+                        year:"numeric",
+                        hour:"2-digit",
+                        minute:"2-digit"
+                    }
+                )
+
+                :
+
+                "-";
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "history-item";
+
+
+            div.innerHTML = `
+
+                <div class="history-top">
+
+                    <div class="history-amount">
+
+                        ₹${amount.toFixed(2)}
+
+                    </div>
+
+
+                    <div
+                        class="status ${statusClass}">
+
+                        ${escapeHtml(status)}
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-bottom">
+
+                    <span class="history-id">
+
+                        Withdrawal #${escapeHtml(
+                            String(item.id || "")
+                        )}
+
+                    </span>
+
+
+                    <span>
+
+                        ${escapeHtml(date)}
+
+                    </span>
+
+                </div>
+
+            `;
+
+
+            history.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer =
+    null;
+
+
+function showToast(
+    message,
+    type = ""
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    if(!toast){
+
+        return;
+
+    }
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toast.textContent =
+        String(
+            message
+        );
+
+
+    toast.className =
+        "toast show " +
+        type;
+
+
+    toastTimer =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3200
+        );
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+function goBack(){
+
+    window.location.href =
+        ROUTES.WALLET;
+
+}
+
+
+/* =========================================================
+   AUTH LISTENER
+========================================================= */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        function(event){
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                window.location.replace(
+                    ROUTES.LOGIN
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,4297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+
+<title>TaskEarn — Task Details</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.0.7/dist/blazeface.min.js"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#070b18;
+    --panel:#11182b;
+    --panel2:#151e35;
+    --line:#273353;
+    --text:#f5f7ff;
+    --muted:#9aa7c5;
+    --blue:#5d79ff;
+    --green:#36d99b;
+    --red:#ff7185;
+    --yellow:#ffd36b;
+}
+
+body{
+    margin:0;
+    background:
+        radial-gradient(
+            circle at 80% 10%,
+            #27245b 0,
+            transparent 32%
+        ),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,Arial,sans-serif;
+    min-height:100vh;
+}
+
+.top{
+    position:sticky;
+    top:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    border-bottom:1px solid #1c2540;
+    background:rgba(7,11,24,.94);
+    backdrop-filter:blur(14px);
+}
+
+.back{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:#11192e;
+    color:#fff;
+    font-size:25px;
+    cursor:pointer;
+    transition:.18s ease;
+}
+
+.back:active{
+    transform:scale(.94);
+}
+
+.logo{
+    font-size:22px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#6380ff;
+}
+
+.wrap{
+    max-width:760px;
+    margin:auto;
+    padding:20px 14px 50px;
+}
+
+.card{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(22,30,52,.98),
+            rgba(12,17,31,.98)
+        );
+    border:1px solid #293554;
+    border-radius:24px;
+    padding:22px;
+    box-shadow:
+        0 18px 55px
+        rgba(0,0,0,.25);
+}
+
+.badge{
+    display:inline-flex;
+    padding:7px 11px;
+    border-radius:9px;
+    background:#17234a;
+    color:#91a5ff;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.mode-badge{
+    display:inline-flex;
+    margin-left:5px;
+    padding:7px 11px;
+    border-radius:9px;
+    background:rgba(54,217,155,.10);
+    border:1px solid rgba(54,217,155,.20);
+    color:#70e9b9;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+h1{
+    font-size:29px;
+    line-height:1.15;
+    margin:15px 0 10px;
+}
+
+h2{
+    font-size:18px;
+    margin:0 0 10px;
+}
+
+h3{
+    margin:0 0 10px;
+}
+
+p{
+    color:var(--muted);
+    line-height:1.65;
+}
+
+.reward{
+    font-size:30px;
+    font-weight:900;
+    margin:18px 0;
+    color:#42e0a4;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin:18px 0;
+}
+
+.info{
+    padding:14px;
+    border-radius:15px;
+    background:#0c1325;
+    border:1px solid #202b48;
+}
+
+.info b{
+    display:block;
+    margin-bottom:5px;
+}
+
+.info small{
+    color:var(--muted);
+}
+
+.section{
+    margin-top:22px;
+}
+
+.btn{
+    width:100%;
+    border:0;
+    border-radius:15px;
+    padding:16px;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.btn:active{
+    transform:scale(.985);
+}
+
+.btn:disabled{
+    opacity:.48;
+    cursor:not-allowed;
+}
+
+.primary{
+    background:
+        linear-gradient(
+            135deg,
+            #5877ff,
+            #6a57ff
+        );
+    color:white;
+}
+
+.secondary{
+    background:#17213a;
+    color:#fff;
+    border:1px solid #2b3859;
+    margin-top:10px;
+}
+
+.green{
+    background:
+        linear-gradient(
+            135deg,
+            #24d395,
+            #1aa77e
+        );
+    color:white;
+}
+
+.status{
+    margin-top:14px;
+    padding:13px;
+    border-radius:13px;
+    background:#0d1426;
+    color:#aab6d1;
+    white-space:pre-wrap;
+    line-height:1.5;
+}
+
+.status.success{
+    color:#72edbb;
+    border:1px solid rgba(54,217,155,.18);
+}
+
+.status.danger{
+    color:#ff8b9b;
+    border:1px solid rgba(255,113,133,.18);
+}
+
+.hidden{
+    display:none !important;
+}
+
+.link{
+    display:block;
+    padding:14px;
+    border-radius:13px;
+    background:#101a31;
+    border:1px solid #2a385c;
+    color:#9fb0ff;
+    text-decoration:none;
+    word-break:break-all;
+}
+
+.app-box{
+    margin-top:15px;
+    padding:17px;
+    border-radius:18px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(93,121,255,.09),
+            rgba(54,217,155,.05)
+        );
+    border:1px solid #29385c;
+}
+
+.app-name{
+    font-size:20px;
+    font-weight:900;
+    margin-bottom:5px;
+}
+
+.app-link-card{
+    margin-top:13px;
+    padding:14px;
+    border-radius:14px;
+    background:#0a1121;
+    border:1px solid #273653;
+}
+
+.app-link-title{
+    font-size:11px;
+    color:#8492b0;
+    text-transform:uppercase;
+    font-weight:800;
+    letter-spacing:.6px;
+    margin-bottom:7px;
+}
+
+.step{
+    display:flex;
+    gap:11px;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.055);
+}
+
+.step:last-child{
+    border-bottom:0;
+}
+
+.step-no{
+    width:29px;
+    height:29px;
+    flex:0 0 29px;
+    border-radius:9px;
+    display:grid;
+    place-items:center;
+    background:#17264e;
+    color:#91a5ff;
+    font-weight:900;
+    font-size:12px;
+}
+
+.step-text{
+    color:#c2cbe0;
+    line-height:1.5;
+}
+
+.timer-box{
+    margin-top:15px;
+    padding:18px;
+    border-radius:18px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,200,87,.09),
+            rgba(255,113,133,.06)
+        );
+    border:1px solid rgba(255,200,87,.18);
+    text-align:center;
+}
+
+.timer-label{
+    color:#aeb9d1;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+}
+
+.timer{
+    margin-top:6px;
+    font-size:36px;
+    font-weight:950;
+    letter-spacing:2px;
+    color:#ffd36b;
+}
+
+.timer.expired{
+    color:#ff7185;
+}
+
+.processing-box{
+    margin-top:15px;
+    padding:18px;
+    border-radius:18px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(93,121,255,.08),
+            rgba(255,200,87,.06)
+        );
+    border:1px solid rgba(93,121,255,.18);
+}
+
+.processing-title{
+    color:#aeb9d1;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+}
+
+.processing-time{
+    margin-top:7px;
+    font-size:24px;
+    font-weight:900;
+    color:#f5f7ff;
+}
+
+.upload-wrap{
+    margin-top:8px;
+}
+
+.upload-label{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-height:82px;
+    padding:14px 16px;
+    border-radius:18px;
+    border:1px solid #344362;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25,35,61,.96),
+            rgba(9,15,29,.98)
+        );
+    cursor:pointer;
+    transition:.2s ease;
+    text-align:left;
+}
+
+.upload-label:hover{
+    border-color:#617eff;
+    background:#101a31;
+}
+
+.upload-label:active{
+    transform:scale(.99);
+}
+
+.upload-icon{
+    width:50px;
+    height:50px;
+    min-width:50px;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(93,121,255,.20),
+            rgba(106,87,255,.14)
+        );
+    border:1px solid rgba(111,132,255,.22);
+    color:#a7b5ff;
+    font-size:22px;
+}
+
+.upload-text{
+    flex:1;
+    min-width:0;
+}
+
+.upload-title{
+    color:#f2f5ff;
+    font-weight:900;
+    font-size:14px;
+}
+
+.upload-subtitle{
+    color:#7f8daa;
+    font-size:11px;
+    margin-top:4px;
+    line-height:1.4;
+}
+
+.upload-arrow{
+    width:30px;
+    height:30px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    background:#151f38;
+    border:1px solid #2d3b5c;
+    color:#9eafff;
+    font-size:20px;
+}
+
+#proofPhoto{
+    display:none;
+}
+
+.file-info{
+    margin-top:9px;
+    padding:11px 12px;
+    border-radius:12px;
+    background:#0b1222;
+    border:1px solid #202e4c;
+    color:#98a6c2;
+    font-size:12px;
+    word-break:break-word;
+}
+
+.preview-wrap{
+    margin-top:12px;
+    padding:10px;
+    border-radius:17px;
+    background:#080e1b;
+    border:1px solid #293754;
+}
+
+.preview{
+    display:block;
+    width:100%;
+    max-height:360px;
+    object-fit:contain;
+    border-radius:11px;
+}
+
+.remove-photo{
+    width:100%;
+    margin-top:9px;
+    padding:11px;
+    border-radius:11px;
+    background:#151d31;
+    border:1px solid #303d5a;
+    color:#c6cee0;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.face-check{
+    margin-top:10px;
+    padding:11px 12px;
+    border-radius:11px;
+    background:#0c1425;
+    border:1px solid #25334f;
+    color:#8f9db9;
+    font-size:12px;
+    line-height:1.45;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(0,0,0,.74);
+    backdrop-filter:blur(9px);
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-card{
+    width:100%;
+    max-width:460px;
+    padding:22px;
+    border-radius:24px;
+    background:
+        linear-gradient(
+            145deg,
+            #171f38,
+            #0b1222
+        );
+    border:1px solid #334261;
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.48);
+}
+
+.modal-icon{
+    width:58px;
+    height:58px;
+    border-radius:17px;
+    display:grid;
+    place-items:center;
+    background:rgba(255,200,87,.10);
+    border:1px solid rgba(255,200,87,.20);
+    color:#ffd36b;
+    font-size:25px;
+    margin-bottom:14px;
+}
+
+.modal-card h2{
+    font-size:21px;
+}
+
+.modal-card p{
+    font-size:14px;
+}
+
+.modal-btn{
+    width:100%;
+    padding:14px;
+    border-radius:13px;
+    border:1px solid #2d3b5d;
+    background:#141e35;
+    color:white;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:9px;
+}
+
+.modal-btn.primary-modal{
+    background:
+        linear-gradient(
+            135deg,
+            #5877ff,
+            #6a57ff
+        );
+    border:0;
+}
+
+.ad-modal{
+    text-align:center;
+}
+
+.ad-label{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:8px;
+    background:#111a30;
+    color:#7787a7;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin-bottom:13px;
+}
+
+.ad-count{
+    font-size:34px;
+    font-weight:950;
+    color:#fff;
+}
+
+.starting{
+    animation:pulseStart 1s ease infinite;
+}
+
+@keyframes pulseStart{
+    0%,100%{
+        opacity:1;
+    }
+    50%{
+        opacity:.72;
+    }
+}
+
+@media(max-width:600px){
+
+    .grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    h1{
+        font-size:25px;
+    }
+
+    .reward{
+        font-size:27px;
+    }
+
+}
+
+@media(max-width:420px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+    .upload-label{
+        min-height:78px;
+        padding:12px;
+    }
+
+    .upload-icon{
+        width:46px;
+        height:46px;
+        min-width:46px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="top">
+
+<button
+    class="back"
+    id="back"
+    type="button"
+>
+    ‹
+</button>
+
+<div class="logo">
+    Task<span>Earn</span>
+</div>
+
+</header>
+
+
+<main class="wrap">
+
+<div
+    id="loading"
+    class="card"
+>
+    Loading task details…
+</div>
+
+
+<div
+    id="content"
+    class="hidden"
+>
+
+<section class="card">
+
+<div>
+
+<span
+    class="badge"
+    id="category"
+>
+    Task
+</span>
+
+<span
+    class="mode-badge"
+    id="modeBadge"
+>
+    GENERAL
+</span>
+
+</div>
+
+
+<h1 id="title">
+    —
+</h1>
+
+
+<p id="description">
+    —
+</p>
+
+
+<div
+    class="reward"
+    id="reward"
+>
+    ₹0
+</div>
+
+
+<div class="grid">
+
+<div class="info">
+
+<b id="duration">
+    —
+</b>
+
+<small>
+    Estimated time
+</small>
+
+</div>
+
+
+<div class="info">
+
+<b id="verification">
+    Verified
+</b>
+
+<small>
+    Reward status
+</small>
+
+</div>
+
+</div>
+
+
+<div
+    id="processingBox"
+    class="processing-box"
+>
+
+<div class="processing-title">
+    Payment Processing
+</div>
+
+<div
+    class="processing-time"
+    id="processingTime"
+>
+    —
+</div>
+
+</div>
+
+
+<div
+    id="appBox"
+    class="section hidden"
+>
+
+<h2>
+    Install / Complete App Task
+</h2>
+
+
+<div class="app-box">
+
+<div
+    class="app-name"
+    id="appName"
+>
+    Required App
+</div>
+
+
+<p id="appIntro">
+    Complete the required action and return to TaskEarn.
+</p>
+
+
+<div class="step">
+
+<div class="step-no">
+    1
+</div>
+
+<div class="step-text">
+    Tap <b>Start Task</b>.
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-no">
+    2
+</div>
+
+<div class="step-text">
+    The app download / Play Store link will open automatically.
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-no">
+    3
+</div>
+
+<div class="step-text">
+    Install or open the app and complete the required level/action.
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-no">
+    4
+</div>
+
+<div class="step-text">
+    Complete the required level, then return to TaskEarn.
+</div>
+
+</div>
+
+
+<div
+    id="appLinkCard"
+    class="app-link-card hidden"
+>
+
+<div class="app-link-title">
+    Direct App Link
+</div>
+
+<a
+    id="taskLink2"
+    class="link"
+    target="_blank"
+    rel="noopener noreferrer"
+>
+    Open App / Install
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+    id="taskLinkBox"
+    class="section hidden"
+>
+
+<h2>
+    Task Link
+</h2>
+
+<a
+    id="taskLink"
+    class="link"
+    target="_blank"
+    rel="noopener noreferrer"
+>
+    Open Task
+</a>
+
+</div>
+
+
+<div
+    id="survivalTimerBox"
+    class="timer-box hidden"
+>
+
+<div class="timer-label">
+    Survival Task Time Remaining
+</div>
+
+<div
+    class="timer"
+    id="timer"
+>
+    01:00:00
+</div>
+
+</div>
+
+
+<div class="section">
+
+<button
+    class="btn primary"
+    id="startBtn"
+    type="button"
+>
+    Start Task
+</button>
+
+
+<button
+    class="btn secondary"
+    id="submitBtn"
+    type="button"
+>
+    Submit Proof
+</button>
+
+</div>
+
+
+<div
+    id="status"
+    class="status hidden"
+></div>
+
+</section>
+
+
+<section
+    id="proofBox"
+    class="card hidden"
+    style="margin-top:14px"
+>
+
+<h2>
+    Submit Your Proof
+</h2>
+
+
+<p id="proofInstruction">
+    Upload your proof after completing the task.
+</p>
+
+
+<div id="textProofBox">
+
+<label for="proof">
+    Proof / Result
+</label>
+
+
+<textarea
+    id="proof"
+    placeholder="Write your result or short explanation..."
+    style="
+        width:100%;
+        min-height:120px;
+        border-radius:14px;
+        border:1px solid #2a3655;
+        background:#090f1e;
+        color:#fff;
+        padding:14px;
+        font:inherit;
+        resize:vertical;
+        outline:none;
+        margin-top:8px;
+    "
+></textarea>
+
+</div>
+
+
+<div
+    id="photoProofBox"
+    style="margin-top:18px"
+>
+
+<label>
+    File / Screenshot Proof
+</label>
+
+
+<div class="upload-wrap">
+
+<label
+    class="upload-label"
+    for="proofPhoto"
+>
+
+<div class="upload-icon">
+    📎
+</div>
+
+
+<div class="upload-text">
+
+<div class="upload-title">
+    Add File / Screenshot
+</div>
+
+<div class="upload-subtitle">
+    Select your screenshot or proof file
+</div>
+
+</div>
+
+
+<div class="upload-arrow">
+    ›
+</div>
+
+</label>
+
+
+<input
+    id="proofPhoto"
+    type="file"
+    accept="image/*,.pdf,.doc,.docx,.txt"
+>
+
+
+<div
+    id="fileInfo"
+    class="file-info"
+>
+    No file selected
+</div>
+
+
+<div
+    id="previewWrap"
+    class="preview-wrap hidden"
+>
+
+<img
+    id="preview"
+    class="preview"
+    alt="Proof preview"
+>
+
+
+<button
+    id="removePhoto"
+    class="remove-photo"
+    type="button"
+>
+    Remove File
+</button>
+
+</div>
+
+
+<div
+    id="faceCheck"
+    class="face-check"
+>
+    Screenshot containing a face will be rejected.
+</div>
+
+</div>
+
+</div>
+
+
+<button
+    class="btn green"
+    id="sendProof"
+    type="button"
+    style="margin-top:18px"
+>
+    Submit Proof
+</button>
+
+
+<div
+    id="proofStatus"
+    class="status hidden"
+></div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<div
+    class="modal"
+    id="blockerModal"
+>
+
+<div class="modal-card">
+
+<div class="modal-icon">
+    ⚠
+</div>
+
+<h2>
+    App / Link Not Opening
+</h2>
+
+<p>
+    The app link may be blocked by Private DNS, an ad blocker,
+    popup blocker, content blocker or network filter.
+</p>
+
+<p>
+    Try opening the link again. If your device blocks external
+    links, temporarily disable the blocker/DNS filter.
+</p>
+
+<button
+    class="modal-btn primary-modal"
+    id="openAgainBtn"
+    type="button"
+>
+    Open App Again
+</button>
+
+<button
+    class="modal-btn"
+    id="closeBlockerBtn"
+    type="button"
+>
+    Close
+</button>
+
+</div>
+
+</div>
+
+
+<div
+    class="modal"
+    id="adModal"
+>
+
+<div class="modal-card ad-modal">
+
+<div class="ad-label">
+    ADVERTISEMENT
+</div>
+
+<h2>
+    Please wait…
+</h2>
+
+<p id="adMessage">
+    Loading advertisement before your task.
+</p>
+
+<div
+    class="ad-count"
+    id="adCount"
+>
+    •••
+</div>
+
+</div>
+
+</div>
+
+
+<div
+    class="modal"
+    id="faceModal"
+>
+
+<div class="modal-card">
+
+<div class="modal-icon">
+    !
+</div>
+
+<h2>
+    Screenshot Rejected
+</h2>
+
+<p id="faceReason">
+    Face detected in the uploaded proof image.
+</p>
+
+<p>
+    Please upload a clean screenshot of the completed task without a face visible.
+</p>
+
+<button
+    class="modal-btn primary-modal"
+    id="faceCloseBtn"
+    type="button"
+>
+    Choose Another Screenshot
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const PROOF_BUCKET =
+    "task-proofs";
+
+
+/* =========================================================
+   PAYMENT CALCULATION
+========================================================= */
+
+/*
+    Database task.reward =
+    original company task value.
+
+    Normal:
+    user receives 60%.
+
+    High-value:
+    user receives 50%.
+
+    This percentage is NEVER shown
+    in the user interface.
+*/
+
+const HIGH_VALUE_THRESHOLD =
+    1000;
+
+
+const NORMAL_USER_RATE =
+    0.60;
+
+
+const HIGH_VALUE_USER_RATE =
+    0.50;
+
+
+function calculateUserReward(
+    companyAmount
+){
+
+    const amount =
+        Number(
+            companyAmount || 0
+        );
+
+
+    if(
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ){
+
+        return 0;
+
+    }
+
+
+    const rate =
+        amount >=
+        HIGH_VALUE_THRESHOLD
+            ? HIGH_VALUE_USER_RATE
+            : NORMAL_USER_RATE;
+
+
+    return Math.round(
+        (
+            amount *
+            rate
+        ) * 100
+    ) / 100;
+
+}
+
+
+/* =========================================================
+   PROCESSING TIME
+========================================================= */
+
+function getProcessingMinutes(
+    data
+){
+
+    const minutes =
+        Number(
+            data?.processing_minutes
+        );
+
+
+    if(
+        Number.isFinite(minutes) &&
+        minutes > 0
+    ){
+
+        return Math.floor(
+            minutes
+        );
+
+    }
+
+
+    /*
+        Database should contain
+        processing_minutes.
+
+        If an old task has no value,
+        keep a safe 4-day processing
+        window instead of breaking
+        the page.
+    */
+
+    return 4 * 24 * 60;
+
+}
+
+
+function formatProcessingTime(
+    minutes
+){
+
+    const total =
+        Math.max(
+            0,
+            Math.floor(
+                Number(minutes) || 0
+            )
+        );
+
+
+    const days =
+        Math.floor(
+            total / 1440
+        );
+
+
+    const hours =
+        Math.floor(
+            (
+                total % 1440
+            ) / 60
+        );
+
+
+    const mins =
+        total % 60;
+
+
+    if(days > 0){
+
+        return (
+            days +
+            (
+                days === 1
+                    ? " day"
+                    : " days"
+            )
+        );
+
+    }
+
+
+    if(hours > 0){
+
+        return (
+            hours +
+            (
+                hours === 1
+                    ? " hour"
+                    : " hours"
+            )
+        );
+
+    }
+
+
+    return (
+        mins +
+        (
+            mins === 1
+                ? " minute"
+                : " minutes"
+        )
+    );
+
+}
+
+
+/* =========================================================
+   URL PARAMS
+========================================================= */
+
+const params =
+    new URLSearchParams(
+        location.search
+    );
+
+
+const taskId =
+    params.get("id") ||
+    params.get("task_id");
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let task = null;
+
+let currentMode =
+    "general";
+
+let taskStarted =
+    false;
+
+let timerInterval =
+    null;
+
+let selectedPhoto =
+    null;
+
+let selectedFile =
+    null;
+
+let faceModel =
+    null;
+
+let faceChecking =
+    false;
+
+
+/* =========================================================
+   HELPER
+========================================================= */
+
+const $ =
+    id =>
+        document.getElementById(id);
+
+
+function money(v){
+
+    return "₹" +
+        Number(v || 0)
+            .toFixed(2)
+            .replace(".00","");
+}
+
+
+function esc(v){
+
+    return String(
+        v ?? ""
+    ).replace(
+        /[&<>"']/g,
+        m =>
+            ({
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
+            }[m])
+    );
+
+}
+
+
+function showStatus(
+    message,
+    danger=false
+){
+
+    $("status")
+        .classList
+        .remove("hidden");
+
+
+    $("status")
+        .textContent =
+        message;
+
+
+    $("status")
+        .classList
+        .toggle(
+            "danger",
+            danger
+        );
+
+}
+
+
+function showProofStatus(
+    message,
+    danger=false
+){
+
+    $("proofStatus")
+        .classList
+        .remove("hidden");
+
+
+    $("proofStatus")
+        .textContent =
+        message;
+
+
+    $("proofStatus")
+        .classList
+        .toggle(
+            "danger",
+            danger
+        );
+
+}
+
+
+/* =========================================================
+   TASK MODE
+========================================================= */
+
+function detectTaskMode(data){
+
+    const explicit =
+        String(
+            data.task_type ||
+            ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if(
+        explicit === "survival"
+    ){
+
+        return "survival";
+
+    }
+
+
+    if(
+        explicit === "instant" ||
+        explicit === "instant_reward"
+    ){
+
+        return "instant";
+
+    }
+
+
+    if(
+        [
+            "app_download",
+            "download_app",
+            "install_app",
+            "level_complete",
+            "app_level"
+        ].includes(
+            explicit
+        )
+    ){
+
+        return "app";
+
+    }
+
+
+    const text =
+        [
+            data.category,
+            data.title,
+            data.description,
+            data.task_url
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+
+    if(
+        text.includes("survival") ||
+        text.includes("survive") ||
+        text.includes("1 hour") ||
+        text.includes("one hour") ||
+        text.includes("60 minute")
+    ){
+
+        return "survival";
+
+    }
+
+
+    if(
+        text.includes("level 40") ||
+        text.includes("40 lv") ||
+        text.includes("40 level") ||
+        text.includes("level_40") ||
+        text.includes("40lv") ||
+        text.includes("install this app") ||
+        text.includes("download app") ||
+        text.includes("install app") ||
+        text.includes("complete level") ||
+        text.includes("play store") ||
+        text.includes("google play") ||
+        /market:\/\//i.test(
+            String(
+                data.task_url ||
+                ""
+            )
+        ) ||
+        /intent:\/\//i.test(
+            String(
+                data.task_url ||
+                ""
+            )
+        )
+    ){
+
+        return "app";
+
+    }
+
+
+    if(
+        text.includes("instant reward") ||
+        text.includes("instant payout") ||
+        text.includes("immediate reward") ||
+        text.includes("instant")
+    ){
+
+        return "instant";
+
+    }
+
+
+    return "general";
+
+}
+
+
+/* =========================================================
+   TARGET LEVEL
+========================================================= */
+
+function getTargetLevel(){
+
+    const text =
+        [
+            task?.title,
+            task?.description,
+            task?.task_type
+        ]
+        .filter(Boolean)
+        .join(" ");
+
+
+    const match =
+        text.match(
+            /(?:level|lv)\s*[-:#]?\s*(\d{1,3})/i
+        );
+
+
+    return match
+        ? match[1]
+        : "40";
+
+}
+
+
+/* =========================================================
+   APPLY MODE
+========================================================= */
+
+function applyMode(){
+
+    $("modeBadge")
+        .textContent =
+        currentMode.toUpperCase();
+
+
+    if(
+        currentMode === "app"
+    ){
+
+        $("appBox")
+            .classList
+            .remove("hidden");
+
+
+        $("appName")
+            .textContent =
+            task.title ||
+            "Required App";
+
+
+        const targetLevel =
+            getTargetLevel();
+
+
+        $("appIntro")
+            .textContent =
+            "Install/open the app, complete Level " +
+            targetLevel +
+            " or the action specified in this task, then return to TaskEarn.";
+
+
+        if(
+            task.task_url
+        ){
+
+            $("appLinkCard")
+                .classList
+                .remove("hidden");
+
+
+            $("taskLink2")
+                .href =
+                task.task_url;
+
+
+            $("taskLink2")
+                .textContent =
+                "Open App / Install";
+
+        }
+
+
+        $("proofInstruction")
+            .textContent =
+            "Complete Level " +
+            targetLevel +
+            " and upload a clear screenshot showing the completed result.";
+
+
+        $("photoProofBox")
+            .classList
+            .remove("hidden");
+
+    }
+
+
+    if(
+        currentMode === "survival"
+    ){
+
+        $("survivalTimerBox")
+            .classList
+            .remove("hidden");
+
+
+        $("photoProofBox")
+            .classList
+            .add("hidden");
+
+
+        $("proofInstruction")
+            .textContent =
+            "Survival task proof is text-only. Screenshot/file upload is disabled.";
+
+
+        $("sendProof")
+            .textContent =
+            "Submit Survival Result";
+
+    }
+
+
+    if(
+        currentMode === "instant"
+    ){
+
+        $("proofInstruction")
+            .textContent =
+            "Complete the task and submit the requested result.";
+
+
+        $("sendProof")
+            .textContent =
+            "Complete & Submit";
+
+
+        $("photoProofBox")
+            .classList
+            .remove("hidden");
+
+    }
+
+
+    if(
+        currentMode === "general"
+    ){
+
+        $("proofInstruction")
+            .textContent =
+            "Complete the task and submit your result or screenshot.";
+
+
+        $("photoProofBox")
+            .classList
+            .remove("hidden");
+
+    }
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+$("back").onclick =
+    () => {
+
+        location.assign(
+            "tasks.html"
+        );
+
+    };
+
+
+/* =========================================================
+   LOAD TASK
+========================================================= */
+
+async function loadTask(){
+
+    if(!taskId){
+
+        $("loading").innerHTML =
+            "<b>Task ID is missing.</b>" +
+            "<p>Open this page from Available Tasks.</p>" +
+            '<button class="btn secondary" type="button" onclick="location.assign(\'tasks.html\')">Back to Tasks</button>';
+
+        return;
+
+    }
+
+
+    /*
+        IMPORTANT:
+        processing_minutes is loaded
+        from the database.
+    */
+
+    const endpoint =
+        SUPABASE_URL +
+        "/rest/v1/tasks?select=id,created_at,title,description,reward,duration_minutes,processing_minutes,category,task_url,status,verified,task_type&id=eq." +
+        encodeURIComponent(
+            taskId
+        );
+
+
+    try{
+
+        const controller =
+            new AbortController();
+
+
+        const timeout =
+            setTimeout(
+                () =>
+                    controller.abort(),
+                12000
+            );
+
+
+        const response =
+            await fetch(
+                endpoint,
+                {
+                    method:"GET",
+
+                    headers:{
+                        "apikey":
+                            SUPABASE_ANON_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_ANON_KEY,
+
+                        "Accept":
+                            "application/json"
+                    },
+
+                    signal:
+                        controller.signal
+                }
+            );
+
+
+        clearTimeout(
+            timeout
+        );
+
+
+        const raw =
+            await response.text();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " +
+                response.status +
+                " " +
+                response.statusText +
+                (
+                    raw
+                        ? "\n" + raw
+                        : ""
+                )
+            );
+
+        }
+
+
+        let rows;
+
+
+        try{
+
+            rows =
+                JSON.parse(
+                    raw
+                );
+
+        }catch(_){
+
+            throw new Error(
+                "Supabase returned an invalid response."
+            );
+
+        }
+
+
+        const data =
+            Array.isArray(rows)
+                ? rows[0]
+                : null;
+
+
+        if(!data){
+
+            $("loading").innerHTML =
+                "<b>Task not found.</b>" +
+                "<p>This task may have been removed or is no longer available.</p>" +
+                '<button class="btn secondary" type="button" onclick="location.assign(\'tasks.html\')">Back to Tasks</button>';
+
+            return;
+
+        }
+
+
+        task =
+            data;
+
+
+        currentMode =
+            detectTaskMode(
+                data
+            );
+
+
+        /*
+            COMPANY VALUE
+            stays inside task data.
+        */
+
+        const companyAmount =
+            Number(
+                data.reward || 0
+            );
+
+
+        /*
+            FINAL USER AMOUNT
+            is what the user sees.
+        */
+
+        const userAmount =
+            calculateUserReward(
+                companyAmount
+            );
+
+
+        const processingMinutes =
+            getProcessingMinutes(
+                data
+            );
+
+
+        $("loading")
+            .classList
+            .add("hidden");
+
+
+        $("content")
+            .classList
+            .remove("hidden");
+
+
+        $("category")
+            .textContent =
+            data.category ||
+            data.task_type ||
+            "Task";
+
+
+        $("title")
+            .textContent =
+            data.title ||
+            "Untitled Task";
+
+
+        $("description")
+            .textContent =
+            data.description ||
+            "Complete the task and submit proof.";
+
+
+        /*
+            ONLY FINAL USER EARNING
+            IS DISPLAYED.
+        */
+
+        $("reward")
+            .textContent =
+            money(
+                userAmount
+            );
+
+
+        $("duration")
+            .textContent =
+            data.duration_minutes
+                ? data.duration_minutes +
+                  " min"
+                : "—";
+
+
+        $("verification")
+            .textContent =
+            data.verified
+                ? "Verified"
+                : "Standard";
+
+
+        /*
+            COMPANY PROCESSING TIME
+            DISPLAY ONLY.
+        */
+
+        $("processingTime")
+            .textContent =
+            formatProcessingTime(
+                processingMinutes
+            );
+
+
+        if(
+            data.task_url &&
+            currentMode !== "app"
+        ){
+
+            $("taskLinkBox")
+                .classList
+                .remove("hidden");
+
+
+            $("taskLink")
+                .href =
+                data.task_url;
+
+
+            $("taskLink")
+                .textContent =
+                "Open Task";
+
+        }
+
+
+        applyMode();
+
+
+        const open =
+            [
+                "active",
+                "open"
+            ].includes(
+                String(
+                    data.status ||
+                    ""
+                ).toLowerCase()
+            );
+
+
+        if(!open){
+
+            $("startBtn")
+                .disabled =
+                true;
+
+
+            $("startBtn")
+                .textContent =
+                "Task Closed";
+
+
+            $("submitBtn")
+                .disabled =
+                true;
+
+        }
+
+    }catch(e){
+
+        console.error(
+            "Task load error:",
+            e
+        );
+
+
+        const msg =
+            e?.name === "AbortError"
+                ? "Task request timed out. Please try again."
+                : (
+                    e?.message ||
+                    "Unable to load task."
+                );
+
+
+        $("loading").innerHTML =
+            "<b>Unable to load task</b>" +
+            "<p>" +
+            esc(msg) +
+            "</p>" +
+
+            '<button class="btn primary" type="button" onclick="loadTask()">Try Again</button>' +
+
+            '<button class="btn secondary" type="button" onclick="location.assign(\'tasks.html\')">Back to Tasks</button>';
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTOMATIC AD COUNTER
+========================================================= */
+
+function shouldShowAd(){
+
+    let count =
+        Number(
+            localStorage.getItem(
+                "taskearn_task_open_count"
+            ) ||
+            "0"
+        );
+
+
+    count += 1;
+
+
+    localStorage.setItem(
+        "taskearn_task_open_count",
+        String(count)
+    );
+
+
+    return count % 2 === 0;
+
+}
+
+
+/* =========================================================
+   REAL NATIVE INTERSTITIAL AD
+========================================================= */
+
+async function showAutomaticAd(){
+
+    if(
+        window.AndroidAds &&
+        typeof
+        window.AndroidAds.showInterstitial ===
+        "function"
+    ){
+
+        try{
+
+            $("adModal")
+                .classList
+                .add("show");
+
+
+            $("adCount")
+                .textContent =
+                "AD";
+
+
+            $("adMessage")
+                .textContent =
+                "Advertisement is loading…";
+
+
+            const result =
+                window.AndroidAds
+                    .showInterstitial();
+
+
+            if(
+                result &&
+                typeof result.then ===
+                "function"
+            ){
+
+                await result;
+
+            }
+
+
+            $("adModal")
+                .classList
+                .remove("show");
+
+
+            return true;
+
+        }catch(e){
+
+            console.warn(
+                "Android interstitial failed:",
+                e
+            );
+
+
+            $("adModal")
+                .classList
+                .remove("show");
+
+
+            return false;
+
+        }
+
+    }
+
+
+    if(
+        window.TaskEarnAds &&
+        typeof
+        window.TaskEarnAds.showInterstitial ===
+        "function"
+    ){
+
+        try{
+
+            $("adModal")
+                .classList
+                .add("show");
+
+
+            $("adCount")
+                .textContent =
+                "AD";
+
+
+            $("adMessage")
+                .textContent =
+                "Advertisement is loading…";
+
+
+            const result =
+                window.TaskEarnAds
+                    .showInterstitial();
+
+
+            if(
+                result &&
+                typeof result.then ===
+                "function"
+            ){
+
+                await result;
+
+            }
+
+
+            $("adModal")
+                .classList
+                .remove("show");
+
+
+            return true;
+
+        }catch(e){
+
+            console.warn(
+                "TaskEarn interstitial failed:",
+                e
+            );
+
+
+            $("adModal")
+                .classList
+                .remove("show");
+
+
+            return false;
+
+        }
+
+    }
+
+
+    console.log(
+        "No native interstitial bridge connected."
+    );
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   OPEN EXTERNAL TASK / APP
+========================================================= */
+
+async function openExternalTask(){
+
+    if(
+        !task ||
+        !task.task_url
+    ){
+
+        return false;
+
+    }
+
+
+    const url =
+        String(
+            task.task_url
+        ).trim();
+
+
+    if(!url){
+
+        return false;
+
+    }
+
+
+    try{
+
+        if(
+            window.AndroidApp &&
+            typeof
+            window.AndroidApp.openExternalUrl ===
+            "function"
+        ){
+
+            const result =
+                window.AndroidApp
+                    .openExternalUrl(
+                        url
+                    );
+
+
+            if(
+                result &&
+                typeof result.then ===
+                "function"
+            ){
+
+                await result;
+
+            }
+
+
+            return true;
+
+        }
+
+
+        if(
+            /^(market:|intent:)/i.test(
+                url
+            )
+        ){
+
+            location.href =
+                url;
+
+            return true;
+
+        }
+
+
+        const newWindow =
+            window.open(
+                url,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+
+        if(
+            newWindow
+        ){
+
+            return true;
+
+        }
+
+
+        location.href =
+            url;
+
+        return true;
+
+    }catch(e){
+
+        console.warn(
+            "External task open failed:",
+            e
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   BLOCKER MODAL
+========================================================= */
+
+function showBlocker(){
+
+    $("blockerModal")
+        .classList
+        .add("show");
+
+}
+
+
+function hideBlocker(){
+
+    $("blockerModal")
+        .classList
+        .remove("show");
+
+}
+
+
+$("closeBlockerBtn").onclick =
+    hideBlocker;
+
+
+$("openAgainBtn").onclick =
+    async () => {
+
+        hideBlocker();
+
+
+        const opened =
+            await openExternalTask();
+
+
+        if(!opened){
+
+            showBlocker();
+
+        }
+
+    };
+
+
+/* =========================================================
+   START TASK
+========================================================= */
+
+$("startBtn")
+    .addEventListener(
+        "click",
+        async () => {
+
+            if(!task){
+
+                showStatus(
+                    "Task is still loading. Please wait.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(taskStarted){
+
+                return;
+
+            }
+
+
+            taskStarted =
+                true;
+
+
+            $("startBtn")
+                .disabled =
+                true;
+
+
+            $("startBtn")
+                .classList
+                .add("starting");
+
+
+            $("startBtn")
+                .textContent =
+                "Starting…";
+
+
+            if(
+                shouldShowAd()
+            ){
+
+                await showAutomaticAd();
+
+            }
+
+
+            /* =================================================
+               SURVIVAL
+            ================================================= */
+
+            if(
+                currentMode ===
+                "survival"
+            ){
+
+                startSurvivalTimer();
+
+
+                $("startBtn")
+                    .classList
+                    .remove("starting");
+
+
+                $("startBtn")
+                    .textContent =
+                    "Task Started ✓";
+
+
+                showStatus(
+                    "Survival task started. You have 1 hour to complete it. File/screenshot upload is disabled."
+                );
+
+
+                openProofBox();
+
+
+                return;
+
+            }
+
+
+            /* =================================================
+               APP
+            ================================================= */
+
+            if(
+                currentMode ===
+                "app"
+            ){
+
+                $("startBtn")
+                    .classList
+                    .remove("starting");
+
+
+                $("startBtn")
+                    .textContent =
+                    "Task Started ✓";
+
+
+                if(
+                    task.task_url
+                ){
+
+                    const opened =
+                        await openExternalTask();
+
+
+                    if(opened){
+
+                        showStatus(
+                            "App link opened. Install/open the app and complete Level " +
+                            getTargetLevel() +
+                            " or the required action. Then return to TaskEarn and upload your proof."
+                        );
+
+                    }else{
+
+                        showStatus(
+                            "The app link could not be opened.",
+                            true
+                        );
+
+
+                        showBlocker();
+
+                    }
+
+                }else{
+
+                    showStatus(
+                        "No app download link is attached to this task. Follow the task description.",
+                        true
+                    );
+
+                }
+
+
+                openProofBox();
+
+
+                return;
+
+            }
+
+
+            /* =================================================
+               GENERAL / INSTANT
+            ================================================= */
+
+            $("startBtn")
+                .classList
+                .remove("starting");
+
+
+            $("startBtn")
+                .textContent =
+                "Task Started ✓";
+
+
+            if(
+                task.task_url
+            ){
+
+                const opened =
+                    await openExternalTask();
+
+
+                if(opened){
+
+                    showStatus(
+                        "Task opened. Complete it and return to TaskEarn to submit your proof."
+                    );
+
+                }else{
+
+                    showStatus(
+                        "The task link could not be opened.",
+                        true
+                    );
+
+
+                    showBlocker();
+
+                }
+
+            }else{
+
+                showStatus(
+                    "Task started ✓ Follow the instructions above and complete the task."
+                );
+
+            }
+
+
+            openProofBox();
+
+        }
+    );
+
+
+/* =========================================================
+   OPEN PROOF
+========================================================= */
+
+function openProofBox(){
+
+    $("proofBox")
+        .classList
+        .remove("hidden");
+
+
+    setTimeout(
+        () => {
+
+            $("proofBox")
+                .scrollIntoView({
+                    behavior:"smooth",
+                    block:"start"
+                });
+
+        },
+        80
+    );
+
+}
+
+
+/* =========================================================
+   SURVIVAL TIMER
+========================================================= */
+
+const SURVIVAL_TIME =
+    60 *
+    60 *
+    1000;
+
+
+function survivalKey(){
+
+    return (
+        "taskearn_survival_" +
+        task.id
+    );
+
+}
+
+
+function startSurvivalTimer(){
+
+    if(
+        currentMode !==
+        "survival"
+    ){
+
+        return;
+
+    }
+
+
+    const key =
+        survivalKey();
+
+
+    let started =
+        Number(
+            localStorage.getItem(
+                key
+            ) ||
+            "0"
+        );
+
+
+    if(!started){
+
+        started =
+            Date.now();
+
+
+        localStorage.setItem(
+            key,
+            String(started)
+        );
+
+    }
+
+
+    taskStarted =
+        true;
+
+
+    updateTimer();
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    timerInterval =
+        setInterval(
+            updateTimer,
+            1000
+        );
+
+}
+
+
+function updateTimer(){
+
+    if(
+        currentMode !==
+        "survival"
+    ){
+
+        return;
+
+    }
+
+
+    const started =
+        Number(
+            localStorage.getItem(
+                survivalKey()
+            ) ||
+            "0"
+        );
+
+
+    if(!started){
+
+        $("timer")
+            .textContent =
+            "01:00:00";
+
+        return;
+
+    }
+
+
+    const remaining =
+        SURVIVAL_TIME -
+        (
+            Date.now() -
+            started
+        );
+
+
+    if(
+        remaining <= 0
+    ){
+
+        $("timer")
+            .textContent =
+            "00:00:00";
+
+
+        $("timer")
+            .classList
+            .add("expired");
+
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        $("submitBtn")
+            .disabled =
+            true;
+
+
+        $("sendProof")
+            .disabled =
+            true;
+
+
+        showStatus(
+            "The 1-hour survival task window has expired.",
+            true
+        );
+
+
+        return;
+
+    }
+
+
+    const total =
+        Math.floor(
+            remaining /
+            1000
+        );
+
+
+    const h =
+        Math.floor(
+            total /
+            3600
+        );
+
+
+    const m =
+        Math.floor(
+            (
+                total %
+                3600
+            ) /
+            60
+        );
+
+
+    const s =
+        total %
+        60;
+
+
+    $("timer")
+        .textContent =
+        String(h)
+            .padStart(2,"0") +
+        ":" +
+        String(m)
+            .padStart(2,"0") +
+        ":" +
+        String(s)
+            .padStart(2,"0");
+
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+$("submitBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            if(!task){
+
+                showStatus(
+                    "Task is still loading.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(!taskStarted){
+
+                showStatus(
+                    "Start the task first.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(
+                currentMode ===
+                "survival"
+            ){
+
+                const started =
+                    Number(
+                        localStorage.getItem(
+                            survivalKey()
+                        ) ||
+                        "0"
+                    );
+
+
+                if(
+                    !started ||
+                    Date.now() -
+                    started >=
+                    SURVIVAL_TIME
+                ){
+
+                    showStatus(
+                        "The 1-hour survival task window has expired.",
+                        true
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            openProofBox();
+
+        }
+    );
+
+
+/* =========================================================
+   FILE SELECT
+========================================================= */
+
+$("proofPhoto")
+    .addEventListener(
+        "change",
+        async event => {
+
+            const file =
+                event.target
+                    .files?.[0];
+
+
+            selectedFile =
+                file ||
+                null;
+
+
+            selectedPhoto =
+                null;
+
+
+            $("proofStatus")
+                .classList
+                .add("hidden");
+
+
+            if(!file){
+
+                resetFileUI();
+
+                return;
+
+            }
+
+
+            if(
+                file.size >
+                8 * 1024 * 1024
+            ){
+
+                selectedFile =
+                    null;
+
+
+                event.target.value =
+                    "";
+
+
+                resetFileUI();
+
+
+                showProofStatus(
+                    "This file is larger than 8 MB. Please choose a smaller file.",
+                    true
+                );
+
+
+                return;
+
+            }
+
+
+            $("fileInfo")
+                .textContent =
+                file.name +
+                " • " +
+                formatFileSize(
+                    file.size
+                );
+
+
+            if(
+                file.type.startsWith(
+                    "image/"
+                )
+            ){
+
+                selectedPhoto =
+                    file;
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    async () => {
+
+                        $("preview")
+                            .src =
+                            reader.result;
+
+
+                        $("previewWrap")
+                            .classList
+                            .remove("hidden");
+
+
+                        $("faceCheck")
+                            .textContent =
+                            "Checking screenshot for a visible face…";
+
+
+                        faceChecking =
+                            true;
+
+
+                        const result =
+                            await detectFace(
+                                $("preview")
+                            );
+
+
+                        faceChecking =
+                            false;
+
+
+                        if(
+                            result.detected
+                        ){
+
+                            $("faceCheck")
+                                .textContent =
+                                "Face detected — screenshot cannot be submitted.";
+
+
+                            showFaceRejection(
+                                result.reason
+                            );
+
+
+                            selectedPhoto =
+                                null;
+
+
+                            selectedFile =
+                                null;
+
+
+                            $("proofPhoto")
+                                .value =
+                                "";
+
+
+                            return;
+
+                        }
+
+
+                        if(
+                            result.supported
+                        ){
+
+                            $("faceCheck")
+                                .textContent =
+                                "✓ No face detected in this screenshot.";
+
+                        }else{
+
+                            $("faceCheck")
+                                .textContent =
+                                "Screenshot selected. Face detection is unavailable.";
+
+                        }
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
+
+            }else{
+
+                $("previewWrap")
+                    .classList
+                    .add("hidden");
+
+
+                $("faceCheck")
+                    .textContent =
+                    "✓ File selected. Face check is only used for image files.";
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   FILE SIZE
+========================================================= */
+
+function formatFileSize(
+    bytes
+){
+
+    if(
+        bytes < 1024
+    ){
+
+        return bytes + " B";
+
+    }
+
+
+    if(
+        bytes <
+        1024 * 1024
+    ){
+
+        return (
+            bytes / 1024
+        ).toFixed(1) +
+        " KB";
+
+    }
+
+
+    return (
+        bytes /
+        1024 /
+        1024
+    ).toFixed(2) +
+    " MB";
+
+}
+
+
+/* =========================================================
+   RESET FILE
+========================================================= */
+
+function resetFileUI(){
+
+    $("fileInfo")
+        .textContent =
+        "No file selected";
+
+
+    $("preview")
+        .removeAttribute(
+            "src"
+        );
+
+
+    $("previewWrap")
+        .classList
+        .add("hidden");
+
+
+    $("faceCheck")
+        .textContent =
+        "Screenshot containing a face will be rejected.";
+
+}
+
+
+/* =========================================================
+   REMOVE FILE
+========================================================= */
+
+$("removePhoto")
+    .onclick =
+    () => {
+
+        selectedPhoto =
+            null;
+
+
+        selectedFile =
+            null;
+
+
+        $("proofPhoto")
+            .value =
+            "";
+
+
+        resetFileUI();
+
+    };
+
+
+/* =========================================================
+   FACE MODEL
+========================================================= */
+
+async function loadFaceModel(){
+
+    if(
+        faceModel
+    ){
+
+        return faceModel;
+
+    }
+
+
+    if(
+        !window.blazeface
+    ){
+
+        return null;
+
+    }
+
+
+    try{
+
+        faceModel =
+            await blazeface
+                .load();
+
+
+        return faceModel;
+
+    }catch(e){
+
+        console.warn(
+            "Face model unavailable:",
+            e
+        );
+
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   FACE DETECTION
+========================================================= */
+
+async function detectFace(
+    image
+){
+
+    try{
+
+        const model =
+            await loadFaceModel();
+
+
+        if(!model){
+
+            return {
+                detected:false,
+                supported:false,
+                reason:
+                    "Face detection model unavailable."
+            };
+
+        }
+
+
+        const predictions =
+            await model
+                .estimateFaces(
+                    image,
+                    false
+                );
+
+
+        if(
+            Array.isArray(
+                predictions
+            ) &&
+            predictions.length > 0
+        ){
+
+            return {
+                detected:true,
+                supported:true,
+                reason:
+                    "Face detected in the uploaded proof image."
+            };
+
+        }
+
+
+        return {
+            detected:false,
+            supported:true,
+            reason:""
+        };
+
+    }catch(e){
+
+        console.warn(
+            "Face detection error:",
+            e
+        );
+
+
+        return {
+            detected:false,
+            supported:false,
+            reason:
+                "Face detection could not be completed."
+        };
+
+    }
+
+}
+
+
+/* =========================================================
+   FACE REJECTION
+========================================================= */
+
+function showFaceRejection(
+    reason
+){
+
+    $("faceReason")
+        .textContent =
+        reason ||
+        "Face detected in the uploaded proof image.";
+
+
+    $("faceModal")
+        .classList
+        .add("show");
+
+}
+
+
+$("faceCloseBtn")
+    .onclick =
+    () => {
+
+        $("faceModal")
+            .classList
+            .remove("show");
+
+
+        $("proofPhoto")
+            .click();
+
+    };
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function getSession(){
+
+    const result =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+    return (
+        result
+            ?.data
+            ?.session ||
+        null
+    );
+
+}
+
+
+/* =========================================================
+   IMAGE COMPRESS
+========================================================= */
+
+async function compressImage(
+    file
+){
+
+    return new Promise(
+        resolve => {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                event => {
+
+                    const img =
+                        new Image();
+
+
+                    img.onload =
+                        () => {
+
+                            const max =
+                                1600;
+
+
+                            let w =
+                                img.width;
+
+
+                            let h =
+                                img.height;
+
+
+                            if(
+                                w > max ||
+                                h > max
+                            ){
+
+                                if(
+                                    w > h
+                                ){
+
+                                    h =
+                                        Math.round(
+                                            h *
+                                            max /
+                                            w
+                                        );
+
+                                    w =
+                                        max;
+
+                                }else{
+
+                                    w =
+                                        Math.round(
+                                            w *
+                                            max /
+                                            h
+                                        );
+
+                                    h =
+                                        max;
+
+                                }
+
+                            }
+
+
+                            const canvas =
+                                document
+                                    .createElement(
+                                        "canvas"
+                                    );
+
+
+                            canvas.width =
+                                w;
+
+
+                            canvas.height =
+                                h;
+
+
+                            const ctx =
+                                canvas
+                                    .getContext(
+                                        "2d"
+                                    );
+
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                w,
+                                h
+                            );
+
+
+                            canvas.toBlob(
+                                blob => {
+
+                                    resolve(
+                                        blob ||
+                                        file
+                                    );
+
+                                },
+                                "image/jpeg",
+                                .82
+                            );
+
+                        };
+
+
+                    img.src =
+                        event.target
+                            .result;
+
+                };
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FILE EXTENSION
+========================================================= */
+
+function getFileExtension(
+    name
+){
+
+    const parts =
+        String(
+            name || ""
+        ).split(".");
+
+
+    if(
+        parts.length < 2
+    ){
+
+        return "";
+
+    }
+
+
+    return parts
+        .pop()
+        .toLowerCase()
+        .replace(
+            /[^a-z0-9]/g,
+            ""
+        );
+
+}
+
+
+/* =========================================================
+   UPLOAD PROOF
+========================================================= */
+
+async function uploadProofFile(
+    userId
+){
+
+    if(
+        !selectedFile
+    ){
+
+        return null;
+
+    }
+
+
+    let uploadFile =
+        selectedFile;
+
+
+    let contentType =
+        selectedFile.type ||
+        "application/octet-stream";
+
+
+    let extension =
+        getFileExtension(
+            selectedFile.name
+        );
+
+
+    if(
+        selectedFile.type.startsWith(
+            "image/"
+        )
+    ){
+
+        uploadFile =
+            await compressImage(
+                selectedFile
+            );
+
+
+        contentType =
+            "image/jpeg";
+
+
+        extension =
+            "jpg";
+
+    }
+
+
+    const safeName =
+        String(
+            selectedFile.name ||
+            "proof"
+        )
+        .replace(
+            /[^a-zA-Z0-9._-]/g,
+            "_"
+        );
+
+
+    const path =
+        userId +
+        "/" +
+        task.id +
+        "/" +
+        Date.now() +
+        "_" +
+        (
+            extension ||
+            safeName
+        );
+
+
+    const result =
+        await supabaseClient
+            .storage
+            .from(
+                PROOF_BUCKET
+            )
+            .upload(
+                path,
+                uploadFile,
+                {
+                    cacheControl:
+                        "3600",
+
+                    contentType:
+                        contentType,
+
+                    upsert:
+                        false
+                }
+            );
+
+
+    if(
+        result.error
+    ){
+
+        throw result.error;
+
+    }
+
+
+    return {
+        path:path,
+        name:selectedFile.name,
+        type:contentType
+    };
+
+}
+
+
+/* =========================================================
+   BUILD PROOF
+========================================================= */
+
+function buildProof(
+    fileData
+){
+
+    const companyAmount =
+        Number(
+            task?.reward || 0
+        );
+
+
+    const userAmount =
+        calculateUserReward(
+            companyAmount
+        );
+
+
+    const processingMinutes =
+        getProcessingMinutes(
+            task
+        );
+
+
+    return JSON.stringify({
+
+        version:6,
+
+        text:
+            $("proof")
+                .value
+                .trim(),
+
+        photo_path:
+            fileData?.path ||
+            null,
+
+        file_name:
+            fileData?.name ||
+            null,
+
+        file_type:
+            fileData?.type ||
+            null,
+
+        task_mode:
+            currentMode,
+
+        task_type:
+            task.task_type ||
+            "",
+
+        target_level:
+            currentMode === "app"
+                ? getTargetLevel()
+                : null,
+
+        /*
+            Final amount for this user.
+        */
+
+        reward:
+            userAmount,
+
+        processing_minutes:
+            processingMinutes,
+
+        processing_time:
+            formatProcessingTime(
+                processingMinutes
+            ),
+
+        submitted_at:
+            new Date()
+                .toISOString()
+
+    });
+
+}
+
+
+/* =========================================================
+   SEND PROOF
+========================================================= */
+
+$("sendProof")
+    .onclick =
+    async () => {
+
+        if(
+            currentMode ===
+            "survival"
+        ){
+
+            selectedPhoto =
+                null;
+
+
+            selectedFile =
+                null;
+
+        }
+
+
+        const text =
+            $("proof")
+                .value
+                .trim();
+
+
+        /*
+            APP TASK REQUIRES SCREENSHOT.
+        */
+
+        if(
+            currentMode === "app" &&
+            !selectedFile
+        ){
+
+            showProofStatus(
+                "Please upload the screenshot showing completed Level " +
+                getTargetLevel() +
+                ".",
+                true
+            );
+
+            return;
+
+        }
+
+
+        /*
+            GENERAL / INSTANT.
+        */
+
+        if(
+            currentMode !== "app" &&
+            !text &&
+            !selectedFile
+        ){
+
+            showProofStatus(
+                currentMode === "survival"
+                    ? "Please enter your survival result."
+                    : "Please enter a result or add a file/screenshot.",
+                true
+            );
+
+            return;
+
+        }
+
+
+        /*
+            SURVIVAL CHECK.
+        */
+
+        if(
+            currentMode === "survival"
+        ){
+
+            const started =
+                Number(
+                    localStorage.getItem(
+                        survivalKey()
+                    ) ||
+                    "0"
+                );
+
+
+            if(!started){
+
+                showProofStatus(
+                    "Start the survival task first.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(
+                Date.now() -
+                started >=
+                SURVIVAL_TIME
+            ){
+
+                showProofStatus(
+                    "The 1-hour survival task window has expired.",
+                    true
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /*
+            FACE CHECK.
+        */
+
+        if(
+            selectedPhoto &&
+            currentMode !== "survival"
+        ){
+
+            if(faceChecking){
+
+                showProofStatus(
+                    "Screenshot is still being checked. Please wait.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            $("sendProof")
+                .disabled =
+                true;
+
+
+            $("sendProof")
+                .textContent =
+                "Checking Screenshot…";
+
+
+            const check =
+                await detectFace(
+                    $("preview")
+                );
+
+
+            if(
+                check.detected
+            ){
+
+                $("sendProof")
+                    .disabled =
+                    false;
+
+
+                $("sendProof")
+                    .textContent =
+                    "Submit Proof";
+
+
+                showFaceRejection(
+                    check.reason
+                );
+
+
+                return;
+
+            }
+
+
+            $("sendProof")
+                .disabled =
+                false;
+
+
+            $("sendProof")
+                .textContent =
+                "Submit Proof";
+
+        }
+
+
+        /* =================================================
+           AUTH
+        ================================================= */
+
+        let session;
+
+
+        try{
+
+            session =
+                await getSession();
+
+        }catch(e){
+
+            showProofStatus(
+                "Connection/auth check failed. Please try again.",
+                true
+            );
+
+            return;
+
+        }
+
+
+        if(!session){
+
+            showProofStatus(
+                "Please log in before submitting proof.",
+                true
+            );
+
+            return;
+
+        }
+
+
+        $("sendProof")
+            .disabled =
+            true;
+
+
+        $("sendProof")
+            .textContent =
+            "Submitting…";
+
+
+        try{
+
+            let fileData =
+                null;
+
+
+            /*
+                Upload file.
+            */
+
+            if(
+                selectedFile &&
+                currentMode !== "survival"
+            ){
+
+                $("sendProof")
+                    .textContent =
+                    "Uploading Proof…";
+
+
+                fileData =
+                    await uploadProofFile(
+                        session.user.id
+                    );
+
+            }
+
+
+            const proof =
+                buildProof(
+                    fileData
+                );
+
+
+            /*
+                FINAL USER REWARD.
+
+                Never insert the original
+                company amount here.
+            */
+
+            const finalUserReward =
+                calculateUserReward(
+                    task.reward
+                );
+
+
+            $("sendProof")
+                .textContent =
+                "Saving Submission…";
+
+
+            const result =
+                await supabaseClient
+                    .from(
+                        "task_submissions"
+                    )
+                    .insert({
+
+                        task_id:
+                            Number(
+                                task.id
+                            ),
+
+                        user_id:
+                            session.user.id,
+
+                        proof:
+                            proof,
+
+                        status:
+                            "pending",
+
+                        reward:
+                            finalUserReward
+
+                    });
+
+
+            if(
+                result.error
+            ){
+
+                throw result.error;
+
+            }
+
+
+            if(
+                currentMode === "survival"
+            ){
+
+                localStorage.removeItem(
+                    survivalKey()
+                );
+
+            }
+
+
+            /*
+                Submission-status page.
+            */
+
+            location.assign(
+                "Submission-status.html?task_id=" +
+                encodeURIComponent(
+                    task.id
+                )
+            );
+
+
+        }catch(e){
+
+            console.error(
+                "Submission error:",
+                e
+            );
+
+
+            showProofStatus(
+                e?.message ||
+                "Submission failed. Please try again.",
+                true
+            );
+
+
+            $("sendProof")
+                .disabled =
+                false;
+
+
+            $("sendProof")
+                .textContent =
+                currentMode === "survival"
+                    ? "Submit Survival Result"
+                    : "Submit Proof";
+
+        }
+
+    };
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+loadTask();
+
+</script>
+
+</body>
+</html>

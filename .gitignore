@@ -1,0 +1,32 @@
+# Secrets / credentials
+.env
+.env.*
+!.env.example
+google-oauth-backup.json
+google-services.json
+service-account*.json
+*-service-account*.json
+credentials.json
+secrets.json
+
+# Supabase local secrets
+.supabase/
+supabase/.temp/
+
+# Android / Gradle generated files
+.gradle/
+**/build/
+local.properties
+*.apk
+*.aab
+
+# IDE files
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

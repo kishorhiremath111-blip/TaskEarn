@@ -1,0 +1,3666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+>
+
+<meta
+    name="theme-color"
+    content="#080b16"
+>
+
+<meta
+    name="color-scheme"
+    content="dark"
+>
+
+<title>TaskEarn — Network Check</title>
+
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(45,230,169,.09),
+            transparent 34%
+        ),
+        linear-gradient(
+            180deg,
+            #060a13 0%,
+            #080d18 45%,
+            #050914 100%
+        );
+
+    color:#f5f7fb;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    overflow-x:hidden;
+
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+
+    width:100%;
+    max-width:540px;
+
+    margin:0 auto;
+
+    min-height:100vh;
+
+    padding:
+        0
+        18px
+        35px;
+
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+
+    position:sticky;
+    top:0;
+
+    z-index:100;
+
+    margin:
+        0
+        -18px;
+
+    padding:
+        12px
+        18px;
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    background:
+        rgba(6,10,18,.88);
+
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+
+}
+
+
+.back-button{
+
+    width:42px;
+    height:42px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#f4f7fb;
+
+    font-size:25px;
+
+    cursor:pointer;
+
+}
+
+
+.top-title{
+
+    flex:1;
+
+}
+
+
+.top-title strong{
+
+    display:block;
+
+    font-size:14px;
+
+    font-weight:750;
+
+    letter-spacing:.1px;
+
+}
+
+
+.top-title span{
+
+    display:block;
+
+    margin-top:3px;
+
+    color:#8490a5;
+
+    font-size:10px;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    padding:
+        34px
+        2px
+        22px;
+
+}
+
+
+.hero-icon{
+
+    width:68px;
+    height:68px;
+
+    border-radius:22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(61,229,171,.16),
+            rgba(61,229,171,.035)
+        );
+
+    border:
+        1px solid
+        rgba(61,229,171,.18);
+
+    box-shadow:
+        0 0 0 7px
+        rgba(61,229,171,.018),
+        0 18px 45px
+        rgba(0,0,0,.25);
+
+}
+
+
+.hero-icon-inner{
+
+    width:28px;
+    height:28px;
+
+    border:
+        2px solid
+        #43e5aa;
+
+    border-radius:50%;
+
+    position:relative;
+
+}
+
+
+.hero-icon-inner::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:7px;
+    height:12px;
+
+    border-right:
+        2px solid
+        #43e5aa;
+
+    border-bottom:
+        2px solid
+        #43e5aa;
+
+    transform:
+        rotate(45deg);
+
+    left:9px;
+    top:4px;
+
+}
+
+
+.hero h1{
+
+    font-size:30px;
+
+    line-height:1.12;
+
+    letter-spacing:-.9px;
+
+}
+
+
+.hero p{
+
+    margin-top:11px;
+
+    max-width:450px;
+
+    color:#8995aa;
+
+    font-size:13px;
+
+    line-height:1.65;
+
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.check-card{
+
+    padding:19px;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,28,44,.95),
+            rgba(8,14,25,.96)
+        );
+
+    border:
+        1px solid
+        rgba(126,158,206,.13);
+
+    box-shadow:
+        0 24px 65px
+        rgba(0,0,0,.32);
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-head{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+}
+
+
+.status-label{
+
+    color:#7f8ca2;
+
+    font-size:10px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1.25px;
+
+}
+
+
+.status-title{
+
+    margin-top:6px;
+
+    font-size:17px;
+
+    font-weight:750;
+
+}
+
+
+.progress-value{
+
+    color:#42e3a8;
+
+    font-size:14px;
+
+    font-weight:750;
+
+}
+
+
+.progress{
+
+    width:100%;
+
+    height:7px;
+
+    margin-top:17px;
+
+    overflow:hidden;
+
+    border-radius:99px;
+
+    background:
+        rgba(255,255,255,.055);
+
+}
+
+
+.progress-bar{
+
+    width:0%;
+
+    height:100%;
+
+    border-radius:99px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #18b77d,
+            #4ce5b0
+        );
+
+    transition:
+        width .35s ease;
+
+}
+
+
+/* =========================================================
+   CHECK ROW
+========================================================= */
+
+.check-list{
+
+    display:grid;
+
+    gap:9px;
+
+    margin-top:15px;
+
+}
+
+
+.check-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    min-height:68px;
+
+    padding:13px;
+
+    border-radius:17px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.045);
+
+    transition:
+        .25s ease;
+
+}
+
+
+.check-row.active{
+
+    background:
+        rgba(88,150,255,.045);
+
+    border-color:
+        rgba(88,150,255,.16);
+
+}
+
+
+.check-row.success{
+
+    border-color:
+        rgba(62,225,166,.12);
+
+}
+
+
+.check-row.danger{
+
+    border-color:
+        rgba(255,91,111,.16);
+
+}
+
+
+.check-icon{
+
+    width:39px;
+    height:39px;
+
+    flex:0 0 39px;
+
+    border-radius:13px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#8490a3;
+
+    font-size:14px;
+
+    font-weight:800;
+
+    background:
+        rgba(255,255,255,.045);
+
+}
+
+
+.check-row.success
+.check-icon{
+
+    color:#43e4a9;
+
+    background:
+        rgba(61,229,171,.08);
+
+}
+
+
+.check-row.danger
+.check-icon{
+
+    color:#ff6879;
+
+    background:
+        rgba(255,91,111,.08);
+
+}
+
+
+.check-info{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+
+.check-name{
+
+    font-size:12.5px;
+
+    font-weight:700;
+
+}
+
+
+.check-detail{
+
+    margin-top:4px;
+
+    color:#7f8ba0;
+
+    font-size:10px;
+
+    line-height:1.45;
+
+}
+
+
+.check-state{
+
+    white-space:nowrap;
+
+    color:#69758a;
+
+    font-size:9.5px;
+
+    font-weight:700;
+
+}
+
+
+.check-row.success
+.check-state{
+
+    color:#40dfa5;
+
+}
+
+
+.check-row.danger
+.check-state{
+
+    color:#ff6879;
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result-box{
+
+    display:none;
+
+    margin-top:14px;
+
+    padding:18px;
+
+    border-radius:20px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+
+    animation:
+        resultIn .3s ease;
+
+}
+
+
+.result-box.show{
+
+    display:block;
+
+}
+
+
+@keyframes resultIn{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(8px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.result-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+}
+
+
+.result-icon{
+
+    width:45px;
+    height:45px;
+
+    border-radius:15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(61,229,171,.09);
+
+    color:#42e3a8;
+
+    font-size:20px;
+
+    font-weight:800;
+
+}
+
+
+.result-icon.warning{
+
+    color:#ffd36b;
+
+    background:
+        rgba(255,207,91,.09);
+
+}
+
+
+.result-icon.danger{
+
+    color:#ff6879;
+
+    background:
+        rgba(255,91,111,.09);
+
+}
+
+
+.result-title{
+
+    font-size:15px;
+
+    font-weight:750;
+
+}
+
+
+.result-text{
+
+    margin-top:4px;
+
+    color:#7f8ba0;
+
+    font-size:10.5px;
+
+    line-height:1.55;
+
+}
+
+
+.result-list{
+
+    display:grid;
+
+    gap:7px;
+
+    margin-top:14px;
+
+}
+
+
+.result-line{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:10px 12px;
+
+    border-radius:12px;
+
+    background:
+        rgba(0,0,0,.16);
+
+}
+
+
+.result-line span:first-child{
+
+    color:#8490a2;
+
+    font-size:10px;
+
+}
+
+
+.result-line span:last-child{
+
+    font-size:10px;
+
+    font-weight:750;
+
+}
+
+
+/* =========================================================
+   FIX PANEL
+========================================================= */
+
+.fix-panel{
+
+    display:none;
+
+    margin-top:12px;
+
+    padding:15px;
+
+    border-radius:16px;
+
+    background:
+        rgba(255,198,75,.045);
+
+    border:
+        1px solid
+        rgba(255,198,75,.11);
+
+}
+
+
+.fix-panel.show{
+
+    display:block;
+
+}
+
+
+.fix-title{
+
+    font-size:12px;
+
+    font-weight:750;
+
+    color:#f4f6fa;
+
+}
+
+
+.fix-text{
+
+    margin-top:7px;
+
+    color:#8995a8;
+
+    font-size:10.5px;
+
+    line-height:1.65;
+
+}
+
+
+.fix-steps{
+
+    margin-top:10px;
+
+    display:grid;
+
+    gap:6px;
+
+}
+
+
+.fix-step{
+
+    padding:9px 10px;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color:#a5afbf;
+
+    font-size:10px;
+
+    line-height:1.5;
+
+}
+
+
+.fix-step b{
+
+    color:#e7edf5;
+
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions{
+
+    display:grid;
+
+    gap:10px;
+
+    margin-top:14px;
+
+}
+
+
+button.action{
+
+    width:100%;
+
+    min-height:53px;
+
+    border-radius:17px;
+
+    border:none;
+
+    font-size:13px;
+
+    font-weight:750;
+
+    cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .2s ease;
+
+}
+
+
+button.action:active{
+
+    transform:scale(.985);
+
+}
+
+
+button.action:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+}
+
+
+.fix-button{
+
+    color:#03120d;
+
+    background:
+        linear-gradient(
+            135deg,
+            #39df9f,
+            #58e5b5
+        );
+
+    box-shadow:
+        0 13px 32px
+        rgba(50,222,158,.13);
+
+}
+
+
+.check-again{
+
+    color:#e8edf6;
+
+    background:
+        rgba(255,255,255,.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,.07) !important;
+
+}
+
+
+.continue-button{
+
+    color:#03120d;
+
+    background:
+        linear-gradient(
+            135deg,
+            #39df9f,
+            #58e5b5
+        );
+
+}
+
+
+.cancel-button{
+
+    min-height:45px !important;
+
+    color:#8490a4;
+
+    background:transparent;
+
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.info-card{
+
+    margin-top:14px;
+
+    padding:17px;
+
+    border-radius:20px;
+
+    background:
+        rgba(13,23,38,.72);
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+}
+
+
+.info-title{
+
+    font-size:12px;
+
+    font-weight:750;
+
+}
+
+
+.info-text{
+
+    margin-top:7px;
+
+    color:#7f8ba0;
+
+    font-size:10.5px;
+
+    line-height:1.65;
+
+}
+
+
+.info-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:8px;
+
+    margin-top:13px;
+
+}
+
+
+.info-item{
+
+    padding:11px;
+
+    border-radius:13px;
+
+    background:
+        rgba(255,255,255,.025);
+
+}
+
+
+.info-item strong{
+
+    display:block;
+
+    font-size:10px;
+
+}
+
+
+.info-item span{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#748196;
+
+    font-size:9px;
+
+    line-height:1.45;
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:20px;
+
+    z-index:999;
+
+    width:
+        calc(100% - 36px);
+
+    max-width:500px;
+
+    padding:13px 15px;
+
+    border-radius:14px;
+
+    background:
+        rgba(19,28,43,.97);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    box-shadow:
+        0 18px 50px
+        rgba(0,0,0,.35);
+
+    color:#e9eef6;
+
+    font-size:11px;
+
+    text-align:center;
+
+    transform:
+        translate(-50%,20px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:
+        .25s ease;
+
+}
+
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    padding:
+        23px
+        0
+        4px;
+
+    text-align:center;
+
+    color:#4f5c70;
+
+    font-size:9px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <button
+            type="button"
+            class="back-button"
+            id="backButton">
+
+            ‹
+
+        </button>
+
+
+        <div class="top-title">
+
+            <strong>
+                TaskEarn Network Check
+            </strong>
+
+            <span>
+                Security & connectivity verification
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-icon">
+
+            <div class="hero-icon-inner"></div>
+
+        </div>
+
+
+        <h1>
+            Check your connection
+        </h1>
+
+
+        <p>
+            TaskEarn checks your internet, DNS,
+            advertising resources and supported
+            Android network signals before continuing.
+        </p>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CHECK CARD
+    ====================================================== -->
+
+    <section class="check-card">
+
+
+        <div class="status-head">
+
+            <div>
+
+                <div class="status-label">
+                    Network status
+                </div>
+
+                <div
+                    class="status-title"
+                    id="mainTitle">
+
+                    Preparing checks…
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="progress-value"
+                id="progressValue">
+
+                0%
+
+            </div>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                id="progressBar">
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CHECK LIST
+        ================================================== -->
+
+        <div class="check-list">
+
+
+            <!-- INTERNET -->
+
+            <div
+                class="check-row"
+                id="internetRow">
+
+                <div
+                    class="check-icon"
+                    id="internetIcon">
+
+                    1
+
+                </div>
+
+
+                <div class="check-info">
+
+                    <div class="check-name">
+                        Internet connection
+                    </div>
+
+                    <div
+                        class="check-detail"
+                        id="internetDetail">
+
+                        Waiting for test…
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="check-state"
+                    id="internetState">
+
+                    Waiting
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DNS -->
+
+            <div
+                class="check-row"
+                id="dnsRow">
+
+                <div
+                    class="check-icon"
+                    id="dnsIcon">
+
+                    2
+
+                </div>
+
+
+                <div class="check-info">
+
+                    <div class="check-name">
+                        DNS resolution
+                    </div>
+
+                    <div
+                        class="check-detail"
+                        id="dnsDetail">
+
+                        Waiting for test…
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="check-state"
+                    id="dnsState">
+
+                    Waiting
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AD BLOCK -->
+
+            <div
+                class="check-row"
+                id="adRow">
+
+                <div
+                    class="check-icon"
+                    id="adIcon">
+
+                    3
+
+                </div>
+
+
+                <div class="check-info">
+
+                    <div class="check-name">
+                        Ad filtering
+                    </div>
+
+                    <div
+                        class="check-detail"
+                        id="adDetail">
+
+                        Waiting for test…
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="check-state"
+                    id="adState">
+
+                    Waiting
+
+                </div>
+
+            </div>
+
+
+
+            <!-- VPN / PRIVATE DNS -->
+
+            <div
+                class="check-row"
+                id="securityRow">
+
+                <div
+                    class="check-icon"
+                    id="securityIcon">
+
+                    4
+
+                </div>
+
+
+                <div class="check-info">
+
+                    <div class="check-name">
+                        VPN / Private DNS
+                    </div>
+
+                    <div
+                        class="check-detail"
+                        id="securityDetail">
+
+                        Waiting for test…
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="check-state"
+                    id="securityState">
+
+                    Waiting
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             RESULT
+        ================================================== -->
+
+        <div
+            class="result-box"
+            id="resultBox">
+
+
+            <div class="result-header">
+
+                <div
+                    class="result-icon"
+                    id="resultIcon">
+
+                    ✓
+
+                </div>
+
+
+                <div>
+
+                    <div
+                        class="result-title"
+                        id="resultTitle">
+
+                        Check complete
+
+                    </div>
+
+
+                    <div
+                        class="result-text"
+                        id="resultText">
+
+                        Network verification completed.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="result-list">
+
+
+                <div class="result-line">
+
+                    <span>
+                        Internet
+                    </span>
+
+                    <span id="resultInternet">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="result-line">
+
+                    <span>
+                        DNS
+                    </span>
+
+                    <span id="resultDns">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="result-line">
+
+                    <span>
+                        Ad blocker
+                    </span>
+
+                    <span id="resultAdBlock">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="result-line">
+
+                    <span>
+                        VPN
+                    </span>
+
+                    <span id="resultVpn">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="result-line">
+
+                    <span>
+                        Private DNS
+                    </span>
+
+                    <span id="resultPrivateDns">
+                        —
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- FIX INSTRUCTIONS -->
+
+            <div
+                class="fix-panel"
+                id="fixPanel">
+
+                <div class="fix-title">
+                    Fix your network
+                </div>
+
+                <div class="fix-text">
+                    TaskEarn could not open Android settings
+                    automatically in this WebView. Follow the
+                    steps below.
+                </div>
+
+
+                <div class="fix-steps">
+
+                    <div class="fix-step">
+                        <b>1.</b>
+                        Open your phone's
+                        <b>Settings</b>.
+                    </div>
+
+                    <div class="fix-step">
+                        <b>2.</b>
+                        Open
+                        <b>Network & Internet</b>
+                        and check VPN.
+                    </div>
+
+                    <div class="fix-step">
+                        <b>3.</b>
+                        Disable any active VPN if TaskEarn
+                        requires a direct connection.
+                    </div>
+
+                    <div class="fix-step">
+                        <b>4.</b>
+                        Open
+                        <b>Private DNS</b>
+                        and use
+                        <b>Automatic</b>
+                        if required.
+                    </div>
+
+                    <div class="fix-step">
+                        <b>5.</b>
+                        Disable system-wide ad blockers,
+                        DNS filtering or firewall apps.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ACTIONS
+    ====================================================== -->
+
+    <div class="actions">
+
+
+        <button
+            type="button"
+            class="action fix-button"
+            id="fixNetworkButton"
+            style="display:none;">
+
+            Fix Network
+
+        </button>
+
+
+        <button
+            type="button"
+            class="action check-again"
+            id="checkAgainButton">
+
+            Check Again
+
+        </button>
+
+
+        <button
+            type="button"
+            class="action continue-button"
+            id="continueButton"
+            disabled>
+
+            Continue to TaskEarn
+
+        </button>
+
+
+        <button
+            type="button"
+            class="action cancel-button"
+            id="cancelButton">
+
+            Cancel
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         INFO
+    ====================================================== -->
+
+    <section class="info-card">
+
+
+        <div class="info-title">
+            Why are these checks required?
+        </div>
+
+
+        <div class="info-text">
+
+            Some network configurations can prevent
+            advertising and required TaskEarn services
+            from loading. TaskEarn checks several
+            independent signals instead of relying on
+            one request.
+
+        </div>
+
+
+        <div class="info-grid">
+
+
+            <div class="info-item">
+
+                <strong>
+                    Ad filtering
+                </strong>
+
+                <span>
+                    Multiple advertising resources and
+                    browser bait checks are tested.
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <strong>
+                    VPN
+                </strong>
+
+                <span>
+                    Actual Android VPN status is used
+                    when the native APK bridge exists.
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <strong>
+                    Private DNS
+                </strong>
+
+                <span>
+                    Android native status is preferred
+                    over unreliable browser guesses.
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <strong>
+                    Safe detection
+                </strong>
+
+                <span>
+                    Unknown conditions are not falsely
+                    reported as confirmed VPN or blocker.
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <div class="footer">
+
+        TaskEarn Network Security • Connection verification
+
+    </div>
+
+
+</div>
+
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const CONFIG = {
+
+    timeout:3500,
+
+    nativeTimeout:2200,
+
+    internetUrls:[
+        "https://www.gstatic.com/generate_204",
+        "https://www.google.com/generate_204"
+    ],
+
+    dnsUrls:[
+        "https://www.cloudflare.com/cdn-cgi/trace",
+        "https://1.1.1.1/cdn-cgi/trace"
+    ],
+
+    adScripts:[
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+        "https://securepubads.g.doubleclick.net/tag/js/gpt.js",
+        "https://www.googletagservices.com/tag/js/gpt.js"
+    ],
+
+    adImages:[
+        "https://pagead2.googlesyndication.com/pagead/imgad?id=123"
+    ],
+
+    continuePage:"home.html"
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let isRunning=false;
+
+let result={
+
+    internet:false,
+
+    dns:false,
+
+    adBlock:null,
+
+    vpn:null,
+
+    privateDns:null
+
+};
+
+
+/* =========================================================
+   ELEMENT
+========================================================= */
+
+const $ = id =>
+    document.getElementById(id);
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function toast(message){
+
+    const element=$("toast");
+
+    if(!element)return;
+
+    element.textContent=message;
+
+    element.classList.add("show");
+
+    clearTimeout(
+        window.__taskEarnToast
+    );
+
+    window.__taskEarnToast=
+        setTimeout(
+            ()=>{
+                element.classList.remove("show");
+            },
+            2800
+        );
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function progress(value,title){
+
+    value=Math.max(
+        0,
+        Math.min(
+            100,
+            Number(value)||0
+        )
+    );
+
+    $("progressBar").style.width=
+        value+"%";
+
+    $("progressValue").textContent=
+        Math.round(value)+"%";
+
+    if(title){
+
+        $("mainTitle").textContent=
+            title;
+
+    }
+
+}
+
+
+/* =========================================================
+   CHECK ROW
+========================================================= */
+
+function row(
+    id,
+    state,
+    detail,
+    type,
+    icon
+){
+
+    const element=$(id);
+
+    if(!element)return;
+
+    element.classList.remove(
+        "active",
+        "success",
+        "danger"
+    );
+
+    if(type){
+        element.classList.add(type);
+    }
+
+    const stateElement=
+        element.querySelector(
+            ".check-state"
+        );
+
+    const detailElement=
+        element.querySelector(
+            ".check-detail"
+        );
+
+    const iconElement=
+        element.querySelector(
+            ".check-icon"
+        );
+
+    if(stateElement)
+        stateElement.textContent=state;
+
+    if(detailElement)
+        detailElement.textContent=detail;
+
+    if(iconElement && icon)
+        iconElement.textContent=icon;
+
+}
+
+
+/* =========================================================
+   FETCH TIMEOUT
+========================================================= */
+
+async function fetchWithTimeout(
+    url,
+    options={}
+){
+
+    const controller=
+        new AbortController();
+
+    const timer=
+        setTimeout(
+            ()=>{
+                controller.abort();
+            },
+            CONFIG.timeout
+        );
+
+    try{
+
+        return await fetch(
+            url,
+            {
+                ...options,
+                signal:controller.signal,
+                cache:"no-store"
+            }
+        );
+
+    }finally{
+
+        clearTimeout(timer);
+
+    }
+
+}
+
+
+/* =========================================================
+   INTERNET CHECK
+========================================================= */
+
+async function checkInternet(){
+
+    row(
+        "internetRow",
+        "Checking",
+        "Testing internet connectivity…",
+        "active",
+        "…"
+    );
+
+
+    for(
+        const url of CONFIG.internetUrls
+    ){
+
+        try{
+
+            await fetchWithTimeout(
+                url,
+                {
+                    method:"GET",
+                    mode:"no-cors"
+                }
+            );
+
+            return true;
+
+        }catch(error){
+
+            console.log(
+                "Internet probe failed:",
+                error
+            );
+
+        }
+
+    }
+
+    return false;
+
+}
+
+
+/* =========================================================
+   DNS CHECK
+========================================================= */
+
+async function checkDns(){
+
+    row(
+        "dnsRow",
+        "Checking",
+        "Testing DNS resolution…",
+        "active",
+        "…"
+    );
+
+
+    for(
+        const url of CONFIG.dnsUrls
+    ){
+
+        try{
+
+            const response=
+                await fetchWithTimeout(
+                    url,
+                    {
+                        method:"GET",
+                        mode:"no-cors"
+                    }
+                );
+
+            if(response){
+
+                return true;
+
+            }
+
+        }catch(error){
+
+            console.log(
+                "DNS probe failed:",
+                error
+            );
+
+        }
+
+    }
+
+    return false;
+
+}
+
+
+/* =========================================================
+   SCRIPT TEST
+========================================================= */
+
+function testScript(url){
+
+    return new Promise(
+        resolve=>{
+
+            let finished=false;
+
+            const script=
+                document.createElement(
+                    "script"
+                );
+
+            const finish=
+                value=>{
+
+                    if(finished)return;
+
+                    finished=true;
+
+                    clearTimeout(timer);
+
+                    try{
+                        script.remove();
+                    }catch(e){}
+
+                    resolve(value);
+
+                };
+
+
+            const timer=
+                setTimeout(
+                    ()=>{
+                        finish(false);
+                    },
+                    CONFIG.timeout
+                );
+
+
+            script.async=true;
+
+            script.src=
+                url+
+                (
+                    url.includes("?")
+                    ?"&"
+                    :"?"
+                )+
+                "_te="+Date.now();
+
+
+            script.onload=
+                ()=>{
+                    finish(true);
+                };
+
+
+            script.onerror=
+                ()=>{
+                    finish(false);
+                };
+
+
+            document.head.appendChild(
+                script
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   IMAGE TEST
+========================================================= */
+
+function testImage(url){
+
+    return new Promise(
+        resolve=>{
+
+            let finished=false;
+
+            const image=
+                new Image();
+
+
+            const finish=
+                value=>{
+
+                    if(finished)return;
+
+                    finished=true;
+
+                    clearTimeout(timer);
+
+                    image.onload=null;
+                    image.onerror=null;
+
+                    resolve(value);
+
+                };
+
+
+            const timer=
+                setTimeout(
+                    ()=>{
+                        finish(false);
+                    },
+                    CONFIG.timeout
+                );
+
+
+            image.onload=
+                ()=>{
+                    finish(true);
+                };
+
+
+            image.onerror=
+                ()=>{
+                    finish(false);
+                };
+
+
+            image.src=
+                url+
+                (
+                    url.includes("?")
+                    ?"&"
+                    :"?"
+                )+
+                "_te="+Date.now();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   AD BAIT
+========================================================= */
+
+function checkBait(){
+
+    /*
+      Hidden ad bait is a supporting signal only.
+      It must NOT be used alone to block the user.
+    */
+
+    const bait=
+        document.createElement(
+            "div"
+        );
+
+    bait.className=
+        "adsbox ad adsbygoogle ad-banner";
+
+    bait.style.position=
+        "absolute";
+
+    bait.style.left=
+        "-10000px";
+
+    bait.style.width=
+        "1px";
+
+    bait.style.height=
+        "1px";
+
+    document.body.appendChild(
+        bait
+    );
+
+
+    const style=
+        window.getComputedStyle(
+            bait
+        );
+
+    const rect=
+        bait.getBoundingClientRect();
+
+
+    const hidden=
+        style.display==="none" ||
+        style.visibility==="hidden" ||
+        Number(style.opacity)===0 ||
+        rect.width===0 ||
+        rect.height===0;
+
+
+    setTimeout(
+        ()=>{
+            try{
+                bait.remove();
+            }catch(e){}
+        },
+        100
+    );
+
+
+    return hidden;
+
+}
+
+
+/* =========================================================
+   AD BLOCK DETECTION
+========================================================= */
+
+async function checkAdBlock(){
+
+    row(
+        "adRow",
+        "Checking",
+        "Testing multiple advertising resources…",
+        "active",
+        "…"
+    );
+
+
+    const baitBlocked=
+        checkBait();
+
+
+    const scriptResults=[];
+
+
+    for(
+        const url of CONFIG.adScripts
+    ){
+
+        try{
+
+            const ok=
+                await testScript(url);
+
+            scriptResults.push(ok);
+
+        }catch(error){
+
+            scriptResults.push(false);
+
+        }
+
+    }
+
+
+    const imageResults=[];
+
+
+    for(
+        const url of CONFIG.adImages
+    ){
+
+        try{
+
+            const ok=
+                await testImage(url);
+
+            imageResults.push(ok);
+
+        }catch(error){
+
+            imageResults.push(false);
+
+        }
+
+    }
+
+
+    const allResults=
+        [
+            ...scriptResults,
+            ...imageResults
+        ];
+
+
+    const successCount=
+        allResults.filter(
+            value=>value===true
+        ).length;
+
+
+    const failCount=
+        allResults.filter(
+            value=>value===false
+        ).length;
+
+
+    /*
+      CONFIRMED:
+      All independent advertising resources fail
+      OR strong bait + resource failures.
+    */
+
+    if(
+        successCount===0 &&
+        failCount>=3
+    ){
+
+        return {
+            value:true,
+            confidence:"high"
+        };
+
+    }
+
+
+    if(
+        baitBlocked &&
+        failCount>=2 &&
+        successCount===0
+    ){
+
+        return {
+            value:true,
+            confidence:"high"
+        };
+
+    }
+
+
+    /*
+      Mixed results:
+      possible filtering.
+    */
+
+    if(
+        successCount>0 &&
+        failCount>0
+    ){
+
+        return {
+            value:"possible",
+            confidence:"low"
+        };
+
+    }
+
+
+    /*
+      All resources reachable.
+    */
+
+    return {
+        value:false,
+        confidence:"medium"
+    };
+
+}
+
+
+/* =========================================================
+   NATIVE CALL
+========================================================= */
+
+function nativeCall(
+    bridgeName,
+    methodName
+){
+
+    return new Promise(
+        resolve=>{
+
+            let completed=false;
+
+
+            const finish=
+                value=>{
+
+                    if(completed)return;
+
+                    completed=true;
+
+                    clearTimeout(timer);
+
+                    resolve(value);
+
+                };
+
+
+            const timer=
+                setTimeout(
+                    ()=>{
+                        finish(null);
+                    },
+                    CONFIG.nativeTimeout
+                );
+
+
+            try{
+
+                const bridge=
+                    window[bridgeName];
+
+
+                if(
+                    !bridge ||
+                    typeof bridge[methodName]!=="function"
+                ){
+
+                    finish(null);
+
+                    return;
+
+                }
+
+
+                const response=
+                    bridge[methodName]();
+
+
+                if(
+                    response &&
+                    typeof response.then==="function"
+                ){
+
+                    response
+                        .then(
+                            value=>{
+                                finish(value);
+                            }
+                        )
+                        .catch(
+                            ()=>{
+                                finish(null);
+                            }
+                        );
+
+                    return;
+
+                }
+
+
+                finish(response);
+
+            }catch(error){
+
+                console.log(
+                    "Native method unavailable:",
+                    bridgeName,
+                    methodName
+                );
+
+                finish(null);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   NORMALIZE
+========================================================= */
+
+function normalize(value){
+
+    if(
+        typeof value==="boolean"
+    ){
+
+        return value;
+
+    }
+
+
+    if(
+        typeof value==="number"
+    ){
+
+        if(value===1)return true;
+
+        if(value===0)return false;
+
+    }
+
+
+    if(
+        typeof value==="string"
+    ){
+
+        const v=
+            value
+                .trim()
+                .toLowerCase();
+
+
+        if(
+            [
+                "true",
+                "1",
+                "yes",
+                "on",
+                "active",
+                "connected",
+                "enabled"
+            ].includes(v)
+        ){
+
+            return true;
+
+        }
+
+
+        if(
+            [
+                "false",
+                "0",
+                "no",
+                "off",
+                "inactive",
+                "disconnected",
+                "disabled"
+            ].includes(v)
+        ){
+
+            return false;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   NATIVE NETWORK STATUS
+========================================================= */
+
+async function nativeNetworkStatus(){
+
+    const bridges=[
+        "AndroidAds",
+        "TaskEarnAds"
+    ];
+
+
+    let vpn=null;
+
+    let privateDns=null;
+
+
+    for(
+        const bridgeName of bridges
+    ){
+
+        if(
+            !window[bridgeName]
+        ){
+
+            continue;
+
+        }
+
+
+        if(
+            vpn===null
+        ){
+
+            vpn=
+                normalize(
+                    await nativeCall(
+                        bridgeName,
+                        "getVpnStatus"
+                    )
+                );
+
+        }
+
+
+        if(
+            privateDns===null
+        ){
+
+            privateDns=
+                normalize(
+                    await nativeCall(
+                        bridgeName,
+                        "getPrivateDnsStatus"
+                    )
+                );
+
+        }
+
+    }
+
+
+    /*
+      Optional combined method.
+    */
+
+    if(
+        vpn===null ||
+        privateDns===null
+    ){
+
+        for(
+            const bridgeName of bridges
+        ){
+
+            if(
+                !window[bridgeName]
+            ){
+
+                continue;
+
+            }
+
+
+            try{
+
+                if(
+                    typeof window[bridgeName]
+                        .getNetworkSecurityStatus
+                    ==="function"
+                ){
+
+                    const data=
+                        await nativeCall(
+                            bridgeName,
+                            "getNetworkSecurityStatus"
+                        );
+
+
+                    if(
+                        data &&
+                        typeof data==="object"
+                    ){
+
+                        if(
+                            vpn===null &&
+                            data.vpn!==undefined
+                        ){
+
+                            vpn=
+                                normalize(
+                                    data.vpn
+                                );
+
+                        }
+
+
+                        if(
+                            privateDns===null &&
+                            data.privateDns!==undefined
+                        ){
+
+                            privateDns=
+                                normalize(
+                                    data.privateDns
+                                );
+
+                        }
+
+                    }
+
+                }
+
+            }catch(error){}
+
+        }
+
+    }
+
+
+    return {
+        vpn,
+        privateDns
+    };
+
+}
+
+
+/* =========================================================
+   FIX NETWORK — NATIVE FIRST
+========================================================= */
+
+async function fixNetwork(){
+
+    /*
+      VERY IMPORTANT:
+      NEVER use:
+
+      window.location.href =
+      "intent:#Intent;..."
+
+      inside WebView.
+
+      That caused:
+      ERR_UNKNOWN_URL_SCHEME
+    */
+
+
+    try{
+
+        if(
+            window.AndroidAds &&
+            typeof
+                window.AndroidAds.openNetworkSettings
+            ==="function"
+        ){
+
+            window.AndroidAds.openNetworkSettings();
+
+            toast(
+                "Opening Android network settings…"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            window.TaskEarnAds &&
+            typeof
+                window.TaskEarnAds.openNetworkSettings
+            ==="function"
+        ){
+
+            window.TaskEarnAds.openNetworkSettings();
+
+            toast(
+                "Opening Android network settings…"
+            );
+
+            return;
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "Native settings error:",
+            error
+        );
+
+    }
+
+
+    /*
+      NO intent:// FALLBACK.
+      Show safe instructions instead.
+    */
+
+    $("fixPanel")
+        .classList.add("show");
+
+
+    $("fixNetworkButton")
+        .style.display="none";
+
+
+    toast(
+        "Please check your network settings manually."
+    );
+
+}
+
+
+/* =========================================================
+   RESULT VALUE
+========================================================= */
+
+function valueText(value){
+
+    if(value===true){
+
+        return "Detected";
+
+    }
+
+    if(value===false){
+
+        return "Not detected";
+
+    }
+
+    if(value==="possible"){
+
+        return "Possible";
+
+    }
+
+    return "Unable to verify";
+
+}
+
+
+/* =========================================================
+   SHOW RESULT
+========================================================= */
+
+function showResult(){
+
+    const box=
+        $("resultBox");
+
+
+    box.classList.add(
+        "show"
+    );
+
+
+    $("resultInternet")
+        .textContent=
+        valueText(
+            result.internet
+        );
+
+
+    $("resultDns")
+        .textContent=
+        valueText(
+            result.dns
+        );
+
+
+    $("resultAdBlock")
+        .textContent=
+        valueText(
+            result.adBlock
+        );
+
+
+    $("resultVpn")
+        .textContent=
+        valueText(
+            result.vpn
+        );
+
+
+    $("resultPrivateDns")
+        .textContent=
+        valueText(
+            result.privateDns
+        );
+
+
+    const icon=
+        $("resultIcon");
+
+    const title=
+        $("resultTitle");
+
+    const text=
+        $("resultText");
+
+
+    icon.className=
+        "result-icon";
+
+
+    $("fixNetworkButton")
+        .style.display="none";
+
+
+    $("fixPanel")
+        .classList.remove(
+            "show"
+        );
+
+
+    /*
+      INTERNET
+    */
+
+    if(
+        !result.internet
+    ){
+
+        icon.textContent="×";
+
+        icon.classList.add(
+            "danger"
+        );
+
+        title.textContent=
+            "Connection unavailable";
+
+        text.textContent=
+            "TaskEarn could not establish the required internet connection. Check your mobile data or Wi-Fi and try again.";
+
+        $("fixNetworkButton")
+            .style.display="block";
+
+        return;
+
+    }
+
+
+    /*
+      DNS
+    */
+
+    if(
+        !result.dns
+    ){
+
+        icon.textContent="!";
+
+        icon.classList.add(
+            "warning"
+        );
+
+        title.textContent=
+            "DNS resolution failed";
+
+        text.textContent=
+            "DNS requests could not be verified. A DNS filter, Private DNS configuration or network restriction may be affecting the connection.";
+
+        $("fixNetworkButton")
+            .style.display="block";
+
+        return;
+
+    }
+
+
+    /*
+      AD BLOCK
+    */
+
+    if(
+        result.adBlock===true
+    ){
+
+        icon.textContent="!";
+
+        icon.classList.add(
+            "danger"
+        );
+
+        title.textContent=
+            "Network filtering detected";
+
+        text.textContent=
+            "Advertising resources appear to be blocked. An ad blocker, DNS filter, carrier filter or similar network configuration may be affecting required requests.";
+
+        $("fixNetworkButton")
+            .style.display="block";
+
+        return;
+
+    }
+
+
+    /*
+      POSSIBLE FILTER
+    */
+
+    if(
+        result.adBlock==="possible"
+    ){
+
+        icon.textContent="?";
+
+        icon.classList.add(
+            "warning"
+        );
+
+        title.textContent=
+            "Possible network filtering";
+
+        text.textContent=
+            "Some advertising resources were blocked while others were reachable. This can happen because of an ad blocker, DNS filter, firewall or network policy.";
+
+        $("fixNetworkButton")
+            .style.display="block";
+
+        return;
+
+    }
+
+
+    /*
+      CONFIRMED VPN
+    */
+
+    if(
+        result.vpn===true
+    ){
+
+        icon.textContent="!";
+
+        icon.classList.add(
+            "warning"
+        );
+
+        title.textContent=
+            "VPN detected";
+
+        text.textContent=
+            "The Android network bridge reported an active VPN. Disable the VPN and run the check again if TaskEarn requires a direct network.";
+
+        $("fixNetworkButton")
+            .style.display="block";
+
+        return;
+
+    }
+
+
+    /*
+      PRIVATE DNS
+    */
+
+    if(
+        result.privateDns===true
+    ){
+
+        icon.textContent="!";
+
+        icon.classList.add(
+            "warning"
+        );
+
+        title.textContent=
+            "Private DNS detected";
+
+        text.textContent=
+            "Android reported that Private DNS is active. Depending on the DNS provider, advertising resources may be filtered.";
+
+        $("fixNetworkButton")
+            .style.display="block";
+
+        return;
+
+    }
+
+
+    /*
+      PASSED
+    */
+
+    icon.textContent="✓";
+
+    title.textContent=
+        "Network check passed";
+
+    if(
+        result.vpn===null &&
+        result.privateDns===null
+    ){
+
+        text.textContent=
+            "Internet, DNS and advertising resources are reachable. No ad blocker was detected. Android VPN and Private DNS status could not be verified in this WebView.";
+
+    }else{
+
+        text.textContent=
+            "Internet, DNS and advertising resources are reachable. No blocking network condition was detected.";
+
+    }
+
+}
+
+
+/* =========================================================
+   FINISH CHECK ROWS
+========================================================= */
+
+function finishRows(){
+
+    /*
+      INTERNET
+    */
+
+    if(
+        result.internet
+    ){
+
+        row(
+            "internetRow",
+            "Passed",
+            "Internet connection is available.",
+            "success",
+            "✓"
+        );
+
+    }else{
+
+        row(
+            "internetRow",
+            "Failed",
+            "Internet connection could not be verified.",
+            "danger",
+            "×"
+        );
+
+    }
+
+
+    /*
+      DNS
+    */
+
+    if(
+        result.dns
+    ){
+
+        row(
+            "dnsRow",
+            "Passed",
+            "DNS resolution is working.",
+            "success",
+            "✓"
+        );
+
+    }else{
+
+        row(
+            "dnsRow",
+            "Failed",
+            "DNS resolution could not be verified.",
+            "danger",
+            "×"
+        );
+
+    }
+
+
+    /*
+      AD
+    */
+
+    if(
+        result.adBlock===true
+    ){
+
+        row(
+            "adRow",
+            "Detected",
+            "Advertising resources appear to be blocked.",
+            "danger",
+            "!"
+        );
+
+    }else if(
+        result.adBlock==="possible"
+    ){
+
+        row(
+            "adRow",
+            "Possible",
+            "Some advertising resources were blocked.",
+            "danger",
+            "!"
+        );
+
+    }else{
+
+        row(
+            "adRow",
+            "Passed",
+            "Advertising resources were reachable.",
+            "success",
+            "✓"
+        );
+
+    }
+
+
+    /*
+      VPN / PRIVATE DNS
+    */
+
+    if(
+        result.vpn===true
+    ){
+
+        row(
+            "securityRow",
+            "VPN detected",
+            "Android reported an active VPN.",
+            "danger",
+            "!"
+        );
+
+    }else if(
+        result.privateDns===true
+    ){
+
+        row(
+            "securityRow",
+            "Private DNS",
+            "Android reported Private DNS as active.",
+            "danger",
+            "!"
+        );
+
+    }else if(
+        result.vpn==="possible"
+    ){
+
+        row(
+            "securityRow",
+            "Possible",
+            "VPN could not be confirmed without native Android status.",
+            "active",
+            "?"
+        );
+
+    }else{
+
+        row(
+            "securityRow",
+            "Checked",
+            "No confirmed VPN or Private DNS signal was reported.",
+            "success",
+            "✓"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RUN
+========================================================= */
+
+async function runChecks(){
+
+    if(isRunning)return;
+
+    isRunning=true;
+
+
+    $("checkAgainButton")
+        .disabled=true;
+
+    $("continueButton")
+        .disabled=true;
+
+    $("fixNetworkButton")
+        .style.display="none";
+
+    $("fixPanel")
+        .classList.remove(
+            "show"
+        );
+
+    $("resultBox")
+        .classList.remove(
+            "show"
+        );
+
+
+    result={
+
+        internet:false,
+
+        dns:false,
+
+        adBlock:null,
+
+        vpn:null,
+
+        privateDns:null
+
+    };
+
+
+    progress(
+        0,
+        "Starting network checks…"
+    );
+
+
+    /* =====================================================
+       1 — INTERNET
+    ====================================================== */
+
+    result.internet=
+        await checkInternet();
+
+
+    progress(
+        22,
+        "Checking DNS resolution…"
+    );
+
+
+    /* =====================================================
+       2 — DNS
+    ====================================================== */
+
+    result.dns=
+        await checkDns();
+
+
+    progress(
+        47,
+        "Checking ad filtering…"
+    );
+
+
+    /* =====================================================
+       3 — AD BLOCK
+    ====================================================== */
+
+    const adResult=
+        await checkAdBlock();
+
+
+    result.adBlock=
+        adResult.value;
+
+
+    progress(
+        73,
+        "Checking VPN and Private DNS…"
+    );
+
+
+    /* =====================================================
+       4 — NATIVE NETWORK
+    ====================================================== */
+
+    const network=
+        await nativeNetworkStatus();
+
+
+    result.vpn=
+        network.vpn;
+
+    result.privateDns=
+        network.privateDns;
+
+
+    progress(
+        100,
+        "Network check complete"
+    );
+
+
+    finishRows();
+
+    showResult();
+
+
+    /*
+      Continue is allowed only when there is:
+      - internet
+      - DNS
+      - no confirmed ad blocker
+      - no confirmed VPN
+      - no confirmed Private DNS
+    */
+
+    const canContinue=
+        result.internet===true &&
+        result.dns===true &&
+        result.adBlock===false &&
+        result.vpn!==true &&
+        result.privateDns!==true;
+
+
+    $("continueButton")
+        .disabled=
+        !canContinue;
+
+
+    if(canContinue){
+
+        $("continueButton")
+            .textContent=
+            "Continue to TaskEarn";
+
+    }else{
+
+        $("continueButton")
+            .textContent=
+            "Fix Network to Continue";
+
+    }
+
+
+    $("checkAgainButton")
+        .disabled=false;
+
+
+    isRunning=false;
+
+}
+
+
+/* =========================================================
+   CONTINUE
+========================================================= */
+
+function continueToTaskEarn(){
+
+    if(
+        $("continueButton").disabled
+    ){
+
+        return;
+
+    }
+
+
+    window.location.href=
+        CONFIG.continuePage;
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+function goBack(){
+
+    try{
+
+        if(
+            window.history.length>1
+        ){
+
+            window.history.back();
+
+            return;
+
+        }
+
+    }catch(error){}
+
+
+    window.location.href=
+        CONFIG.continuePage;
+
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+function cancelCheck(){
+
+    try{
+
+        if(
+            window.history.length>1
+        ){
+
+            window.history.back();
+
+            return;
+
+        }
+
+    }catch(error){}
+
+
+    window.location.href=
+        CONFIG.continuePage;
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        $("backButton")
+            .addEventListener(
+                "click",
+                goBack
+            );
+
+
+        $("fixNetworkButton")
+            .addEventListener(
+                "click",
+                fixNetwork
+            );
+
+
+        $("checkAgainButton")
+            .addEventListener(
+                "click",
+                runChecks
+            );
+
+
+        $("continueButton")
+            .addEventListener(
+                "click",
+                continueToTaskEarn
+            );
+
+
+        $("cancelButton")
+            .addEventListener(
+                "click",
+                cancelCheck
+            );
+
+
+        /*
+          Wait for WebView to finish rendering.
+        */
+
+        setTimeout(
+            runChecks,
+            450
+        );
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>

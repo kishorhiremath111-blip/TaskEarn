@@ -1,0 +1,3166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0,user-scalable=no">
+
+<title>Company Project Details</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+    --bg:#07090f;
+    --card:#10131c;
+    --card2:#151925;
+    --line:rgba(255,255,255,.08);
+    --text:#f7f8fc;
+    --muted:#9299aa;
+    --green:#23e58a;
+    --green2:#0fcf78;
+    --blue:#5b8cff;
+    --yellow:#ffc857;
+    --red:#ff5d6c;
+}
+
+body{
+    font-family:Inter,Arial,sans-serif;
+    background:
+      radial-gradient(circle at 20% -10%,rgba(35,229,138,.10),transparent 32%),
+      radial-gradient(circle at 100% 10%,rgba(91,140,255,.10),transparent 30%),
+      var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button,
+input,
+textarea{
+    font:inherit;
+}
+
+button{
+    border:0;
+    cursor:pointer;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* ---------- APP ---------- */
+
+.app{
+    width:100%;
+    max-width:560px;
+    margin:auto;
+    min-height:100vh;
+    padding-bottom:35px;
+}
+
+/* ---------- TOP BAR ---------- */
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    height:68px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 16px;
+    background:rgba(7,9,15,.88);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--line);
+}
+
+.back-btn{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    background:#121621;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s;
+}
+
+.back-btn:active{
+    transform:scale(.93);
+}
+
+.back-btn svg{
+    width:20px;
+    height:20px;
+    stroke:#fff;
+    fill:none;
+    stroke-width:2;
+}
+
+.top-title{
+    flex:1;
+}
+
+.top-title strong{
+    display:block;
+    font-size:17px;
+    font-weight:800;
+}
+
+.top-title span{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px rgba(35,229,138,.7);
+}
+
+/* ---------- CONTENT ---------- */
+
+.content{
+    padding:18px 16px 30px;
+}
+
+/* ---------- HERO ---------- */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:21px;
+    border-radius:24px;
+    background:
+      linear-gradient(145deg,#171d2a,#0e121b);
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 18px 45px rgba(0,0,0,.28);
+    animation:fadeUp .45s ease both;
+}
+
+.hero:before{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    right:-75px;
+    top:-85px;
+    background:rgba(35,229,138,.10);
+    filter:blur(2px);
+}
+
+.hero-top{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    position:relative;
+}
+
+.project-icon{
+    width:56px;
+    height:56px;
+    border-radius:17px;
+    flex:0 0 56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(145deg,#1c5f47,#10352a);
+    border:1px solid rgba(35,229,138,.22);
+}
+
+.project-icon svg{
+    width:27px;
+    height:27px;
+    stroke:var(--green);
+    fill:none;
+    stroke-width:1.8;
+}
+
+.hero-info{
+    flex:1;
+}
+
+.hero-info .eyebrow{
+    color:var(--green);
+    font-size:10px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:6px;
+}
+
+.hero-info h1{
+    font-size:22px;
+    line-height:1.2;
+    font-weight:850;
+}
+
+.hero-info p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+    margin-top:6px;
+}
+
+.badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:16px;
+}
+
+.badge{
+    padding:7px 10px;
+    border-radius:9px;
+    font-size:10px;
+    font-weight:750;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.035);
+}
+
+.badge.green{
+    color:var(--green);
+    border-color:rgba(35,229,138,.20);
+}
+
+.badge.blue{
+    color:#82a6ff;
+    border-color:rgba(91,140,255,.20);
+}
+
+/* ---------- REWARD ---------- */
+
+.reward-card{
+    margin-top:14px;
+    padding:16px;
+    border-radius:19px;
+    background:linear-gradient(135deg,
+        rgba(35,229,138,.12),
+        rgba(35,229,138,.035));
+    border:1px solid rgba(35,229,138,.16);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.reward-label{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.reward-value{
+    margin-top:4px;
+    font-size:28px;
+    font-weight:900;
+    color:var(--green);
+}
+
+.reward-note{
+    color:#788091;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.reward-right{
+    text-align:right;
+}
+
+.reward-right span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.reward-right strong{
+    display:block;
+    margin-top:4px;
+    font-size:14px;
+}
+
+/* ---------- SECTIONS ---------- */
+
+.section{
+    margin-top:15px;
+    padding:18px;
+    border-radius:21px;
+    background:var(--card);
+    border:1px solid var(--line);
+    animation:fadeUp .45s ease both;
+}
+
+.section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:15px;
+    font-weight:800;
+}
+
+.section-icon{
+    width:31px;
+    height:31px;
+    border-radius:10px;
+    background:#171c28;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.section-icon svg{
+    width:17px;
+    height:17px;
+    stroke:var(--green);
+    fill:none;
+    stroke-width:1.8;
+}
+
+.section-tag{
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* ---------- INFO ROW ---------- */
+
+.info-row{
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.055);
+}
+
+.info-row:last-child{
+    border-bottom:0;
+    padding-bottom:0;
+}
+
+.info-label{
+    color:var(--muted);
+    font-size:10px;
+    margin-bottom:5px;
+}
+
+.info-value{
+    font-size:13px;
+    line-height:1.55;
+    font-weight:600;
+}
+
+/* ---------- QUALIFICATION ---------- */
+
+.qual-box{
+    padding:15px;
+    border-radius:16px;
+    background:#0c1018;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.qual-row{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.qual-row:last-child{
+    border-bottom:0;
+}
+
+.qual-check{
+    width:31px;
+    height:31px;
+    flex:0 0 31px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#151a25;
+    color:#737b8b;
+    font-weight:900;
+    font-size:14px;
+}
+
+.qual-check.done{
+    background:rgba(35,229,138,.12);
+    color:var(--green);
+}
+
+.qual-text{
+    flex:1;
+}
+
+.qual-text strong{
+    display:block;
+    font-size:12px;
+}
+
+.qual-text span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+    line-height:1.45;
+}
+
+/* ---------- STEPS ---------- */
+
+.steps{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.step{
+    display:flex;
+    gap:11px;
+    padding:12px;
+    border-radius:14px;
+    background:#0d1119;
+    border:1px solid rgba(255,255,255,.055);
+}
+
+.step-no{
+    width:29px;
+    height:29px;
+    flex:0 0 29px;
+    border-radius:9px;
+    background:#171d28;
+    color:var(--green);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:900;
+}
+
+.step-text strong{
+    display:block;
+    font-size:12px;
+}
+
+.step-text span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.5;
+    margin-top:3px;
+}
+
+/* ---------- APPLICATION ---------- */
+
+.application{
+    margin-top:15px;
+    padding:19px;
+    border-radius:22px;
+    background:
+      linear-gradient(145deg,#131a19,#0e1319);
+    border:1px solid rgba(35,229,138,.14);
+}
+
+.application-head{
+    display:flex;
+    gap:11px;
+    align-items:center;
+}
+
+.application-icon{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    background:rgba(35,229,138,.10);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.application-icon svg{
+    width:20px;
+    height:20px;
+    stroke:var(--green);
+    fill:none;
+    stroke-width:1.8;
+}
+
+.application-head h2{
+    font-size:16px;
+}
+
+.application-head p{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+}
+
+.notice{
+    margin-top:14px;
+    padding:12px;
+    border-radius:13px;
+    background:rgba(255,200,87,.06);
+    border:1px solid rgba(255,200,87,.13);
+    color:#c7b98f;
+    font-size:10px;
+    line-height:1.55;
+}
+
+/* ---------- TEXTAREA ---------- */
+
+.field{
+    margin-top:15px;
+}
+
+.field label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+textarea{
+    width:100%;
+    min-height:105px;
+    resize:vertical;
+    padding:13px;
+    color:#fff;
+    background:#0a0e15;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    outline:none;
+    font-size:12px;
+    line-height:1.55;
+}
+
+textarea:focus{
+    border-color:rgba(35,229,138,.4);
+}
+
+/* ---------- FILE UPLOAD ---------- */
+
+.upload-box{
+    margin-top:15px;
+}
+
+.upload-label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+.file-input{
+    display:none;
+}
+
+.file-drop{
+    min-height:105px;
+    border-radius:16px;
+    border:1px dashed rgba(255,255,255,.16);
+    background:#0a0e15;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:18px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.file-drop:active{
+    transform:scale(.985);
+}
+
+.file-drop.dragging{
+    border-color:var(--green);
+    background:rgba(35,229,138,.05);
+}
+
+.upload-svg{
+    width:28px;
+    height:28px;
+    margin-bottom:8px;
+    stroke:var(--green);
+    fill:none;
+    stroke-width:1.7;
+}
+
+.file-drop strong{
+    font-size:12px;
+}
+
+.file-drop span{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.4;
+}
+
+.file-list{
+    margin-top:9px;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.file-item{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:9px;
+    border-radius:11px;
+    background:#111621;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.file-mini{
+    width:31px;
+    height:31px;
+    border-radius:9px;
+    background:#181e2a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--green);
+    font-size:10px;
+    font-weight:900;
+}
+
+.file-name{
+    flex:1;
+    min-width:0;
+}
+
+.file-name strong{
+    display:block;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    font-size:10px;
+}
+
+.file-name span{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    margin-top:2px;
+}
+
+.remove-file{
+    width:27px;
+    height:27px;
+    border-radius:8px;
+    background:#1b1318;
+    color:#ff7784;
+    font-size:13px;
+}
+
+/* ---------- SUBMIT ---------- */
+
+.submit-btn{
+    width:100%;
+    height:54px;
+    margin-top:17px;
+    border-radius:16px;
+    color:#04120c;
+    background:linear-gradient(135deg,#34f19a,#18cf7c);
+    font-size:14px;
+    font-weight:900;
+    box-shadow:0 12px 28px rgba(35,229,138,.16);
+    transition:.18s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+}
+
+.submit-btn:active{
+    transform:scale(.97);
+}
+
+.submit-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.submit-btn svg{
+    width:19px;
+    height:19px;
+    stroke:#04120c;
+    fill:none;
+    stroke-width:2;
+}
+
+/* ---------- PROCESSING ---------- */
+
+.processing{
+    display:none;
+    text-align:center;
+}
+
+.processing.show{
+    display:block;
+}
+
+.processing-icon{
+    width:64px;
+    height:64px;
+    margin:3px auto 13px;
+    border-radius:20px;
+    background:rgba(35,229,138,.10);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.processing-icon svg{
+    width:31px;
+    height:31px;
+    stroke:var(--green);
+    fill:none;
+    stroke-width:1.7;
+}
+
+.processing h2{
+    font-size:19px;
+}
+
+.processing p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.55;
+    margin-top:6px;
+}
+
+.timer{
+    margin-top:17px;
+    padding:17px;
+    border-radius:17px;
+    background:#090d14;
+    border:1px solid rgba(255,255,255,.07);
+}
+
+.timer-label{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.timer-value{
+    margin-top:7px;
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.processing-status{
+    margin-top:11px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:7px 10px;
+    border-radius:9px;
+    background:rgba(255,200,87,.08);
+    color:var(--yellow);
+    font-size:10px;
+    font-weight:800;
+}
+
+/* ---------- APPROVED ---------- */
+
+.approved{
+    display:none;
+    text-align:center;
+}
+
+.approved.show{
+    display:block;
+}
+
+.approved-icon{
+    width:67px;
+    height:67px;
+    margin:3px auto 13px;
+    border-radius:21px;
+    background:rgba(35,229,138,.12);
+    color:var(--green);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 0 30px rgba(35,229,138,.10);
+}
+
+.approved-icon svg{
+    width:33px;
+    height:33px;
+    stroke:var(--green);
+    fill:none;
+    stroke-width:2;
+}
+
+.approved h2{
+    font-size:20px;
+}
+
+.approved p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.55;
+    margin-top:6px;
+}
+
+.approved-reward{
+    margin:17px 0;
+    padding:16px;
+    border-radius:16px;
+    background:#0b1210;
+    border:1px solid rgba(35,229,138,.13);
+}
+
+.approved-reward span{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.approved-reward strong{
+    display:block;
+    color:var(--green);
+    font-size:28px;
+    margin-top:4px;
+}
+
+.wallet-btn{
+    width:100%;
+    height:50px;
+    border-radius:15px;
+    background:#171d29;
+    color:#fff;
+    border:1px solid var(--line);
+    font-size:13px;
+    font-weight:800;
+    transition:.18s;
+}
+
+.wallet-btn:active{
+    transform:scale(.97);
+}
+
+/* ---------- REAL PROJECTS ---------- */
+
+.real-projects{
+    margin-top:15px;
+}
+
+.locked-banner{
+    padding:15px;
+    border-radius:16px;
+    background:#0d1119;
+    border:1px solid rgba(255,255,255,.07);
+    display:flex;
+    gap:11px;
+}
+
+.lock-icon{
+    width:35px;
+    height:35px;
+    flex:0 0 35px;
+    border-radius:11px;
+    background:#181d28;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.lock-icon svg{
+    width:18px;
+    height:18px;
+    stroke:#9ba2b1;
+    fill:none;
+    stroke-width:1.8;
+}
+
+.locked-banner strong{
+    display:block;
+    font-size:12px;
+}
+
+.locked-banner span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.5;
+    margin-top:3px;
+}
+
+.project-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    margin-top:11px;
+}
+
+.real-card{
+    padding:13px;
+    border-radius:14px;
+    background:#0d1119;
+    border:1px solid rgba(255,255,255,.06);
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.real-icon{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    background:#171d28;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--green);
+    font-size:14px;
+    font-weight:900;
+}
+
+.real-info{
+    flex:1;
+    min-width:0;
+}
+
+.real-info strong{
+    display:block;
+    font-size:11px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.real-info span{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    margin-top:3px;
+}
+
+.real-reward{
+    color:var(--green);
+    font-size:11px;
+    font-weight:900;
+}
+
+/* ---------- BOTTOM ---------- */
+
+.bottom-space{
+    height:5px;
+}
+
+/* ---------- LOADING ---------- */
+
+.loading{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#07090f;
+}
+
+.loading.hidden{
+    display:none;
+}
+
+.loader{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:3px solid rgba(255,255,255,.09);
+    border-top-color:var(--green);
+    animation:spin .7s linear infinite;
+}
+
+/* ---------- TOAST ---------- */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:22px;
+    z-index:200;
+    width:calc(100% - 32px);
+    max-width:500px;
+    transform:translate(-50%,20px);
+    opacity:0;
+    pointer-events:none;
+    padding:13px 14px;
+    border-radius:13px;
+    background:#171c27;
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 15px 40px rgba(0,0,0,.4);
+    font-size:11px;
+    line-height:1.4;
+    transition:.25s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+/* ---------- ANIMATION ---------- */
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@media(max-width:380px){
+    .content{
+        padding-left:13px;
+        padding-right:13px;
+    }
+
+    .hero-info h1{
+        font-size:20px;
+    }
+
+    .reward-value{
+        font-size:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+    <div class="loader"></div>
+</div>
+
+<div class="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+
+        <button class="back-btn" id="backBtn" aria-label="Back">
+            <svg viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+
+        <div class="top-title">
+            <strong>Company Projects</strong>
+            <span>Company connected work</span>
+        </div>
+
+        <span class="status-dot"></span>
+
+    </header>
+
+
+    <main class="content">
+
+        <!-- HERO -->
+        <section class="hero">
+
+            <div class="hero-top">
+
+                <div class="project-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 7h16v13H4z"/>
+                        <path d="M8 7V4h8v3"/>
+                        <path d="M8 12h8"/>
+                        <path d="M9 16h6"/>
+                    </svg>
+                </div>
+
+                <div class="hero-info">
+                    <div class="eyebrow">Company opportunity</div>
+
+                    <h1 id="projectTitle">
+                        Company Work Qualification
+                    </h1>
+
+                    <p id="projectSubtitle">
+                        Complete the qualification process to become
+                        eligible for company-connected projects.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="badges">
+                <span class="badge green">Company Connected</span>
+                <span class="badge blue">Qualification</span>
+                <span class="badge">15 Day Processing</span>
+            </div>
+
+            <div class="reward-card">
+
+                <div>
+                    <div class="reward-label">
+                        Expected project earning
+                    </div>
+
+                    <div class="reward-value" id="rewardValue">
+                        ₹0
+                    </div>
+
+                    <div class="reward-note">
+                        Final payment depends on assigned work.
+                    </div>
+                </div>
+
+                <div class="reward-right">
+                    <span>Processing</span>
+                    <strong>15 Days</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECT DETAILS -->
+        <section class="section">
+
+            <div class="section-head">
+
+                <div class="section-title">
+
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 4h14v16H5z"/>
+                            <path d="M8 8h8"/>
+                            <path d="M8 12h8"/>
+                            <path d="M8 16h5"/>
+                        </svg>
+                    </div>
+
+                    Project Details
+
+                </div>
+
+                <span class="section-tag">
+                    Overview
+                </span>
+
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">Project</div>
+                <div class="info-value" id="detailName">
+                    Company Work Qualification
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">Work Type</div>
+                <div class="info-value">
+                    Company-connected online work
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">Description</div>
+                <div class="info-value" id="detailDescription">
+                    Submit the required qualification material.
+                    After successful submission, your application
+                    enters the processing period.
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">Processing Rule</div>
+                <div class="info-value">
+                    The qualification application has a fixed
+                    15-day working/processing window.
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- QUALIFICATION -->
+        <section class="section">
+
+            <div class="section-head">
+
+                <div class="section-title">
+
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3l7 3v5c0 4.5-3 7.5-7 10-4-2.5-7-5.5-7-10V6z"/>
+                            <path d="M8.5 12l2.2 2.2 4.8-5"/>
+                        </svg>
+                    </div>
+
+                    Qualification
+
+                </div>
+
+                <span class="section-tag">
+                    Required
+                </span>
+
+            </div>
+
+            <div class="qual-box">
+
+                <div class="qual-row">
+
+                    <div class="qual-check done">✓</div>
+
+                    <div class="qual-text">
+                        <strong>TaskEarn account</strong>
+                        <span>
+                            Your TaskEarn account is required
+                            for company project access.
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="qual-row">
+
+                    <div class="qual-check" id="pointsCheck">•</div>
+
+                    <div class="qual-text">
+                        <strong>5000 Points</strong>
+                        <span>
+                            Earn the required normal TaskEarn
+                            points from completed tasks.
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="qual-row">
+
+                    <div class="qual-check" id="referralCheck">•</div>
+
+                    <div class="qual-text">
+                        <strong>Required referrals</strong>
+                        <span>
+                            Bring the required users through
+                            your referral system.
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="qual-row">
+
+                    <div class="qual-check" id="promoCheck">•</div>
+
+                    <div class="qual-text">
+                        <strong>TaskEarn promotional work</strong>
+                        <span>
+                            Submit a good promotional advertisement
+                            for review.
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- HOW IT WORKS -->
+        <section class="section">
+
+            <div class="section-head">
+
+                <div class="section-title">
+
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 6h13"/>
+                            <path d="M8 12h13"/>
+                            <path d="M8 18h13"/>
+                            <path d="M3 6h.01"/>
+                            <path d="M3 12h.01"/>
+                            <path d="M3 18h.01"/>
+                        </svg>
+                    </div>
+
+                    How It Works
+
+                </div>
+
+                <span class="section-tag">
+                    5 Steps
+                </span>
+
+            </div>
+
+            <div class="steps">
+
+                <div class="step">
+                    <div class="step-no">1</div>
+                    <div class="step-text">
+                        <strong>Complete your qualification</strong>
+                        <span>
+                            Meet the required points, referral and
+                            promotional conditions.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-no">2</div>
+                    <div class="step-text">
+                        <strong>Prepare your application</strong>
+                        <span>
+                            Add your information and upload the
+                            required files.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-no">3</div>
+                    <div class="step-text">
+                        <strong>Submit for processing</strong>
+                        <span>
+                            After submission, the fixed 15-day
+                            processing period starts.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-no">4</div>
+                    <div class="step-text">
+                        <strong>Working / Pending</strong>
+                        <span>
+                            Your qualification remains under
+                            processing until the window ends.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-no">5</div>
+                    <div class="step-text">
+                        <strong>Access real company projects</strong>
+                        <span>
+                            Once qualified, eligible real projects
+                            can be shown in your project area.
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- APPLICATION -->
+        <section class="application" id="applicationSection">
+
+            <div class="application-head">
+
+                <div class="application-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 4h16v16H4z"/>
+                        <path d="M8 9h8"/>
+                        <path d="M8 13h8"/>
+                        <path d="M8 17h5"/>
+                    </svg>
+                </div>
+
+                <div>
+                    <h2>Qualification Submission</h2>
+                    <p>
+                        Submit your test / application material
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="notice">
+                Submit only genuine work and required documents.
+                After successful submission, your 15-day processing
+                window begins automatically.
+            </div>
+
+
+            <div class="field">
+
+                <label for="message">
+                    Application / Work Details
+                </label>
+
+                <textarea
+                    id="message"
+                    placeholder="Write your qualification details, work information or anything requested for this project..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="upload-box">
+
+                <label class="upload-label">
+                    Upload Files
+                </label>
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    class="file-input"
+                    multiple
+                    accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.txt"
+                >
+
+                <label
+                    for="fileInput"
+                    class="file-drop"
+                    id="fileDrop"
+                >
+
+                    <svg
+                        class="upload-svg"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M12 16V4"/>
+                        <path d="M7 9l5-5 5 5"/>
+                        <path d="M4 20h16"/>
+                    </svg>
+
+                    <strong>
+                        Choose documents or files
+                    </strong>
+
+                    <span>
+                        PDF, images, DOC/DOCX and TXT supported
+                    </span>
+
+                </label>
+
+                <div
+                    class="file-list"
+                    id="fileList"
+                ></div>
+
+            </div>
+
+
+            <button
+                class="submit-btn"
+                id="submitBtn"
+            >
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M22 2L11 13"/>
+                    <path d="M22 2l-7 20-4-9-9-4z"/>
+                </svg>
+
+                Submit Qualification
+
+            </button>
+
+        </section>
+
+
+        <!-- PROCESSING -->
+        <section class="section processing" id="processingSection">
+
+            <div class="processing-icon">
+
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="8"/>
+                    <path d="M12 8v4l3 2"/>
+                </svg>
+
+            </div>
+
+            <h2>Application Submitted</h2>
+
+            <p>
+                Your qualification material has been submitted.
+                The 15-day working/processing window is now active.
+            </p>
+
+            <div class="timer">
+
+                <div class="timer-label">
+                    Time remaining
+                </div>
+
+                <div
+                    class="timer-value"
+                    id="timerValue"
+                >
+                    15d 00:00:00
+                </div>
+
+            </div>
+
+            <div class="processing-status">
+                ● Working / Pending
+            </div>
+
+        </section>
+
+
+        <!-- APPROVED -->
+        <section class="section approved" id="approvedSection">
+
+            <div class="approved-icon">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 6L9 17l-5-5"/>
+                </svg>
+
+            </div>
+
+            <h2>Qualification Complete</h2>
+
+            <p>
+                Your processing window has completed.
+                Eligible company projects can now become available
+                for your account.
+            </p>
+
+            <div class="approved-reward">
+
+                <span>
+                    Project earning
+                </span>
+
+                <strong id="approvedReward">
+                    ₹0
+                </strong>
+
+            </div>
+
+            <button
+                class="wallet-btn"
+                id="walletBtn"
+            >
+                Open Wallet
+            </button>
+
+        </section>
+
+
+        <!-- REAL PROJECTS -->
+        <section class="section real-projects">
+
+            <div class="section-head">
+
+                <div class="section-title">
+
+                    <div class="section-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 6h16v14H4z"/>
+                            <path d="M8 6V4h8v2"/>
+                            <path d="M8 11h8"/>
+                            <path d="M8 15h5"/>
+                        </svg>
+                    </div>
+
+                    Real Company Projects
+
+                </div>
+
+                <span
+                    class="section-tag"
+                    id="realProjectCount"
+                >
+                    Locked
+                </span>
+
+            </div>
+
+
+            <div
+                class="locked-banner"
+                id="lockedBanner"
+            >
+
+                <div class="lock-icon">
+
+                    <svg viewBox="0 0 24 24">
+                        <rect
+                            x="5"
+                            y="10"
+                            width="14"
+                            height="10"
+                            rx="2"
+                        />
+                        <path d="M8 10V7a4 4 0 018 0v3"/>
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Projects unlock after qualification
+                    </strong>
+
+                    <span>
+                        Complete the qualification process first.
+                        Real company-connected projects will appear
+                        here when your account becomes eligible.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="project-list"
+                id="realProjectList"
+            ></div>
+
+        </section>
+
+        <div class="bottom-space"></div>
+
+    </main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+/* =========================================================
+   TASK EARN - COMPANY PROJECT DETAILS
+   ========================================================= */
+
+/* ---------- SUPABASE CONNECTION ---------- */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* ---------- SETTINGS ---------- */
+
+const PROCESSING_DAYS = 15;
+
+const BUCKET_NAME = "task-proofs";
+
+const MAX_FILES = 8;
+
+const MAX_FILE_SIZE =
+    15 * 1024 * 1024;
+
+
+/* ---------- DOM ---------- */
+
+const loading =
+    document.getElementById("loading");
+
+const backBtn =
+    document.getElementById("backBtn");
+
+const submitBtn =
+    document.getElementById("submitBtn");
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const fileDrop =
+    document.getElementById("fileDrop");
+
+const fileList =
+    document.getElementById("fileList");
+
+const message =
+    document.getElementById("message");
+
+const applicationSection =
+    document.getElementById("applicationSection");
+
+const processingSection =
+    document.getElementById("processingSection");
+
+const approvedSection =
+    document.getElementById("approvedSection");
+
+const timerValue =
+    document.getElementById("timerValue");
+
+const toast =
+    document.getElementById("toast");
+
+const realProjectList =
+    document.getElementById("realProjectList");
+
+
+/* ---------- STATE ---------- */
+
+let selectedFiles = [];
+
+let currentUser = null;
+
+let currentProject = {
+    id:null,
+    title:"Company Work Qualification",
+    description:"",
+    reward:0
+};
+
+let timerInterval = null;
+
+
+/* ---------- HELPERS ---------- */
+
+function showToast(text){
+
+    toast.textContent = text;
+
+    toast.classList.add("show");
+
+    clearTimeout(
+        window.__toastTimer
+    );
+
+    window.__toastTimer =
+        setTimeout(() => {
+            toast.classList.remove("show");
+        },3200);
+}
+
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+function formatMoney(value){
+
+    const number =
+        Number(value || 0);
+
+    return "₹" +
+        number.toLocaleString(
+            "en-IN",
+            {
+                maximumFractionDigits:2
+            }
+        );
+}
+
+
+function formatBytes(bytes){
+
+    if(bytes < 1024)
+        return bytes + " B";
+
+    if(bytes < 1024 * 1024)
+        return (
+            (bytes / 1024).toFixed(1)
+            + " KB"
+        );
+
+    return (
+        (bytes / (1024 * 1024)).toFixed(1)
+        + " MB"
+    );
+}
+
+
+/* ---------- BACK ---------- */
+
+backBtn.addEventListener(
+    "click",
+    () => {
+
+        window.location.href =
+            "projects.html";
+
+    }
+);
+
+
+/* ---------- GET PROJECT ID ---------- */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const projectId =
+    params.get("id");
+
+
+/* ---------- AUTH ---------- */
+
+async function loadUser(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth.getUser();
+
+        if(error)
+            throw error;
+
+        currentUser =
+            data?.user || null;
+
+        /*
+         * Login is not forced here.
+         * The submit operation itself will
+         * require an authenticated account.
+         */
+
+    }catch(error){
+
+        console.warn(
+            "User lookup:",
+            error
+        );
+
+        currentUser = null;
+
+    }
+}
+
+
+/* ---------- LOAD PROJECT ---------- */
+
+async function loadProject(){
+
+    /*
+     * If an id exists, try loading a real
+     * task/project from the existing tasks table.
+     *
+     * This avoids inventing a new database schema.
+     */
+
+    if(!projectId){
+
+        loading.classList.add("hidden");
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("tasks")
+            .select(
+                "id,title,description,reward,category,status,task_type"
+            )
+            .eq("id",projectId)
+            .maybeSingle();
+
+
+        if(error)
+            throw error;
+
+
+        if(data){
+
+            currentProject = {
+                id:data.id,
+                title:
+                    data.title ||
+                    "Company Work Qualification",
+
+                description:
+                    data.description ||
+                    "Complete the company qualification process.",
+
+                reward:
+                    Number(data.reward || 0),
+
+                category:
+                    data.category || "Company",
+
+                taskType:
+                    data.task_type || "project"
+            };
+
+        }
+
+
+    }catch(error){
+
+        console.warn(
+            "Project load:",
+            error
+        );
+
+    }
+
+
+    renderProject();
+
+    await checkExistingSubmission();
+
+    await loadRealProjects();
+
+    loading.classList.add("hidden");
+}
+
+
+/* ---------- RENDER PROJECT ---------- */
+
+function renderProject(){
+
+    document.getElementById(
+        "projectTitle"
+    ).textContent =
+        currentProject.title;
+
+
+    document.getElementById(
+        "projectSubtitle"
+    ).textContent =
+        "Complete the qualification process to become eligible for company-connected projects.";
+
+
+    document.getElementById(
+        "rewardValue"
+    ).textContent =
+        formatMoney(
+            currentProject.reward
+        );
+
+
+    document.getElementById(
+        "approvedReward"
+    ).textContent =
+        formatMoney(
+            currentProject.reward
+        );
+
+
+    document.getElementById(
+        "detailName"
+    ).textContent =
+        currentProject.title;
+
+
+    document.getElementById(
+        "detailDescription"
+    ).textContent =
+        currentProject.description ||
+        "Complete the required qualification material and submit it for processing.";
+
+}
+
+
+/* ---------- EXISTING SUBMISSION ---------- */
+
+async function checkExistingSubmission(){
+
+    if(!currentUser || !projectId)
+        return;
+
+
+    try{
+
+        /*
+         * submission_type is used when available.
+         * If the column is not present yet, the query
+         * can fail; the page will simply remain usable.
+         */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("task_submissions")
+            .select(
+                "id,task_id,user_id,proof,status,reward,submitted_at,reviewed_at,submission_type,reward_credited_at"
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .eq(
+                "task_id",
+                Number(projectId)
+            )
+            .order(
+                "submitted_at",
+                {
+                    ascending:false
+                }
+            )
+            .limit(1)
+            .maybeSingle();
+
+
+        if(error)
+            throw error;
+
+
+        if(!data)
+            return;
+
+
+        const status =
+            String(
+                data.status || ""
+            ).toLowerCase();
+
+
+        if(
+            status === "approved"
+            ||
+            data.reward_credited_at
+        ){
+
+            showApproved();
+
+            return;
+        }
+
+
+        if(
+            status === "pending"
+            &&
+            data.submitted_at
+        ){
+
+            startProcessingTimer(
+                data.submitted_at
+            );
+
+            return;
+        }
+
+
+        if(status === "rejected"){
+
+            applicationSection.style.display =
+                "block";
+
+            showToast(
+                "Your previous application was rejected. You can submit again."
+            );
+
+        }
+
+
+    }catch(error){
+
+        console.warn(
+            "Submission lookup:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ---------- FILE INPUT ---------- */
+
+fileInput.addEventListener(
+    "change",
+    () => {
+
+        addFiles(
+            Array.from(
+                fileInput.files || []
+            )
+        );
+
+        fileInput.value = "";
+
+    }
+);
+
+
+function addFiles(files){
+
+    for(const file of files){
+
+        if(
+            selectedFiles.length >=
+            MAX_FILES
+        ){
+
+            showToast(
+                "Maximum 8 files allowed."
+            );
+
+            break;
+        }
+
+
+        if(
+            file.size >
+            MAX_FILE_SIZE
+        ){
+
+            showToast(
+                file.name +
+                " is larger than 15 MB."
+            );
+
+            continue;
+        }
+
+
+        const duplicate =
+            selectedFiles.some(
+                existing =>
+                    existing.name === file.name &&
+                    existing.size === file.size
+            );
+
+
+        if(duplicate)
+            continue;
+
+
+        selectedFiles.push(file);
+
+    }
+
+
+    renderFiles();
+
+}
+
+
+/* ---------- RENDER FILES ---------- */
+
+function renderFiles(){
+
+    fileList.innerHTML = "";
+
+    selectedFiles.forEach(
+        (file,index) => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "file-item";
+
+
+            const extension =
+                file.name
+                    .split(".")
+                    .pop()
+                    .toUpperCase();
+
+
+            item.innerHTML = `
+
+                <div class="file-mini">
+                    ${escapeHtml(extension.slice(0,4))}
+                </div>
+
+                <div class="file-name">
+
+                    <strong>
+                        ${escapeHtml(file.name)}
+                    </strong>
+
+                    <span>
+                        ${formatBytes(file.size)}
+                    </span>
+
+                </div>
+
+                <button
+                    class="remove-file"
+                    type="button"
+                    aria-label="Remove file"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            item
+                .querySelector(
+                    ".remove-file"
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+
+                        selectedFiles.splice(
+                            index,
+                            1
+                        );
+
+                        renderFiles();
+
+                    }
+                );
+
+
+            fileList.appendChild(item);
+
+        }
+    );
+
+}
+
+
+/* ---------- DRAG / DROP ---------- */
+
+[
+    "dragenter",
+    "dragover"
+].forEach(
+    eventName => {
+
+        fileDrop.addEventListener(
+            eventName,
+            event => {
+
+                event.preventDefault();
+
+                fileDrop.classList.add(
+                    "dragging"
+                );
+
+            }
+        );
+
+    }
+);
+
+
+[
+    "dragleave",
+    "drop"
+].forEach(
+    eventName => {
+
+        fileDrop.addEventListener(
+            eventName,
+            event => {
+
+                event.preventDefault();
+
+                fileDrop.classList.remove(
+                    "dragging"
+                );
+
+            }
+        );
+
+    }
+);
+
+
+fileDrop.addEventListener(
+    "drop",
+    event => {
+
+        const files =
+            Array.from(
+                event.dataTransfer.files || []
+            );
+
+        addFiles(files);
+
+    }
+);
+
+
+/* ---------- STORAGE FILE NAME ---------- */
+
+function safeFileName(name){
+
+    return name
+        .replace(
+            /[^a-zA-Z0-9._-]/g,
+            "_"
+        )
+        .slice(0,120);
+}
+
+
+/* ---------- UPLOAD FILES ---------- */
+
+async function uploadFiles(){
+
+    if(!selectedFiles.length)
+        return [];
+
+
+    const uploaded = [];
+
+
+    for(
+        let index = 0;
+        index < selectedFiles.length;
+        index++
+    ){
+
+        const file =
+            selectedFiles[index];
+
+
+        const path =
+            currentUser.id +
+            "/" +
+            String(
+                currentProject.id || "company"
+            ) +
+            "/" +
+            Date.now() +
+            "_" +
+            index +
+            "_" +
+            safeFileName(
+                file.name
+            );
+
+
+        const {
+            error
+        } =
+        await supabaseClient
+            .storage
+            .from(BUCKET_NAME)
+            .upload(
+                path,
+                file,
+                {
+                    upsert:false,
+                    contentType:
+                        file.type ||
+                        "application/octet-stream"
+                }
+            );
+
+
+        if(error)
+            throw error;
+
+
+        uploaded.push({
+
+            path:path,
+
+            name:file.name,
+
+            size:file.size,
+
+            type:file.type || ""
+
+        });
+
+    }
+
+
+    return uploaded;
+}
+
+
+/* ---------- SUBMIT ---------- */
+
+submitBtn.addEventListener(
+    "click",
+    submitApplication
+);
+
+
+async function submitApplication(){
+
+    if(!currentUser){
+
+        showToast(
+            "Please login before submitting your qualification."
+        );
+
+        setTimeout(
+            () => {
+
+                window.location.href =
+                    "login.html";
+
+            },
+            800
+        );
+
+        return;
+    }
+
+
+    const text =
+        message.value.trim();
+
+
+    if(!text){
+
+        showToast(
+            "Please enter your application details."
+        );
+
+        message.focus();
+
+        return;
+    }
+
+
+    if(!projectId){
+
+        showToast(
+            "Project ID is missing."
+        );
+
+        return;
+    }
+
+
+    submitBtn.disabled = true;
+
+    submitBtn.textContent =
+        "Uploading...";
+
+
+    try{
+
+        const uploadedFiles =
+            await uploadFiles();
+
+
+        const proofData = {
+
+            mode:
+                "company_project_qualification",
+
+            text:text,
+
+            files:
+                uploadedFiles,
+
+            project_id:
+                Number(
+                    currentProject.id
+                ),
+
+            submitted_from:
+                "company-project-details.html"
+
+        };
+
+
+        /*
+         * IMPORTANT:
+         *
+         * status is deliberately "pending".
+         *
+         * The 15-day processing/reward rule must
+         * ultimately be enforced by Supabase backend,
+         * not trusted only to this HTML page.
+         */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("task_submissions")
+            .insert({
+
+                task_id:
+                    Number(
+                        currentProject.id
+                    ),
+
+                user_id:
+                    currentUser.id,
+
+                proof:
+                    JSON.stringify(
+                        proofData
+                    ),
+
+                status:
+                    "pending",
+
+                reward:
+                    Number(
+                        currentProject.reward || 0
+                    ),
+
+                submission_type:
+                    "project"
+
+            })
+            .select()
+            .single();
+
+
+        if(error)
+            throw error;
+
+
+        /*
+         * 1 submission = automatic native interstitial.
+         *
+         * This does NOT fake an advertisement.
+         * If the Android APK has the native bridge,
+         * it can show a real interstitial.
+         */
+
+        await showSubmitAd();
+
+
+        applicationSection.style.display =
+            "none";
+
+
+        startProcessingTimer(
+            data?.submitted_at ||
+            new Date().toISOString()
+        );
+
+
+        showToast(
+            "Application submitted successfully."
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Submit error:",
+            error
+        );
+
+
+        showToast(
+            error?.message ||
+            "Submission failed. Please try again."
+        );
+
+
+        submitBtn.disabled = false;
+
+        submitBtn.innerHTML = `
+
+            <svg viewBox="0 0 24 24">
+                <path d="M22 2L11 13"/>
+                <path d="M22 2l-7 9"/>
+                <path d="M22 2l-7 20-4-9-9-4z"/>
+            </svg>
+
+            Submit Qualification
+
+        `;
+
+    }
+
+}
+
+
+/* ---------- NATIVE AD ---------- */
+
+async function showSubmitAd(){
+
+    try{
+
+        if(
+            window.AndroidAds &&
+            typeof
+            window.AndroidAds.showInterstitial
+            === "function"
+        ){
+
+            await Promise.resolve(
+                window.AndroidAds.showInterstitial()
+            );
+
+            return;
+
+        }
+
+
+        if(
+            window.TaskEarnAds &&
+            typeof
+            window.TaskEarnAds.showInterstitial
+            === "function"
+        ){
+
+            await Promise.resolve(
+                window.TaskEarnAds.showInterstitial()
+            );
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "Native interstitial error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ---------- 15 DAY TIMER ---------- */
+
+function startProcessingTimer(
+    submittedAt
+){
+
+    applicationSection.style.display =
+        "none";
+
+    approvedSection.classList.remove(
+        "show"
+    );
+
+    processingSection.classList.add(
+        "show"
+    );
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    const start =
+        new Date(
+            submittedAt
+        ).getTime();
+
+
+    const end =
+        start +
+        PROCESSING_DAYS *
+        24 *
+        60 *
+        60 *
+        1000;
+
+
+    function update(){
+
+        const now =
+            Date.now();
+
+
+        const remaining =
+            end - now;
+
+
+        if(remaining <= 0){
+
+            clearInterval(
+                timerInterval
+            );
+
+
+            /*
+             * Do not directly credit wallet
+             * from JavaScript.
+             *
+             * Backend must approve/credit the
+             * submission after the real 15-day
+             * window.
+             */
+
+            timerValue.textContent =
+                "00:00:00";
+
+
+            checkProcessingStatus();
+
+            return;
+
+        }
+
+
+        const totalSeconds =
+            Math.floor(
+                remaining / 1000
+            );
+
+
+        const days =
+            Math.floor(
+                totalSeconds / 86400
+            );
+
+
+        const hours =
+            Math.floor(
+                (totalSeconds % 86400) /
+                3600
+            );
+
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) /
+                60
+            );
+
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        timerValue.textContent =
+            String(days) +
+            "d " +
+            String(hours).padStart(2,"0") +
+            ":" +
+            String(minutes).padStart(2,"0") +
+            ":" +
+            String(seconds).padStart(2,"0");
+
+    }
+
+
+    update();
+
+    timerInterval =
+        setInterval(
+            update,
+            1000
+        );
+
+
+    /*
+     * Check backend status every 10 seconds.
+     */
+
+    clearInterval(
+        window.__statusInterval
+    );
+
+
+    window.__statusInterval =
+        setInterval(
+            checkProcessingStatus,
+            10000
+        );
+
+}
+
+
+/* ---------- CHECK STATUS ---------- */
+
+async function checkProcessingStatus(){
+
+    if(!currentUser || !projectId)
+        return;
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("task_submissions")
+            .select(
+                "id,status,reward,submitted_at,reward_credited_at"
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .eq(
+                "task_id",
+                Number(projectId)
+            )
+            .order(
+                "submitted_at",
+                {
+                    ascending:false
+                }
+            )
+            .limit(1)
+            .maybeSingle();
+
+
+        if(error)
+            throw error;
+
+
+        if(!data)
+            return;
+
+
+        const status =
+            String(
+                data.status || ""
+            ).toLowerCase();
+
+
+        if(
+            status === "approved"
+            ||
+            data.reward_credited_at
+        ){
+
+            clearInterval(
+                window.__statusInterval
+            );
+
+            showApproved();
+
+        }
+
+
+        if(status === "rejected"){
+
+            clearInterval(
+                window.__statusInterval
+            );
+
+            processingSection.classList.remove(
+                "show"
+            );
+
+            applicationSection.style.display =
+                "block";
+
+            showToast(
+                "Your application was rejected. You can submit again."
+            );
+
+        }
+
+
+    }catch(error){
+
+        console.warn(
+            "Status check:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ---------- APPROVED ---------- */
+
+function showApproved(){
+
+    clearInterval(
+        timerInterval
+    );
+
+    clearInterval(
+        window.__statusInterval
+    );
+
+
+    processingSection.classList.remove(
+        "show"
+    );
+
+
+    applicationSection.style.display =
+        "none";
+
+
+    approvedSection.classList.add(
+        "show"
+    );
+
+}
+
+
+/* ---------- WALLET ---------- */
+
+document
+    .getElementById("walletBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "wallet.html";
+
+        }
+    );
+
+
+/* ---------- REAL PROJECTS ---------- */
+
+async function loadRealProjects(){
+
+    /*
+     * Only display actual rows from the existing
+     * tasks table. No fake company projects are
+     * inserted by this page.
+     */
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("tasks")
+            .select(
+                "id,title,description,reward,status,category"
+            )
+            .eq(
+                "status",
+                "active"
+            )
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            )
+            .limit(5);
+
+
+        if(error)
+            throw error;
+
+
+        if(!data || !data.length){
+
+            realProjectList.innerHTML = "";
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "realProjectCount"
+        ).textContent =
+            data.length +
+            " available";
+
+
+        realProjectList.innerHTML =
+            data.map(
+                project => `
+
+                    <div class="real-card">
+
+                        <div class="real-icon">
+                            ✓
+                        </div>
+
+                        <div class="real-info">
+
+                            <strong>
+                                ${escapeHtml(
+                                    project.title
+                                )}
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(
+                                    project.category ||
+                                    "Project"
+                                )}
+                            </span>
+
+                        </div>
+
+                        <div class="real-reward">
+                            ${formatMoney(
+                                project.reward
+                            )}
+                        </div>
+
+                    </div>
+
+                `
+            ).join("");
+
+
+    }catch(error){
+
+        console.warn(
+            "Real projects:",
+            error
+        );
+
+        /*
+         * Do not show fake projects if database
+         * is unavailable.
+         */
+
+        realProjectList.innerHTML = "";
+
+    }
+
+}
+
+
+/* ---------- QUALIFICATION VISUAL ---------- */
+
+/*
+ * These are intentionally visual placeholders until
+ * the real referral/points backend is connected.
+ *
+ * We do NOT pretend the user has 5000 points or
+ * 10 referrals.
+ */
+
+async function loadQualificationStatus(){
+
+    if(!currentUser)
+        return;
+
+
+    try{
+
+        /*
+         * Try reading wallet total_earned as a
+         * possible points source only if the existing
+         * schema provides it.
+         *
+         * This does NOT convert ₹ into points.
+         */
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+            .from("user_wallets")
+            .select(
+                "total_earned"
+            )
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+            .maybeSingle();
+
+
+        if(error)
+            throw error;
+
+
+        /*
+         * No automatic claim of 5000 points.
+         *
+         * The real points system should have its
+         * own backend field/table.
+         */
+
+    }catch(error){
+
+        console.warn(
+            "Qualification status:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ---------- INIT ---------- */
+
+async function init(){
+
+    try{
+
+        await loadUser();
+
+        await loadProject();
+
+        await loadQualificationStatus();
+
+    }catch(error){
+
+        console.error(
+            "Init:",
+            error
+        );
+
+        loading.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>

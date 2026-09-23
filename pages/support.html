@@ -1,0 +1,3524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta
+    name="theme-color"
+    content="#050914"
+>
+
+<meta
+    name="color-scheme"
+    content="dark"
+>
+
+<title>TaskEarn — Support</title>
+
+
+<style>
+
+/* =========================================================
+   TASKEARN SUPPORT
+   PREMIUM DARK UI
+   FAQ + AUTOMATIC SUPPORT CHAT
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+:root{
+
+    --bg:#050914;
+    --bg2:#080d1b;
+
+    --surface:rgba(15,23,44,.78);
+    --surface2:rgba(19,29,54,.94);
+
+    --line:rgba(255,255,255,.085);
+    --line2:rgba(255,255,255,.055);
+
+    --text:#f7f9ff;
+
+    --muted:#7d8ba7;
+    --muted2:#596680;
+
+    --cyan:#20d4ff;
+    --cyan2:#0aa8ff;
+
+    --violet:#7357ff;
+    --violet2:#5134e8;
+
+    --green:#36d79c;
+
+    --danger:#ff7384;
+
+    --radius-xl:27px;
+    --radius-lg:21px;
+    --radius-md:16px;
+}
+
+body{
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    padding-bottom:112px;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+
+        radial-gradient(
+            circle at 8% -8%,
+            rgba(32,212,255,.12),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 105% 20%,
+            rgba(115,87,255,.15),
+            transparent 31%
+        ),
+
+        radial-gradient(
+            circle at 45% 110%,
+            rgba(32,212,255,.055),
+            transparent 32%
+        ),
+
+        linear-gradient(
+            145deg,
+            #040711 0%,
+            #070c1a 50%,
+            #050813 100%
+        );
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+button{
+
+    font:inherit;
+
+    border:0;
+
+    color:inherit;
+
+    cursor:pointer;
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    -webkit-user-select:none;
+
+    user-select:none;
+}
+
+button:active{
+
+    transform:scale(.975);
+}
+
+a{
+
+    color:inherit;
+
+    text-decoration:none;
+}
+
+svg{
+
+    display:block;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+
+    width:100%;
+
+    max-width:620px;
+
+    min-height:100vh;
+
+    margin:auto;
+
+    position:relative;
+
+    z-index:2;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:
+        12px 15px;
+
+    background:
+        rgba(5,9,20,.90);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.065);
+
+    backdrop-filter:
+        blur(27px);
+
+    -webkit-backdrop-filter:
+        blur(27px);
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-button{
+
+    width:45px;
+
+    height:45px;
+
+    flex:0 0 45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.085);
+
+    border-radius:15px;
+
+    background:
+        rgba(255,255,255,.045);
+}
+
+.back-button svg{
+
+    width:21px;
+
+    height:21px;
+
+    stroke:#e8eefc;
+}
+
+
+/* =========================================================
+   HEADER TITLE
+========================================================= */
+
+.header-title{
+
+    flex:1;
+
+    min-width:0;
+}
+
+.header-title small{
+
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#687591;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+}
+
+.header-title strong{
+
+    display:block;
+
+    font-size:18px;
+
+    line-height:1.1;
+
+    font-weight:900;
+}
+
+.header-title strong span{
+
+    color:#f8b81f;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.support-page{
+
+    padding:
+        24px 15px 35px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.support-hero{
+
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:285px;
+
+    padding:
+        28px 25px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius:28px;
+
+    background:
+
+        radial-gradient(
+            circle at 92% 8%,
+            rgba(32,212,255,.34),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 15% 100%,
+            rgba(112,78,255,.38),
+            transparent 42%
+        ),
+
+        linear-gradient(
+            135deg,
+            #30348d 0%,
+            #273d9d 43%,
+            #128dbd 100%
+        );
+
+    box-shadow:
+
+        0 28px 70px
+        rgba(0,0,0,.32),
+
+        inset 0 1px 0
+        rgba(255,255,255,.10);
+}
+
+.support-hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+
+    height:250px;
+
+    right:-120px;
+
+    top:-130px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.10);
+
+    pointer-events:none;
+}
+
+.support-hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:190px;
+
+    height:190px;
+
+    left:-120px;
+
+    bottom:-135px;
+
+    border-radius:50%;
+
+    background:
+        rgba(115,87,255,.18);
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   HERO ICON
+========================================================= */
+
+.hero-icon{
+
+    position:relative;
+
+    z-index:2;
+
+    width:68px;
+
+    height:68px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:25px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.20);
+
+    border-radius:20px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+}
+
+.hero-icon svg{
+
+    width:32px;
+
+    height:32px;
+
+    stroke:#fff;
+}
+
+
+/* =========================================================
+   HERO TEXT
+========================================================= */
+
+.support-hero h1{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:38px;
+
+    line-height:1.06;
+
+    letter-spacing:-1.3px;
+
+    font-weight:900;
+}
+
+.support-hero p{
+
+    position:relative;
+
+    z-index:2;
+
+    max-width:500px;
+
+    margin-top:14px;
+
+    color:
+        rgba(255,255,255,.80);
+
+    font-size:14px;
+
+    line-height:1.7;
+
+    font-weight:500;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+
+    margin-top:32px;
+}
+
+.section-label{
+
+    margin:
+        0 3px 7px;
+
+    color:#5bdfff;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+}
+
+.section-title{
+
+    margin:
+        0 3px 15px;
+
+    font-size:26px;
+
+    line-height:1.15;
+
+    font-weight:900;
+
+    letter-spacing:-.6px;
+}
+
+
+/* =========================================================
+   CONTACT CARD
+========================================================= */
+
+.contact-card{
+
+    padding:18px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:23px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.018)
+        );
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.20);
+}
+
+.contact-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:10px;
+}
+
+.contact-item{
+
+    min-height:210px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    padding:18px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:20px;
+
+    background:
+        rgba(7,17,42,.62);
+
+    text-align:left;
+}
+
+.contact-icon{
+
+    width:48px;
+
+    height:48px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(32,212,255,.18);
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(32,212,255,.10),
+            rgba(82,76,255,.10)
+        );
+}
+
+.contact-icon svg{
+
+    width:23px;
+
+    height:23px;
+
+    stroke:#e5efff;
+}
+
+.contact-item strong{
+
+    display:block;
+
+    margin-top:23px;
+
+    font-size:14px;
+
+    font-weight:900;
+}
+
+.contact-item p{
+
+    margin-top:11px;
+
+    color:#7e8ca8;
+
+    font-size:9px;
+
+    line-height:1.8;
+}
+
+.contact-item.email{
+
+    cursor:pointer;
+}
+
+.contact-item.email:active{
+
+    background:
+        rgba(32,212,255,.07);
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+========================================================= */
+
+.security-note{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:10px;
+
+    padding:16px;
+
+    border:
+        1px solid
+        rgba(54,215,156,.12);
+
+    border-radius:18px;
+
+    background:
+        rgba(54,215,156,.035);
+}
+
+.security-note-icon{
+
+    width:38px;
+
+    height:38px;
+
+    flex:0 0 38px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(54,215,156,.14);
+
+    border-radius:12px;
+
+    background:
+        rgba(54,215,156,.05);
+}
+
+.security-note-icon svg{
+
+    width:19px;
+
+    height:19px;
+
+    stroke:#63e5ad;
+}
+
+.security-note strong{
+
+    display:block;
+
+    font-size:10px;
+
+    font-weight:900;
+}
+
+.security-note p{
+
+    margin-top:4px;
+
+    color:#71809d;
+
+    font-size:8px;
+
+    line-height:1.65;
+}
+
+
+/* =========================================================
+   FAQ CARD
+========================================================= */
+
+.faq-card{
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:23px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.20);
+}
+
+.faq-item{
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+}
+
+.faq-item:last-child{
+
+    border-bottom:0;
+}
+
+.faq-question{
+
+    width:100%;
+
+    min-height:66px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:
+        14px 16px;
+
+    background:transparent;
+
+    text-align:left;
+}
+
+.faq-question span:first-child{
+
+    flex:1;
+
+    color:#f2f5ff;
+
+    font-size:11px;
+
+    line-height:1.45;
+
+    font-weight:800;
+}
+
+.faq-plus{
+
+    width:28px;
+
+    height:28px;
+
+    flex:0 0 28px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#55d9ff;
+
+    font-size:25px;
+
+    font-weight:400;
+
+    line-height:1;
+
+    transition:
+        transform .2s ease;
+}
+
+.faq-answer{
+
+    display:none;
+
+    padding:
+        0 48px 18px 16px;
+
+    color:#7d8ba7;
+
+    font-size:9px;
+
+    line-height:1.8;
+}
+
+.faq-item.open
+.faq-answer{
+
+    display:block;
+}
+
+.faq-item.open
+.faq-plus{
+
+    transform:rotate(45deg);
+}
+
+
+/* =========================================================
+   SUPPORT CHAT
+========================================================= */
+
+.chat-card{
+
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(255,255,255,.085);
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,44,.92),
+            rgba(8,14,30,.96)
+        );
+
+    box-shadow:
+        0 25px 65px
+        rgba(0,0,0,.28);
+}
+
+
+/* =========================================================
+   CHAT HEADER
+========================================================= */
+
+.chat-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:16px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
+}
+
+.chat-avatar{
+
+    width:45px;
+
+    height:45px;
+
+    flex:0 0 45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(32,212,255,.18);
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(32,212,255,.14),
+            rgba(115,87,255,.14)
+        );
+}
+
+.chat-avatar svg{
+
+    width:22px;
+
+    height:22px;
+
+    stroke:#dff7ff;
+}
+
+.chat-title{
+
+    min-width:0;
+
+    flex:1;
+}
+
+.chat-title strong{
+
+    display:block;
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+.chat-title small{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    margin-top:4px;
+
+    color:#65738f;
+
+    font-size:7px;
+}
+
+.online-dot{
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:#36d79c;
+
+    box-shadow:
+        0 0 9px
+        rgba(54,215,156,.7);
+}
+
+
+/* =========================================================
+   CHAT BODY
+========================================================= */
+
+.chat-body{
+
+    height:330px;
+
+    overflow-y:auto;
+
+    padding:17px;
+
+    scroll-behavior:smooth;
+}
+
+.chat-body::-webkit-scrollbar{
+
+    width:4px;
+}
+
+.chat-body::-webkit-scrollbar-thumb{
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.10);
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message-row{
+
+    display:flex;
+
+    margin-bottom:12px;
+}
+
+.message-row.user{
+
+    justify-content:flex-end;
+}
+
+.message{
+
+    max-width:82%;
+
+    padding:
+        10px 12px;
+
+    border-radius:15px;
+
+    color:#e9efff;
+
+    font-size:9px;
+
+    line-height:1.7;
+}
+
+.message.bot{
+
+    border:
+        1px solid
+        rgba(255,255,255,.065);
+
+    border-bottom-left-radius:5px;
+
+    background:
+        rgba(255,255,255,.045);
+}
+
+.message.user{
+
+    border:
+        1px solid
+        rgba(32,212,255,.16);
+
+    border-bottom-right-radius:5px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(32,120,255,.20),
+            rgba(100,75,255,.18)
+        );
+}
+
+.message-time{
+
+    display:block;
+
+    margin-top:5px;
+
+    color:#56647f;
+
+    font-size:6px;
+
+    text-align:right;
+}
+
+
+/* =========================================================
+   QUICK QUESTIONS
+========================================================= */
+
+.quick-title{
+
+    padding:
+        0 16px 9px;
+
+    color:#62718e;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+}
+
+.quick-list{
+
+    display:flex;
+
+    gap:7px;
+
+    overflow-x:auto;
+
+    padding:
+        0 16px 14px;
+
+    scrollbar-width:none;
+}
+
+.quick-list::-webkit-scrollbar{
+
+    display:none;
+}
+
+.quick-btn{
+
+    flex:0 0 auto;
+
+    padding:
+        8px 11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#aab7d0;
+
+    font-size:7px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+}
+
+.quick-btn:active{
+
+    background:
+        rgba(32,212,255,.08);
+}
+
+
+/* =========================================================
+   CHAT INPUT
+========================================================= */
+
+.chat-input-area{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:11px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.06);
+
+    background:
+        rgba(5,9,20,.45);
+}
+
+.chat-input{
+
+    min-width:0;
+
+    flex:1;
+
+    height:43px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.085);
+
+    outline:none;
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    color:#fff;
+
+    font-size:9px;
+}
+
+.chat-input::placeholder{
+
+    color:#596780;
+}
+
+.chat-input:focus{
+
+    border-color:
+        rgba(32,212,255,.28);
+}
+
+.send-button{
+
+    width:43px;
+
+    height:43px;
+
+    flex:0 0 43px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(32,212,255,.20);
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(32,130,255,.24),
+            rgba(103,77,255,.22)
+        );
+}
+
+.send-button svg{
+
+    width:18px;
+
+    height:18px;
+
+    stroke:#fff;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    padding:
+        25px 0 4px;
+
+    text-align:center;
+
+    color:#485571;
+
+    font-size:7px;
+
+    letter-spacing:.8px;
+}
+
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:11px;
+
+    z-index:1000;
+
+    width:
+        min(
+            calc(100% - 26px),
+            590px
+        );
+
+    transform:
+        translateX(-50%);
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:4px;
+
+    padding:6px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.085);
+
+    border-radius:24px;
+
+    background:
+        rgba(7,12,27,.92);
+
+    box-shadow:
+        0 23px 68px
+        rgba(0,0,0,.48);
+
+    backdrop-filter:
+        blur(29px);
+
+    -webkit-backdrop-filter:
+        blur(29px);
+}
+
+.nav-item{
+
+    min-height:56px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:4px;
+
+    padding:0;
+
+    border-radius:18px;
+
+    background:transparent;
+
+    color:#5d6a86;
+
+    font-size:7px;
+
+    font-weight:900;
+}
+
+.nav-item.active{
+
+    color:#fff;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(39,130,255,.19),
+            rgba(104,76,255,.18)
+        );
+}
+
+.nav-icon{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.nav-icon svg{
+
+    width:19px;
+
+    height:19px;
+
+    stroke:currentColor;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:87px;
+
+    z-index:3000;
+
+    max-width:
+        calc(100% - 36px);
+
+    padding:
+        11px 14px;
+
+    transform:
+        translate(-50%,20px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius:13px;
+
+    background:
+        rgba(11,17,34,.97);
+
+    color:#f7f9ff;
+
+    font-size:9px;
+
+    box-shadow:
+        0 18px 45px
+        rgba(0,0,0,.38);
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:400px){
+
+    .support-page{
+
+        padding-left:13px;
+
+        padding-right:13px;
+    }
+
+    .support-hero{
+
+        min-height:260px;
+
+        padding:23px 20px;
+    }
+
+    .support-hero h1{
+
+        font-size:32px;
+    }
+
+    .support-hero p{
+
+        font-size:12px;
+    }
+
+    .hero-icon{
+
+        width:60px;
+
+        height:60px;
+
+        margin-bottom:21px;
+    }
+
+    .contact-card{
+
+        padding:13px;
+    }
+
+    .contact-grid{
+
+        gap:7px;
+    }
+
+    .contact-item{
+
+        min-height:205px;
+
+        padding:14px;
+    }
+
+    .contact-item strong{
+
+        font-size:12px;
+
+        margin-top:19px;
+    }
+
+    .section-title{
+
+        font-size:23px;
+    }
+
+}
+
+
+/* =========================================================
+   NO UNWANTED MOTION
+========================================================= */
+
+.support-page,
+.support-hero,
+.hero-icon{
+
+    animation:none !important;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- =======================================================
+     TOP BAR
+======================================================= -->
+
+<header class="topbar">
+
+
+    <button
+        class="back-button"
+        id="backButton"
+        type="button"
+        aria-label="Back"
+    >
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <path d="M19 12H5"/>
+
+            <path d="m12 19-7-7 7-7"/>
+
+        </svg>
+
+    </button>
+
+
+    <div class="header-title">
+
+        <small>
+            TASKEARN
+        </small>
+
+        <strong>
+            Task<span>Earn</span> Support
+        </strong>
+
+    </div>
+
+</header>
+
+
+<!-- =======================================================
+     MAIN
+======================================================= -->
+
+<main class="support-page">
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<section class="support-hero">
+
+
+    <div class="hero-icon">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <path
+                d="M4 13v-1a8 8 0 0 1 16 0v1"
+            />
+
+            <path
+                d="M4 13h3v6H5a1 1 0 0 1-1-1v-5Z"
+            />
+
+            <path
+                d="M20 13h-3v6h2a1 1 0 0 0 1-1v-5Z"
+            />
+
+            <path
+                d="M17 19c-.7 1.2-2 2-3.5 2H12"
+            />
+
+        </svg>
+
+    </div>
+
+
+    <h1>
+        How can we help?
+    </h1>
+
+
+    <p>
+        Find answers to common questions and
+        get help with your TaskEarn account,
+        tasks, payments and withdrawals.
+    </p>
+
+</section>
+
+
+<!-- =======================================================
+     CONTACT SUPPORT
+======================================================= -->
+
+<section class="section">
+
+
+    <div class="section-label">
+        CONTACT SUPPORT
+    </div>
+
+
+    <h2 class="section-title">
+        Get help from TaskEarn
+    </h2>
+
+
+    <section class="contact-card">
+
+
+        <div class="contact-grid">
+
+
+            <!-- EMAIL -->
+
+            <button
+                class="contact-item email"
+                id="emailSupportButton"
+                type="button"
+            >
+
+                <div class="contact-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="14"
+                            rx="2"
+                        />
+
+                        <path
+                            d="m4 7 8 6 8-6"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <strong>
+                    Email Support
+                </strong>
+
+
+                <p>
+                    Contact TaskEarn support
+                    using your registered
+                    account email.
+                </p>
+
+            </button>
+
+
+            <!-- ACCOUNT SAFETY -->
+
+            <div class="contact-item">
+
+
+                <div class="contact-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M12 3 20 6v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3Z"
+                        />
+
+                        <path
+                            d="m8.5 12 2.2 2.2 4.8-5"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <strong>
+                    Account Safety
+                </strong>
+
+
+                <p>
+                    Never share passwords,
+                    OTPs, UPI PINs, CVVs or
+                    ATM PINs with anyone.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY NOTE -->
+
+        <div class="security-note">
+
+
+            <div class="security-note-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M12 3 20 6v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3Z"
+                    />
+
+                    <path
+                        d="m8.5 12 2.2 2.2 4.8-5"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Important Security Notice
+                </strong>
+
+                <p>
+                    TaskEarn support will never ask
+                    for your password, OTP, UPI PIN,
+                    CVV or ATM PIN.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+</section>
+
+
+<!-- =======================================================
+     FAQ
+======================================================= -->
+
+<section class="section">
+
+
+    <div class="section-label">
+        HELP CENTER
+    </div>
+
+
+    <h2 class="section-title">
+        Frequently Asked Questions
+    </h2>
+
+
+    <section
+        class="faq-card"
+        id="faqCard"
+    >
+
+
+        <!-- FAQ 1 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    Why is my withdrawal pending?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                A withdrawal can remain pending while
+                the payment request is being reviewed
+                or processed. First check your Wallet
+                and History section. If the status does
+                not change after the expected processing
+                period, contact TaskEarn Support with
+                your withdrawal details.
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 2 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    Why do I need payment verification?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                Payment verification helps protect
+                your account and reduces unauthorized
+                withdrawals. Only use payment details
+                that belong to you and make sure the
+                information you enter is correct.
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 3 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    My task reward is missing. What should I do?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                Check whether the task appears as
+                completed in My Tasks or History.
+                Some rewards may require verification
+                before they are added to your balance.
+                If a completed task is missing its
+                reward, contact support with the task
+                name and completion details.
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 4 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    Does TaskEarn need my UPI PIN or OTP?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                No. Never give your UPI PIN, ATM PIN,
+                CVV, password or OTP to TaskEarn Support.
+                These are private security credentials
+                and should never be shared with anyone.
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 5 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    What if my payment information is wrong?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                Do not repeatedly submit incorrect
+                payment information. Check your payment
+                details carefully before requesting a
+                withdrawal. If a withdrawal was already
+                submitted with incorrect information,
+                contact support as soon as possible.
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 6 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    Where can I see my payment history?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                Open your Wallet or History section to
+                view available transaction information.
+                The exact status shown there should be
+                used when contacting support about a
+                payment.
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 7 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    Why has my account been restricted?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                An account may require additional review
+                if unusual activity, security concerns,
+                or policy issues are detected. Do not
+                create duplicate accounts to bypass a
+                restriction. Contact support for help.
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 8 -->
+
+        <div class="faq-item">
+
+            <button
+                class="faq-question"
+                type="button"
+            >
+
+                <span>
+                    How do I change my account password?
+                </span>
+
+                <span class="faq-plus">
+                    +
+                </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                Open Account Security from your Profile
+                page and use the available password
+                security option. Always choose a strong
+                password and never share it with anyone.
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+</section>
+
+
+<!-- =======================================================
+     AUTOMATIC SUPPORT CHAT
+======================================================= -->
+
+<section class="section">
+
+
+    <div class="section-label">
+        TASK EARN ASSISTANT
+    </div>
+
+
+    <h2 class="section-title">
+        Ask Support
+    </h2>
+
+
+    <section class="chat-card">
+
+
+        <!-- CHAT HEADER -->
+
+        <div class="chat-header">
+
+
+            <div class="chat-avatar">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M20 11.5a8 8 0 0 1-8 8H8l-4 2v-5a8 8 0 1 1 16-5Z"
+                    />
+
+                    <path d="M8 11h8"/>
+
+                    <path d="M8 8h5"/>
+
+                </svg>
+
+            </div>
+
+
+            <div class="chat-title">
+
+                <strong>
+                    TaskEarn Support Assistant
+                </strong>
+
+                <small>
+
+                    <span class="online-dot"></span>
+
+                    Automatic help available
+
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- CHAT BODY -->
+
+        <div
+            class="chat-body"
+            id="chatBody"
+        >
+
+
+            <div class="message-row">
+
+                <div class="message bot">
+
+                    Hi! 👋 I'm the TaskEarn Support
+                    Assistant. You can ask me about
+                    payments, withdrawals, tasks,
+                    rewards, account security and
+                    login.
+
+                    <span class="message-time">
+                        Support Assistant
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- QUICK QUESTIONS -->
+
+        <div class="quick-title">
+            QUICK QUESTIONS
+        </div>
+
+
+        <div class="quick-list">
+
+
+            <button
+                class="quick-btn"
+                type="button"
+                data-question="Why is my withdrawal pending?"
+            >
+                Withdrawal pending
+            </button>
+
+
+            <button
+                class="quick-btn"
+                type="button"
+                data-question="My task reward is missing"
+            >
+                Missing reward
+            </button>
+
+
+            <button
+                class="quick-btn"
+                type="button"
+                data-question="I have a payment problem"
+            >
+                Payment problem
+            </button>
+
+
+            <button
+                class="quick-btn"
+                type="button"
+                data-question="Do you need my OTP or UPI PIN?"
+            >
+                OTP / UPI PIN
+            </button>
+
+
+            <button
+                class="quick-btn"
+                type="button"
+                data-question="My account is restricted"
+            >
+                Account restricted
+            </button>
+
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <div class="chat-input-area">
+
+
+            <input
+                class="chat-input"
+                id="chatInput"
+                type="text"
+                autocomplete="off"
+                maxlength="500"
+                placeholder="Ask about payment, task, wallet..."
+            >
+
+
+            <button
+                class="send-button"
+                id="sendButton"
+                type="button"
+                aria-label="Send"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="m22 2-7 20-4-9-9-4Z"
+                    />
+
+                    <path
+                        d="M22 2 11 13"
+                    />
+
+                </svg>
+
+            </button>
+
+        </div>
+
+
+    </section>
+
+</section>
+
+
+<div class="footer">
+
+    TaskEarn • Earn. Watch. Grow.
+
+</div>
+
+
+</main>
+
+
+<!-- =======================================================
+     BOTTOM NAV
+======================================================= -->
+
+<nav class="bottom-nav">
+
+
+    <!-- HOME -->
+
+    <button
+        class="nav-item"
+        id="homeNav"
+        type="button"
+    >
+
+        <span class="nav-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <path
+                    d="M3 10.8 12 3l9 7.8"
+                />
+
+                <path
+                    d="M5.5 9.5V20h13V9.5"
+                />
+
+                <path
+                    d="M9.5 20v-6h5v6"
+                />
+
+            </svg>
+
+        </span>
+
+        Home
+
+    </button>
+
+
+    <!-- TASKS -->
+
+    <button
+        class="nav-item"
+        id="tasksNav"
+        type="button"
+    >
+
+        <span class="nav-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <rect
+                    x="5"
+                    y="3.5"
+                    width="14"
+                    height="17"
+                    rx="2"
+                />
+
+                <path d="M9 8h6"/>
+                <path d="M9 12h6"/>
+                <path d="M9 16h4"/>
+
+            </svg>
+
+        </span>
+
+        Tasks
+
+    </button>
+
+
+    <!-- WALLET -->
+
+    <button
+        class="nav-item"
+        id="walletNav"
+        type="button"
+    >
+
+        <span class="nav-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <rect
+                    x="3"
+                    y="6"
+                    width="18"
+                    height="14"
+                    rx="3"
+                />
+
+                <path
+                    d="M7 6V5a2 2 0 0 1 2-2h7"
+                />
+
+                <path d="M16 13h5"/>
+
+                <circle
+                    cx="16"
+                    cy="13"
+                    r="1"
+                />
+
+            </svg>
+
+        </span>
+
+        Wallet
+
+    </button>
+
+
+    <!-- PROJECTS -->
+
+    <button
+        class="nav-item"
+        id="projectsNav"
+        type="button"
+    >
+
+        <span class="nav-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <rect
+                    x="3"
+                    y="7"
+                    width="18"
+                    height="13"
+                    rx="2"
+                />
+
+                <path
+                    d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"
+                />
+
+                <path
+                    d="M3 12h18"
+                />
+
+            </svg>
+
+        </span>
+
+        Projects
+
+    </button>
+
+
+    <!-- PROFILE -->
+
+    <button
+        class="nav-item"
+        id="profileNav"
+        type="button"
+    >
+
+        <span class="nav-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <circle
+                    cx="12"
+                    cy="8"
+                    r="3.5"
+                />
+
+                <path
+                    d="M5 20c.7-3.5 3-5.5 7-5.5s6.3 2 7 5.5"
+                />
+
+            </svg>
+
+        </span>
+
+        Profile
+
+    </button>
+
+
+</nav>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+>
+    Done
+</div>
+
+
+</div>
+
+
+<!-- =======================================================
+     SUPABASE
+======================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true
+            }
+        }
+    );
+
+
+/* =========================================================
+   ROUTES
+========================================================= */
+
+const ROUTES = {
+
+    home:
+        "home.html",
+
+    tasks:
+        "tasks.html",
+
+    wallet:
+        "wallet.html",
+
+    projects:
+        "projects.html",
+
+    profile:
+        "profile.html",
+
+    history:
+        "history.html",
+
+    support:
+        "support.html",
+
+    terms:
+        "terms.html",
+
+    privacy:
+        "privacy.html",
+
+    login:
+        "login.html"
+
+};
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.taskEarnToast
+    );
+
+
+    window.taskEarnToast =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function goTo(page){
+
+    if(
+        !ROUTES[page]
+    ){
+
+        return;
+
+    }
+
+
+    window.location.href =
+        ROUTES[page];
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            if(
+                document.referrer &&
+                history.length > 1
+            ){
+
+                history.back();
+
+            }else{
+
+                goTo(
+                    "profile"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   FAQ
+========================================================= */
+
+const faqQuestions =
+    document.querySelectorAll(
+        ".faq-question"
+    );
+
+
+faqQuestions.forEach(
+    function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                const item =
+                    button.closest(
+                        ".faq-item"
+                    );
+
+
+                if(!item){
+
+                    return;
+
+                }
+
+
+                const wasOpen =
+                    item.classList.contains(
+                        "open"
+                    );
+
+
+                /* CLOSE ALL */
+
+                document
+                    .querySelectorAll(
+                        ".faq-item.open"
+                    )
+                    .forEach(
+                        function(openItem){
+
+                            openItem.classList.remove(
+                                "open"
+                            );
+
+                        }
+                    );
+
+
+                /* OPEN SELECTED */
+
+                if(!wasOpen){
+
+                    item.classList.add(
+                        "open"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   EMAIL SUPPORT
+========================================================= */
+
+/*
+   IMPORTANT:
+   Replace this support email later with
+   your real TaskEarn support email.
+
+   Everything else can remain unchanged.
+*/
+
+const SUPPORT_EMAIL =
+    "support@taskearn.app";
+
+
+document
+    .getElementById(
+        "emailSupportButton"
+    )
+    .addEventListener(
+        "click",
+        async function(){
+
+            let email = "";
+
+
+            try{
+
+                const result =
+                    await supabaseClient
+                        .auth
+                        .getSession();
+
+
+                if(
+                    result.data &&
+                    result.data.session &&
+                    result.data.session.user
+                ){
+
+                    email =
+                        result.data.session.user.email ||
+                        "";
+
+                }
+
+            }catch(error){
+
+                console.warn(
+                    "Email lookup:",
+                    error
+                );
+
+            }
+
+
+            const subject =
+                encodeURIComponent(
+                    "TaskEarn Support Request"
+                );
+
+
+            const body =
+                encodeURIComponent(
+                    email
+                        ? "Registered email: " + email +
+                          "\n\nPlease describe your issue here."
+                        : "Please describe your TaskEarn issue here."
+                );
+
+
+            window.location.href =
+                "mailto:" +
+                SUPPORT_EMAIL +
+                "?subject=" +
+                subject +
+                "&body=" +
+                body;
+
+        }
+    );
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+const chatBody =
+    document.getElementById(
+        "chatBody"
+    );
+
+const chatInput =
+    document.getElementById(
+        "chatInput"
+    );
+
+const sendButton =
+    document.getElementById(
+        "sendButton"
+    );
+
+
+/* =========================================================
+   ADD MESSAGE
+========================================================= */
+
+function addMessage(
+    text,
+    type
+){
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+
+    row.className =
+        "message-row " +
+        (
+            type === "user"
+                ? "user"
+                : ""
+        );
+
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+
+    message.className =
+        "message " +
+        (
+            type === "user"
+                ? "user"
+                : "bot"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    const time =
+        document.createElement(
+            "span"
+        );
+
+
+    time.className =
+        "message-time";
+
+
+    time.textContent =
+        type === "user"
+            ? "You"
+            : "Support Assistant";
+
+
+    message.appendChild(
+        time
+    );
+
+
+    row.appendChild(
+        message
+    );
+
+
+    chatBody.appendChild(
+        row
+    );
+
+
+    chatBody.scrollTop =
+        chatBody.scrollHeight;
+
+}
+
+
+/* =========================================================
+   SUPPORT KNOWLEDGE
+========================================================= */
+
+function getSupportReply(
+    question
+){
+
+    const q =
+        String(
+            question || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if(!q){
+
+        return "Please type your question first. I can help with payments, withdrawals, tasks, rewards, wallet, account security and login.";
+
+    }
+
+
+    /* WITHDRAWAL */
+
+    if(
+        q.includes("withdraw") ||
+        q.includes("cashout") ||
+        q.includes("cash out") ||
+        q.includes("payout")
+    ){
+
+        if(
+            q.includes("pending") ||
+            q.includes("wait") ||
+            q.includes("late") ||
+            q.includes("delay")
+        ){
+
+            return "If your withdrawal is pending, first check Wallet and History for its current status. A withdrawal may require processing or verification. If it remains pending beyond the applicable processing period, contact TaskEarn Support with the withdrawal details.";
+
+        }
+
+
+        if(
+            q.includes("failed") ||
+            q.includes("fail") ||
+            q.includes("reject") ||
+            q.includes("declin")
+        ){
+
+            return "If a withdrawal failed or was rejected, check that your payment information is correct and that the withdrawal meets the current requirements. Please do not repeatedly submit incorrect details. If the problem continues, contact Support.";
+
+        }
+
+
+        return "For withdrawal questions, open Wallet and check your balance and withdrawal status. If you have already submitted a withdrawal, check History for the latest status.";
+
+    }
+
+
+    /* PAYMENT */
+
+    if(
+        q.includes("payment") ||
+        q.includes("pay") ||
+        q.includes("upi") ||
+        q.includes("bank") ||
+        q.includes("transaction")
+    ){
+
+        if(
+            q.includes("pin") ||
+            q.includes("otp") ||
+            q.includes("cvv") ||
+            q.includes("atm")
+        ){
+
+            return "Never share your OTP, UPI PIN, ATM PIN, CVV or account password with TaskEarn Support or anyone else. These are private security credentials.";
+
+        }
+
+
+        if(
+            q.includes("wrong") ||
+            q.includes("incorrect") ||
+            q.includes("change")
+        ){
+
+            return "Please check your payment information carefully before submitting a withdrawal. If you already submitted incorrect information, contact Support as soon as possible.";
+
+        }
+
+
+        return "For payment problems, first check your Wallet and History. Confirm the transaction status and payment information. If the issue is still unresolved, contact TaskEarn Support with the relevant transaction details.";
+
+    }
+
+
+    /* REWARD */
+
+    if(
+        q.includes("reward") ||
+        q.includes("earning") ||
+        q.includes("earn") ||
+        q.includes("money missing") ||
+        q.includes("missing")
+    ){
+
+        return "If a task reward is missing, check My Tasks and History to confirm whether the task was recorded as completed. Some rewards may require verification before being credited. If a completed task has no reward, contact Support with the task name and details.";
+
+    }
+
+
+    /* TASK */
+
+    if(
+        q.includes("task") ||
+        q.includes("mission") ||
+        q.includes("complete")
+    ){
+
+        return "For task problems, check My Tasks first and make sure the task was completed according to its requirements. If a completed task is not recorded correctly, keep the task details and contact Support.";
+
+    }
+
+
+    /* OTP / SECURITY */
+
+    if(
+        q.includes("otp") ||
+        q.includes("password") ||
+        q.includes("security") ||
+        q.includes("pin") ||
+        q.includes("cvv") ||
+        q.includes("safe")
+    ){
+
+        return "Keep your account credentials private. TaskEarn Support should never need your password, OTP, UPI PIN, CVV or ATM PIN. If someone asks for these details, do not share them.";
+
+    }
+
+
+    /* LOGIN */
+
+    if(
+        q.includes("login") ||
+        q.includes("log in") ||
+        q.includes("sign in") ||
+        q.includes("signin") ||
+        q.includes("account")
+    ){
+
+        if(
+            q.includes("restrict") ||
+            q.includes("block") ||
+            q.includes("suspend")
+        ){
+
+            return "If your account is restricted or suspended, do not create duplicate accounts to bypass the restriction. Contact TaskEarn Support so the account can be reviewed.";
+
+        }
+
+
+        return "If you cannot access your account, check your login details and use the available account-security or password-recovery option. Never share your password or OTP with anyone.";
+
+    }
+
+
+    /* WALLET */
+
+    if(
+        q.includes("wallet") ||
+        q.includes("balance")
+    ){
+
+        return "Your Wallet shows your available balance and withdrawal-related information. If the balance looks incorrect, compare it with your task and transaction history and contact Support if needed.";
+
+    }
+
+
+    /* HISTORY */
+
+    if(
+        q.includes("history") ||
+        q.includes("transaction history")
+    ){
+
+        return "Open History to review your recorded activity and transaction information. When contacting Support about a payment or reward, the information shown there can help identify the issue.";
+
+    }
+
+
+    /* HELP */
+
+    if(
+        q.includes("help") ||
+        q.includes("support") ||
+        q.includes("problem") ||
+        q.includes("issue")
+    ){
+
+        return "Sure. I can help with payments, withdrawals, missing task rewards, wallet balance, account security, login and general TaskEarn questions. Try asking something like 'Why is my withdrawal pending?'";
+
+    }
+
+
+    /* DEFAULT */
+
+    return "I can currently help with TaskEarn payments, withdrawals, tasks, rewards, wallet, account security and login. Please describe your problem in a little more detail.";
+
+}
+
+
+/* =========================================================
+   SEND QUESTION
+========================================================= */
+
+function sendQuestion(
+    question
+){
+
+    const text =
+        String(
+            question || ""
+        ).trim();
+
+
+    if(!text){
+
+        showToast(
+            "Type a question first."
+        );
+
+        return;
+
+    }
+
+
+    addMessage(
+        text,
+        "user"
+    );
+
+
+    chatInput.value =
+        "";
+
+
+    /*
+       Small delay makes the automatic
+       assistant feel natural.
+
+       Later this same function can be
+       connected to a real AI backend
+       without changing the chat UI.
+    */
+
+    setTimeout(
+        function(){
+
+            const reply =
+                getSupportReply(
+                    text
+                );
+
+
+            addMessage(
+                reply,
+                "bot"
+            );
+
+        },
+        350
+    );
+
+}
+
+
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+sendButton.addEventListener(
+    "click",
+    function(){
+
+        sendQuestion(
+            chatInput.value
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ENTER TO SEND
+========================================================= */
+
+chatInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter"
+        ){
+
+            event.preventDefault();
+
+            sendQuestion(
+                chatInput.value
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   QUICK QUESTIONS
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".quick-btn"
+    )
+    .forEach(
+        function(button){
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    const question =
+                        button.dataset.question ||
+                        "";
+
+
+                    chatInput.value =
+                        question;
+
+
+                    sendQuestion(
+                        question
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+document
+    .getElementById(
+        "homeNav"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "home"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "tasksNav"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "tasks"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "walletNav"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "wallet"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "projectsNav"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "projects"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "profileNav"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            goTo(
+                "profile"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   AUTH CHECK
+========================================================= */
+
+async function checkAuth(){
+
+    try{
+
+        const result =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if(
+            result.error
+        ){
+
+            console.warn(
+                result.error
+            );
+
+            return;
+
+        }
+
+
+        const session =
+            result.data &&
+            result.data.session;
+
+
+        /*
+           If no session exists, send the
+           user to login just like Profile.
+        */
+
+        if(
+            !session ||
+            !session.user
+        ){
+
+            window.location.replace(
+                ROUTES.login
+            );
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "Auth check:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        function(event){
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                window.location.replace(
+                    ROUTES.login
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   START
+========================================================= */
+
+checkAuth();
+
+</script>
+
+</body>
+
+</html>

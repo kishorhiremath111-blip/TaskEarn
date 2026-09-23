@@ -1,0 +1,3335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080a1b">
+
+<title>TaskEarn — Company Projects</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#080a1b;
+  color:#f4f6ff;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button,a{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+:root{
+  --bg:#080a1b;
+  --card:#101327;
+  --card2:#14182d;
+  --line:rgba(255,255,255,.07);
+  --blue:#718cff;
+  --purple:#936fff;
+  --green:#38dfad;
+  --yellow:#ffd05a;
+  --red:#ff647d;
+  --muted:#858eaa;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 8% 0%,rgba(83,105,255,.20),transparent 30%),
+    radial-gradient(circle at 100% 25%,rgba(143,93,255,.15),transparent 32%),
+    linear-gradient(180deg,#090b20,#070918 75%,#080a1b);
+}
+
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 90%);
+}
+
+/* HEADER */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  min-height:68px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 16px;
+  background:rgba(8,10,27,.91);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.back{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  color:#edf0ff;
+  background:linear-gradient(145deg,#181c38,#0e1126);
+  border:1px solid rgba(255,255,255,.10);
+  transition:transform .16s ease,filter .16s ease;
+}
+
+.back:active{
+  transform:scale(.91);
+  filter:brightness(.85);
+}
+
+.back svg{
+  width:22px;
+  height:22px;
+}
+
+.header-title{
+  min-width:0;
+  flex:1;
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:-.5px;
+}
+
+.header-title span{
+  color:#718cff;
+}
+
+/* PAGE */
+
+.page{
+  width:100%;
+  max-width:780px;
+  margin:auto;
+  padding:16px 15px 45px;
+}
+
+/* INTRO */
+
+.intro{
+  position:relative;
+  overflow:hidden;
+  padding:21px;
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(113,140,255,.22),transparent 42%),
+    linear-gradient(145deg,#181c3d,#101326);
+  border:1px solid rgba(113,140,255,.18);
+  box-shadow:0 20px 50px rgba(0,0,0,.24);
+  animation:fadeUp .35s ease both;
+}
+
+.intro:after{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  right:-70px;
+  bottom:-80px;
+  border-radius:50%;
+  background:rgba(147,111,255,.08);
+}
+
+.intro-content{
+  position:relative;
+  z-index:1;
+}
+
+.intro-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 10px;
+  border-radius:9px;
+  color:#a9b5ff;
+  background:rgba(113,140,255,.10);
+  border:1px solid rgba(113,140,255,.12);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.35px;
+}
+
+.badge-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#718cff;
+  box-shadow:0 0 9px rgba(113,140,255,.8);
+}
+
+.intro h1{
+  margin:13px 0 7px;
+  font-size:25px;
+  line-height:1.2;
+  letter-spacing:-.7px;
+}
+
+.intro p{
+  margin:0;
+  max-width:620px;
+  color:#9099b3;
+  font-size:13px;
+  line-height:1.65;
+}
+
+/* QUALIFICATION */
+
+.qualification{
+  margin-top:13px;
+  padding:18px;
+  border-radius:19px;
+  background:rgba(14,17,35,.94);
+  border:1px solid rgba(255,255,255,.065);
+  animation:fadeUp .4s ease both;
+}
+
+.qualification-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:14px;
+}
+
+.qualification-title{
+  color:#e7eaf6;
+  font-size:16px;
+  font-weight:900;
+}
+
+.qualification-sub{
+  margin-top:4px;
+  color:#7d86a1;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.lock-pill{
+  flex:0 0 auto;
+  padding:6px 9px;
+  border-radius:8px;
+  color:#ffd875;
+  background:rgba(255,208,90,.08);
+  border:1px solid rgba(255,208,90,.12);
+  font-size:10px;
+  font-weight:900;
+}
+
+/* QUALIFICATION STEPS */
+
+.qual-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.qual-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.045);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+  cursor:pointer;
+}
+
+.qual-item:hover{
+  transform:translateX(2px);
+  border-color:rgba(113,140,255,.13);
+  background:rgba(113,140,255,.035);
+}
+
+.qual-item:active{
+  transform:scale(.985);
+}
+
+.qual-number{
+  width:35px;
+  height:35px;
+  flex:0 0 35px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  color:#aab6ff;
+  background:rgba(113,140,255,.10);
+  font-size:12px;
+  font-weight:950;
+}
+
+.qual-info{
+  min-width:0;
+  flex:1;
+}
+
+.qual-name{
+  color:#d8dcec;
+  font-size:13px;
+  font-weight:850;
+}
+
+.qual-desc{
+  margin-top:3px;
+  color:#747e99;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.qual-status{
+  width:25px;
+  height:25px;
+  flex:0 0 25px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#69738e;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.qual-status svg{
+  width:14px;
+  height:14px;
+}
+
+.qual-item.completed{
+  border-color:rgba(56,223,173,.15);
+  background:rgba(56,223,173,.025);
+}
+
+.qual-item.completed .qual-number{
+  color:#38dfad;
+  background:rgba(56,223,173,.09);
+}
+
+.qual-item.completed .qual-status{
+  color:#38dfad;
+  background:rgba(56,223,173,.10);
+  border-color:rgba(56,223,173,.18);
+}
+
+/* CURRENT STEP */
+
+.qual-item.current-step{
+  border-color:rgba(113,140,255,.28);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(113,140,255,.08),
+      rgba(147,111,255,.035)
+    );
+  box-shadow:
+    0 8px 25px rgba(58,76,170,.10);
+}
+
+.qual-item.current-step .qual-number{
+  color:#fff;
+  background:linear-gradient(135deg,#718cff,#936fff);
+  box-shadow:0 5px 16px rgba(113,140,255,.22);
+}
+
+.qual-item.current-step .qual-name{
+  color:#ffffff;
+}
+
+/* POINTS */
+
+.points-box{
+  margin-top:12px;
+  padding:15px;
+  border-radius:15px;
+  background:linear-gradient(135deg,rgba(113,140,255,.07),rgba(147,111,255,.05));
+  border:1px solid rgba(113,140,255,.10);
+  cursor:pointer;
+}
+
+.points-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:9px;
+}
+
+.points-label{
+  color:#cdd2e6;
+  font-size:12px;
+  font-weight:850;
+}
+
+.points-value{
+  color:#8ea1ff;
+  font-size:13px;
+  font-weight:950;
+}
+
+.points-track{
+  height:8px;
+  overflow:hidden;
+  border-radius:99px;
+  background:rgba(255,255,255,.06);
+}
+
+.points-fill{
+  width:0%;
+  height:100%;
+  border-radius:99px;
+  background:linear-gradient(90deg,#718cff,#936fff);
+  transition:width .6s ease;
+}
+
+.points-note{
+  margin-top:8px;
+  color:#747e99;
+  font-size:10px;
+}
+
+/* PROJECT HEADER */
+
+.projects-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:23px;
+  margin-bottom:12px;
+}
+
+.projects-title{
+  color:#edf0fa;
+  font-size:19px;
+  font-weight:950;
+  letter-spacing:-.35px;
+}
+
+.projects-sub{
+  margin-top:4px;
+  color:#747e99;
+  font-size:11px;
+}
+
+.project-count{
+  color:#8e9bff;
+  font-size:12px;
+  font-weight:900;
+}
+
+/* PROJECT GRID */
+
+.projects{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* PROJECT CARD */
+
+.project-card{
+  position:relative;
+  overflow:hidden;
+  padding:17px;
+  border-radius:19px;
+  background:linear-gradient(145deg,rgba(20,24,45,.98),rgba(13,16,34,.98));
+  border:1px solid rgba(255,255,255,.065);
+  box-shadow:0 12px 30px rgba(0,0,0,.13);
+  transition:transform .20s ease,border-color .20s ease,box-shadow .20s ease;
+}
+
+.project-card:before{
+  content:"";
+  position:absolute;
+  width:130px;
+  height:130px;
+  top:-90px;
+  right:-70px;
+  border-radius:50%;
+  background:rgba(113,140,255,.07);
+  pointer-events:none;
+}
+
+.project-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(113,140,255,.15);
+  box-shadow:0 17px 38px rgba(0,0,0,.18);
+}
+
+.project-top{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.project-icon{
+  width:47px;
+  height:47px;
+  flex:0 0 47px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  color:#8ea0ff;
+  background:linear-gradient(145deg,#202958,#11162f);
+  border:1px solid rgba(113,140,255,.17);
+}
+
+.project-icon svg{
+  width:23px;
+  height:23px;
+}
+
+.project-main{
+  min-width:0;
+  flex:1;
+}
+
+.project-title{
+  color:#edf0fb;
+  font-size:17px;
+  font-weight:900;
+  line-height:1.3;
+  letter-spacing:-.25px;
+}
+
+.project-category{
+  margin-top:4px;
+  color:#7d86a2;
+  font-size:11px;
+  font-weight:650;
+}
+
+.project-reward{
+  flex:0 0 auto;
+  text-align:right;
+}
+
+.reward-label{
+  color:#6e7893;
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.5px;
+}
+
+.reward{
+  margin-top:3px;
+  color:#f4f6ff;
+  font-size:21px;
+  font-weight:950;
+  letter-spacing:-.5px;
+}
+
+/* PROJECT INFO */
+
+.project-info{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:14px;
+}
+
+.info{
+  padding:10px 11px;
+  border-radius:11px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.045);
+}
+
+.info-label{
+  color:#68728c;
+  font-size:9px;
+  font-weight:800;
+}
+
+.info-value{
+  margin-top:3px;
+  color:#cfd4e6;
+  font-size:12px;
+  font-weight:850;
+}
+
+/* COMPLETED BAR */
+
+.completed-row{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:12px;
+}
+
+.completed{
+  color:#7e88a2;
+  font-size:10px;
+  font-weight:700;
+}
+
+.completed strong{
+  color:#38dfad;
+  font-size:12px;
+  font-weight:950;
+}
+
+.available{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:#4ce2b4;
+  font-size:10px;
+  font-weight:850;
+}
+
+.available-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#38dfad;
+  box-shadow:0 0 8px rgba(56,223,173,.65);
+}
+
+/* START BUTTON */
+
+.start-btn{
+  position:relative;
+  overflow:hidden;
+  width:100%;
+  min-height:50px;
+  margin-top:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:0;
+  border-radius:14px;
+  color:#fff;
+  background:linear-gradient(135deg,#718cff,#536edc);
+  box-shadow:0 12px 28px rgba(76,101,222,.20);
+  font-size:13px;
+  font-weight:950;
+  transition:transform .16s ease,filter .16s ease,box-shadow .16s ease;
+}
+
+.start-btn:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-110%;
+  width:65%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);
+  transform:skewX(-18deg);
+  transition:left .55s ease;
+}
+
+.start-btn:hover:before{
+  left:140%;
+}
+
+.start-btn:hover{
+  filter:brightness(1.07);
+  box-shadow:0 15px 32px rgba(76,101,222,.27);
+}
+
+.start-btn:active{
+  transform:scale(.965) translateY(1px);
+  filter:brightness(.86);
+}
+
+.start-btn svg{
+  width:18px;
+  height:18px;
+}
+
+.locked-btn{
+  background:linear-gradient(135deg,#272c43,#1a1e32);
+  color:#737d97;
+  box-shadow:none;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.locked-btn:hover{
+  filter:none;
+  box-shadow:none;
+}
+
+.unlocked-btn{
+  background:linear-gradient(135deg,#718cff,#536edc);
+  color:#fff;
+}
+
+/* NOTICE */
+
+.notice{
+  margin-top:15px;
+  padding:14px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  border-radius:15px;
+  background:rgba(255,208,90,.035);
+  border:1px solid rgba(255,208,90,.08);
+}
+
+.notice-icon{
+  width:32px;
+  height:32px;
+  flex:0 0 32px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  color:#ffd76d;
+  background:rgba(255,208,90,.08);
+}
+
+.notice-icon svg{
+  width:17px;
+  height:17px;
+}
+
+.notice-title{
+  color:#d9dceb;
+  font-size:12px;
+  font-weight:900;
+}
+
+.notice-text{
+  margin-top:3px;
+  color:#7c859f;
+  font-size:10.5px;
+  line-height:1.55;
+}
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.project-card{
+  animation:fadeUp .35s ease both;
+}
+
+.project-card:nth-child(2){animation-delay:.04s}
+.project-card:nth-child(3){animation-delay:.08s}
+.project-card:nth-child(4){animation-delay:.12s}
+.project-card:nth-child(5){animation-delay:.16s}
+.project-card:nth-child(6){animation-delay:.20s}
+.project-card:nth-child(7){animation-delay:.24s}
+.project-card:nth-child(8){animation-delay:.28s}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  z-index:300;
+  width:max-content;
+  max-width:calc(100% - 30px);
+  padding:12px 16px;
+  border-radius:13px;
+  background:#171b32;
+  border:1px solid rgba(255,255,255,.11);
+  color:#edf0ff;
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,18px);
+  transition:opacity .22s ease,transform .22s ease;
+  box-shadow:0 15px 35px rgba(0,0,0,.45);
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* MOBILE */
+
+@media(max-width:520px){
+
+  .header{
+    min-height:66px;
+    padding:9px 13px;
+  }
+
+  .header-title{
+    font-size:18px;
+  }
+
+  .page{
+    padding:14px 12px 40px;
+  }
+
+  .intro{
+    padding:18px;
+    border-radius:20px;
+  }
+
+  .intro h1{
+    font-size:22px;
+  }
+
+  .intro p{
+    font-size:12px;
+  }
+
+  .qualification{
+    padding:16px;
+  }
+
+  .project-card{
+    padding:15px;
+  }
+
+  .project-title{
+    font-size:16px;
+  }
+
+  .reward{
+    font-size:20px;
+  }
+}
+
+@media(max-width:360px){
+
+  .page{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .project-top{
+    gap:9px;
+  }
+
+  .project-icon{
+    width:43px;
+    height:43px;
+    flex-basis:43px;
+  }
+
+  .project-title{
+    font-size:15px;
+  }
+
+  .project-reward{
+    max-width:82px;
+  }
+
+  .reward{
+    font-size:18px;
+  }
+
+  .project-info{
+    gap:6px;
+  }
+
+  .info{
+    padding:9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+
+<symbol id="back" viewBox="0 0 24 24">
+<path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="briefcase" viewBox="0 0 24 24">
+<rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18" fill="none" stroke="currentColor" stroke-width="1.8"/>
+</symbol>
+
+<symbol id="file" viewBox="0 0 24 24">
+<path d="M6 3h8l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M14 3v5h5M9 13h6M9 17h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="pen" viewBox="0 0 24 24">
+<path d="m4 20 4.2-1 10.6-10.6a2 2 0 0 0-2.8-2.8L5.4 16.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="m13.8 6.2 4 4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+</symbol>
+
+<symbol id="users" viewBox="0 0 24 24">
+<circle cx="9" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M3.5 20c.5-3.6 2.3-5.3 5.5-5.3s5 1.7 5.5 5.3M14 15c3.5-.4 5.7 1.2 6.5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="clock" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="arrow" viewBox="0 0 24 24">
+<path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="check" viewBox="0 0 24 24">
+<path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="lock" viewBox="0 0 24 24">
+<rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="play" viewBox="0 0 24 24">
+<path d="m9 6 9 6-9 6z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="star" viewBox="0 0 24 24">
+<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+</symbol>
+
+</svg>
+
+
+<header class="header">
+
+<button class="back" id="backBtn" aria-label="Back">
+<svg><use href="#back"></use></svg>
+</button>
+
+<div class="header-title">
+Task<span>Earn</span> — Company Projects
+</div>
+
+</header>
+
+
+<main class="page">
+
+<section class="intro">
+
+<div class="intro-content">
+
+<div class="intro-badge">
+<span class="badge-dot"></span>
+COMPANY WORK HUB
+</div>
+
+<h1>
+Earn More With Company Projects
+</h1>
+
+<p>
+Complete the qualification steps one by one.
+Start with Watch & Earn, then complete the
+required TaskEarn activity before moving forward.
+Once you qualify, company projects can become
+available for higher-value earning opportunities.
+</p>
+
+</div>
+
+</section>
+
+
+<section class="qualification">
+
+<div class="qualification-head">
+
+<div>
+
+<div class="qualification-title">
+Unlock Company Projects
+</div>
+
+<div class="qualification-sub" id="qualificationSub">
+Start with Watch & Earn. Complete each requirement
+one by one to unlock company work.
+</div>
+
+</div>
+
+<div class="lock-pill" id="qualificationPill">
+LOCKED
+</div>
+
+</div>
+
+
+<div class="qual-list">
+
+<!-- STEP 1 -->
+
+<div class="qual-item" data-step="1">
+
+<div class="qual-number">01</div>
+
+<div class="qual-info">
+
+<div class="qual-name">
+Build Your Task Profile
+</div>
+
+<div class="qual-desc">
+First complete Watch & Earn rewards.
+Tap here to open the Watch & Earn page.
+</div>
+
+</div>
+
+<div class="qual-status">
+<svg><use href="#play"></use></svg>
+</div>
+
+</div>
+
+
+<!-- STEP 2 -->
+
+<div class="qual-item" data-step="2">
+
+<div class="qual-number">02</div>
+
+<div class="qual-info">
+
+<div class="qual-name">
+Complete Task Activity
+</div>
+
+<div class="qual-desc">
+After Watch & Earn, complete your required
+TaskEarn task activity.
+</div>
+
+</div>
+
+<div class="qual-status">
+<svg><use href="#lock"></use></svg>
+</div>
+
+</div>
+
+
+<!-- STEP 3 -->
+
+<div class="qual-item" data-step="3">
+
+<div class="qual-number">03</div>
+
+<div class="qual-info">
+
+<div class="qual-name">
+Refer 3 People
+</div>
+
+<div class="qual-desc">
+Invite 3 people to TaskEarn and have
+their qualifying activity recorded.
+</div>
+
+</div>
+
+<div class="qual-status">
+<svg><use href="#users"></use></svg>
+</div>
+
+</div>
+
+
+<!-- STEP 4 -->
+
+<div class="qual-item" data-step="4">
+
+<div class="qual-number">04</div>
+
+<div class="qual-info">
+
+<div class="qual-name">
+Reach 5,000 Points
+</div>
+
+<div class="qual-desc">
+Build your points balance through
+eligible TaskEarn activities.
+</div>
+
+</div>
+
+<div class="qual-status">
+<svg><use href="#star"></use></svg>
+</div>
+
+</div>
+
+
+<!-- STEP 5 -->
+
+<div class="qual-item" data-step="5">
+
+<div class="qual-number">05</div>
+
+<div class="qual-info">
+
+<div class="qual-name">
+Create a TaskEarn Advertisement
+</div>
+
+<div class="qual-desc">
+Make the best promotional advertisement
+you can for TaskEarn and submit it for review.
+</div>
+
+</div>
+
+<div class="qual-status">
+<svg><use href="#pen"></use></svg>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="points-box" id="pointsBox">
+
+<div class="points-head">
+
+<div class="points-label">
+Points Qualification
+</div>
+
+<div class="points-value" id="pointsValue">
+0 / 5,000
+</div>
+
+</div>
+
+<div class="points-track">
+
+<div class="points-fill" id="pointsFill"></div>
+
+</div>
+
+<div class="points-note">
+5,000 points are required before
+company projects can be unlocked.
+</div>
+
+</div>
+
+</section>
+
+
+<div class="projects-head">
+
+<div>
+
+<div class="projects-title">
+Available Company Projects
+</div>
+
+<div class="projects-sub">
+Higher-value work opportunities
+</div>
+
+</div>
+
+<div class="project-count">
+8 Projects
+</div>
+
+</div>
+
+
+<section class="projects">
+
+<!-- PROJECT 1 -->
+
+<article class="project-card" data-project-id="1">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#file"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Form Filling Work
+</div>
+
+<div class="project-category">
+Data Entry & Documentation
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹6,000
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+29 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Form Filling
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>223+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Form Filling Work" data-id="1">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+
+<!-- PROJECT 2 -->
+
+<article class="project-card" data-project-id="2">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#pen"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Dialogue Writing Project
+</div>
+
+<div class="project-category">
+Content & Creative Writing
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹3,500
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+18 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Writing
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>287+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Dialogue Writing Project" data-id="2">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+
+<!-- PROJECT 3 -->
+
+<article class="project-card" data-project-id="3">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#file"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Document Verification
+</div>
+
+<div class="project-category">
+Document Review
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹9,800
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+45 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Verification
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>241+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Document Verification" data-id="3">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+
+<!-- PROJECT 4 -->
+
+<article class="project-card" data-project-id="4">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#pen"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Content Writing Assignment
+</div>
+
+<div class="project-category">
+Article & Content Writing
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹7,500
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+32 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Content
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>318+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Content Writing Assignment" data-id="4">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+
+<!-- PROJECT 5 -->
+
+<article class="project-card" data-project-id="5">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#users"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Customer Survey Project
+</div>
+
+<div class="project-category">
+Survey & Data Collection
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹4,800
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+21 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Survey
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>356+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Customer Survey Project" data-id="5">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+
+<!-- PROJECT 6 -->
+
+<article class="project-card" data-project-id="6">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#file"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Data Collection Work
+</div>
+
+<div class="project-category">
+Research & Data Entry
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹8,200
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+36 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Data Work
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>264+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Data Collection Work" data-id="6">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+
+<!-- PROJECT 7 -->
+
+<article class="project-card" data-project-id="7">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#pen"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Translation & Editing
+</div>
+
+<div class="project-category">
+Language & Editing
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹5,600
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+24 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Editing
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>229+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Translation & Editing" data-id="7">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+
+<!-- PROJECT 8 -->
+
+<article class="project-card" data-project-id="8">
+
+<div class="project-top">
+
+<div class="project-icon">
+<svg><use href="#star"></use></svg>
+</div>
+
+<div class="project-main">
+
+<div class="project-title">
+Promotional Content Project
+</div>
+
+<div class="project-category">
+Marketing & Promotion
+</div>
+
+</div>
+
+<div class="project-reward">
+
+<div class="reward-label">
+REWARD
+</div>
+
+<div class="reward">
+₹12,000
+</div>
+
+</div>
+
+</div>
+
+<div class="project-info">
+
+<div class="info">
+
+<div class="info-label">
+DURATION
+</div>
+
+<div class="info-value">
+40 Days
+</div>
+
+</div>
+
+<div class="info">
+
+<div class="info-label">
+WORK TYPE
+</div>
+
+<div class="info-value">
+Promotion
+</div>
+
+</div>
+
+</div>
+
+<div class="completed-row">
+
+<div class="completed">
+<strong>223+</strong>
+users completed
+</div>
+
+<div class="available">
+<span class="available-dot"></span>
+Available
+</div>
+
+</div>
+
+<button class="start-btn locked-btn" data-project="Promotional Content Project" data-id="8">
+<svg><use href="#lock"></use></svg>
+<span>Unlock Project</span>
+</button>
+
+</article>
+
+</section>
+
+
+<div class="notice">
+
+<div class="notice-icon">
+<svg><use href="#lock"></use></svg>
+</div>
+
+<div>
+
+<div class="notice-title" id="noticeTitle">
+Company Projects are currently locked
+</div>
+
+<div class="notice-text" id="noticeText">
+Start with Watch & Earn and complete each
+qualification requirement one by one.
+After all required conditions are genuinely
+verified, eligible company projects can unlock.
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+
+<div class="toast" id="toast"></div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* =========================================================
+   TASK EARN — COMPANY PROJECTS
+   WATCH & EARN → TASK → OTHER QUALIFICATIONS
+========================================================= */
+
+const SUPABASE_URL =
+  "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   ROUTES
+========================================================= */
+
+const ROUTES = {
+
+  home:"home.html",
+
+  /* STEP 1 — WATCH & EARN */
+  watchEarn:"rewards.html",
+
+  /* STEP 2 — TASK ACTIVITY */
+  tasks:"tasks.html",
+
+  referral:"home.html#referral",
+
+  points:"home.html#points",
+
+  advertisement:"company-ad.html?section=advertisement",
+
+  review:"company-review.html?section=review",
+
+  companyDetails:"company-details.html"
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const qualification = {
+
+  /* Watch & Earn */
+  step1:false,
+
+  /* Task activity */
+  step2:false,
+
+  /* Referral */
+  step3:false,
+
+  /* Points */
+  step4:false,
+
+  /* Advertisement / review */
+  step5:false,
+
+  points:0,
+
+  referrals:0
+
+};
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+document
+  .getElementById("backBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      window.location.replace(
+        ROUTES.home
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   GET CURRENT USER
+========================================================= */
+
+async function getCurrentUser(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+    if(error){
+
+      console.error(
+        "Session error:",
+        error
+      );
+
+      return null;
+
+    }
+
+    return data &&
+           data.session &&
+           data.session.user
+      ? data.session.user
+      : null;
+
+  }catch(error){
+
+    console.error(
+      "User session error:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   STEP 1
+   WATCH & EARN COMPLETION
+=========================================================
+
+   Primary source:
+   secure backend qualification RPC.
+
+   Local flag is also checked so rewards.html can
+   immediately show the completed state after its
+   own completion flow.
+
+   IMPORTANT:
+   Projects are NOT unlocked from this local flag alone.
+   Backend qualification remains the final authority.
+========================================================= */
+
+function getLocalWatchEarnStatus(){
+
+  return (
+    localStorage.getItem(
+      "taskearn_watch_earn_completed"
+    ) === "true"
+  );
+
+}
+
+
+async function checkWatchEarn(userId){
+
+  /*
+     Local completion is useful for immediate UI.
+  */
+
+  const localCompleted =
+    getLocalWatchEarnStatus();
+
+
+  /*
+     If backend RPC returns a verified value,
+     that value is preferred.
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_company_qualification_status",
+          {
+            p_user_id:userId
+          }
+        );
+
+
+    if(!error && data){
+
+      const result =
+        Array.isArray(data)
+          ? data[0] || null
+          : data;
+
+
+      if(result){
+
+        if(
+          result.watch_earn_completed === true ||
+          result.step1 === true
+        ){
+
+          return true;
+
+        }
+
+        /*
+           Backend explicitly says incomplete.
+        */
+
+        if(
+          result.watch_earn_completed === false ||
+          result.step1 === false
+        ){
+
+          return false;
+
+        }
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Watch & Earn backend check unavailable:",
+      error
+    );
+
+  }
+
+
+  return localCompleted;
+
+}
+
+
+/* =========================================================
+   STEP 2
+   REAL TASK ACTIVITY FROM task_submissions
+========================================================= */
+
+async function checkStep2(userId){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("task_submissions")
+        .select(
+          "id,status"
+        )
+        .eq(
+          "user_id",
+          userId
+        );
+
+
+    if(error){
+
+      console.error(
+        "Step 2 error:",
+        error
+      );
+
+      return false;
+
+    }
+
+
+    if(!Array.isArray(data))
+      return false;
+
+
+    /*
+       At least one approved task submission
+       means task activity requirement is complete.
+    */
+
+    return data.some(
+      row =>
+        String(
+          row.status || ""
+        ).toLowerCase() === "approved"
+    );
+
+  }catch(error){
+
+    console.error(
+      "Step 2 check error:",
+      error
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* =========================================================
+   QUALIFICATION BACKEND
+=========================================================
+
+   Expected secure RPC:
+
+   get_company_qualification_status
+
+   Expected result can contain:
+
+   {
+      watch_earn_completed:true,
+      referrals:3,
+      points:5000,
+      step1:true,
+      step2:true,
+      step3:true,
+      step4:true,
+      step5:true,
+      unlocked:true
+   }
+
+   If the RPC is unavailable, the page DOES NOT
+   invent backend qualification data.
+========================================================= */
+
+async function loadBackendQualification(userId){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_company_qualification_status",
+          {
+            p_user_id:userId
+          }
+        );
+
+
+    if(error){
+
+      console.warn(
+        "Company qualification backend not available yet:",
+        error.message
+      );
+
+      return null;
+
+    }
+
+
+    if(!data){
+
+      return null;
+
+    }
+
+
+    return Array.isArray(data)
+      ? data[0] || null
+      : data;
+
+
+  }catch(error){
+
+    console.warn(
+      "Qualification RPC unavailable:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD QUALIFICATION
+========================================================= */
+
+async function loadQualification(){
+
+  const user =
+    await getCurrentUser();
+
+
+  if(!user){
+
+    qualification.step1 =
+      getLocalWatchEarnStatus();
+
+    qualification.step2 = false;
+    qualification.step3 = false;
+    qualification.step4 = false;
+    qualification.step5 = false;
+
+    qualification.points = 0;
+    qualification.referrals = 0;
+
+    renderQualification();
+
+    return;
+
+  }
+
+
+  /*
+     STEP 1
+     WATCH & EARN
+  */
+
+  qualification.step1 =
+    await checkWatchEarn(
+      user.id
+    );
+
+
+  /*
+     STEP 2
+     TASK ACTIVITY
+  */
+
+  qualification.step2 =
+    await checkStep2(
+      user.id
+    );
+
+
+  /*
+     Backend handles remaining
+     qualification conditions.
+  */
+
+  const backend =
+    await loadBackendQualification(
+      user.id
+    );
+
+
+  if(backend){
+
+    qualification.referrals =
+      Number(
+        backend.referrals || 0
+      );
+
+
+    qualification.points =
+      Number(
+        backend.points || 0
+      );
+
+
+    /*
+       STEP 1 backend verification
+    */
+
+    if(
+      backend.watch_earn_completed === true ||
+      backend.step1 === true
+    ){
+
+      qualification.step1 = true;
+
+    }
+
+
+    /*
+       STEP 2 backend verification
+    */
+
+    if(
+      backend.step2 === true
+    ){
+
+      qualification.step2 = true;
+
+    }
+
+
+    /*
+       STEP 3
+    */
+
+    qualification.step3 =
+      backend.step3 === true ||
+      qualification.referrals >= 3;
+
+
+    /*
+       STEP 4
+    */
+
+    qualification.step4 =
+      backend.step4 === true ||
+      qualification.points >= 5000;
+
+
+    /*
+       STEP 5
+    */
+
+    qualification.step5 =
+      backend.step5 === true;
+
+  }else{
+
+    /*
+       Do not fake completion.
+       Only locally known Watch & Earn
+       and real task submission are retained.
+    */
+
+    qualification.step3 = false;
+    qualification.step4 = false;
+    qualification.step5 = false;
+
+  }
+
+
+  renderQualification();
+
+}
+
+
+/* =========================================================
+   ALL FIVE COMPLETE?
+========================================================= */
+
+function isQualified(){
+
+  return (
+
+    qualification.step1 === true &&
+
+    qualification.step2 === true &&
+
+    qualification.step3 === true &&
+
+    qualification.step4 === true &&
+
+    qualification.step5 === true
+
+  );
+
+}
+
+
+/* =========================================================
+   RENDER QUALIFICATION
+========================================================= */
+
+function renderQualification(){
+
+  const steps = {
+
+    1:qualification.step1,
+
+    2:qualification.step2,
+
+    3:qualification.step3,
+
+    4:qualification.step4,
+
+    5:qualification.step5
+
+  };
+
+
+  /*
+     First incomplete step.
+     Only this step gets the current highlight.
+  */
+
+  const currentStep =
+    firstIncompleteStep();
+
+
+  Object.keys(steps).forEach(
+    function(step){
+
+      const item =
+        document.querySelector(
+          '.qual-item[data-step="' +
+          step +
+          '"]'
+        );
+
+
+      if(!item)
+        return;
+
+
+      const status =
+        item.querySelector(
+          ".qual-status"
+        );
+
+
+      /*
+         Remove current state first.
+      */
+
+      item.classList.remove(
+        "current-step"
+      );
+
+
+      if(steps[step]){
+
+        item.classList.add(
+          "completed"
+        );
+
+
+        status.innerHTML =
+          '<svg><use href="#check"></use></svg>';
+
+      }else{
+
+        item.classList.remove(
+          "completed"
+        );
+
+
+        let icon =
+          "#lock";
+
+
+        /*
+           STEP 1 = WATCH & EARN
+        */
+
+        if(step === "1")
+          icon = "#play";
+
+
+        /*
+           STEP 2 = TASK
+        */
+
+        if(step === "2")
+          icon = "#lock";
+
+
+        if(step === "3")
+          icon = "#users";
+
+
+        if(step === "4")
+          icon = "#star";
+
+
+        if(step === "5")
+          icon = "#pen";
+
+
+        status.innerHTML =
+          '<svg><use href="' +
+          icon +
+          '"></use></svg>';
+
+      }
+
+    }
+  );
+
+
+  /*
+     Highlight ONLY the next required step.
+  */
+
+  if(currentStep){
+
+    const current =
+      document.querySelector(
+        '.qual-item[data-step="' +
+        currentStep +
+        '"]'
+      );
+
+
+    if(current){
+
+      current.classList.add(
+        "current-step"
+      );
+
+    }
+
+  }
+
+
+  /* POINTS */
+
+  const points =
+    Math.max(
+      0,
+      qualification.points
+    );
+
+
+  const pointPercent =
+    Math.min(
+      100,
+      (points / 5000) * 100
+    );
+
+
+  document
+    .getElementById(
+      "pointsValue"
+    )
+    .textContent =
+      points.toLocaleString(
+        "en-IN"
+      ) +
+      " / 5,000";
+
+
+  setTimeout(
+    function(){
+
+      document
+        .getElementById(
+          "pointsFill"
+        )
+        .style.width =
+          pointPercent +
+          "%";
+
+    },
+    100
+  );
+
+
+  /* QUALIFIED STATE */
+
+  const unlocked =
+    isQualified();
+
+
+  const pill =
+    document.getElementById(
+      "qualificationPill"
+    );
+
+
+  const sub =
+    document.getElementById(
+      "qualificationSub"
+    );
+
+
+  const noticeTitle =
+    document.getElementById(
+      "noticeTitle"
+    );
+
+
+  const noticeText =
+    document.getElementById(
+      "noticeText"
+    );
+
+
+  if(unlocked){
+
+    pill.textContent =
+      "UNLOCKED";
+
+
+    pill.style.color =
+      "#38dfad";
+
+    pill.style.background =
+      "rgba(56,223,173,.08)";
+
+    pill.style.borderColor =
+      "rgba(56,223,173,.12)";
+
+
+    sub.textContent =
+      "All 5 requirements have been genuinely verified. Company projects are now available.";
+
+
+    noticeTitle.textContent =
+      "Company Projects unlocked";
+
+
+    noticeText.textContent =
+      "Your qualification is complete. You can now open an available company project and continue to the project details page.";
+
+  }else{
+
+    pill.textContent =
+      "LOCKED";
+
+
+    pill.style.color =
+      "#ffd875";
+
+    pill.style.background =
+      "rgba(255,208,90,.08)";
+
+    pill.style.borderColor =
+      "rgba(255,208,90,.12)";
+
+
+    /*
+       Tell the user exactly what to do next.
+    */
+
+    if(currentStep === 1){
+
+      sub.textContent =
+        "Step 1 of 5 — Complete Watch & Earn first.";
+
+      noticeTitle.textContent =
+        "Start with Watch & Earn";
+
+      noticeText.textContent =
+        "Tap Build Your Task Profile above. Watch & Earn will open in Rewards. Complete that requirement first, then return here.";
+
+    }else if(currentStep === 2){
+
+      sub.textContent =
+        "Step 2 of 5 — Complete your Task activity.";
+
+      noticeTitle.textContent =
+        "Next: Complete a Task";
+
+      noticeText.textContent =
+        "Watch & Earn is complete. Now complete the required TaskEarn task activity before moving to the next qualification.";
+
+    }else if(currentStep === 3){
+
+      sub.textContent =
+        "Step 3 of 5 — Refer 3 people.";
+
+      noticeTitle.textContent =
+        "Next: Refer 3 People";
+
+      noticeText.textContent =
+        "Your Watch & Earn and Task requirements are complete. Now complete the 3-person referral requirement.";
+
+    }else if(currentStep === 4){
+
+      sub.textContent =
+        "Step 4 of 5 — Reach 5,000 points.";
+
+      noticeTitle.textContent =
+        "Next: Reach 5,000 Points";
+
+      noticeText.textContent =
+        "Complete eligible TaskEarn activities until your verified points balance reaches 5,000.";
+
+    }else if(currentStep === 5){
+
+      sub.textContent =
+        "Step 5 of 5 — Create your TaskEarn advertisement.";
+
+      noticeTitle.textContent =
+        "Final Qualification Step";
+
+      noticeText.textContent =
+        "Create and submit your TaskEarn promotional advertisement for review. Complete the final review requirement to unlock company projects.";
+
+    }else{
+
+      sub.textContent =
+        "Complete all 5 requirements to unlock the company work section.";
+
+      noticeTitle.textContent =
+        "Company Projects are currently locked";
+
+      noticeText.textContent =
+        "Complete the qualification requirements above. Projects unlock only after the required conditions are genuinely verified.";
+
+    }
+
+  }
+
+
+  renderProjectButtons(
+    unlocked
+  );
+
+}
+
+
+/* =========================================================
+   PROJECT BUTTONS
+========================================================= */
+
+function renderProjectButtons(
+  unlocked
+){
+
+  const buttons =
+    document.querySelectorAll(
+      ".start-btn"
+    );
+
+
+  buttons.forEach(
+    function(button){
+
+      if(unlocked){
+
+        button.classList.remove(
+          "locked-btn"
+        );
+
+        button.classList.add(
+          "unlocked-btn"
+        );
+
+
+        button.innerHTML =
+          '<svg><use href="#arrow"></use></svg>' +
+          '<span>View / Continue Project</span>';
+
+      }else{
+
+        button.classList.add(
+          "locked-btn"
+        );
+
+        button.classList.remove(
+          "unlocked-btn"
+        );
+
+
+        button.innerHTML =
+          '<svg><use href="#lock"></use></svg>' +
+          '<span>Unlock Project</span>';
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FIND FIRST INCOMPLETE STEP
+========================================================= */
+
+function firstIncompleteStep(){
+
+  /*
+     IMPORTANT ORDER:
+
+     1 → Watch & Earn
+     2 → Task
+     3 → Referral
+     4 → Points
+     5 → Advertisement
+
+     User must complete them one by one.
+  */
+
+  if(!qualification.step1)
+    return 1;
+
+
+  if(!qualification.step2)
+    return 2;
+
+
+  if(!qualification.step3)
+    return 3;
+
+
+  if(!qualification.step4)
+    return 4;
+
+
+  if(!qualification.step5)
+    return 5;
+
+
+  return 0;
+
+}
+
+
+/* =========================================================
+   OPEN QUALIFICATION STEP
+========================================================= */
+
+function openQualificationStep(
+  step
+){
+
+  const current =
+    firstIncompleteStep();
+
+
+  /*
+     Do not allow jumping ahead.
+  */
+
+  if(
+    current &&
+    Number(step) !== current &&
+    Number(step) > current
+  ){
+
+    if(current === 1){
+
+      showToast(
+        "First complete Watch & Earn."
+      );
+
+    }else{
+
+      showToast(
+        "Complete requirement " +
+        String(current).padStart(2,"0") +
+        " first."
+      );
+
+    }
+
+
+    setTimeout(
+      function(){
+
+        openQualificationStep(
+          current
+        );
+
+      },
+      700
+    );
+
+    return;
+
+  }
+
+
+  switch(
+    Number(step)
+  ){
+
+    /*
+       STEP 1
+       WATCH & EARN
+    */
+
+    case 1:
+
+      window.location.href =
+        ROUTES.watchEarn;
+
+      break;
+
+
+    /*
+       STEP 2
+       TASK
+    */
+
+    case 2:
+
+      window.location.href =
+        ROUTES.tasks;
+
+      break;
+
+
+    /*
+       STEP 3
+       REFERRAL
+    */
+
+    case 3:
+
+      window.location.href =
+        ROUTES.referral;
+
+      break;
+
+
+    /*
+       STEP 4
+       POINTS
+    */
+
+    case 4:
+
+      window.location.href =
+        ROUTES.points;
+
+      break;
+
+
+    /*
+       STEP 5
+       ADVERTISEMENT
+    */
+
+    case 5:
+
+      window.location.href =
+        ROUTES.advertisement;
+
+      break;
+
+  }
+
+}
+
+
+/* =========================================================
+   QUALIFICATION CLICK
+========================================================= */
+
+document
+  .querySelectorAll(
+    ".qual-item"
+  )
+  .forEach(
+    function(item){
+
+      item.addEventListener(
+        "click",
+        function(){
+
+          const step =
+            Number(
+              this.dataset.step
+            );
+
+
+          const current =
+            firstIncompleteStep();
+
+
+          /*
+             Completed steps can be opened again.
+
+             Future steps cannot be opened before
+             the current requirement.
+          */
+
+          if(
+            current &&
+            step > current
+          ){
+
+            if(current === 1){
+
+              showToast(
+                "Complete Watch & Earn first."
+              );
+
+            }else{
+
+              showToast(
+                "Complete requirement " +
+                String(current).padStart(2,"0") +
+                " first."
+              );
+
+            }
+
+
+            return;
+
+          }
+
+
+          openQualificationStep(
+            step
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   POINTS CLICK
+========================================================= */
+
+document
+  .getElementById(
+    "pointsBox"
+  )
+  .addEventListener(
+    "click",
+    function(){
+
+      const current =
+        firstIncompleteStep();
+
+
+      /*
+         If earlier requirements are incomplete,
+         don't allow jumping directly to points.
+      */
+
+      if(
+        current &&
+        current < 4
+      ){
+
+        if(current === 1){
+
+          showToast(
+            "First complete Watch & Earn."
+          );
+
+        }else if(current === 2){
+
+          showToast(
+            "First complete your Task activity."
+          );
+
+        }else{
+
+          showToast(
+            "Complete the previous requirement first."
+          );
+
+        }
+
+        return;
+
+      }
+
+
+      openQualificationStep(
+        4
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   PROJECT BUTTON CLICK
+========================================================= */
+
+document
+  .querySelectorAll(
+    ".start-btn"
+  )
+  .forEach(
+    function(button){
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          const projectId =
+            this.dataset.id;
+
+
+          const projectName =
+            this.dataset.project ||
+            "this project";
+
+
+          if(isQualified()){
+
+            /*
+              All 5 requirements verified.
+            */
+
+            window.location.href =
+              ROUTES.companyDetails +
+              "?id=" +
+              encodeURIComponent(
+                projectId
+              );
+
+            return;
+
+          }
+
+
+          const missing =
+            firstIncompleteStep();
+
+
+          if(missing){
+
+            if(missing === 1){
+
+              showToast(
+                "Complete Watch & Earn first."
+              );
+
+            }else if(missing === 2){
+
+              showToast(
+                "Complete your Task activity first."
+              );
+
+            }else{
+
+              showToast(
+                "Complete requirement " +
+                String(missing).padStart(2,"0") +
+                " first."
+              );
+
+            }
+
+
+            setTimeout(
+              function(){
+
+                openQualificationStep(
+                  missing
+                );
+
+              },
+              750
+            );
+
+
+            return;
+
+          }
+
+
+          showToast(
+            "Complete all qualification requirements to unlock " +
+            projectName +
+            "."
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(
+  message
+){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+
+  window.toastTimer =
+    setTimeout(
+      function(){
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2800
+    );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadQualification();
+
+</script>
+
+</body>
+</html>

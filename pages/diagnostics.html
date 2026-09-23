@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TaskEarn — System Diagnostics</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  *{ box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { background: #070b12; color: #f4f7fb; padding: 20px 15px 50px; }
+  h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+  p.sub { font-size: 11px; color: #8190a5; text-align: center; margin-bottom: 20px; }
+  
+  .btn-run {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #18cfa0, #19bddd, #566dff);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(24, 190, 188, 0.2);
+    margin-bottom: 20px;
+  }
+  .btn-run:active { transform: scale(0.98); }
+
+  .card {
+    background: #0d1420;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .card-title { font-size: 13px; font-weight: 700; color: #fff; }
+  .badge {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+  .badge.pending { background: rgba(255,255,255,0.08); color: #8190a5; }
+  .badge.pass { background: rgba(54, 215, 156, 0.15); color: #36d79c; border: 1px solid rgba(54, 215, 156, 0.3); }
+  .badge.fail { background: rgba(255, 101, 119, 0.15); color: #ff6577; border: 1px solid rgba(255, 101, 119, 0.3); }
+  .badge.running { background: rgba(255, 200, 87, 0.15); color: #ffc857; }
+
+  .details {
+    font-size: 11px;
+    color: #8b9bb0;
+    line-height: 1.5;
+    background: rgba(0,0,0,0.25);
+    padding: 8px 10px;
+    border-radius: 8px;
+    word-break: break-all;
+    font-family: monospace;
+    margin-top: 6px;
+  }
+  .solution {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #ffd16b;
+    background: rgba(255, 200, 87, 0.08);
+    padding: 8px 10px;
+    border-radius: 8px;
+    border-left: 3px solid #ffd16b;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>TaskEarn Diagnostic Suite</h1>
+<p class="sub">Live Health Check & Connection Inspector</p>
+
+<button class="btn-run" id="runBtn" onclick="runDiagnostics()">🔍 RUN COMPLETE SYSTEM DIAGNOSTICS</button>
+
+<!-- 1. AUTH & CLIENT -->
+<div class="card" id="test1">
+  <div class="card-head">
+    <span class="card-title">1. Supabase Client & Key</span>
+    <span class="badge pending" id="b1">NOT TESTED</span>
+  </div>
+  <div class="details" id="d1">Waiting to run...</div>
+  <div class="solution" id="s1"></div>
+</div>
+
+<!-- 2. LOGIN USER & TOKEN -->
+<div class="card" id="test2">
+  <div class="card-head">
+    <span class="card-title">2. User Login Session (JWT)</span>
+    <span class="badge pending" id="b2">NOT TESTED</span>
+  </div>
+  <div class="details" id="d2">Waiting to run...</div>
+  <div class="solution" id="s2"></div>
+</div>
+
+<!-- 3. ANDROID NATIVE BRIDGE -->
+<div class="card" id="test3">
+  <div class="card-head">
+    <span class="card-title">3. Android Java Bridge (`AndroidTaskEarnAds`)</span>
+    <span class="badge pending" id="b3">NOT TESTED</span>
+  </div>
+  <div class="details" id="d3">Waiting to run...</div>
+  <div class="solution" id="s3"></div>
+</div>
+
+<!-- 4. ADMOB MEMORY READINESS -->
+<div class="card" id="test4">
+  <div class="card-head">
+    <span class="card-title">4. AdMob Ad Loaded in Memory</span>
+    <span class="badge pending" id="b4">NOT TESTED</span>
+  </div>
+  <div class="details" id="d4">Waiting to run...</div>
+  <div class="solution" id="s4"></div>
+</div>
+
+<!-- 5. EDGE FUNCTION AD-SESSION -->
+<div class="card" id="test5">
+  <div class="card-head">
+    <span class="card-title">5. Backend `ad-revenue-session`</span>
+    <span class="badge pending" id="b5">NOT TESTED</span>
+  </div>
+  <div class="details" id="d5">Waiting to run...</div>
+  <div class="solution" id="s5"></div>
+</div>
+
+<!-- 6. NETWORK & ADBLOCK -->
+<div class="card" id="test6">
+  <div class="card-head">
+    <span class="card-title">6. AdBlock & Network Status</span>
+    <span class="badge pending" id="b6">NOT TESTED</span>
+  </div>
+  <div class="details" id="d6">Waiting to run...</div>
+  <div class="solution" id="s6"></div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://wfvmipwesttejtvwoasj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_o0R1owOtbfN-OsR_MzRg_lgbbqbV";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true }
+});
+
+function setStatus(id, type, details, solution = "") {
+  const b = document.getElementById("b" + id);
+  const d = document.getElementById("d" + id);
+  const s = document.getElementById("s" + id);
+
+  b.className = "badge " + type;
+  b.textContent = type.toUpperCase();
+  d.textContent = details;
+
+  if (solution && type === "fail") {
+    s.style.display = "block";
+    s.innerHTML = "<strong>Fix:</strong> " + solution;
+  } else {
+    s.style.display = "none";
+  }
+}
+
+async function runDiagnostics() {
+  const runBtn = document.getElementById("runBtn");
+  runBtn.disabled = true;
+  runBtn.textContent = "Testing... please wait";
+
+  let currentUser = null;
+  let userToken = null;
+
+  // TEST 1: Supabase Key & Client
+  try {
+    setStatus(1, "running", "Verifying project URL and key structure...");
+    if (SUPABASE_PUBLISHABLE_KEY.includes("YaOsR") || SUPABASE_PUBLISHABLE_KEY.endsWith("vV")) {
+      setStatus(1, "fail", "Publishable key me typo hai (Old corrupted key detected)!", "Key ko 'sb_publishable_o0R1owOtbfN-OsR_MzRg_lgbbqbV' me badlo.");
+    } else {
+      setStatus(1, "pass", "Official key matched: sb_publishable_o0R1owOtbfN-OsR_MzRg_lgbbqbV");
+    }
+  } catch(e) {
+    setStatus(1, "fail", e.message, "Key check karo.");
+  }
+
+  // TEST 2: User Login Session
+  try {
+    setStatus(2, "running", "Checking local user token & session...");
+    const { data, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    if (!data || !data.session || !data.session.user) {
+      setStatus(2, "fail", "User is NOT logged in. Session is NULL.", "App me jakar login karo. Bina login kiye ad session nahi banta.");
+    } else {
+      currentUser = data.session.user;
+      userToken = data.session.access_token;
+      setStatus(2, "pass", `Logged in User ID: ${currentUser.id}\nEmail: ${currentUser.email || 'N/A'}`);
+    }
+  } catch(e) {
+    setStatus(2, "fail", e.message, "Logout karke dubara login karo.");
+  }
+
+  // TEST 3: Android Java Bridge
+  try {
+    setStatus(3, "running", "Checking window.AndroidTaskEarnAds bridge...");
+    if (!window.AndroidTaskEarnAds) {
+      setStatus(3, "fail", "window.AndroidTaskEarnAds NOT found in WebView!", "MainActivity.java me addJavascriptInterface(bridge, 'AndroidTaskEarnAds') check karo.");
+    } else if (typeof window.AndroidTaskEarnAds.showRewardedAd !== "function") {
+      setStatus(3, "fail", "Bridge found but showRewardedAd method missing!", "TaskEarnBridge.java me @JavascriptInterface showRewardedAd method check karo.");
+    } else {
+      setStatus(3, "pass", "Native Android Java bridge is properly connected to WebView.");
+    }
+  } catch(e) {
+    setStatus(3, "fail", e.message);
+  }
+
+  // TEST 4: AdMob Memory Check
+  try {
+    setStatus(4, "running", "Checking if Ad is buffered in phone RAM...");
+    if (window.AndroidTaskEarnAds && typeof window.AndroidTaskEarnAds.isRewardedAdReady === "function") {
+      const ready = window.AndroidTaskEarnAds.isRewardedAdReady();
+      if (ready) {
+        setStatus(4, "pass", "Rewarded ad is ALREADY LOADED and ready to show immediately!");
+      } else {
+        window.AndroidTaskEarnAds.loadRewardedAd();
+        setStatus(4, "fail", "Ad is NOT ready in memory (AdMob buffering/no fill).", "Background loading trigger ho chuki hai. 10-20 second wait karo ya AdMob console me unit status check karo.");
+      }
+    } else {
+      setStatus(4, "fail", "isRewardedAdReady method not accessible.", "Check TaskEarnBridge.java implementation.");
+    }
+  } catch(e) {
+    setStatus(4, "fail", e.message);
+  }
+
+  // TEST 5: Backend ad-revenue-session Call
+  try {
+    setStatus(5, "running", "Invoking Supabase Edge Function ad-revenue-session...");
+    if (!currentUser || !userToken) {
+      setStatus(5, "fail", "Skipped: User login required first.", "Pehle Test #2 ko pass karo (Login karo).");
+    } else {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/ad-revenue-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${userToken}`,
+          "apikey": SUPABASE_PUBLISHABLE_KEY
+        },
+        body: JSON.stringify({ user_id: currentUser.id })
+      });
+
+      const resData = await res.json();
+      if (!res.ok || resData.ok === false) {
+        setStatus(5, "fail", `HTTP ${res.status}: ${resData.error || JSON.stringify(resData)}`, "Agar 401 hai to JWT invalid hai. Agar database error hai to table check karo.");
+      } else {
+        setStatus(5, "pass", `Session Created Successfully!\nSession ID: ${resData.session_id}\nNonce: ${resData.nonce}`);
+      }
+    }
+  } catch(e) {
+    setStatus(5, "fail", "Network / Fetch error: " + e.message, "Internet check karo ya Supabase functions status dekho.");
+  }
+
+  // TEST 6: Network & AdBlock
+  try {
+    setStatus(6, "running", "Checking for ad blockers...");
+    let blocked = false;
+    if (window.AndroidTaskEarnAds && typeof window.AndroidTaskEarnAds.getNetworkSecurityStatus === "function") {
+      const net = JSON.parse(window.AndroidTaskEarnAds.getNetworkSecurityStatus());
+      if (net.blocked) {
+        blocked = true;
+        setStatus(6, "fail", `Ad blocking detected! VPN: ${net.vpn}, Private DNS: ${net.privateDnsHostname}`, "Phone Settings me jakar Private DNS ya VPN band karo.");
+      }
+    }
+    if (!blocked) {
+      setStatus(6, "pass", "No VPN or AdBlocker detected. Network is clean.");
+    }
+  } catch(e) {
+    setStatus(6, "pass", "Network check completed.");
+  }
+
+  runBtn.disabled = false;
+  runBtn.textContent = "🔄 RE-RUN DIAGNOSTICS";
+}
+</script>
+
+</body>
+</html>

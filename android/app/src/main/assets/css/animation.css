@@ -1,0 +1,200 @@
+/* =========================================
+   TASKEARN PREMIUM ANIMATIONS
+   ========================================= */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+
+@keyframes glowPulse {
+    0%,
+    100% {
+        opacity: 0.18;
+    }
+
+    50% {
+        opacity: 0.32;
+    }
+}
+
+
+/* Page entrance */
+
+.navbar {
+    animation: fadeIn 0.7s ease both;
+}
+
+.hero-content {
+    animation: fadeUp 0.8s ease both;
+}
+
+.premium-badge {
+    animation: fadeUp 0.7s ease both;
+}
+
+.hero h1 {
+    animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero-text {
+    animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-buttons {
+    animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.hero-trust {
+    animation: fadeUp 0.8s 0.4s ease both;
+}
+
+
+/* Background glow */
+
+.glow-one {
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+.glow-two {
+    animation: glowPulse 5s ease-in-out infinite;
+}
+
+
+/* Brand */
+
+.brand-icon {
+    animation: float 4s ease-in-out infinite;
+}
+
+
+/* Buttons */
+
+.primary-btn,
+.download-btn,
+.outline-btn {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+/* Cards */
+
+.task-card,
+.step-card,
+.stat {
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* Respect users who prefer reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==========================================
+   TaskEarn - Lightweight Premium Animation
+   ========================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Buttons */
+.primary-btn,
+.outline-btn,
+.login-btn,
+.download-btn,
+.view-btn,
+.task-action {
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.primary-btn:active,
+.outline-btn:active,
+.login-btn:active,
+.download-btn:active,
+.view-btn:active,
+.task-action:active {
+    transform: scale(0.97);
+}
+
+/* Task cards */
+.task-card {
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.task-card:active {
+    transform: scale(0.985);
+}
+
+/* Step cards */
+.step-card {
+    transition: transform 0.18s ease;
+}
+
+.step-card:active {
+    transform: scale(0.985);
+}
+
+/* Disable motion when device requests reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+
+}

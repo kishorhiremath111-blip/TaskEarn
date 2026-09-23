@@ -1,0 +1,2906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090b1d">
+
+<title>TaskEarn — Project Details</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#080a1b;
+  color:#f4f6ff;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button,a{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+:root{
+  --bg:#080a1b;
+  --card:#101326;
+  --card2:#14182e;
+  --blue:#718cff;
+  --purple:#9573ff;
+  --green:#39dfad;
+  --yellow:#ffd05b;
+  --red:#ff647d;
+  --text:#edf0ff;
+  --muted:#7d86a2;
+  --muted2:#626b87;
+  --line:rgba(255,255,255,.075);
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at 5% 0%,
+      rgba(82,106,255,.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 35%,
+      rgba(145,91,255,.14),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #090b20,
+      #070918 75%,
+      #080a1b
+    );
+}
+
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    );
+
+  background-size:40px 40px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 88%
+    );
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  min-height:68px;
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  padding:0 15px;
+
+  background:rgba(8,10,27,.90);
+  backdrop-filter:blur(20px);
+
+  border-bottom:1px solid rgba(255,255,255,.065);
+}
+
+.back{
+  width:44px;
+  height:44px;
+
+  flex:0 0 44px;
+
+  display:grid;
+  place-items:center;
+
+  color:#edf0ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #191d3a,
+      #0d1024
+    );
+
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+
+  transition:
+    transform .16s ease,
+    background .16s ease,
+    border-color .16s ease;
+}
+
+.back:active{
+  transform:scale(.91);
+  background:#151a34;
+  border-color:rgba(113,140,255,.38);
+}
+
+.back svg{
+  width:21px;
+  height:21px;
+}
+
+.header-title{
+  min-width:0;
+  flex:1;
+
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:-.45px;
+}
+
+.header-title span{
+  color:var(--blue);
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+  width:100%;
+  max-width:720px;
+  margin:auto;
+
+  padding:18px 15px 38px;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  padding:75px 15px;
+
+  text-align:center;
+
+  color:#78819c;
+
+  font-size:14px;
+  font-weight:700;
+}
+
+.spinner{
+  width:30px;
+  height:30px;
+
+  margin:0 auto 14px;
+
+  border:3px solid rgba(255,255,255,.08);
+  border-top-color:var(--blue);
+
+  border-radius:50%;
+
+  animation:spin .7s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================
+   HERO
+========================= */
+
+.project-hero{
+  position:relative;
+  overflow:hidden;
+
+  padding:21px;
+
+  border-radius:22px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(113,140,255,.18),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      #181c3b,
+      #101326
+    );
+
+  border:1px solid rgba(113,140,255,.17);
+
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.27);
+}
+
+.project-hero:after{
+  content:"";
+
+  position:absolute;
+
+  width:170px;
+  height:170px;
+
+  right:-85px;
+  bottom:-85px;
+
+  border-radius:50%;
+
+  background:rgba(116,94,255,.08);
+}
+
+/* =========================
+   HERO TOP
+========================= */
+
+.top-line{
+  position:relative;
+  z-index:2;
+
+  display:flex;
+  align-items:center;
+
+  gap:14px;
+}
+
+.project-icon{
+  width:58px;
+  height:58px;
+
+  flex:0 0 58px;
+
+  display:grid;
+  place-items:center;
+
+  overflow:hidden;
+
+  color:#8ba0ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #202a59,
+      #11162f
+    );
+
+  border:1px solid rgba(113,140,255,.20);
+  border-radius:17px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.project-icon.green{
+  color:var(--green);
+
+  background:rgba(48,221,174,.08);
+  border-color:rgba(48,221,174,.17);
+}
+
+.project-icon.purple{
+  color:#aa8aff;
+
+  background:rgba(143,103,255,.09);
+  border-color:rgba(143,103,255,.17);
+}
+
+.project-icon img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  display:none;
+}
+
+.project-icon svg{
+  width:27px;
+  height:27px;
+}
+
+.hero-content{
+  min-width:0;
+  flex:1;
+}
+
+.badges{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+
+  margin-bottom:7px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+
+  padding:5px 9px;
+
+  border-radius:7px;
+
+  color:#91a3ff;
+  background:rgba(103,128,255,.09);
+
+  font-size:11px;
+  font-weight:900;
+
+  letter-spacing:.45px;
+
+  white-space:nowrap;
+}
+
+.badge.green{
+  color:#4ce2b4;
+  background:rgba(48,222,174,.085);
+}
+
+.badge.gold{
+  color:#ffd36d;
+  background:rgba(255,205,82,.085);
+}
+
+.badge.red{
+  color:#ff7189;
+  background:rgba(255,98,125,.085);
+}
+
+.hero-title{
+  font-size:21px;
+  font-weight:950;
+
+  line-height:1.25;
+
+  letter-spacing:-.55px;
+
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.hero-sub{
+  margin-top:5px;
+
+  color:#7e87a2;
+
+  font-size:13px;
+  font-weight:600;
+}
+
+/* =========================
+   REWARD
+========================= */
+
+.reward-row{
+  position:relative;
+  z-index:2;
+
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-top:22px;
+  padding-top:18px;
+
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+.reward-label{
+  color:#77819b;
+
+  font-size:11px;
+  font-weight:900;
+
+  letter-spacing:1px;
+}
+
+.reward{
+  margin-top:5px;
+
+  font-size:34px;
+  font-weight:950;
+
+  line-height:1;
+
+  letter-spacing:-1.2px;
+}
+
+.reward-note{
+  color:#747d98;
+
+  font-size:12px;
+  font-weight:700;
+
+  text-align:right;
+}
+
+/* =========================
+   META
+========================= */
+
+.meta-grid{
+  display:grid;
+
+  grid-template-columns:repeat(3,1fr);
+
+  gap:10px;
+
+  margin-top:12px;
+}
+
+.meta-card{
+  min-width:0;
+
+  padding:14px;
+
+  border-radius:15px;
+
+  background:rgba(13,16,34,.94);
+
+  border:1px solid var(--line);
+
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.12);
+}
+
+.meta-icon{
+  height:22px;
+
+  color:#7489ff;
+
+  margin-bottom:7px;
+}
+
+.meta-icon svg{
+  width:19px;
+  height:19px;
+}
+
+.meta-value{
+  overflow:hidden;
+
+  color:#e5e8f7;
+
+  font-size:14px;
+  font-weight:900;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.meta-label{
+  margin-top:4px;
+
+  color:#68718b;
+
+  font-size:10px;
+  font-weight:850;
+
+  letter-spacing:.55px;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+  margin-top:13px;
+
+  padding:17px;
+
+  border-radius:17px;
+
+  background:rgba(14,17,35,.90);
+
+  border:1px solid var(--line);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.10);
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  margin-bottom:12px;
+
+  color:#e5e9fa;
+
+  font-size:16px;
+  font-weight:900;
+}
+
+.section-title-dot{
+  width:7px;
+  height:7px;
+
+  flex:0 0 7px;
+
+  border-radius:50%;
+
+  background:var(--blue);
+
+  box-shadow:
+    0 0 10px
+    rgba(113,140,255,.75);
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.description{
+  color:#8992ac;
+
+  font-size:14px;
+
+  line-height:1.7;
+
+  white-space:pre-wrap;
+}
+
+/* =========================
+   REQUIREMENTS
+========================= */
+
+.requirements{
+  display:flex;
+  flex-direction:column;
+
+  gap:9px;
+}
+
+.requirement{
+  min-height:56px;
+
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+
+  padding:11px;
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.05);
+
+  transition:
+    transform .16s ease,
+    background .16s ease,
+    border-color .16s ease;
+}
+
+.requirement:active{
+  transform:scale(.985);
+  background:rgba(113,140,255,.055);
+  border-color:rgba(113,140,255,.13);
+}
+
+.req-icon{
+  width:36px;
+  height:36px;
+
+  flex:0 0 36px;
+
+  display:grid;
+  place-items:center;
+
+  color:#718cff;
+
+  background:rgba(113,140,255,.08);
+
+  border-radius:10px;
+}
+
+.req-icon svg{
+  width:18px;
+  height:18px;
+}
+
+.req-text{
+  min-width:0;
+  flex:1;
+
+  color:#c4c9dc;
+
+  font-size:13px;
+  font-weight:700;
+
+  line-height:1.45;
+}
+
+.req-check{
+  color:var(--green);
+
+  flex:0 0 auto;
+}
+
+.req-check svg{
+  width:19px;
+  height:19px;
+}
+
+/* =========================
+   STEPS
+========================= */
+
+.steps{
+  display:grid;
+
+  grid-template-columns:repeat(3,1fr);
+
+  gap:9px;
+}
+
+.step{
+  min-width:0;
+
+  padding:12px;
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.024);
+
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.step-number{
+  width:31px;
+  height:31px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:9px;
+
+  color:#9cacff;
+  background:rgba(113,140,255,.09);
+
+  font-size:11px;
+  font-weight:950;
+}
+
+.step-title{
+  margin-top:9px;
+
+  color:#e0e4f5;
+
+  font-size:13px;
+  font-weight:900;
+}
+
+.step-text{
+  margin-top:4px;
+
+  color:#707a95;
+
+  font-size:11px;
+
+  line-height:1.45;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-card{
+  display:flex;
+  align-items:center;
+
+  gap:12px;
+
+  padding:13px;
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.024);
+
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.status-dot{
+  width:11px;
+  height:11px;
+
+  flex:0 0 11px;
+
+  border-radius:50%;
+
+  background:var(--green);
+
+  box-shadow:
+    0 0 11px rgba(56,223,173,.55);
+}
+
+.status-dot.waiting{
+  background:var(--yellow);
+  box-shadow:
+    0 0 11px rgba(255,208,90,.45);
+}
+
+.status-dot.rejected{
+  background:var(--red);
+  box-shadow:
+    0 0 11px rgba(255,100,125,.45);
+}
+
+.status-text{
+  color:#d4d8e9;
+
+  font-size:14px;
+  font-weight:850;
+}
+
+.status-small{
+  margin-top:4px;
+
+  color:#707a95;
+
+  font-size:11px;
+  line-height:1.4;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions{
+  margin-top:15px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:10px;
+}
+
+.start-btn,
+.secondary-btn{
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:9px;
+
+  border-radius:14px;
+
+  transition:
+    transform .16s ease,
+    filter .16s ease,
+    background .16s ease,
+    box-shadow .16s ease;
+}
+
+.start-btn{
+  min-height:54px;
+
+  border:0;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #718cff,
+      #526edb
+    );
+
+  box-shadow:
+    0 12px 28px
+    rgba(76,101,222,.22);
+
+  font-size:15px;
+  font-weight:950;
+}
+
+.start-btn:active{
+  transform:scale(.965);
+  filter:brightness(.9);
+  box-shadow:
+    0 6px 16px
+    rgba(76,101,222,.16);
+}
+
+.start-btn svg{
+  width:19px;
+  height:19px;
+}
+
+.secondary-btn{
+  min-height:48px;
+
+  color:#b4bbd0;
+
+  background:rgba(255,255,255,.035);
+
+  border:1px solid rgba(255,255,255,.075);
+
+  font-size:13px;
+  font-weight:900;
+}
+
+.secondary-btn:active{
+  transform:scale(.975);
+  background:rgba(113,140,255,.075);
+  border-color:rgba(113,140,255,.15);
+}
+
+.secondary-btn svg{
+  width:17px;
+  height:17px;
+}
+
+/* =========================
+   PROJECT LINK
+========================= */
+
+.task-link{
+  display:none;
+
+  padding:11px 12px;
+
+  border-radius:11px;
+
+  color:#8492c6;
+
+  background:rgba(113,140,255,.045);
+
+  border:1px solid rgba(113,140,255,.08);
+
+  font-size:11px;
+
+  line-height:1.5;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error{
+  display:none;
+
+  padding:35px 18px;
+
+  text-align:center;
+
+  border-radius:18px;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid rgba(255,255,255,.065);
+}
+
+.error-title{
+  color:#ff7188;
+
+  font-size:17px;
+  font-weight:900;
+}
+
+.error-text{
+  margin-top:8px;
+
+  color:#737d98;
+
+  font-size:13px;
+
+  line-height:1.55;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+  bottom:22px;
+
+  z-index:300;
+
+  width:max-content;
+  max-width:calc(100% - 30px);
+
+  padding:12px 16px;
+
+  border-radius:12px;
+
+  background:#171b32;
+
+  border:1px solid rgba(255,255,255,.11);
+
+  color:#edf0ff;
+
+  font-size:12px;
+  font-weight:800;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transform:translate(-50%,15px);
+
+  transition:.22s ease;
+
+  box-shadow:
+    0 14px 34px
+    rgba(0,0,0,.42);
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================
+   TABLET / DESKTOP
+========================= */
+
+@media(min-width:600px){
+
+  .header{
+    padding-left:22px;
+    padding-right:22px;
+  }
+
+  .page{
+    padding-left:20px;
+    padding-right:20px;
+  }
+
+  .project-hero{
+    padding:25px;
+  }
+
+  .hero-title{
+    font-size:24px;
+  }
+
+  .hero-sub{
+    font-size:14px;
+  }
+
+  .reward{
+    font-size:38px;
+  }
+
+  .section{
+    padding:20px;
+  }
+
+  .description{
+    font-size:15px;
+  }
+
+  .req-text{
+    font-size:14px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media(max-width:420px){
+
+  .header{
+    min-height:64px;
+    padding:0 12px;
+  }
+
+  .back{
+    width:42px;
+    height:42px;
+    flex-basis:42px;
+  }
+
+  .header-title{
+    font-size:16px;
+  }
+
+  .page{
+    padding:
+      14px
+      11px
+      32px;
+  }
+
+  .project-hero{
+    padding:17px;
+    border-radius:19px;
+  }
+
+  .project-icon{
+    width:52px;
+    height:52px;
+    flex-basis:52px;
+    border-radius:15px;
+  }
+
+  .project-icon svg{
+    width:24px;
+    height:24px;
+  }
+
+  .hero-title{
+    font-size:19px;
+  }
+
+  .hero-sub{
+    font-size:12px;
+  }
+
+  .badge{
+    font-size:10px;
+    padding:4px 7px;
+  }
+
+  .reward-row{
+    margin-top:18px;
+    padding-top:15px;
+  }
+
+  .reward{
+    font-size:31px;
+  }
+
+  .reward-label{
+    font-size:10px;
+  }
+
+  .reward-note{
+    font-size:10px;
+  }
+
+  .meta-grid{
+    gap:7px;
+  }
+
+  .meta-card{
+    padding:11px 9px;
+    border-radius:13px;
+  }
+
+  .meta-icon{
+    margin-bottom:5px;
+  }
+
+  .meta-value{
+    font-size:12px;
+  }
+
+  .meta-label{
+    font-size:9px;
+  }
+
+  .section{
+    padding:14px;
+    border-radius:15px;
+  }
+
+  .section-title{
+    font-size:15px;
+  }
+
+  .description{
+    font-size:13px;
+  }
+
+  .requirement{
+    min-height:53px;
+    padding:10px;
+  }
+
+  .req-icon{
+    width:34px;
+    height:34px;
+    flex-basis:34px;
+  }
+
+  .req-text{
+    font-size:12px;
+  }
+
+  .step{
+    padding:10px;
+  }
+
+  .step-number{
+    width:29px;
+    height:29px;
+  }
+
+  .step-title{
+    font-size:12px;
+  }
+
+  .step-text{
+    font-size:10px;
+  }
+
+  .start-btn{
+    min-height:53px;
+    font-size:14px;
+  }
+
+  .secondary-btn{
+    min-height:47px;
+    font-size:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     ICON SPRITE
+========================= -->
+
+<svg width="0" height="0" style="position:absolute">
+
+<symbol id="back" viewBox="0 0 24 24">
+  <path
+    d="M15 5 8 12l7 7"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="briefcase" viewBox="0 0 24 24">
+  <rect
+    x="3"
+    y="7"
+    width="18"
+    height="13"
+    rx="2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+</symbol>
+
+<symbol id="clock" viewBox="0 0 24 24">
+  <circle
+    cx="12"
+    cy="12"
+    r="8.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M12 7v5l3 2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="users" viewBox="0 0 24 24">
+  <circle
+    cx="9"
+    cy="9"
+    r="3"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <circle
+    cx="17"
+    cy="10"
+    r="2.4"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M3.5 20c.5-3.6 2.3-5.3 5.5-5.3s5 1.7 5.5 5.3M14 15c3.5-.4 5.7 1.2 6.5 5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="play" viewBox="0 0 24 24">
+  <path
+    d="m9 6 9 6-9 6z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.9"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="arrow" viewBox="0 0 24 24">
+  <path
+    d="m9 5 7 7-7 7"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="check" viewBox="0 0 24 24">
+  <path
+    d="m5 12 4 4L19 6"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="shield" viewBox="0 0 24 24">
+  <path
+    d="M12 3 20 6v5c0 5-3.2 8.3-8 10-4.8-1.7-8-5-8-10V6z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linejoin="round"/>
+  <path
+    d="m8.5 12 2.2 2.2 4.8-5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="image" viewBox="0 0 24 24">
+  <rect
+    x="3"
+    y="4"
+    width="18"
+    height="16"
+    rx="2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <circle
+    cx="8"
+    cy="9"
+    r="1.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"/>
+  <path
+    d="m4 17 5-5 3 3 2-2 6 5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="document" viewBox="0 0 24 24">
+  <path
+    d="M6 3h8l4 4v14H6z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linejoin="round"/>
+  <path
+    d="M14 3v5h5M9 13h6M9 17h5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+</svg>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+  <button
+    class="back"
+    id="backBtn"
+    aria-label="Back">
+
+    <svg>
+      <use href="#back"></use>
+    </svg>
+
+  </button>
+
+  <div class="header-title">
+    Task<span>Earn</span> — Project Details
+  </div>
+
+</header>
+
+
+<main class="page">
+
+  <!-- LOADING -->
+
+  <div
+    class="loading"
+    id="loading">
+
+    <div class="spinner"></div>
+
+    Loading project...
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    class="error"
+    id="errorBox">
+
+    <div class="error-title">
+      Project unavailable
+    </div>
+
+    <div class="error-text">
+      This project may have been removed or is currently unavailable.
+    </div>
+
+  </div>
+
+
+  <!-- CONTENT -->
+
+  <div
+    id="content"
+    style="display:none;">
+
+
+    <!-- HERO -->
+
+    <section class="project-hero">
+
+      <div class="top-line">
+
+        <div
+          class="project-icon"
+          id="projectIcon">
+
+          <img
+            id="projectImage"
+            alt="Project">
+
+          <svg id="defaultProjectIcon">
+            <use href="#briefcase"></use>
+          </svg>
+
+        </div>
+
+
+        <div class="hero-content">
+
+          <div
+            class="badges"
+            id="badges">
+          </div>
+
+          <div
+            class="hero-title"
+            id="projectTitle">
+            Project
+          </div>
+
+          <div
+            class="hero-sub"
+            id="projectCategory">
+            TaskEarn Project
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- REWARD -->
+
+      <div class="reward-row">
+
+        <div>
+
+          <div class="reward-label">
+            PROJECT REWARD
+          </div>
+
+          <div
+            class="reward"
+            id="projectReward">
+            ₹0
+          </div>
+
+        </div>
+
+        <div class="reward-note">
+          Paid after approval
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- META -->
+
+    <div class="meta-grid">
+
+      <div class="meta-card">
+
+        <div class="meta-icon">
+          <svg>
+            <use href="#clock"></use>
+          </svg>
+        </div>
+
+        <div
+          class="meta-value"
+          id="duration">
+          —
+        </div>
+
+        <div class="meta-label">
+          TIME
+        </div>
+
+      </div>
+
+
+      <div class="meta-card">
+
+        <div class="meta-icon">
+          <svg>
+            <use href="#users"></use>
+          </svg>
+        </div>
+
+        <div
+          class="meta-value"
+          id="completed">
+          —
+        </div>
+
+        <div class="meta-label">
+          COMPLETED
+        </div>
+
+      </div>
+
+
+      <div class="meta-card">
+
+        <div class="meta-icon">
+          <svg>
+            <use href="#shield"></use>
+          </svg>
+        </div>
+
+        <div
+          class="meta-value"
+          id="verification">
+          —
+        </div>
+
+        <div class="meta-label">
+          VERIFICATION
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ABOUT -->
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <span class="section-title-dot"></span>
+
+        About Project
+
+      </div>
+
+      <div
+        class="description"
+        id="description">
+      </div>
+
+    </section>
+
+
+    <!-- REQUIREMENTS -->
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <span class="section-title-dot"></span>
+
+        Requirements
+
+      </div>
+
+
+      <div class="requirements">
+
+        <div class="requirement">
+
+          <div class="req-icon">
+            <svg>
+              <use href="#document"></use>
+            </svg>
+          </div>
+
+          <div class="req-text">
+            Follow all project instructions carefully.
+          </div>
+
+          <div class="req-check">
+            <svg>
+              <use href="#check"></use>
+            </svg>
+          </div>
+
+        </div>
+
+
+        <div class="requirement">
+
+          <div class="req-icon">
+            <svg>
+              <use href="#shield"></use>
+            </svg>
+          </div>
+
+          <div class="req-text">
+            Submit genuine proof matching the requirements.
+          </div>
+
+          <div class="req-check">
+            <svg>
+              <use href="#check"></use>
+            </svg>
+          </div>
+
+        </div>
+
+
+        <div class="requirement">
+
+          <div class="req-icon">
+            <svg>
+              <use href="#image"></use>
+            </svg>
+          </div>
+
+          <div class="req-text">
+            Use the required proof type shown after starting.
+          </div>
+
+          <div class="req-check">
+            <svg>
+              <use href="#check"></use>
+            </svg>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+
+    <section class="section">
+
+      <div class="section-title">
+
+        <span class="section-title-dot"></span>
+
+        How It Works
+
+      </div>
+
+
+      <div class="steps">
+
+        <div class="step">
+
+          <div class="step-number">
+            01
+          </div>
+
+          <div class="step-title">
+            Start
+          </div>
+
+          <div class="step-text">
+            Open project instructions.
+          </div>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            02
+          </div>
+
+          <div class="step-title">
+            Complete
+          </div>
+
+          <div class="step-text">
+            Finish the required work.
+          </div>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            03
+          </div>
+
+          <div class="step-title">
+            Submit
+          </div>
+
+          <div class="step-text">
+            Send proof for review.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- STATUS -->
+
+    <section
+      class="section"
+      id="myStatusSection"
+      style="display:none;">
+
+      <div class="section-title">
+
+        <span class="section-title-dot"></span>
+
+        Your Status
+
+      </div>
+
+
+      <div class="status-card">
+
+        <div
+          class="status-dot"
+          id="statusDot">
+        </div>
+
+        <div>
+
+          <div
+            class="status-text"
+            id="statusText">
+            —
+          </div>
+
+          <div
+            class="status-small"
+            id="statusSmall">
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+      <button
+        class="start-btn"
+        id="startBtn">
+
+        <svg>
+          <use href="#play"></use>
+        </svg>
+
+        Start Project
+
+      </button>
+
+
+      <a
+        href="Submission-status.html"
+        class="secondary-btn">
+
+        <svg>
+          <use href="#document"></use>
+        </svg>
+
+        My Submissions
+
+        <svg>
+          <use href="#arrow"></use>
+        </svg>
+
+      </a>
+
+
+      <div
+        class="task-link"
+        id="taskLink">
+      </div>
+
+    </div>
+
+
+  </div>
+
+</main>
+
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
+
+<script>
+
+/* =========================================================
+   TASK EARN — PROJECT DETAILS
+   SAME SUPABASE CONNECTION
+========================================================= */
+
+const SUPABASE_URL =
+  "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   FUTURE PROJECT IMAGE
+========================================================= */
+
+const DEFAULT_PROJECT_IMAGE = "";
+
+
+/* =========================================================
+   STARTING COMPLETION COUNTS
+========================================================= */
+
+const STARTING_COMPLETIONS = {
+
+  1:178,
+  2:175,
+  3:589,
+  4:7,
+  5:264,
+  6:91,
+  7:42,
+  8:315,
+  9:128,
+  10:73,
+
+  11:204,
+  12:56,
+  13:391,
+  14:19,
+  15:147,
+  16:68,
+  17:522,
+  18:33,
+  19:86,
+  20:276
+
+};
+
+
+/* =========================================================
+   PROJECT ID
+========================================================= */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const projectId =
+  Number(
+    params.get("id")
+  );
+
+
+let project = null;
+let realCompletionCount = 0;
+let myStatus = null;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function money(value){
+
+  return "₹" +
+    Number(value || 0)
+      .toLocaleString(
+        "en-IN",
+        {
+          maximumFractionDigits:2
+        }
+      );
+
+}
+
+
+function minutes(value){
+
+  const m =
+    Number(value || 0);
+
+  if(!m){
+    return "Flexible";
+  }
+
+  if(m < 60){
+    return `${m} min`;
+  }
+
+  const h =
+    Math.floor(m / 60);
+
+  const r =
+    m % 60;
+
+  return r
+    ? `${h}h ${r}m`
+    : `${h} hr`;
+
+}
+
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   PROJECT MODE
+========================================================= */
+
+function getMode(task){
+
+  const text = (
+    `${task.title || ""} ` +
+    `${task.description || ""} ` +
+    `${task.category || ""} ` +
+    `${task.task_type || ""}`
+  ).toLowerCase();
+
+
+  /* SURVIVAL FIRST */
+
+  if(
+    text.includes("survival") ||
+    text.includes("60 minute") ||
+    text.includes("1 hour survival")
+  ){
+
+    return "survival";
+
+  }
+
+
+  /* APP / LEVEL */
+
+  if(
+    text.includes("app_download") ||
+    text.includes("download_app") ||
+    text.includes("install_app") ||
+    text.includes("level_complete") ||
+    text.includes("level_40") ||
+    text.includes("40lv") ||
+    text.includes("40 level") ||
+    text.includes("play store") ||
+    text.includes("install app") ||
+    text.includes("download app") ||
+    text.includes("level")
+  ){
+
+    return "app";
+
+  }
+
+
+  /* INSTANT */
+
+  if(
+    text.includes("instant") ||
+    text.includes("immediate")
+  ){
+
+    return "instant";
+
+  }
+
+
+  /* TESTING */
+
+  if(
+    text.includes("testing") ||
+    text.includes("test")
+  ){
+
+    return "testing";
+
+  }
+
+
+  return "general";
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+  toast.textContent =
+    message;
+
+  toast.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+  window.toastTimer =
+    setTimeout(
+      ()=>{
+        toast.classList.remove(
+          "show"
+        );
+      },
+      2300
+    );
+
+}
+
+
+/* =========================================================
+   LOAD PROJECT
+========================================================= */
+
+async function loadProject(){
+
+  if(
+    !projectId ||
+    !Number.isFinite(projectId)
+  ){
+
+    showError();
+
+    return;
+
+  }
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("tasks")
+        .select(
+          `
+          id,
+          created_at,
+          title,
+          description,
+          reward,
+          duration_minutes,
+          category,
+          task_url,
+          status,
+          verified,
+          task_type
+          `
+        )
+        .eq(
+          "id",
+          projectId
+        )
+        .maybeSingle();
+
+
+    if(error){
+      throw error;
+    }
+
+
+    if(!data){
+
+      showError();
+
+      return;
+
+    }
+
+
+    project =
+      data;
+
+
+    await Promise.all([
+      loadCompletionCount(),
+      loadMyStatus()
+    ]);
+
+
+    renderProject();
+
+
+  }catch(error){
+
+    console.error(
+      "Project details:",
+      error
+    );
+
+    showError();
+
+  }
+
+}
+
+
+/* =========================================================
+   REAL APPROVED COMPLETIONS
+========================================================= */
+
+async function loadCompletionCount(){
+
+  realCompletionCount = 0;
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("task_submissions")
+        .select(
+          "id,status"
+        )
+        .eq(
+          "task_id",
+          projectId
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    realCompletionCount =
+      (data || [])
+        .filter(
+          row =>
+            String(
+              row.status || ""
+            )
+            .toLowerCase()
+            ===
+            "approved"
+        )
+        .length;
+
+
+  }catch(error){
+
+    console.warn(
+      "Completion count:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   USER STATUS
+========================================================= */
+
+async function loadMyStatus(){
+
+  myStatus = null;
+
+
+  try{
+
+    const {
+      data:sessionData
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    const session =
+      sessionData?.session;
+
+
+    if(!session){
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("task_submissions")
+        .select(
+          "status,submitted_at"
+        )
+        .eq(
+          "task_id",
+          projectId
+        )
+        .eq(
+          "user_id",
+          session.user.id
+        )
+        .order(
+          "submitted_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(1);
+
+
+    if(error){
+      throw error;
+    }
+
+
+    if(
+      data &&
+      data.length
+    ){
+
+      myStatus =
+        String(
+          data[0].status || ""
+        )
+        .toLowerCase();
+
+    }
+
+
+  }catch(error){
+
+    console.warn(
+      "My status:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PROJECT IMAGE
+========================================================= */
+
+function renderProjectImage(){
+
+  const image =
+    document.getElementById(
+      "projectImage"
+    );
+
+  const defaultIcon =
+    document.getElementById(
+      "defaultProjectIcon"
+    );
+
+
+  const imageUrl =
+    project?.image_url ||
+    project?.company_logo ||
+    DEFAULT_PROJECT_IMAGE;
+
+
+  if(imageUrl){
+
+    image.src =
+      imageUrl;
+
+    image.style.display =
+      "block";
+
+    defaultIcon.style.display =
+      "none";
+
+
+    image.onerror =
+      ()=>{
+
+        image.style.display =
+          "none";
+
+        defaultIcon.style.display =
+          "block";
+
+      };
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER PROJECT
+========================================================= */
+
+function renderProject(){
+
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "content"
+  ).style.display =
+    "block";
+
+
+  const mode =
+    getMode(project);
+
+
+  /* ICON */
+
+  const icon =
+    document.getElementById(
+      "projectIcon"
+    );
+
+
+  if(mode === "testing"){
+
+    icon.className =
+      "project-icon green";
+
+  }
+  else if(mode === "survival"){
+
+    icon.className =
+      "project-icon purple";
+
+  }
+  else{
+
+    icon.className =
+      "project-icon";
+
+  }
+
+
+  renderProjectImage();
+
+
+  /* BADGES */
+
+  let badges = "";
+
+
+  if(project.verified === true){
+
+    badges += `
+      <span class="badge green">
+        VERIFIED
+      </span>
+    `;
+
+  }
+
+
+  if(mode === "app"){
+
+    badges += `
+      <span class="badge gold">
+        APP
+      </span>
+    `;
+
+  }
+
+
+  if(mode === "testing"){
+
+    badges += `
+      <span class="badge">
+        TESTING
+      </span>
+    `;
+
+  }
+
+
+  if(mode === "survival"){
+
+    badges += `
+      <span class="badge">
+        SURVIVAL
+      </span>
+    `;
+
+  }
+
+
+  if(mode === "instant"){
+
+    badges += `
+      <span class="badge green">
+        INSTANT
+      </span>
+    `;
+
+  }
+
+
+  const createdTime =
+    new Date(
+      project.created_at
+    ).getTime();
+
+
+  const age =
+    Date.now() -
+    createdTime;
+
+
+  if(
+    Number.isFinite(createdTime) &&
+    age <= 2 * 86400000
+  ){
+
+    badges += `
+      <span class="badge">
+        NEW
+      </span>
+    `;
+
+  }
+
+
+  document.getElementById(
+    "badges"
+  ).innerHTML =
+    badges;
+
+
+  /* TITLE */
+
+  document.getElementById(
+    "projectTitle"
+  ).textContent =
+    project.title ||
+    "TaskEarn Project";
+
+
+  document.getElementById(
+    "projectCategory"
+  ).textContent =
+    project.category ||
+    "Company Project";
+
+
+  /* REWARD */
+
+  document.getElementById(
+    "projectReward"
+  ).textContent =
+    money(
+      project.reward
+    );
+
+
+  /* TIME */
+
+  document.getElementById(
+    "duration"
+  ).textContent =
+    minutes(
+      project.duration_minutes
+    );
+
+
+  /* COMPLETED */
+
+  const starting =
+    STARTING_COMPLETIONS[
+      Number(project.id)
+    ] || 0;
+
+
+  const completed =
+    starting +
+    realCompletionCount;
+
+
+  document.getElementById(
+    "completed"
+  ).textContent =
+    completed.toLocaleString(
+      "en-IN"
+    );
+
+
+  /* VERIFICATION */
+
+  document.getElementById(
+    "verification"
+  ).textContent =
+    project.verified === true
+      ? "Verified"
+      : "Review";
+
+
+  /* DESCRIPTION */
+
+  document.getElementById(
+    "description"
+  ).textContent =
+    project.description ||
+    "Complete this project according to the instructions and submit the required proof for review.";
+
+
+  /* PROJECT LINK */
+
+  if(project.task_url){
+
+    const link =
+      document.getElementById(
+        "taskLink"
+      );
+
+    link.style.display =
+      "block";
+
+    link.textContent =
+      "Project link available after starting the project.";
+
+  }
+
+
+  /* STATUS */
+
+  renderStatus();
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function renderStatus(){
+
+  const section =
+    document.getElementById(
+      "myStatusSection"
+    );
+
+
+  if(!myStatus){
+
+    section.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  section.style.display =
+    "block";
+
+
+  const dot =
+    document.getElementById(
+      "statusDot"
+    );
+
+  const text =
+    document.getElementById(
+      "statusText"
+    );
+
+  const small =
+    document.getElementById(
+      "statusSmall"
+    );
+
+
+  dot.className =
+    "status-dot";
+
+
+  if(myStatus === "approved"){
+
+    text.textContent =
+      "Project Completed";
+
+    small.textContent =
+      "Your submission has been approved.";
+
+  }
+  else if(
+    myStatus === "rejected"
+  ){
+
+    dot.classList.add(
+      "rejected"
+    );
+
+    text.textContent =
+      "Project Rejected";
+
+    small.textContent =
+      "Check My Submissions for the latest review.";
+
+  }
+  else if(
+    myStatus === "working"
+  ){
+
+    dot.classList.add(
+      "waiting"
+    );
+
+    text.textContent =
+      "Project Working";
+
+    small.textContent =
+      "You are currently working on this project.";
+
+  }
+  else{
+
+    dot.classList.add(
+      "waiting"
+    );
+
+    text.textContent =
+      "Submission Waiting";
+
+    small.textContent =
+      "Your proof is currently under review.";
+
+  }
+
+}
+
+
+/* =========================================================
+   START PROJECT
+   =========================================================
+   IMPORTANT:
+   Details → Project Work
+   No loop back to Details.
+========================================================= */
+
+document
+  .getElementById(
+    "startBtn"
+  )
+  .addEventListener(
+    "click",
+    async ()=>{
+
+      if(!project){
+        return;
+      }
+
+
+      const {
+        data
+      } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+      const session =
+        data?.session;
+
+
+      if(!session){
+
+        showToast(
+          "Please login before starting a project."
+        );
+
+
+        setTimeout(
+          ()=>{
+            window.location.href =
+              "login.html";
+          },
+          650
+        );
+
+
+        return;
+
+      }
+
+
+      /* SAVE WORKING PROJECT */
+
+      try{
+
+        const key =
+          "taskearn_working_projects";
+
+
+        let list = [];
+
+
+        try{
+
+          list =
+            JSON.parse(
+              localStorage.getItem(
+                key
+              ) || "[]"
+            );
+
+        }catch{
+
+          list = [];
+
+        }
+
+
+        if(!Array.isArray(list)){
+          list = [];
+        }
+
+
+        const id =
+          String(project.id);
+
+
+        if(!list.includes(id)){
+
+          list.push(id);
+
+        }
+
+
+        localStorage.setItem(
+          key,
+          JSON.stringify(list)
+        );
+
+
+      }catch(error){
+
+        console.warn(
+          "Working project:",
+          error
+        );
+
+      }
+
+
+      /*
+        FINAL FLOW:
+
+        project.details.html
+              ↓
+        project-work.html
+              ↓
+        project-submit.html
+              ↓
+        project-submission-status.html
+
+        Details page will NOT recycle back
+        to itself after Start Project.
+      */
+
+      window.location.href =
+        "project-work.html?id=" +
+        encodeURIComponent(
+          project.id
+        );
+
+    }
+  );
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+document
+  .getElementById(
+    "backBtn"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      /*
+        Always return to Projects.
+        This prevents accidental history loops.
+      */
+
+      window.location.href =
+        "projects.html";
+
+    }
+  );
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showError(){
+
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "content"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "errorBox"
+  ).style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+loadProject();
+
+</script>
+
+</body>
+</html>

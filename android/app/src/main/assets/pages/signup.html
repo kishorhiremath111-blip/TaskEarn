@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta name="theme-color" content="#050b18">
+<meta name="color-scheme" content="dark">
+
+<title>TaskEarn — Create Account</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+    background:#050b18;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:#fff;
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(0,190,255,.15),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 100% 15%,
+            rgba(106,72,255,.18),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(0,150,255,.08),
+            transparent 40%
+        ),
+        linear-gradient(
+            145deg,
+            #030817 0%,
+            #09132d 48%,
+            #050a19 100%
+        );
+}
+
+body::before{
+    content:"";
+    position:fixed;
+
+    width:300px;
+    height:300px;
+
+    top:-150px;
+    left:-100px;
+
+    border-radius:50%;
+
+    background:rgba(0,195,255,.09);
+
+    filter:blur(70px);
+
+    pointer-events:none;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+
+    width:320px;
+    height:320px;
+
+    right:-150px;
+    bottom:-150px;
+
+    border-radius:50%;
+
+    background:rgba(101,67,255,.10);
+
+    filter:blur(75px);
+
+    pointer-events:none;
+}
+
+.page{
+    width:100%;
+    min-height:100vh;
+
+    padding:18px 9px 30px;
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    position:relative;
+    z-index:1;
+}
+
+.signup-card{
+    width:100%;
+    max-width:570px;
+
+    padding:27px 22px 25px;
+
+    border-radius:31px;
+
+    border:1px solid rgba(110,170,255,.13);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,30,65,.97),
+            rgba(5,13,34,.99)
+        );
+
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.58),
+        inset 0 1px 0 rgba(255,255,255,.065);
+
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+
+    overflow:hidden;
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.logo-box{
+    width:76px;
+    height:76px;
+
+    margin:0 auto 13px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border-radius:20px;
+}
+
+.logo-image{
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    display:block;
+
+    filter:
+        drop-shadow(
+            0 10px 20px
+            rgba(0,0,0,.35)
+        );
+}
+
+.tag{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    min-height:31px;
+
+    padding:0 16px;
+
+    border-radius:999px;
+
+    border:1px solid rgba(40,203,255,.30);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(12,197,255,.09),
+            rgba(103,67,255,.08)
+        );
+
+    color:#61d9ff;
+
+    font-size:11px;
+    font-weight:900;
+
+    letter-spacing:1.2px;
+}
+
+h1{
+    margin:14px 0 8px;
+
+    text-align:center;
+
+    font-size:31px;
+    line-height:1.12;
+
+    font-weight:900;
+
+    letter-spacing:-.7px;
+}
+
+.subtitle{
+    max-width:450px;
+
+    margin:0 auto;
+
+    text-align:center;
+
+    color:#98a6c7;
+
+    font-size:13px;
+    line-height:1.6;
+}
+
+
+/* GOOGLE BUTTON */
+
+.google-btn{
+
+    width:100%;
+    height:56px;
+
+    margin-top:23px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:12px;
+
+    border-radius:18px;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.045)
+        );
+
+    color:#fff;
+
+    font-size:15px;
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 10px 28px rgba(0,0,0,.15);
+
+    transition:
+        transform .15s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.google-btn:hover{
+
+    border-color:rgba(255,255,255,.28);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.13),
+            rgba(255,255,255,.065)
+        );
+}
+
+.google-btn:active{
+    transform:scale(.985);
+}
+
+.google-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.google-icon{
+    width:22px;
+    height:22px;
+
+    flex-shrink:0;
+}
+
+
+/* DIVIDER */
+
+.divider{
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    margin:23px 0 4px;
+
+    color:#7180a1;
+
+    font-size:11px;
+    font-weight:800;
+
+    letter-spacing:.7px;
+}
+
+.divider::before,
+.divider::after{
+
+    content:"";
+
+    flex:1;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.13)
+        );
+}
+
+.divider::after{
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.13),
+            transparent
+        );
+}
+
+
+/* FORM */
+
+.form-group{
+    margin-top:17px;
+}
+
+label{
+    display:block;
+
+    margin:0 3px 8px;
+
+    color:#dfe7fa;
+
+    font-size:13px;
+    font-weight:850;
+
+    letter-spacing:.15px;
+}
+
+.input{
+    width:100%;
+    height:55px;
+
+    padding:0 17px;
+
+    border-radius:17px;
+
+    border:1px solid rgba(151,174,225,.14);
+
+    outline:none;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(29,43,76,.94),
+            rgba(18,31,61,.96)
+        );
+
+    color:#fff;
+
+    font-size:15px;
+    font-weight:600;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 4px 15px rgba(0,0,0,.07);
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.input::placeholder{
+    color:#7382a5;
+}
+
+.input:focus{
+
+    border-color:rgba(35,203,255,.75);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(31,47,83,.98),
+            rgba(19,33,65,.98)
+        );
+
+    box-shadow:
+        0 0 0 3px rgba(28,197,255,.075),
+        0 8px 25px rgba(0,0,0,.15);
+}
+
+
+/* PASSWORD */
+
+.input-wrap{
+    position:relative;
+    width:100%;
+}
+
+.password-input{
+    padding-right:65px;
+}
+
+.eye-btn{
+
+    position:absolute;
+
+    top:5px;
+    right:5px;
+
+    width:45px;
+    height:45px;
+
+    border:0;
+    border-radius:14px;
+
+    background:rgba(255,255,255,.055);
+
+    color:#9baacd;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:.15s ease;
+}
+
+.eye-btn:active{
+    transform:scale(.91);
+}
+
+.eye-btn.active{
+
+    color:#55dfff;
+
+    background:rgba(34,197,255,.09);
+}
+
+.eye-icon{
+
+    width:22px;
+    height:22px;
+
+    pointer-events:none;
+}
+
+
+/* REFERRAL */
+
+.referral-check{
+
+    display:flex;
+    align-items:center;
+
+    gap:11px;
+
+    margin:18px 3px 0;
+
+    min-height:40px;
+
+    color:#dce5fa;
+
+    font-size:14px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    user-select:none;
+}
+
+.referral-check input{
+
+    position:absolute;
+
+    opacity:0;
+
+    pointer-events:none;
+}
+
+.custom-check{
+
+    width:24px;
+    height:24px;
+
+    flex-shrink:0;
+
+    border-radius:8px;
+
+    border:1px solid rgba(255,255,255,.27);
+
+    background:rgba(255,255,255,.035);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.18s ease;
+}
+
+.referral-check input:checked + .custom-check{
+
+    border-color:#27caff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #09c9ff,
+            #6748f1
+        );
+
+    box-shadow:
+        0 6px 20px rgba(35,182,255,.22);
+}
+
+.custom-check::after{
+
+    content:"";
+
+    width:7px;
+    height:12px;
+
+    border:solid white;
+
+    border-width:0 2px 2px 0;
+
+    transform:
+        rotate(45deg)
+        scale(0);
+
+    transition:.15s ease;
+}
+
+.referral-check input:checked + .custom-check::after{
+
+    transform:
+        rotate(45deg)
+        scale(1);
+}
+
+.referral-area{
+
+    display:none;
+
+    margin-top:8px;
+}
+
+.referral-area.show{
+
+    display:block;
+
+    animation:
+        referralIn .22s ease;
+}
+
+@keyframes referralIn{
+
+    from{
+        opacity:0;
+        transform:translateY(-5px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+/* MESSAGE */
+
+.message{
+
+    min-height:20px;
+
+    margin:14px 4px 0;
+
+    text-align:center;
+
+    font-size:12px;
+    line-height:1.45;
+
+    font-weight:800;
+}
+
+.message:empty{
+    margin-top:8px;
+}
+
+.message.success{
+    color:#59e9ad;
+}
+
+.message.error{
+    color:#ff8098;
+}
+
+.message.info{
+    color:#5edcff;
+}
+
+
+/* CREATE */
+
+.create-btn{
+
+    width:100%;
+    height:56px;
+
+    margin-top:9px;
+
+    border:0;
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            100deg,
+            #09bde9 0%,
+            #2784f4 48%,
+            #7045f4 100%
+        );
+
+    color:#fff;
+
+    font-size:16px;
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 15px 35px rgba(48,101,255,.25),
+        inset 0 1px 0 rgba(255,255,255,.25);
+
+    transition:
+        transform .15s ease,
+        opacity .2s ease;
+}
+
+.create-btn:active{
+    transform:scale(.985);
+}
+
+.create-btn:disabled{
+
+    opacity:.42;
+
+    cursor:not-allowed;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.12);
+}
+
+
+/* LOGIN */
+
+.login-btn{
+
+    width:100%;
+    min-height:54px;
+
+    margin-top:11px;
+
+    border-radius:17px;
+
+    border:1px solid rgba(147,174,226,.14);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.055),
+            rgba(255,255,255,.025)
+        );
+
+    color:#dce5fa;
+
+    font-size:14px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.18s ease;
+}
+
+.login-btn:active{
+    transform:scale(.985);
+}
+
+.login-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+
+/* TOAST */
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:24px;
+
+    z-index:9999;
+
+    width:calc(100% - 34px);
+    max-width:410px;
+
+    padding:14px 17px;
+
+    border-radius:16px;
+
+    border:1px solid rgba(65,213,255,.25);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(10,26,55,.98),
+            rgba(14,21,52,.98)
+        );
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.50),
+        inset 0 1px 0 rgba(255,255,255,.07);
+
+    text-align:center;
+
+    color:#eaf6ff;
+
+    font-size:13px;
+    font-weight:800;
+
+    opacity:0;
+
+    transform:
+        translate(-50%, 18px)
+        scale(.97);
+
+    pointer-events:none;
+
+    transition:
+        opacity .22s ease,
+        transform .22s ease;
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%, 0)
+        scale(1);
+}
+
+.toast.success{
+    border-color:rgba(67,231,170,.30);
+}
+
+.toast.error{
+    border-color:rgba(255,100,130,.30);
+}
+
+
+/* SPINNER */
+
+.spinner{
+
+    width:18px;
+    height:18px;
+
+    border:2px solid rgba(255,255,255,.35);
+
+    border-top-color:#fff;
+
+    border-radius:50%;
+
+    animation:
+        spin .7s linear infinite;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:600px){
+
+    .page{
+        padding:9px 7px 25px;
+    }
+
+    .signup-card{
+        padding:23px 16px 22px;
+        border-radius:28px;
+    }
+
+    .logo-box{
+        width:72px;
+        height:72px;
+    }
+
+    h1{
+        font-size:29px;
+    }
+}
+
+@media(max-width:400px){
+
+    .signup-card{
+        padding-left:14px;
+        padding-right:14px;
+    }
+
+}
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation:none !important;
+        transition:none !important;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<main class="signup-card">
+
+    <div class="brand">
+
+        <div class="logo-box">
+
+            <img
+                src="./logos.png"
+                alt="TaskEarn"
+                class="logo-image"
+            >
+
+        </div>
+
+        <div class="tag">
+            JOIN TASKEARN
+        </div>
+
+        <h1>
+            Create Account
+        </h1>
+
+        <p class="subtitle">
+            Create your secure TaskEarn account and start your rewards journey.
+        </p>
+
+    </div>
+
+
+    <!-- GOOGLE -->
+
+    <button
+        id="googleButton"
+        class="google-btn"
+        type="button"
+    >
+
+        <svg
+            class="google-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+
+            <path
+                fill="#4285F4"
+                d="M21.35 12.23c0-.72-.06-1.41-.18-2.08H12v3.94h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.25z"
+            />
+
+            <path
+                fill="#34A853"
+                d="M12 21.99c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.93-3.31.93-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.99z"
+            />
+
+            <path
+                fill="#FBBC05"
+                d="M6.54 14.08a5.85 5.85 0 0 1 0-3.76V7.79H3.3a9.76 9.76 0 0 0 0 8.82l3.24-2.53z"
+            />
+
+            <path
+                fill="#EA4335"
+                d="M12 5.89c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 2.97 14.63 2 12 2a9.74 9.74 0 0 0-8.7 5.79l3.24 2.53C7.31 7.61 9.46 5.89 12 5.89z"
+            />
+
+        </svg>
+
+        <span id="googleButtonText">
+            Continue with Google
+        </span>
+
+    </button>
+
+
+    <div class="divider">
+        OR
+    </div>
+
+
+    <!-- NAME -->
+
+    <div class="form-group">
+
+        <label for="teRegName">
+            Full Name
+        </label>
+
+        <input
+            id="teRegName"
+            class="input"
+            type="text"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            autocapitalize="words"
+        >
+
+    </div>
+
+
+    <!-- MOBILE -->
+
+    <div class="form-group">
+
+        <label for="teRegMobile">
+            Mobile Number
+        </label>
+
+        <input
+            id="teRegMobile"
+            class="input"
+            type="tel"
+            inputmode="numeric"
+            maxlength="10"
+            placeholder="10-digit mobile number"
+            autocomplete="tel"
+        >
+
+    </div>
+
+
+    <!-- EMAIL -->
+
+    <div class="form-group">
+
+        <label for="teRegEmail">
+            Email Address
+        </label>
+
+        <input
+            id="teRegEmail"
+            class="input"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            autocapitalize="none"
+            spellcheck="false"
+        >
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <div class="form-group">
+
+        <label for="teRegPassword">
+            Password
+        </label>
+
+        <div class="input-wrap">
+
+            <input
+                id="teRegPassword"
+                class="input password-input"
+                type="password"
+                placeholder="Minimum 6 characters"
+                autocomplete="new-password"
+            >
+
+            <button
+                id="passwordEye"
+                class="eye-btn"
+                type="button"
+                aria-label="Show password"
+                aria-pressed="false"
+            ></button>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONFIRM -->
+
+    <div class="form-group">
+
+        <label for="teRegConfirm">
+            Confirm Password
+        </label>
+
+        <div class="input-wrap">
+
+            <input
+                id="teRegConfirm"
+                class="input password-input"
+                type="password"
+                placeholder="Re-enter your password"
+                autocomplete="new-password"
+            >
+
+            <button
+                id="confirmEye"
+                class="eye-btn"
+                type="button"
+                aria-label="Show password"
+                aria-pressed="false"
+            ></button>
+
+        </div>
+
+    </div>
+
+
+    <!-- REFERRAL -->
+
+    <label
+        class="referral-check"
+        for="hasReferral"
+    >
+
+        <input
+            id="hasReferral"
+            type="checkbox"
+        >
+
+        <span class="custom-check"></span>
+
+        <span>
+            I have a referral code
+        </span>
+
+    </label>
+
+
+    <div
+        id="referralArea"
+        class="referral-area"
+    >
+
+        <label for="teRegReferral">
+            Referral Code
+        </label>
+
+        <input
+            id="teRegReferral"
+            class="input"
+            type="text"
+            placeholder="Referral detected automatically"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+        >
+
+    </div>
+
+
+    <div
+        id="signupMessage"
+        class="message"
+        aria-live="polite"
+    ></div>
+
+
+    <button
+        id="registerButton"
+        class="create-btn"
+        type="button"
+    >
+
+        <span id="registerContent">
+            Create Account
+        </span>
+
+    </button>
+
+
+    <button
+        id="loginButton"
+        class="login-btn"
+        type="button"
+    >
+        Already have an account? Login
+    </button>
+
+</main>
+
+</div>
+
+
+<div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   TASKEARN SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+
+const TASKEARN_OAUTH_REDIRECT =
+    "taskearn://auth-callback";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true,
+                flowType:"pkce"
+            }
+        }
+    );
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const googleButton =
+    document.getElementById("googleButton");
+
+const googleButtonText =
+    document.getElementById("googleButtonText");
+
+const nameInput =
+    document.getElementById("teRegName");
+
+const mobileInput =
+    document.getElementById("teRegMobile");
+
+const emailInput =
+    document.getElementById("teRegEmail");
+
+const passwordInput =
+    document.getElementById("teRegPassword");
+
+const confirmInput =
+    document.getElementById("teRegConfirm");
+
+const referralInput =
+    document.getElementById("teRegReferral");
+
+const hasReferral =
+    document.getElementById("hasReferral");
+
+const referralArea =
+    document.getElementById("referralArea");
+
+const registerButton =
+    document.getElementById("registerButton");
+
+const registerContent =
+    document.getElementById("registerContent");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const passwordEye =
+    document.getElementById("passwordEye");
+
+const confirmEye =
+    document.getElementById("confirmEye");
+
+const signupMessage =
+    document.getElementById("signupMessage");
+
+const toast =
+    document.getElementById("toast");
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let googleLoading = false;
+let creatingAccount = false;
+let handlingOAuth = false;
+
+
+/* =========================================================
+   PAGE URL
+   ========================================================= */
+
+function pageUrl(page){
+
+    return new URL(
+        page,
+        window.location.href
+    ).href;
+
+}
+
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+function openHome(){
+
+    window.location.replace(
+        pageUrl("home.html")
+    );
+
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+function showMessage(text,type){
+
+    signupMessage.textContent =
+        text;
+
+    signupMessage.className =
+        "message " + (type || "");
+
+}
+
+
+function clearMessage(){
+
+    signupMessage.textContent =
+        "";
+
+    signupMessage.className =
+        "message";
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer = null;
+
+function showToast(text,type){
+
+    clearTimeout(toastTimer);
+
+    toast.textContent =
+        text;
+
+    toast.className =
+        "toast " + (type || "");
+
+    requestAnimationFrame(function(){
+
+        toast.classList.add("show");
+
+    });
+
+    toastTimer =
+        setTimeout(function(){
+
+            toast.classList.remove("show");
+
+        },3000);
+
+}
+
+
+/* =========================================================
+   FRIENDLY ERROR
+   ========================================================= */
+
+function friendlyError(error){
+
+    const raw =
+        String(
+            error?.message || ""
+        );
+
+    const lower =
+        raw.toLowerCase();
+
+
+    if(
+        lower.includes("user already registered")
+    ){
+        return "This email is already registered. Please login.";
+    }
+
+
+    if(
+        lower.includes("invalid login credentials")
+    ){
+        return "Invalid email or password.";
+    }
+
+
+    if(
+        lower.includes("password") &&
+        lower.includes("6")
+    ){
+        return "Password must be at least 6 characters.";
+    }
+
+
+    if(
+        lower.includes("rate limit") ||
+        lower.includes("too many")
+    ){
+        return "Too many attempts. Please wait and try again.";
+    }
+
+
+    if(
+        lower.includes("network") ||
+        lower.includes("fetch") ||
+        lower.includes("failed to fetch")
+    ){
+        return "Internet connection problem. Please check your connection.";
+    }
+
+
+    if(
+        lower.includes("provider is not enabled")
+    ){
+        return "Google Sign-In is not enabled in Supabase.";
+    }
+
+
+    if(
+        lower.includes("redirect")
+    ){
+        return "Google redirect configuration needs to be checked in Supabase.";
+    }
+
+
+    return raw ||
+        "Something went wrong. Please try again.";
+
+}
+
+
+/* =========================================================
+   EYE ICON
+   ========================================================= */
+
+function eyeIcon(hidden){
+
+    if(hidden){
+
+        return `
+            <svg
+                class="eye-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+                <circle cx="12" cy="12" r="2.7"/>
+            </svg>
+        `;
+
+    }
+
+    return `
+        <svg
+            class="eye-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+            <path d="M4 4L20 20"/>
+        </svg>
+    `;
+
+}
+
+
+function setupEye(input,button){
+
+    button.innerHTML =
+        eyeIcon(true);
+
+    button.addEventListener(
+        "click",
+        function(){
+
+            const showing =
+                input.type === "text";
+
+            input.type =
+                showing
+                    ? "password"
+                    : "text";
+
+            button.classList.toggle(
+                "active",
+                !showing
+            );
+
+            button.setAttribute(
+                "aria-label",
+                showing
+                    ? "Show password"
+                    : "Hide password"
+            );
+
+            button.setAttribute(
+                "aria-pressed",
+                String(!showing)
+            );
+
+            button.innerHTML =
+                eyeIcon(showing);
+
+        }
+    );
+
+}
+
+
+setupEye(
+    passwordInput,
+    passwordEye
+);
+
+setupEye(
+    confirmInput,
+    confirmEye
+);
+
+
+/* =========================================================
+   AUTOMATIC REFERRAL FROM URL
+   ========================================================= */
+
+function getReferralFromUrl(){
+
+    try{
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const ref =
+            (params.get("ref") || "").trim();
+
+
+        /*
+         * Referral must be a Supabase user UUID.
+         */
+
+        if(
+            ref &&
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
+                .test(ref)
+        ){
+
+            return ref;
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "TaskEarn referral URL:",
+            error
+        );
+
+    }
+
+    return "";
+
+}
+
+
+const automaticReferral =
+    getReferralFromUrl();
+
+
+if(automaticReferral){
+
+    localStorage.setItem(
+        "taskearn_pending_referrer_id",
+        automaticReferral
+    );
+
+
+    hasReferral.checked =
+        true;
+
+
+    referralArea.classList.add(
+        "show"
+    );
+
+
+    /*
+     * Display detected referral.
+     */
+
+    referralInput.value =
+        "Referral automatically detected";
+
+
+    referralInput.readOnly =
+        true;
+
+
+    referralInput.style.opacity =
+        ".72";
+
+
+    showMessage(
+        "Referral detected. Your signup will be linked automatically.",
+        "info"
+    );
+
+}
+
+
+/* =========================================================
+   MANUAL REFERRAL TOGGLE
+   ========================================================= */
+
+hasReferral.addEventListener(
+    "change",
+    function(){
+
+        if(this.checked){
+
+            referralArea.classList.add(
+                "show"
+            );
+
+
+            /*
+             * If referral came from URL,
+             * never remove the pending UUID.
+             */
+
+            if(automaticReferral){
+
+                referralInput.value =
+                    "Referral automatically detected";
+
+                referralInput.readOnly =
+                    true;
+
+            }else{
+
+                referralInput.readOnly =
+                    false;
+
+                referralInput.style.opacity =
+                    "1";
+
+                setTimeout(function(){
+
+                    referralInput.focus();
+
+                },80);
+
+            }
+
+        }else{
+
+            /*
+             * If it came automatically,
+             * don't allow accidental deletion.
+             */
+
+            if(automaticReferral){
+
+                this.checked =
+                    true;
+
+                return;
+
+            }
+
+
+            referralArea.classList.remove(
+                "show"
+            );
+
+            referralInput.value = "";
+
+            localStorage.removeItem(
+                "taskearn_pending_referrer_id"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INPUT CLEANUP
+   ========================================================= */
+
+mobileInput.addEventListener(
+    "input",
+    function(){
+
+        this.value =
+            this.value
+                .replace(/[^0-9]/g,"")
+                .slice(0,10);
+
+    }
+);
+
+
+nameInput.addEventListener(
+    "input",
+    function(){
+
+        this.value =
+            this.value.replace(
+                /\s{2,}/g,
+                " "
+            );
+
+    }
+);
+
+
+referralInput.addEventListener(
+    "input",
+    function(){
+
+        if(
+            !automaticReferral
+        ){
+
+            this.value =
+                this.value
+                    .toUpperCase()
+                    .replace(/\s/g,"");
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+function validEmail(email){
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
+
+}
+
+
+function validateBasic(){
+
+    const name =
+        nameInput.value.trim();
+
+    const mobile =
+        mobileInput.value.trim();
+
+    const email =
+        emailInput.value
+            .trim()
+            .toLowerCase();
+
+    const password =
+        passwordInput.value;
+
+    const confirm =
+        confirmInput.value;
+
+
+    if(!name){
+
+        showMessage(
+            "Please enter your full name.",
+            "error"
+        );
+
+        nameInput.focus();
+
+        return false;
+
+    }
+
+
+    if(name.length < 2){
+
+        showMessage(
+            "Please enter a valid full name.",
+            "error"
+        );
+
+        nameInput.focus();
+
+        return false;
+
+    }
+
+
+    if(!/^[0-9]{10}$/.test(mobile)){
+
+        showMessage(
+            "Please enter a valid 10-digit mobile number.",
+            "error"
+        );
+
+        mobileInput.focus();
+
+        return false;
+
+    }
+
+
+    if(!validEmail(email)){
+
+        showMessage(
+            "Please enter a valid email address.",
+            "error"
+        );
+
+        emailInput.focus();
+
+        return false;
+
+    }
+
+
+    if(password.length < 6){
+
+        showMessage(
+            "Password must be at least 6 characters.",
+            "error"
+        );
+
+        passwordInput.focus();
+
+        return false;
+
+    }
+
+
+    if(password !== confirm){
+
+        showMessage(
+            "Passwords do not match.",
+            "error"
+        );
+
+        confirmInput.focus();
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   AUTOMATIC REFERRAL REGISTRATION
+   ========================================================= */
+
+async function registerAutomaticReferral(session){
+
+    try{
+
+        if(
+            !session ||
+            !session.user ||
+            !session.user.id
+        ){
+
+            return false;
+
+        }
+
+
+        const referrerId =
+            localStorage.getItem(
+                "taskearn_pending_referrer_id"
+            );
+
+
+        if(!referrerId){
+
+            return false;
+
+        }
+
+
+        /*
+         * Prevent self referral.
+         */
+
+        if(
+            referrerId ===
+            session.user.id
+        ){
+
+            localStorage.removeItem(
+                "taskearn_pending_referrer_id"
+            );
+
+            return false;
+
+        }
+
+
+        /*
+         * Ask Supabase to register
+         * the genuine referral.
+         */
+
+        const result =
+            await supabaseClient.rpc(
+                "register_referral",
+                {
+                    p_referrer_id:
+                        referrerId
+                }
+            );
+
+
+        if(result.error){
+
+            console.error(
+                "TaskEarn referral RPC error:",
+                result.error
+            );
+
+            /*
+             * Keep pending so it can be
+             * retried after confirmation/login.
+             */
+
+            return false;
+
+        }
+
+
+        if(result.data === true){
+
+            localStorage.removeItem(
+                "taskearn_pending_referrer_id"
+            );
+
+            localStorage.setItem(
+                "taskearn_referral_completed",
+                "true"
+            );
+
+            console.log(
+                "TaskEarn: referral registered successfully."
+            );
+
+            return true;
+
+        }
+
+
+        /*
+         * False means the referral could
+         * not be registered, for example:
+         *
+         * - already referred
+         * - invalid referrer
+         * - self referral
+         */
+
+        localStorage.removeItem(
+            "taskearn_pending_referrer_id"
+        );
+
+        return false;
+
+
+    }catch(error){
+
+        console.error(
+            "TaskEarn automatic referral error:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   GOOGLE OAUTH
+   ========================================================= */
+
+async function signInWithGoogle(){
+
+    if(googleLoading){
+        return;
+    }
+
+
+    googleLoading =
+        true;
+
+
+    googleButton.disabled =
+        true;
+
+    registerButton.disabled =
+        true;
+
+    loginButton.disabled =
+        true;
+
+
+    googleButtonText.innerHTML = `
+        <span
+            style="
+                display:flex;
+                align-items:center;
+                gap:9px;
+            "
+        >
+            <span class="spinner"></span>
+            Connecting to Google...
+        </span>
+    `;
+
+
+    clearMessage();
+
+
+    const pendingProfile = {
+
+        full_name:
+            nameInput.value.trim(),
+
+        mobile:
+            mobileInput.value.trim(),
+
+        referral_code:
+            automaticReferral ||
+            (
+                hasReferral.checked
+                    ? referralInput.value.trim()
+                    : ""
+            )
+
+    };
+
+
+    localStorage.setItem(
+        "taskearn_google_pending_profile",
+        JSON.stringify(pendingProfile)
+    );
+
+
+    try{
+
+        const result =
+            await supabaseClient.auth.signInWithOAuth({
+
+                provider:"google",
+
+                options:{
+
+                    redirectTo:
+                        window.location.origin +
+                        "/pages/home.html",
+
+                    queryParams:{
+
+                        prompt:
+                            "select_account"
+
+                    }
+
+                }
+
+            });
+
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "TaskEarn Google OAuth error:",
+            error
+        );
+
+
+        googleLoading =
+            false;
+
+
+        googleButton.disabled =
+            false;
+
+        registerButton.disabled =
+            false;
+
+        loginButton.disabled =
+            false;
+
+
+        googleButtonText.textContent =
+            "Continue with Google";
+
+
+        const message =
+            friendlyError(error);
+
+
+        showMessage(
+            message,
+            "error"
+        );
+
+        showToast(
+            message,
+            "error"
+        );
+
+    }
+
+}
+
+
+googleButton.addEventListener(
+    "click",
+    signInWithGoogle
+);
+
+
+/* =========================================================
+   NORMAL EMAIL/PASSWORD SIGNUP
+   ========================================================= */
+
+registerButton.addEventListener(
+    "click",
+    async function(){
+
+        if(creatingAccount){
+            return;
+        }
+
+
+        if(!validateBasic()){
+            return;
+        }
+
+
+        const name =
+            nameInput.value.trim();
+
+        const mobile =
+            mobileInput.value.trim();
+
+        const email =
+            emailInput.value
+                .trim()
+                .toLowerCase();
+
+        const password =
+            passwordInput.value;
+
+
+        const referral =
+            localStorage.getItem(
+                "taskearn_pending_referrer_id"
+            ) ||
+            (
+                hasReferral.checked &&
+                !automaticReferral
+                    ? referralInput.value.trim()
+                    : ""
+            );
+
+
+        creatingAccount =
+            true;
+
+
+        registerButton.disabled =
+            true;
+
+        loginButton.disabled =
+            true;
+
+        googleButton.disabled =
+            true;
+
+
+        registerContent.innerHTML = `
+            <span
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    gap:10px;
+                "
+            >
+                <span class="spinner"></span>
+                <span>Creating Account...</span>
+            </span>
+        `;
+
+
+        clearMessage();
+
+
+        try{
+
+            const result =
+                await supabaseClient.auth.signUp({
+
+                    email:
+                        email,
+
+                    password:
+                        password,
+
+                    options:{
+
+                        data:{
+
+                            full_name:
+                                name,
+
+                            mobile:
+                                mobile,
+
+                            referral_code:
+                                referral
+
+                        }
+
+                    }
+
+                });
+
+
+            if(result.error){
+
+                throw result.error;
+
+            }
+
+
+            localStorage.setItem(
+                "taskearn_user_name",
+                name
+            );
+
+            localStorage.setItem(
+                "taskearn_user_mobile",
+                mobile
+            );
+
+            localStorage.setItem(
+                "taskearn_user_email",
+                email
+            );
+
+
+            if(referral){
+
+                localStorage.setItem(
+                    "taskearn_referral",
+                    referral
+                );
+
+            }
+
+
+            /* ==========================================
+               SESSION AVAILABLE
+               ========================================== */
+
+            if(
+                result.data &&
+                result.data.session
+            ){
+
+                /*
+                 * Register genuine referral
+                 * immediately after account creation.
+                 */
+
+                await registerAutomaticReferral(
+                    result.data.session
+                );
+
+
+                registerContent.textContent =
+                    "Account Created";
+
+
+                showMessage(
+                    "Your TaskEarn account has been created successfully.",
+                    "success"
+                );
+
+
+                showToast(
+                    "Account created successfully.",
+                    "success"
+                );
+
+
+                setTimeout(function(){
+
+                    openHome();
+
+                },900);
+
+            }else{
+
+                /*
+                 * Email confirmation is enabled.
+                 *
+                 * Referral UUID remains in localStorage
+                 * and will be registered when the user
+                 * returns with an authenticated session.
+                 */
+
+                registerContent.textContent =
+                    "Account Created";
+
+
+                showMessage(
+                    "Account created. Please complete the email confirmation required by Supabase.",
+                    "info"
+                );
+
+
+                showToast(
+                    "Account created successfully.",
+                    "success"
+                );
+
+
+                setTimeout(function(){
+
+                    window.location.replace(
+                        pageUrl("login.html")
+                    );
+
+                },1500);
+
+            }
+
+
+        }catch(error){
+
+            console.error(
+                "TaskEarn signup error:",
+                error
+            );
+
+
+            const message =
+                friendlyError(error);
+
+
+            showMessage(
+                message,
+                "error"
+            );
+
+
+            showToast(
+                message,
+                "error"
+            );
+
+
+            creatingAccount =
+                false;
+
+
+            registerButton.disabled =
+                false;
+
+            loginButton.disabled =
+                false;
+
+            googleButton.disabled =
+                false;
+
+
+            registerContent.textContent =
+                "Create Account";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+loginButton.addEventListener(
+    "click",
+    function(){
+
+        if(creatingAccount){
+            return;
+        }
+
+
+        window.location.replace(
+            pageUrl("login.html")
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ENTER KEY
+   ========================================================= */
+
+passwordInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            confirmInput.focus();
+
+        }
+
+    }
+);
+
+
+confirmInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            registerButton.click();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SAVE GOOGLE PROFILE
+   ========================================================= */
+
+async function saveGoogleProfile(session){
+
+    try{
+
+        if(!session){
+            return;
+        }
+
+
+        const pending =
+            localStorage.getItem(
+                "taskearn_google_pending_profile"
+            );
+
+
+        if(!pending){
+
+            /*
+             * Even if there is no profile
+             * information, referral may still
+             * exist from the URL.
+             */
+
+            await registerAutomaticReferral(
+                session
+            );
+
+            return;
+
+        }
+
+
+        const profile =
+            JSON.parse(pending);
+
+
+        const googleName =
+            session.user?.user_metadata?.full_name ||
+            session.user?.user_metadata?.name ||
+            profile.full_name ||
+            "";
+
+
+        const googleEmail =
+            session.user?.email ||
+            "";
+
+
+        if(googleName){
+
+            localStorage.setItem(
+                "taskearn_user_name",
+                googleName
+            );
+
+        }
+
+
+        if(profile.mobile){
+
+            localStorage.setItem(
+                "taskearn_user_mobile",
+                profile.mobile
+            );
+
+        }
+
+
+        if(googleEmail){
+
+            localStorage.setItem(
+                "taskearn_user_email",
+                googleEmail
+            );
+
+        }
+
+
+        /*
+         * Make sure the automatic URL referral
+         * is still available.
+         */
+
+        if(
+            automaticReferral &&
+            !localStorage.getItem(
+                "taskearn_pending_referrer_id"
+            )
+        ){
+
+            localStorage.setItem(
+                "taskearn_pending_referrer_id",
+                automaticReferral
+            );
+
+        }
+
+
+        /*
+         * Register referral after Google
+         * authentication.
+         */
+
+        await registerAutomaticReferral(
+            session
+        );
+
+
+        localStorage.removeItem(
+            "taskearn_google_pending_profile"
+        );
+
+
+    }catch(error){
+
+        console.warn(
+            "TaskEarn Google profile:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HANDLE OAUTH RETURN
+   ========================================================= */
+
+async function handleOAuthReturn(){
+
+    if(handlingOAuth){
+        return false;
+    }
+
+
+    const currentUrl =
+        new URL(
+            window.location.href
+        );
+
+
+    const code =
+        currentUrl.searchParams.get(
+            "code"
+        );
+
+
+    if(code){
+
+        handlingOAuth =
+            true;
+
+
+        try{
+
+            showMessage(
+                "Completing Google sign-in...",
+                "info"
+            );
+
+
+            const result =
+                await supabaseClient.auth.exchangeCodeForSession(
+                    code
+                );
+
+
+            if(result.error){
+
+                throw result.error;
+
+            }
+
+
+            if(result.data.session){
+
+                await saveGoogleProfile(
+                    result.data.session
+                );
+
+
+                showToast(
+                    "Google account connected successfully.",
+                    "success"
+                );
+
+
+                setTimeout(function(){
+
+                    openHome();
+
+                },500);
+
+
+                return true;
+
+            }
+
+        }catch(error){
+
+            console.error(
+                "TaskEarn OAuth callback error:",
+                error
+            );
+
+
+            const message =
+                friendlyError(error);
+
+
+            showMessage(
+                message,
+                "error"
+            );
+
+
+            showToast(
+                message,
+                "error"
+            );
+
+
+            handlingOAuth =
+                false;
+
+
+            return false;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   CHECK EXISTING SESSION
+   ========================================================= */
+
+async function checkExistingSession(){
+
+    try{
+
+        const oauthHandled =
+            await handleOAuthReturn();
+
+
+        if(oauthHandled){
+            return;
+        }
+
+
+        const result =
+            await supabaseClient.auth.getSession();
+
+
+        if(
+            result.data &&
+            result.data.session
+        ){
+
+            await saveGoogleProfile(
+                result.data.session
+            );
+
+
+            /*
+             * If an old pending referral exists,
+             * complete it now.
+             */
+
+            await registerAutomaticReferral(
+                result.data.session
+            );
+
+
+            openHome();
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "TaskEarn session check:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTH STATE LISTENER
+   ========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+    async function(event,session){
+
+        console.log(
+            "TaskEarn Auth:",
+            event
+        );
+
+
+        if(
+            event === "SIGNED_IN" &&
+            session
+        ){
+
+            await saveGoogleProfile(
+                session
+            );
+
+
+            await registerAutomaticReferral(
+                session
+            );
+
+
+            if(
+                !handlingOAuth &&
+                !window.location.pathname.endsWith(
+                    "home.html"
+                )
+            ){
+
+                openHome();
+
+            }
+
+        }
+
+
+        if(
+            event === "TOKEN_REFRESHED" &&
+            session
+        ){
+
+            console.log(
+                "TaskEarn session refreshed."
+            );
+
+        }
+
+
+        if(
+            event === "SIGNED_OUT"
+        ){
+
+            creatingAccount =
+                false;
+
+            googleLoading =
+                false;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+checkExistingSession();
+
+</script>
+
+</body>
+</html>

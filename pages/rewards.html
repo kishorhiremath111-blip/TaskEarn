@@ -1,0 +1,4232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+>
+
+<meta name="theme-color" content="#050a14">
+
+<title>TaskEarn — Rewards</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =========================================================
+   TASK EARN — PREMIUM REWARDS
+   FINAL BACKEND CONNECTED VERSION
+   DESIGN PRESERVED
+   ========================================================= */
+
+:root{
+    --bg:#040812;
+    --surface:#07111f;
+    --surface-2:#091629;
+    --surface-3:#0c1b30;
+
+    --border:rgba(105,180,255,.13);
+    --border-strong:rgba(83,194,255,.25);
+
+    --blue:#299cff;
+    --cyan:#27ddff;
+    --cyan-light:#74ecff;
+
+    --violet:#795dff;
+    --purple:#a66dff;
+
+    --green:#42e5a4;
+    --yellow:#ffd166;
+    --red:#ff607c;
+
+    --white:#f7fbff;
+    --text:#dce9f8;
+    --muted:#8092ab;
+    --muted-2:#5e7089;
+
+    --radius-xl:32px;
+    --radius-lg:25px;
+    --radius-md:19px;
+
+    --shadow:0 25px 80px rgba(0,0,0,.38);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    color:var(--white);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 10% -5%,
+            rgba(28,154,255,.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 100% 12%,
+            rgba(116,83,255,.16),
+            transparent 31%
+        ),
+        radial-gradient(
+            circle at 50% 70%,
+            rgba(24,104,178,.07),
+            transparent 36%
+        ),
+        linear-gradient(
+            180deg,
+            #030710 0%,
+            #06101d 50%,
+            #030710 100%
+        );
+
+    overflow-x:hidden;
+}
+
+button{
+    font:inherit;
+}
+
+button,
+a{
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+.bg-light{
+    position:fixed;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    filter:blur(90px);
+    pointer-events:none;
+    z-index:-2;
+    opacity:.22;
+}
+
+.bg-light.one{
+    left:-130px;
+    top:100px;
+    background:#168fff;
+}
+
+.bg-light.two{
+    right:-130px;
+    top:470px;
+    background:#7451ff;
+}
+
+.bg-light.three{
+    left:35%;
+    bottom:-160px;
+    background:#17bfff;
+    opacity:.12;
+}
+
+.app{
+    width:100%;
+    max-width:620px;
+    min-height:100vh;
+    margin:auto;
+    position:relative;
+    padding-bottom:42px;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    height:72px;
+    display:flex;
+    align-items:center;
+    padding:12px 17px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3,8,16,.96),
+            rgba(3,8,16,.76)
+        );
+
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+
+    border-bottom:
+        1px solid
+        rgba(120,190,255,.07);
+}
+
+.back-button{
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+
+    border:
+        1px solid
+        rgba(120,190,255,.13);
+
+    border-radius:15px;
+    color:#dceeff;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14,31,52,.9),
+            rgba(7,17,30,.9)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.035);
+
+    cursor:pointer;
+}
+
+.back-button:active{
+    transform:scale(.94);
+}
+
+.back-button svg{
+    width:20px;
+    height:20px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.content{
+    padding:19px 15px 0;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    border-radius:var(--radius-xl);
+    padding:26px 21px 23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,31,54,.98),
+            rgba(7,17,31,.98)
+        );
+
+    border:
+        1px solid
+        rgba(78,180,255,.19);
+
+    box-shadow:var(--shadow);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    right:-145px;
+    top:-150px;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(38,202,255,.23),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    left:-150px;
+    bottom:-160px;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(122,88,255,.18),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+.hero-inner{
+    position:relative;
+    z-index:2;
+}
+
+.hero-label{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#5fdcff;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.9px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+}
+
+.live{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#40e4a4;
+
+    box-shadow:
+        0 0 14px
+        rgba(64,228,164,.8);
+}
+
+.hero h1{
+    font-size:30px;
+    line-height:1.05;
+    letter-spacing:-1.25px;
+    max-width:490px;
+    margin-bottom:12px;
+}
+
+.hero-description{
+    color:#91a4bd;
+    font-size:12px;
+    line-height:1.65;
+    max-width:480px;
+}
+
+.countdown{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:20px;
+}
+
+.count-box{
+    padding:11px 5px 10px;
+    border-radius:16px;
+    text-align:center;
+
+    background:
+        rgba(2,9,18,.52);
+
+    border:
+        1px solid
+        rgba(112,183,255,.10);
+}
+
+.count-number{
+    display:block;
+    font-size:20px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:-.7px;
+}
+
+.count-label{
+    display:block;
+    margin-top:6px;
+    color:#63758d;
+    font-size:7px;
+    font-weight:850;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+}
+
+.master-card{
+    position:relative;
+    margin-top:13px;
+    overflow:hidden;
+    border-radius:29px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(9,21,38,.98),
+            rgba(6,14,27,.98)
+        );
+
+    border:
+        1px solid
+        rgba(109,181,255,.11);
+
+    box-shadow:
+        0 20px 65px
+        rgba(0,0,0,.26);
+}
+
+.section{
+    padding:20px 18px;
+    position:relative;
+}
+
+.section + .section{
+    border-top:
+        1px solid
+        rgba(120,180,255,.075);
+}
+
+.section-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.section-heading h2{
+    font-size:15px;
+    letter-spacing:-.25px;
+    font-weight:900;
+}
+
+.section-heading .mini{
+    color:#62758e;
+    font-size:9px;
+    font-weight:800;
+}
+
+.progress-box{
+    padding:18px;
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,39,66,.64),
+            rgba(8,20,37,.62)
+        );
+
+    border:
+        1px solid
+        rgba(64,178,255,.12);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.progress-top{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+}
+
+.progress-number{
+    font-size:31px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:-1.5px;
+}
+
+.progress-number span{
+    font-size:13px;
+    color:#63758d;
+    font-weight:800;
+    letter-spacing:0;
+}
+
+.progress-percent{
+    font-size:12px;
+    font-weight:900;
+    color:#5bdcff;
+}
+
+.progress-track{
+    position:relative;
+    height:10px;
+    margin-top:15px;
+    overflow:hidden;
+    border-radius:100px;
+    background:#030914;
+
+    border:
+        1px solid
+        rgba(100,175,255,.08);
+}
+
+.progress-fill{
+    width:0%;
+    height:100%;
+    border-radius:100px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1e9cff,
+            #35ddff,
+            #8063ff
+        );
+
+    box-shadow:
+        0 0 20px
+        rgba(43,190,255,.36);
+}
+
+.progress-bottom{
+    display:flex;
+    justify-content:space-between;
+    margin-top:9px;
+    color:#63758e;
+    font-size:9px;
+    font-weight:750;
+}
+
+.watch-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+    border-radius:21px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(11,31,53,.8),
+            rgba(8,18,33,.8)
+        );
+
+    border:
+        1px solid
+        rgba(60,175,255,.11);
+}
+
+.watch-icon{
+    flex:0 0 47px;
+    width:47px;
+    height:47px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(28,157,255,.16),
+            rgba(91,86,255,.10)
+        );
+
+    border:
+        1px solid
+        rgba(57,187,255,.16);
+}
+
+.watch-icon svg{
+    width:21px;
+    height:21px;
+    fill:none;
+    stroke:#5bdcff;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.watch-copy{
+    flex:1;
+    min-width:0;
+}
+
+.watch-copy strong{
+    display:block;
+    font-size:13px;
+    font-weight:900;
+    margin-bottom:4px;
+}
+
+.watch-copy span{
+    display:block;
+    color:#70839c;
+    font-size:9px;
+    line-height:1.5;
+}
+
+.watch-button{
+    flex:0 0 auto;
+    min-width:98px;
+    height:41px;
+    border-radius:13px;
+
+    border:
+        1px solid
+        rgba(67,191,255,.27);
+
+    color:#eaf9ff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(27,119,185,.72),
+            rgba(54,74,157,.72)
+        );
+
+    box-shadow:
+        0 7px 23px
+        rgba(27,124,210,.13);
+
+    font-size:10px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.watch-button:active{
+    transform:scale(.94);
+}
+
+.watch-button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.status{
+    margin-top:10px;
+    padding:11px 13px;
+    border-radius:14px;
+    color:#6f829b;
+
+    background:
+        rgba(2,8,16,.42);
+
+    border:
+        1px solid
+        rgba(108,175,245,.065);
+
+    font-size:9px;
+    line-height:1.55;
+}
+
+.status.success{
+    color:#7de8bd;
+
+    background:
+        rgba(43,150,105,.065);
+
+    border-color:
+        rgba(61,225,161,.15);
+}
+
+.status.warning{
+    color:#e9c875;
+
+    background:
+        rgba(180,130,30,.055);
+
+    border-color:
+        rgba(255,200,87,.14);
+}
+
+.status.error{
+    color:#ff879b;
+
+    background:
+        rgba(180,42,65,.055);
+
+    border-color:
+        rgba(255,86,117,.14);
+}
+
+.box-stage{
+    min-height:225px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    border-radius:24px;
+
+    background:
+        radial-gradient(
+            circle at 50% 47%,
+            rgba(43,178,255,.08),
+            transparent 42%
+        );
+}
+
+.box-stage::before{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(71,192,255,.08);
+}
+
+.box-stage::after{
+    content:"";
+    position:absolute;
+    width:230px;
+    height:230px;
+    border-radius:50%;
+
+    border:
+        1px dashed
+        rgba(124,91,255,.07);
+}
+
+.mystery-box{
+    position:relative;
+    width:165px;
+    height:170px;
+    border:0;
+    background:transparent;
+    cursor:pointer;
+    z-index:5;
+}
+
+.mystery-box:active{
+    transform:scale(.96);
+}
+
+.mystery-box:disabled{
+    cursor:not-allowed;
+}
+
+.box-shadow{
+    position:absolute;
+    width:120px;
+    height:25px;
+    left:22px;
+    bottom:16px;
+    border-radius:50%;
+
+    background:
+        rgba(25,165,255,.15);
+
+    filter:blur(15px);
+}
+
+.box-glow{
+    position:absolute;
+    width:170px;
+    height:170px;
+    left:-3px;
+    top:0;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(45,205,255,.19),
+            transparent 64%
+        );
+
+    opacity:0;
+}
+
+.box-body{
+    position:absolute;
+    width:96px;
+    height:76px;
+    left:34px;
+    bottom:30px;
+    border-radius:8px 8px 17px 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1aaeff,
+            #396dff 58%,
+            #725cff
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.18),
+
+        0 20px 40px
+        rgba(31,139,255,.25);
+
+    z-index:2;
+}
+
+.box-lid{
+    position:absolute;
+    width:108px;
+    height:31px;
+    left:28px;
+    top:60px;
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #42d8ff,
+            #557eff 58%,
+            #835cff
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.22),
+
+        0 10px 24px
+        rgba(44,148,255,.25);
+
+    z-index:5;
+}
+
+.box-band{
+    position:absolute;
+    width:19px;
+    height:76px;
+    left:72px;
+    bottom:30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.25),
+            rgba(255,255,255,.08)
+        );
+
+    z-index:6;
+}
+
+.box-band::after{
+    content:"";
+    position:absolute;
+    width:19px;
+    height:20px;
+    left:0;
+    top:-1px;
+    background:rgba(255,255,255,.18);
+}
+
+.ribbon{
+    position:absolute;
+    width:44px;
+    height:40px;
+    left:62px;
+    top:48px;
+    z-index:8;
+}
+
+.ribbon::before,
+.ribbon::after{
+    content:"";
+    position:absolute;
+    width:24px;
+    height:24px;
+
+    border:
+        4px solid
+        #dffbff;
+
+    border-radius:50% 50% 50% 0;
+
+    box-shadow:
+        0 0 12px
+        rgba(111,234,255,.4);
+}
+
+.ribbon::before{
+    left:-3px;
+    transform:rotate(35deg);
+}
+
+.ribbon::after{
+    right:-3px;
+    transform:rotate(145deg);
+}
+
+.box-text{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    text-align:center;
+    color:#667b96;
+    font-size:9px;
+    font-weight:850;
+    letter-spacing:.3px;
+    z-index:10;
+}
+
+.mystery-box.unlocked .box-glow{
+    opacity:1;
+}
+
+.mystery-box.unlocked .box-text{
+    color:#63ddff;
+}
+
+.reward-panel{
+    display:none;
+    margin-top:11px;
+    padding:18px;
+    text-align:center;
+    border-radius:21px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(21,70,96,.45),
+            rgba(63,46,105,.38)
+        );
+
+    border:
+        1px solid
+        rgba(80,204,255,.17);
+
+    box-shadow:
+        0 12px 40px
+        rgba(30,139,255,.08);
+}
+
+.reward-panel.show{
+    display:block;
+}
+
+.reward-label{
+    color:#68819c;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+}
+
+.reward-amount{
+    margin-top:5px;
+    font-size:34px;
+    font-weight:950;
+    letter-spacing:-1.5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #54ddff,
+            #9b7cff
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.reward-state{
+    margin-top:4px;
+    color:#71859f;
+    font-size:9px;
+    line-height:1.55;
+}
+
+.box-info{
+    text-align:center;
+    margin-top:10px;
+    color:#61758f;
+    font-size:9px;
+    line-height:1.55;
+}
+
+.toast{
+    position:fixed;
+    z-index:1000;
+    left:50%;
+    bottom:22px;
+    width:calc(100% - 30px);
+    max-width:420px;
+    padding:13px 15px;
+    border-radius:16px;
+
+    background:
+        rgba(9,21,37,.97);
+
+    border:
+        1px solid
+        rgba(93,183,255,.16);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.5);
+
+    color:#eaf6ff;
+    font-size:10px;
+    font-weight:750;
+    opacity:0;
+    transform:translate(-50%,25px);
+    pointer-events:none;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+.footer-note{
+    padding:17px 10px 0;
+    text-align:center;
+    color:#4f6179;
+    font-size:8px;
+    line-height:1.65;
+}
+
+@media(max-width:370px){
+
+    .hero h1{
+        font-size:26px;
+    }
+
+    .hero{
+        padding:23px 18px 21px;
+    }
+
+    .watch-card{
+        gap:9px;
+    }
+
+    .watch-button{
+        min-width:88px;
+    }
+
+    .progress-number{
+        font-size:27px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg-light one"></div>
+<div class="bg-light two"></div>
+<div class="bg-light three"></div>
+
+<div class="app">
+
+<header class="topbar">
+
+    <button
+        class="back-button"
+        id="backButton"
+        type="button"
+        aria-label="Go back">
+
+        <svg viewBox="0 0 24 24">
+
+            <path d="M15 18L9 12L15 6"></path>
+
+            <path d="M9 12H20"></path>
+
+        </svg>
+
+    </button>
+
+</header>
+
+<main class="content">
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div class="hero-label">
+
+            <span class="live"></span>
+
+            MONTHLY REWARD EVENT
+
+        </div>
+
+        <h1>
+            Complete your monthly goal.
+            Unlock the Mystery Box.
+        </h1>
+
+        <p class="hero-description">
+
+            Every verified rewarded session
+            contributes to your monthly progress.
+            Reach the configured target and unlock
+            your Mystery Box.
+
+        </p>
+
+        <div class="countdown">
+
+            <div class="count-box">
+                <span class="count-number" id="days">--</span>
+                <span class="count-label">Days</span>
+            </div>
+
+            <div class="count-box">
+                <span class="count-number" id="hours">--</span>
+                <span class="count-label">Hours</span>
+            </div>
+
+            <div class="count-box">
+                <span class="count-number" id="minutes">--</span>
+                <span class="count-label">Minutes</span>
+            </div>
+
+            <div class="count-box">
+                <span class="count-number" id="seconds">--</span>
+                <span class="count-label">Seconds</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="master-card">
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <h2>Monthly Progress</h2>
+
+        <span
+            class="mini"
+            id="monthLabel">
+            —
+        </span>
+
+    </div>
+
+    <div class="progress-box">
+
+        <div class="progress-top">
+
+            <div class="progress-number">
+
+                <span id="monthlyCompleted">
+                    0
+                </span>
+
+                <span>
+                    /
+                    <span id="monthlyTarget">
+                        500
+                    </span>
+                </span>
+
+            </div>
+
+            <div
+                class="progress-percent"
+                id="progressPercent">
+                0%
+            </div>
+
+        </div>
+
+        <div class="progress-track">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+        <div class="progress-bottom">
+
+            <span>
+                Verified sessions
+            </span>
+
+            <span id="remainingText">
+                500 remaining
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <h2>
+            Watch & Continue
+        </h2>
+
+        <span
+            class="mini"
+            id="todayProgress">
+            Today 0/17
+        </span>
+
+    </div>
+
+    <div class="watch-card">
+
+        <div class="watch-icon">
+
+            <svg viewBox="0 0 24 24">
+
+                <path d="M8 5v14l11-7z"></path>
+
+                <path d="M4 5v14"></path>
+
+            </svg>
+
+        </div>
+
+        <div class="watch-copy">
+
+            <strong>
+                Watch Rewarded Ad
+            </strong>
+
+            <span>
+                Complete an opted-in session.
+                Only a real completed ad with
+                native callback and backend
+                verification counts.
+            </span>
+
+        </div>
+
+        <button
+            class="watch-button"
+            id="watchButton"
+            type="button">
+            Checking…
+        </button>
+
+    </div>
+
+    <div
+        class="status"
+        id="adStatus">
+
+        Checking rewarded-ad connection…
+
+    </div>
+
+</div>
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <h2>
+            Mystery Box
+        </h2>
+
+        <span
+            class="mini"
+            id="boxState">
+            LOCKED
+        </span>
+
+    </div>
+
+    <div class="box-stage">
+
+        <button
+            class="mystery-box"
+            id="mysteryBox"
+            type="button"
+            aria-label="Mystery Box">
+
+            <div class="box-glow"></div>
+
+            <div class="box-shadow"></div>
+
+            <div class="box-body"></div>
+
+            <div class="box-band"></div>
+
+            <div class="box-lid"></div>
+
+            <div class="ribbon"></div>
+
+            <div
+                class="box-text"
+                id="boxText">
+                Complete 3 verified ads
+            </div>
+
+        </button>
+
+    </div>
+
+    <div
+        class="reward-panel"
+        id="rewardPanel">
+
+        <div class="reward-label">
+            Mystery Reward
+        </div>
+
+        <div
+            class="reward-amount"
+            id="rewardAmount">
+            Pending
+        </div>
+
+        <div
+            class="reward-state"
+            id="rewardState">
+            Waiting for backend settlement.
+        </div>
+
+    </div>
+
+    <div
+        class="box-info"
+        id="boxInfo">
+
+        Complete the required verified
+        sessions to unlock your Mystery Box.
+
+    </div>
+
+</div>
+
+<div class="section">
+
+    <div class="status">
+
+        <b>
+            Secure verification
+        </b>
+
+        <br>
+
+        The native rewarded-ad callback starts
+        verification. Progress is increased only
+        from verified backend records — never
+        by this page.
+
+    </div>
+
+</div>
+
+</section>
+
+<div class="footer-note">
+
+    TaskEarn Rewards • Monthly limits and reward
+    settings are controlled by the backend.
+
+</div>
+
+</main>
+
+</div>
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<script>
+
+"use strict";
+
+/* =========================================================
+   TASK EARN — REWARDS
+   FINAL BACKEND + NATIVE VERSION
+========================================================= */
+
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-OsR_MzRg_lgbbqbV";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true
+            }
+        }
+    );
+
+
+/* =========================================================
+   DEFAULTS
+========================================================= */
+
+const DEFAULTS = {
+
+    monthlyLimit:500,
+
+    dailyLimit:17,
+
+    adsPerBox:3
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const STATE = {
+
+    user:null,
+
+    monthlyAds:0,
+
+    todayAds:0,
+
+    completedBoxes:0,
+
+    monthlyLimit:DEFAULTS.monthlyLimit,
+
+    dailyLimit:DEFAULTS.dailyLimit,
+
+    adsPerBox:DEFAULTS.adsPerBox,
+
+    roundAds:0,
+
+    boxUnlocked:false,
+
+    rewardAmount:null,
+
+    rewardStatus:"pending",
+
+    roundId:null,
+
+    adInProgress:false,
+
+    nativeAdReady:false,
+
+    nativeAdShown:false,
+
+    nativeRewardEarned:false,
+
+    nativeAdCompleted:false,
+
+    nativeAdFailed:false,
+
+    nativeAdClosed:false,
+
+    nativeRewardPayload:null,
+
+    nativeError:null,
+
+    verificationAttempts:0
+
+};
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+function $(id){
+
+    return document.getElementById(id);
+
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+function safeNumber(
+    value,
+    fallback=0
+){
+
+    const n =
+        Number(value);
+
+    return Number.isFinite(n)
+        ? n
+        : fallback;
+
+}
+
+
+/* =========================================================
+   OBJECT VALUE
+========================================================= */
+
+function firstValue(
+    object,
+    keys,
+    fallback=null
+){
+
+    if(
+        !object ||
+        typeof object !== "object"
+    ){
+
+        return fallback;
+
+    }
+
+    for(
+        const key of keys
+    ){
+
+        if(
+            object[key] !== undefined &&
+            object[key] !== null &&
+            object[key] !== ""
+        ){
+
+            return object[key];
+
+        }
+
+    }
+
+    return fallback;
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+    const toast =
+        $("toast");
+
+    if(!toast){
+        return;
+    }
+
+    toast.textContent =
+        String(message || "");
+
+    toast.classList.add("show");
+
+    clearTimeout(
+        showToast.timer
+    );
+
+    showToast.timer =
+        setTimeout(
+            ()=>{
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setAdStatus(
+    message,
+    type=""
+){
+
+    const element =
+        $("adStatus");
+
+    if(!element){
+        return;
+    }
+
+    element.textContent =
+        String(message || "");
+
+    element.className =
+        "status";
+
+    if(type){
+
+        element.classList.add(
+            type
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+function setWatchButton(
+    disabled,
+    text
+){
+
+    const button =
+        $("watchButton");
+
+    if(!button){
+        return;
+    }
+
+    button.disabled =
+        !!disabled;
+
+    button.textContent =
+        text ||
+        "Watch Ad";
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+$("backButton").addEventListener(
+    "click",
+    ()=>{
+
+        window.location.href =
+            "home.html";
+
+    }
+);
+
+
+/* =========================================================
+   MONTH
+========================================================= */
+
+function monthStart(){
+
+    const now =
+        new Date();
+
+    return new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        1
+    );
+
+}
+
+
+function monthName(){
+
+    return new Intl.DateTimeFormat(
+        "en-IN",
+        {
+            month:"long",
+            year:"numeric"
+        }
+    ).format(
+        new Date()
+    );
+
+}
+
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+function nextMonth(){
+
+    const now =
+        new Date();
+
+    return new Date(
+        now.getFullYear(),
+        now.getMonth()+1,
+        1,
+        0,
+        0,
+        0,
+        0
+    );
+
+}
+
+
+function updateCountdown(){
+
+    let diff =
+        Math.max(
+            0,
+            nextMonth().getTime() -
+            Date.now()
+        );
+
+    const days =
+        Math.floor(
+            diff / 86400000
+        );
+
+    diff %= 86400000;
+
+    const hours =
+        Math.floor(
+            diff / 3600000
+        );
+
+    diff %= 3600000;
+
+    const minutes =
+        Math.floor(
+            diff / 60000
+        );
+
+    diff %= 60000;
+
+    const seconds =
+        Math.floor(
+            diff / 1000
+        );
+
+    if($("days"))
+        $("days").textContent =
+            String(days).padStart(2,"0");
+
+    if($("hours"))
+        $("hours").textContent =
+            String(hours).padStart(2,"0");
+
+    if($("minutes"))
+        $("minutes").textContent =
+            String(minutes).padStart(2,"0");
+
+    if($("seconds"))
+        $("seconds").textContent =
+            String(seconds).padStart(2,"0");
+
+}
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
+updateCountdown();
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+async function getSession(){
+
+    try{
+
+        const result =
+            await supabaseClient
+                .auth
+                .getSession();
+
+        if(result?.error){
+
+            console.error(
+                "Session error:",
+                result.error
+            );
+
+            return null;
+
+        }
+
+        return (
+            result?.data?.session ||
+            null
+        );
+
+    }catch(error){
+
+        console.error(
+            "Session failed:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+async function loadSettings(){
+
+    try{
+
+        const result =
+            await supabaseClient
+                .from("ad_reward_settings")
+                .select("*")
+                .eq("id",1)
+                .maybeSingle();
+
+        if(result.error){
+
+            console.warn(
+                "Settings error:",
+                result.error.message
+            );
+
+            updateStaticUI();
+
+            return false;
+
+        }
+
+        const data =
+            result.data;
+
+        if(data){
+
+            const monthly =
+                safeNumber(
+                    firstValue(
+                        data,
+                        [
+                            "monthly_ad_limit",
+                            "monthly_limit",
+                            "monthly_ads",
+                            "monthly_target",
+                            "max_ads_month",
+                            "ads_per_month"
+                        ],
+                        DEFAULTS.monthlyLimit
+                    ),
+                    DEFAULTS.monthlyLimit
+                );
+
+            const daily =
+                safeNumber(
+                    firstValue(
+                        data,
+                        [
+                            "daily_ad_limit",
+                            "daily_limit",
+                            "daily_ads",
+                            "max_ads_day",
+                            "ads_per_day"
+                        ],
+                        DEFAULTS.dailyLimit
+                    ),
+                    DEFAULTS.dailyLimit
+                );
+
+            const box =
+                safeNumber(
+                    firstValue(
+                        data,
+                        [
+                            "mystery_box_required_ads",
+                            "ads_per_box",
+                            "required_ads",
+                            "box_ads",
+                            "required_ads_per_box"
+                        ],
+                        DEFAULTS.adsPerBox
+                    ),
+                    DEFAULTS.adsPerBox
+                );
+
+            if(monthly > 0){
+
+                STATE.monthlyLimit =
+                    monthly;
+
+            }
+
+            if(daily > 0){
+
+                STATE.dailyLimit =
+                    daily;
+
+            }
+
+            if(box > 0){
+
+                STATE.adsPerBox =
+                    box;
+
+            }
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "Settings failed:",
+            error
+        );
+
+        return false;
+
+    }
+
+    updateStaticUI();
+
+    return true;
+
+}
+
+
+/* =========================================================
+   STATIC UI
+========================================================= */
+
+function updateStaticUI(){
+
+    if($("monthlyTarget")){
+
+        $("monthlyTarget").textContent =
+            STATE.monthlyLimit;
+
+    }
+
+    if($("monthLabel")){
+
+        $("monthLabel").textContent =
+            monthName();
+
+    }
+
+}
+
+
+/* =========================================================
+   MYSTERY STATUS
+========================================================= */
+
+async function loadMysteryStatus(){
+
+    if(!STATE.user){
+
+        console.warn(
+            "Mystery status skipped: no user."
+        );
+
+        return false;
+
+    }
+
+    try{
+
+        const result =
+            await supabaseClient
+                .rpc(
+                    "get_my_mystery_status"
+                );
+
+
+        if(result.error){
+
+            console.error(
+                "Mystery RPC error:",
+                result.error
+            );
+
+            setAdStatus(
+                "Backend Mystery Box status could not be loaded.",
+                "error"
+            );
+
+            return false;
+
+        }
+
+
+        let row =
+            result.data;
+
+
+        /*
+         * PostgreSQL RETURNS TABLE
+         * normally comes as an array.
+         */
+
+        if(Array.isArray(row)){
+
+            row =
+                row[0] || null;
+
+        }
+
+
+        if(
+            row &&
+            row.data &&
+            typeof row.data === "object"
+        ){
+
+            row =
+                row.data;
+
+        }
+
+
+        if(!row){
+
+            console.warn(
+                "Mystery RPC returned no row."
+            );
+
+            return false;
+
+        }
+
+
+        console.log(
+            "Mystery status:",
+            row
+        );
+
+
+        /* =====================================================
+           MONTHLY WATCHED
+        ===================================================== */
+
+        STATE.monthlyAds =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "monthly_watched",
+                        "monthly_ads",
+                        "completed_ads",
+                        "month_ads",
+                        "ads_completed",
+                        "monthly_completed",
+                        "verified_ads"
+                    ],
+                    0
+                )
+            );
+
+
+        /* =====================================================
+           DAILY WATCHED
+        ===================================================== */
+
+        STATE.todayAds =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "daily_watched",
+                        "daily_ads",
+                        "today_ads",
+                        "ads_today",
+                        "today_completed"
+                    ],
+                    0
+                )
+            );
+
+
+        /* =====================================================
+           COMPLETED BOXES
+        ===================================================== */
+
+        STATE.completedBoxes =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "completed_boxes",
+                        "boxes_completed"
+                    ],
+                    0
+                )
+            );
+
+
+        /* =====================================================
+           SETTINGS FROM RPC
+        ===================================================== */
+
+        const monthly =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "monthly_limit",
+                        "monthly_ad_limit",
+                        "monthly_target"
+                    ],
+                    0
+                )
+            );
+
+        if(monthly > 0){
+
+            STATE.monthlyLimit =
+                monthly;
+
+        }
+
+
+        const daily =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "daily_limit",
+                        "daily_ad_limit"
+                    ],
+                    0
+                )
+            );
+
+        if(daily > 0){
+
+            STATE.dailyLimit =
+                daily;
+
+        }
+
+
+        const adsPerBox =
+            safeNumber(
+                firstValue(
+                    row,
+                    [
+                        "required_ads",
+                        "mystery_box_required_ads",
+                        "ads_per_box"
+                    ],
+                    0
+                )
+            );
+
+        if(adsPerBox > 0){
+
+            STATE.adsPerBox =
+                adsPerBox;
+
+        }
+
+
+        /* =====================================================
+           CURRENT ROUND
+           
+           The current RPC does not return current_round_ads.
+           Therefore calculate the current round from:
+           
+           monthly watched - completed boxes × required ads
+        ===================================================== */
+
+        const calculatedRound =
+            STATE.monthlyAds -
+            (
+                STATE.completedBoxes *
+                STATE.adsPerBox
+            );
+
+        STATE.roundAds =
+            Math.max(
+                0,
+                calculatedRound
+            );
+
+
+        /*
+         * Safety clamp.
+         */
+
+        if(
+            STATE.roundAds >
+            STATE.adsPerBox
+        ){
+
+            STATE.roundAds =
+                STATE.roundAds %
+                Math.max(
+                    1,
+                    STATE.adsPerBox
+                );
+
+        }
+
+
+        /* =====================================================
+           REWARD
+        ===================================================== */
+
+        const reward =
+            firstValue(
+                row,
+                [
+                    "reward_amount",
+                    "pending_reward",
+                    "reward"
+                ],
+                null
+            );
+
+        if(reward !== null){
+
+            STATE.rewardAmount =
+                reward;
+
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        STATE.rewardStatus =
+            String(
+                firstValue(
+                    row,
+                    [
+                        "reward_status",
+                        "status"
+                    ],
+                    STATE.rewardStatus
+                )
+            );
+
+
+        /* =====================================================
+           ROUND ID
+        ===================================================== */
+
+        STATE.roundId =
+            firstValue(
+                row,
+                [
+                    "round_id",
+                    "current_round_id"
+                ],
+                null
+            );
+
+
+        /* =====================================================
+           BOX UNLOCK LOGIC
+           
+           Example:
+           monthly_watched = 0 → locked
+           monthly_watched = 1 → locked
+           monthly_watched = 2 → locked
+           monthly_watched = 3 → unlocked
+           
+           After 1 completed box:
+           monthly_watched = 3, completed_boxes = 1
+           → current round = 0
+           
+           monthly_watched = 6, completed_boxes = 1
+           → second box unlocked
+        ===================================================== */
+
+        STATE.boxUnlocked =
+            STATE.roundAds >=
+            STATE.adsPerBox;
+
+
+        /*
+         * Monthly target can also complete.
+         */
+
+        if(
+            STATE.monthlyAds >=
+            STATE.monthlyLimit
+        ){
+
+            STATE.boxUnlocked =
+                true;
+
+        }
+
+
+        updateUI();
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "Mystery status failed:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FALLBACK
+========================================================= */
+
+async function fallbackCount(){
+
+    if(!STATE.user){
+
+        return false;
+
+    }
+
+    try{
+
+        const start =
+            monthStart()
+                .toISOString();
+
+
+        const result =
+            await supabaseClient
+                .from("ad_watch_events")
+                .select(
+                    "id",
+                    {
+                        count:"exact",
+                        head:true
+                    }
+                )
+                .eq(
+                    "user_id",
+                    STATE.user.id
+                )
+                .eq(
+                    "status",
+                    "verified"
+                )
+                .gte(
+                    "watched_at",
+                    start
+                )
+                .eq(
+                    "is_mystery_box",
+                    true
+                );
+
+
+        if(result.error){
+
+            console.warn(
+                "Fallback error:",
+                result.error.message
+            );
+
+            return false;
+
+        }
+
+
+        STATE.monthlyAds =
+            safeNumber(
+                result.count
+            );
+
+
+        /*
+         * Fallback cannot reliably know
+         * completed_boxes, so only calculate
+         * the current 3-ad cycle.
+         */
+
+        STATE.roundAds =
+            STATE.monthlyAds %
+            Math.max(
+                1,
+                STATE.adsPerBox
+            );
+
+
+        /*
+         * Important:
+         * modulo gives 0 at exactly 3.
+         * Therefore unlock exact multiples too.
+         */
+
+        STATE.boxUnlocked =
+            STATE.monthlyAds > 0 &&
+            (
+                STATE.roundAds >=
+                STATE.adsPerBox
+                ||
+                STATE.monthlyAds %
+                STATE.adsPerBox ===
+                0
+            );
+
+
+        updateUI();
+
+        return true;
+
+    }catch(error){
+
+        console.warn(
+            "Fallback failed:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   UI
+========================================================= */
+
+function updateUI(){
+
+    const target =
+        Math.max(
+            1,
+            STATE.monthlyLimit
+        );
+
+
+    const completed =
+        Math.min(
+            Math.max(
+                0,
+                STATE.monthlyAds
+            ),
+            target
+        );
+
+
+    const percent =
+        Math.min(
+            100,
+            (
+                completed /
+                target
+            ) * 100
+        );
+
+
+    const remaining =
+        Math.max(
+            0,
+            target -
+            completed
+        );
+
+
+    if($("monthlyCompleted")){
+
+        $("monthlyCompleted").textContent =
+            completed;
+
+    }
+
+
+    if($("monthlyTarget")){
+
+        $("monthlyTarget").textContent =
+            target;
+
+    }
+
+
+    if($("progressPercent")){
+
+        $("progressPercent").textContent =
+            Math.round(percent) +
+            "%";
+
+    }
+
+
+    if($("progressFill")){
+
+        $("progressFill").style.width =
+            percent +
+            "%";
+
+    }
+
+
+    if($("remainingText")){
+
+        $("remainingText").textContent =
+            remaining +
+            " remaining";
+
+    }
+
+
+    if($("todayProgress")){
+
+        $("todayProgress").textContent =
+            "Today " +
+            STATE.todayAds +
+            "/" +
+            STATE.dailyLimit;
+
+    }
+
+
+    updateBox();
+
+}
+
+
+/* =========================================================
+   BOX
+========================================================= */
+
+function updateBox(){
+
+    const box =
+        $("mysteryBox");
+
+
+    if(!box){
+
+        return;
+
+    }
+
+
+    if(STATE.boxUnlocked){
+
+        box.disabled =
+            false;
+
+
+        box.classList.add(
+            "unlocked"
+        );
+
+
+        $("boxState").textContent =
+            "READY";
+
+
+        $("boxState").style.color =
+            "#62ddff";
+
+
+        $("boxText").textContent =
+            "Tap to open";
+
+
+        $("boxInfo").innerHTML =
+            "<b>Mystery Box unlocked.</b> Tap the box to reveal the reward status.";
+
+
+    }else{
+
+        box.disabled =
+            false;
+
+
+        box.classList.remove(
+            "unlocked"
+        );
+
+
+        $("boxState").textContent =
+            "LOCKED";
+
+
+        $("boxState").style.color =
+            "";
+
+
+        const completed =
+            Math.max(
+                0,
+                STATE.roundAds
+            );
+
+
+        const remaining =
+            Math.max(
+                1,
+                STATE.adsPerBox -
+                completed
+            );
+
+
+        $("boxText").textContent =
+            "Complete " +
+            remaining +
+            " more verified ads";
+
+
+        $("boxInfo").innerHTML =
+            "Complete <b>" +
+            remaining +
+            "</b> more verified " +
+            (
+                remaining === 1
+                    ? "session"
+                    : "sessions"
+            ) +
+            " to unlock the Mystery Box.";
+
+    }
+
+}
+
+
+/* =========================================================
+   NATIVE BRIDGE
+========================================================= */
+
+function getNativeBridge(){
+
+    if(
+        window.AndroidAds &&
+        typeof window.AndroidAds.showRewardedAd ===
+        "function"
+    ){
+
+        return window.AndroidAds;
+
+    }
+
+
+    if(
+        window.AndroidAds &&
+        typeof window.AndroidAds.showRewarded ===
+        "function"
+    ){
+
+        return window.AndroidAds;
+
+    }
+
+
+    if(
+        window.TaskEarnAds &&
+        typeof window.TaskEarnAds.showRewardedAd ===
+        "function"
+    ){
+
+        return window.TaskEarnAds;
+
+    }
+
+
+    if(
+        window.TaskEarnAds &&
+        typeof window.TaskEarnAds.showRewarded ===
+        "function"
+    ){
+
+        return window.TaskEarnAds;
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   NATIVE READY CHECK
+========================================================= */
+
+function nativeReadyMethod(){
+
+    if(
+        window.AndroidAds &&
+        typeof window.AndroidAds.isRewardedAdReady ===
+        "function"
+    ){
+
+        return window.AndroidAds;
+
+    }
+
+
+    if(
+        window.TaskEarnAds &&
+        typeof window.TaskEarnAds.isRewardedAdReady ===
+        "function"
+    ){
+
+        return window.TaskEarnAds;
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   RESET CALLBACK STATE
+========================================================= */
+
+function resetNativeAdState(){
+
+    STATE.nativeAdShown =
+        false;
+
+    STATE.nativeRewardEarned =
+        false;
+
+    STATE.nativeAdCompleted =
+        false;
+
+    STATE.nativeAdFailed =
+        false;
+
+    STATE.nativeAdClosed =
+        false;
+
+    STATE.nativeRewardPayload =
+        null;
+
+    STATE.nativeError =
+        null;
+
+}
+
+
+/* =========================================================
+   WAIT FOR JAVA CALLBACK
+========================================================= */
+
+function waitForNativeCompletion(
+    timeoutMs=120000
+){
+
+    return new Promise(
+        resolve => {
+
+            let finished =
+                false;
+
+
+            const finish =
+                (
+                    success,
+                    type,
+                    payload
+                ) => {
+
+                    if(finished){
+
+                        return;
+
+                    }
+
+
+                    finished =
+                        true;
+
+
+                    clearTimeout(
+                        timer
+                    );
+
+
+                    window.__taskEarnAdResolver =
+                        null;
+
+
+                    resolve({
+
+                        success:
+                            !!success,
+
+                        type:
+                            String(
+                                type || ""
+                            ),
+
+                        payload:
+                            payload || null
+
+                    });
+
+                };
+
+
+            window.__taskEarnAdResolver =
+                finish;
+
+
+            const timer =
+                setTimeout(
+                    () => {
+
+                        finish(
+                            false,
+                            "timeout",
+                            {
+                                message:
+                                    "Native rewarded callback timeout"
+                            }
+                        );
+
+                    },
+                    timeoutMs
+                );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   JAVA CALLBACKS
+========================================================= */
+
+
+/* AD READY */
+
+window.TaskEarnNativeAdReady =
+function(value){
+
+    console.log(
+        "TaskEarnNativeAdReady:",
+        value
+    );
+
+
+    STATE.nativeAdReady =
+        true;
+
+
+    if(
+        !STATE.adInProgress
+    ){
+
+        if(
+            STATE.user &&
+            STATE.todayAds <
+            STATE.dailyLimit &&
+            STATE.monthlyAds <
+            STATE.monthlyLimit
+        ){
+
+            setWatchButton(
+                false,
+                "Watch Ad"
+            );
+
+
+            setAdStatus(
+                "Rewarded ad is ready.",
+                "success"
+            );
+
+        }
+
+    }
+
+};
+
+
+/* AD ERROR */
+
+window.TaskEarnNativeAdError =
+function(payload){
+
+    console.warn(
+        "TaskEarnNativeAdError:",
+        payload
+    );
+
+
+    STATE.nativeError =
+        payload;
+
+
+    STATE.nativeAdReady =
+        false;
+
+
+    if(
+        STATE.adInProgress
+    ){
+
+        STATE.nativeAdFailed =
+            true;
+
+
+        if(
+            window.__taskEarnAdResolver
+        ){
+
+            window.__taskEarnAdResolver(
+                false,
+                "failed",
+                payload
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    setWatchButton(
+        false,
+        "Watch Ad"
+    );
+
+
+    setAdStatus(
+        "Rewarded ad could not be loaded. Please try again.",
+        "warning"
+    );
+
+};
+
+
+/* AD SHOWN */
+
+window.TaskEarnNativeAdShown =
+function(value){
+
+    console.log(
+        "TaskEarnNativeAdShown:",
+        value
+    );
+
+
+    STATE.nativeAdShown =
+        true;
+
+};
+
+
+/* REAL REWARD CALLBACK */
+
+window.TaskEarnNativeRewardEarned =
+function(payload){
+
+    console.log(
+        "TaskEarnNativeRewardEarned:",
+        payload
+    );
+
+
+    STATE.nativeRewardEarned =
+        true;
+
+
+    STATE.nativeRewardPayload =
+        payload || null;
+
+};
+
+
+/* AD COMPLETED */
+
+window.TaskEarnNativeAdCompleted =
+function(value){
+
+    console.log(
+        "TaskEarnNativeAdCompleted:",
+        value
+    );
+
+
+    const completed =
+        value === true ||
+        value === "true";
+
+
+    STATE.nativeAdCompleted =
+        completed;
+
+
+    STATE.nativeAdClosed =
+        !completed;
+
+
+    if(
+        window.__taskEarnAdResolver
+    ){
+
+        window.__taskEarnAdResolver(
+            completed,
+            completed
+                ? "completed"
+                : "closed",
+            {
+                completed:
+                    completed,
+
+                rewardEarned:
+                    STATE.nativeRewardEarned,
+
+                reward:
+                    STATE.nativeRewardPayload
+            }
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   COMPATIBILITY CALLBACKS
+========================================================= */
+
+window.onRewardedAdCompleted =
+function(payload){
+
+    console.log(
+        "Compatibility rewarded completed:",
+        payload
+    );
+
+
+    window.TaskEarnNativeAdCompleted(
+        true
+    );
+
+};
+
+
+window.onRewardedAdFailed =
+function(payload){
+
+    window.TaskEarnNativeAdError(
+        payload
+    );
+
+};
+
+
+window.onRewardedAdClosed =
+function(payload){
+
+    window.TaskEarnNativeAdCompleted(
+        false
+    );
+
+};
+
+
+/* =========================================================
+   LOAD NATIVE REWARDED AD
+========================================================= */
+
+function loadNativeRewardedAd(){
+
+    try{
+
+        const bridge =
+            nativeReadyMethod();
+
+
+        if(!bridge){
+
+            return false;
+
+        }
+
+
+        if(
+            typeof bridge.isRewardedAdReady ===
+            "function"
+        ){
+
+            const ready =
+                bridge.isRewardedAdReady();
+
+
+            STATE.nativeAdReady =
+                ready;
+
+
+            if(ready){
+
+                return true;
+
+            }
+
+        }
+
+
+        if(
+            typeof bridge.loadRewardedAd ===
+            "function"
+        ){
+
+            bridge.loadRewardedAd();
+
+
+            setAdStatus(
+                "Loading rewarded ad…",
+                ""
+            );
+
+
+            return true;
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "loadNativeRewardedAd:",
+            error
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   OPEN REAL NATIVE AD
+========================================================= */
+
+async function openRewardedAd(){
+
+    const bridge =
+        getNativeBridge();
+
+
+    if(!bridge){
+
+        throw new Error(
+            "Native rewarded ad bridge unavailable."
+        );
+
+    }
+
+
+    resetNativeAdState();
+
+
+    /* =====================================================
+       READY CHECK
+    ===================================================== */
+
+    if(
+        typeof bridge.isRewardedAdReady ===
+        "function"
+    ){
+
+        let ready =
+            false;
+
+
+        try{
+
+            ready =
+                !!bridge.isRewardedAdReady();
+
+        }catch(error){
+
+            console.warn(
+                "Ready check:",
+                error
+            );
+
+        }
+
+
+        if(!ready){
+
+            if(
+                typeof bridge.loadRewardedAd ===
+                "function"
+            ){
+
+                bridge.loadRewardedAd();
+
+            }
+
+
+            throw new Error(
+                "Rewarded ad is still loading. Please wait a moment and try again."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CREATE CALLBACK LISTENER BEFORE SHOW
+    ===================================================== */
+
+    const callbackPromise =
+        waitForNativeCompletion(
+            120000
+        );
+
+
+    try{
+
+        /*
+         * IMPORTANT:
+         *
+         * TaskEarnBridge.java currently has:
+         *
+         * public void showRewardedAd()
+         *
+         * Therefore NO argument is sent.
+         */
+
+        if(
+            typeof bridge.showRewardedAd ===
+            "function"
+        ){
+
+            bridge.showRewardedAd();
+
+        }else if(
+            typeof bridge.showRewarded ===
+            "function"
+        ){
+
+            bridge.showRewarded();
+
+        }else{
+
+            throw new Error(
+                "Native rewarded method not found."
+            );
+
+        }
+
+    }catch(error){
+
+        if(
+            window.__taskEarnAdResolver
+        ){
+
+            window.__taskEarnAdResolver(
+                false,
+                "failed",
+                {
+                    message:
+                        error?.message ||
+                        String(error)
+                }
+            );
+
+        }
+
+    }
+
+
+    const result =
+        await callbackPromise;
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   BACKEND VERIFICATION
+========================================================= */
+
+async function verifyBackendProgress(
+    beforeMonthly
+){
+
+    const maxAttempts =
+        12;
+
+
+    for(
+        let attempt=1;
+        attempt<=maxAttempts;
+        attempt++
+    ){
+
+        STATE.verificationAttempts =
+            attempt;
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    2000
+                )
+        );
+
+
+        const loaded =
+            await loadMysteryStatus();
+
+
+        if(!loaded){
+
+            continue;
+
+        }
+
+
+        if(
+            STATE.monthlyAds >
+            beforeMonthly
+        ){
+
+            return {
+
+                verified:true,
+
+                attempts:attempt
+
+            };
+
+        }
+
+    }
+
+
+    return {
+
+        verified:false,
+
+        attempts:maxAttempts
+
+    };
+
+}
+
+
+/* =========================================================
+   LIMIT CHECK
+========================================================= */
+
+function canWatchAd(){
+
+    if(!STATE.user){
+
+        return {
+
+            allowed:false,
+
+            message:
+                "Login is required before watching a rewarded ad."
+
+        };
+
+    }
+
+
+    if(STATE.adInProgress){
+
+        return {
+
+            allowed:false,
+
+            message:
+                "A rewarded ad session is already in progress."
+
+        };
+
+    }
+
+
+    if(
+        STATE.todayAds >=
+        STATE.dailyLimit
+    ){
+
+        return {
+
+            allowed:false,
+
+            message:
+                "Today's ad limit is complete."
+
+        };
+
+    }
+
+
+    if(
+        STATE.monthlyAds >=
+        STATE.monthlyLimit
+    ){
+
+        return {
+
+            allowed:false,
+
+            message:
+                "This month's target is complete."
+
+        };
+
+    }
+
+
+    const bridge =
+        getNativeBridge();
+
+
+    if(!bridge){
+
+        return {
+
+            allowed:false,
+
+            message:
+                "Rewarded ad SDK is not connected in the native app."
+
+        };
+
+    }
+
+
+    return {
+
+        allowed:true,
+
+        message:""
+
+    };
+
+}
+
+
+/* =========================================================
+   WATCH AD
+========================================================= */
+
+async function handleWatchAd(){
+
+    const check =
+        canWatchAd();
+
+
+    if(!check.allowed){
+
+        if(!STATE.user){
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        setAdStatus(
+            check.message,
+            "warning"
+        );
+
+
+        showToast(
+            check.message
+        );
+
+
+        return;
+
+    }
+
+
+    const accepted =
+        window.confirm(
+            "Watch 1 rewarded ad session?\n\nOnly a real completed rewarded ad followed by backend verification will count."
+        );
+
+
+    if(!accepted){
+
+        return;
+
+    }
+
+
+    const beforeMonthly =
+        STATE.monthlyAds;
+
+
+    STATE.adInProgress =
+        true;
+
+
+    setWatchButton(
+        true,
+        "Opening…"
+    );
+
+
+    setAdStatus(
+        "Opening rewarded ad…",
+        ""
+    );
+
+
+    try{
+
+        /* =================================================
+           REAL NATIVE AD
+        ================================================= */
+
+        const nativeResult =
+            await openRewardedAd();
+
+
+        /* =================================================
+           FAILED / CLOSED / TIMEOUT
+        ================================================= */
+
+        if(
+            !nativeResult.success ||
+            nativeResult.type !==
+            "completed"
+        ){
+
+            if(
+                nativeResult.type ===
+                "closed"
+            ){
+
+                setAdStatus(
+                    "The ad was closed before a verified reward. No progress was added.",
+                    "warning"
+                );
+
+
+                showToast(
+                    "Ad not completed."
+                );
+
+
+            }else if(
+                nativeResult.type ===
+                "failed"
+            ){
+
+                setAdStatus(
+                    "Rewarded ad failed. No progress was added.",
+                    "error"
+                );
+
+
+                showToast(
+                    "Rewarded ad failed."
+                );
+
+
+            }else if(
+                nativeResult.type ===
+                "timeout"
+            ){
+
+                setAdStatus(
+                    "The native ad callback timed out. No progress was added.",
+                    "warning"
+                );
+
+
+                showToast(
+                    "Ad verification timed out."
+                );
+
+
+            }else{
+
+                setAdStatus(
+                    "No valid native completion callback was received. No progress was added.",
+                    "warning"
+                );
+
+
+                showToast(
+                    "Ad completion could not be verified."
+                );
+
+            }
+
+
+            return;
+
+        }
+
+
+        /* =================================================
+           REAL REWARD CALLBACK RECEIVED
+        ================================================= */
+
+        setWatchButton(
+            true,
+            "Verifying…"
+        );
+
+
+        setAdStatus(
+            "Rewarded callback received. Checking verified backend record…",
+            ""
+        );
+
+
+        /*
+         * IMPORTANT:
+         *
+         * Do NOT increment progress here.
+         *
+         * Backend must create the verified
+         * ad_watch_events record.
+         */
+
+        const verification =
+            await verifyBackendProgress(
+                beforeMonthly
+            );
+
+
+        if(
+            verification.verified
+        ){
+
+            setAdStatus(
+                "Verified rewarded session added successfully.",
+                "success"
+            );
+
+
+            showToast(
+                "Verified progress updated."
+            );
+
+
+            await loadMysteryStatus();
+
+
+        }else{
+
+            setAdStatus(
+                "Native reward callback was received, but the verified backend record is still pending. No local progress was added.",
+                "warning"
+            );
+
+
+            showToast(
+                "Backend verification is pending."
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Rewarded ad error:",
+            error
+        );
+
+
+        setAdStatus(
+            error?.message ||
+            "Rewarded ad could not be verified.",
+            "error"
+        );
+
+
+        showToast(
+            "Rewarded session failed."
+        );
+
+
+    }finally{
+
+        STATE.adInProgress =
+            false;
+
+
+        STATE.verificationAttempts =
+            0;
+
+
+        /*
+         * Refresh authoritative backend state.
+         */
+
+        await loadMysteryStatus();
+
+
+        if(
+            STATE.user &&
+            STATE.todayAds <
+            STATE.dailyLimit &&
+            STATE.monthlyAds <
+            STATE.monthlyLimit &&
+            getNativeBridge()
+        ){
+
+            setWatchButton(
+                false,
+                "Watch Ad"
+            );
+
+
+        }else{
+
+            setWatchButton(
+                true,
+                "Limit Reached"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   WATCH BUTTON
+========================================================= */
+
+$("watchButton").addEventListener(
+    "click",
+    handleWatchAd
+);
+
+
+/* =========================================================
+   MYSTERY BOX
+========================================================= */
+
+$("mysteryBox").addEventListener(
+    "click",
+    async()=>{
+
+        /*
+         * Never trust the visual READY state.
+         * Ask backend again.
+         */
+
+        setAdStatus(
+            "Verifying Mystery Box status…",
+            ""
+        );
+
+
+        const loaded =
+            await loadMysteryStatus();
+
+
+        if(!loaded){
+
+            setAdStatus(
+                "Mystery Box status could not be verified from the backend.",
+                "warning"
+            );
+
+
+            showToast(
+                "Unable to verify Mystery Box status."
+            );
+
+
+            return;
+
+        }
+
+
+        if(!STATE.boxUnlocked){
+
+            const completed =
+                Math.max(
+                    0,
+                    STATE.roundAds
+                );
+
+
+            const remaining =
+                Math.max(
+                    1,
+                    STATE.adsPerBox -
+                    completed
+                );
+
+
+            showToast(
+                "Complete " +
+                remaining +
+                " more verified ad" +
+                (
+                    remaining === 1
+                        ? ""
+                        : "s"
+                ) +
+                " first."
+            );
+
+
+            return;
+
+        }
+
+
+        /* =================================================
+           VERIFIED BOX
+        ================================================= */
+
+        const amount =
+            STATE.rewardAmount;
+
+
+        $("rewardPanel")
+            .classList.add(
+                "show"
+            );
+
+
+        if(amount !== null){
+
+            const text =
+                String(amount);
+
+
+            $("rewardAmount").textContent =
+                text.startsWith("₹")
+                    ? text
+                    : "₹" + text;
+
+        }else{
+
+            $("rewardAmount").textContent =
+                "Pending";
+
+        }
+
+
+        $("rewardState").textContent =
+            amount !== null
+                ? (
+                    "Reward recorded by backend. Settlement status: " +
+                    STATE.rewardStatus
+                )
+                : (
+                    "Mystery Box unlocked. Reward settlement is pending in the backend."
+                );
+
+
+        $("boxInfo").innerHTML =
+            "<b>Mystery Box opened.</b> Your reward status is shown above.";
+
+
+        showToast(
+            "Mystery Box opened."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        async(
+            event,
+            session
+        )=>{
+
+            console.log(
+                "Auth event:",
+                event
+            );
+
+
+            if(
+                event ===
+                "SIGNED_IN" &&
+                session
+            ){
+
+                STATE.user =
+                    session.user;
+
+
+                await loadSettings();
+
+
+                const loaded =
+                    await loadMysteryStatus();
+
+
+                if(!loaded){
+
+                    await fallbackCount();
+
+                }
+
+
+                loadNativeRewardedAd();
+
+            }
+
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                STATE.user =
+                    null;
+
+
+                STATE.monthlyAds =
+                    0;
+
+
+                STATE.todayAds =
+                    0;
+
+
+                STATE.completedBoxes =
+                    0;
+
+
+                STATE.roundAds =
+                    0;
+
+
+                STATE.boxUnlocked =
+                    false;
+
+
+                window.location.href =
+                    "login.html";
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+async function init(){
+
+    updateStaticUI();
+
+
+    updateCountdown();
+
+
+    setWatchButton(
+        true,
+        "Checking…"
+    );
+
+
+    setAdStatus(
+        "Checking your TaskEarn session…",
+        ""
+    );
+
+
+    const session =
+        await getSession();
+
+
+    /* =====================================================
+       LOGIN REQUIRED
+    ===================================================== */
+
+    if(!session){
+
+        setWatchButton(
+            false,
+            "Login"
+        );
+
+
+        $("watchButton").onclick =
+            ()=>{
+                window.location.href =
+                    "login.html";
+            };
+
+
+        setAdStatus(
+            "Login is required before starting a rewarded session.",
+            "warning"
+        );
+
+
+        updateUI();
+
+
+        return;
+
+    }
+
+
+    STATE.user =
+        session.user;
+
+
+    /* =====================================================
+       SETTINGS
+    ===================================================== */
+
+    await loadSettings();
+
+
+    /* =====================================================
+       BACKEND STATUS
+    ===================================================== */
+
+    const loaded =
+        await loadMysteryStatus();
+
+
+    if(!loaded){
+
+        await fallbackCount();
+
+    }
+
+
+    /* =====================================================
+       NATIVE BRIDGE
+    ===================================================== */
+
+    const bridge =
+        getNativeBridge();
+
+
+    if(!bridge){
+
+        setWatchButton(
+            true,
+            "Unavailable"
+        );
+
+
+        setAdStatus(
+            "Rewarded ad SDK is not connected in the native app. No fake completion is allowed.",
+            "warning"
+        );
+
+
+        updateUI();
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       LOAD AD
+    ===================================================== */
+
+    const nativeReady =
+        nativeReadyMethod();
+
+
+    if(nativeReady){
+
+        try{
+
+            if(
+                typeof nativeReady.isRewardedAdReady ===
+                "function" &&
+                nativeReady.isRewardedAdReady()
+            ){
+
+                STATE.nativeAdReady =
+                    true;
+
+
+                setWatchButton(
+                    false,
+                    "Watch Ad"
+                );
+
+
+                setAdStatus(
+                    "Rewarded ad is ready.",
+                    "success"
+                );
+
+
+            }else{
+
+                setWatchButton(
+                    true,
+                    "Loading…"
+                );
+
+
+                setAdStatus(
+                    "Loading rewarded ad…",
+                    ""
+                );
+
+
+                loadNativeRewardedAd();
+
+            }
+
+        }catch(error){
+
+            console.error(
+                "Native ready check:",
+                error
+            );
+
+
+            setWatchButton(
+                true,
+                "Loading…"
+            );
+
+
+            loadNativeRewardedAd();
+
+        }
+
+    }else{
+
+        setWatchButton(
+            false,
+            "Watch Ad"
+        );
+
+
+        setAdStatus(
+            "Native rewarded bridge connected.",
+            "success"
+        );
+
+    }
+
+
+    /* =====================================================
+       LIMITS
+    ===================================================== */
+
+    if(
+        STATE.todayAds >=
+        STATE.dailyLimit
+    ){
+
+        setWatchButton(
+            true,
+            "Limit Reached"
+        );
+
+
+        setAdStatus(
+            "Today's rewarded-ad limit is complete.",
+            "warning"
+        );
+
+    }
+
+
+    if(
+        STATE.monthlyAds >=
+        STATE.monthlyLimit
+    ){
+
+        setWatchButton(
+            true,
+            "Target Complete"
+        );
+
+
+        setAdStatus(
+            "This month's rewarded-ad target is complete.",
+            "success"
+        );
+
+    }
+
+
+    updateStaticUI();
+
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+init();
+
+</script>
+
+</body>
+</html>

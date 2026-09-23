@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>TaskEarn — Create Account</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 20px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07152d,
+                    #17133d,
+                    #10152e
+                );
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 460px;
+
+            padding: 28px;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111d3d,
+                    #17143a
+                );
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            box-shadow:
+                0 25px 80px rgba(0,0,0,.5);
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+
+            margin-bottom: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 22px;
+
+            font-size: 28px;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #08bdf5,
+                    #6845f5
+                );
+
+            box-shadow:
+                0 10px 35px rgba(8,189,245,.2);
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(8,189,245,.1);
+
+            border:
+                1px solid rgba(8,189,245,.2);
+
+            color: #65dcff;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            letter-spacing: .6px;
+        }
+
+        h1 {
+            margin: 14px 0 7px;
+
+            font-size: 28px;
+        }
+
+        .description {
+            margin: 0 0 20px;
+
+            color: #9aa8c5;
+
+            line-height: 1.5;
+
+            font-size: 13px;
+        }
+
+        label {
+            display: block;
+
+            margin-top: 14px;
+            margin-bottom: 7px;
+
+            color: #cbd5ee;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            outline: none;
+
+            background:
+                rgba(255,255,255,.06);
+
+            color: white;
+
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #08bdf5;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(8,189,245,.1);
+        }
+
+        input::placeholder {
+            color: #72809f;
+        }
+
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-wrap input {
+            padding-right: 55px;
+        }
+
+        .eye {
+            position: absolute;
+
+            right: 6px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            width: 40px;
+            height: 40px;
+
+            border: 0;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 18px;
+
+            cursor: pointer;
+        }
+
+        .create-btn {
+            width: 100%;
+
+            margin-top: 22px;
+
+            padding: 14px;
+
+            border: 0;
+
+            border-radius: 14px;
+
+            color: white;
+
+            font-weight: 900;
+
+            font-size: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #08bdf5,
+                    #6845f5
+                );
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .create-btn:active {
+            transform: scale(.98);
+        }
+
+        .login-btn {
+            width: 100%;
+
+            margin-top: 12px;
+
+            padding: 14px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid rgba(255,255,255,.14);
+
+            background:
+                rgba(255,255,255,.05);
+
+            color: white;
+
+            font-weight: 800;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+        .back {
+            display: block;
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            color: #65dcff;
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+        .optional {
+            color: #72809f;
+            font-weight: normal;
+        }
+
+        .message {
+            display: none;
+
+            margin-top: 14px;
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            font-size: 12px;
+
+            line-height: 1.4;
+
+            text-align: center;
+
+            background:
+                rgba(255,255,255,.06);
+
+            color: #cbd5ee;
+        }
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .page {
+                align-items: flex-start;
+            }
+
+            .auth-box {
+                margin-top: 20px;
+                padding: 24px 20px;
+                border-radius: 24px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <div class="auth-box">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+            ₹
+        </div>
+
+
+        <!-- BADGE -->
+
+        <span class="badge">
+            ✨ CREATE ACCOUNT
+        </span>
+
+
+        <!-- TITLE -->
+
+        <h1>
+            Join TaskEarn
+        </h1>
+
+
+        <p class="description">
+            Create your TaskEarn account and
+            start exploring eligible tasks and rewards.
+        </p>
+
+
+        <!-- EMAIL -->
+
+        <label for="signupEmail">
+            Email Address
+        </label>
+
+        <input
+            id="signupEmail"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+        >
+
+
+        <!-- PASSWORD -->
+
+        <label for="signupPassword">
+            Password
+        </label>
+
+        <div class="password-wrap">
+
+            <input
+                id="signupPassword"
+                type="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+            >
+
+            <button
+                type="button"
+                class="eye"
+                onclick="
+                    toggleNewPassword(
+                        'signupPassword',
+                        this
+                    )
+                "
+            >
+                👁️
+            </button>
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <label for="signupConfirm">
+            Confirm Password
+        </label>
+
+        <div class="password-wrap">
+
+            <input
+                id="signupConfirm"
+                type="password"
+                placeholder="Confirm your password"
+                autocomplete="new-password"
+            >
+
+            <button
+                type="button"
+                class="eye"
+                onclick="
+                    toggleNewPassword(
+                        'signupConfirm',
+                        this
+                    )
+                "
+            >
+                👁️
+            </button>
+
+        </div>
+
+
+        <!-- REFERRAL OPTIONAL -->
+
+        <label for="referralCode">
+            Referral Code
+            <span class="optional">
+                (Optional)
+            </span>
+        </label>
+
+        <input
+            id="referralCode"
+            type="text"
+            placeholder="Enter referral code"
+            autocomplete="off"
+        >
+
+
+        <!-- CREATE ACCOUNT -->
+
+        <button
+            type="button"
+            class="create-btn"
+            onclick="createNewUser()"
+        >
+            Create Account
+        </button>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="signupMessage"
+            class="message"
+        ></div>
+
+
+        <!-- LOGIN -->
+
+        <button
+            type="button"
+            class="login-btn"
+            onclick="
+                window.location.href =
+                'login.html'
+            "
+        >
+            Already have an account? Login
+        </button>
+
+
+        <!-- BACK -->
+
+        <a
+            href="../index.html"
+            class="back"
+        >
+            ← Back to TaskEarn
+        </a>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../js/supabase.js"></script>
+
+<script src="../js/new-auth.js"></script>
+
+
+
+<script>
+
+    function toggleNewPassword(id, button) {
+
+        const input =
+            document.getElementById(id);
+
+        if (!input) return;
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            button.textContent = "🙈";
+
+        } else {
+
+            input.type = "password";
+
+            button.textContent = "👁️";
+
+        }
+
+    }
+
+
+    function createNewUser() {
+
+        if (typeof signupNewUser === "function") {
+
+            signupNewUser();
+
+            return;
+
+        }
+
+        if (typeof registerNewUser === "function") {
+
+            registerNewUser();
+
+            return;
+
+        }
+
+        const message =
+            document.getElementById("signupMessage");
+
+        message.style.display = "block";
+
+        message.textContent =
+            "Authentication system is not connected yet.";
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

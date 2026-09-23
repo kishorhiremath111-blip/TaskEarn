@@ -1,0 +1,3092 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta
+    name="theme-color"
+    content="#050914"
+>
+
+<title>TaskEarn — Wallet</title>
+
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:#f5f8ff;
+
+    background:
+
+        radial-gradient(
+            circle at 0% 0%,
+            rgba(23,203,255,.10),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 100% 15%,
+            rgba(108,76,255,.13),
+            transparent 34%
+        ),
+
+        linear-gradient(
+            145deg,
+            #040711 0%,
+            #070c18 48%,
+            #040711 100%
+        );
+}
+
+button{
+    font:inherit;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.975);
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.bg-layer{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-1;
+
+    overflow:hidden;
+
+    pointer-events:none;
+}
+
+.glow{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(95px);
+
+    opacity:.14;
+}
+
+.glow-a{
+
+    width:280px;
+    height:280px;
+
+    left:-170px;
+    top:180px;
+
+    background:#00cfff;
+}
+
+.glow-b{
+
+    width:320px;
+    height:320px;
+
+    right:-190px;
+    top:530px;
+
+    background:#654cff;
+}
+
+.glow-c{
+
+    width:240px;
+    height:240px;
+
+    left:25%;
+    bottom:-180px;
+
+    background:#177fff;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.wallet-page{
+
+    width:100%;
+
+    max-width:850px;
+
+    margin:0 auto;
+
+    padding:
+        0 14px 45px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.wallet-header{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    min-height:76px;
+
+    margin:
+        0 -14px 18px;
+
+    padding:
+        12px 14px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:
+        rgba(4,7,17,.91);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+
+    backdrop-filter:
+        blur(24px);
+
+    -webkit-backdrop-filter:
+        blur(24px);
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-button{
+
+    width:48px;
+
+    height:48px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(130,155,205,.17);
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(23,31,53,.92),
+            rgba(9,14,27,.96)
+        );
+
+    color:#f7faff;
+
+    font-size:29px;
+
+    line-height:1;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.035);
+}
+
+
+/* =========================================================
+   HEADER TITLE
+========================================================= */
+
+.wallet-title{
+
+    flex:1;
+
+    min-width:0;
+}
+
+.wallet-title small{
+
+    display:block;
+
+    margin-bottom:5px;
+
+    color:#68748d;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+}
+
+.wallet-title strong{
+
+    display:block;
+
+    color:#f8faff;
+
+    font-size:22px;
+
+    line-height:1;
+
+    font-weight:950;
+
+    letter-spacing:-.7px;
+}
+
+.wallet-title strong span{
+
+    background:
+        linear-gradient(
+            90deg,
+            #25d6ff,
+            #6678ff,
+            #9362ff
+        );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    color:transparent;
+}
+
+
+/* =========================================================
+   HEADER WALLET ICON
+========================================================= */
+
+.header-wallet-icon{
+
+    width:47px;
+
+    height:47px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(54,207,255,.20);
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,37,62,.92),
+            rgba(13,18,35,.96)
+        );
+
+    color:#63ddff;
+
+    box-shadow:
+        0 0 25px
+        rgba(33,205,255,.06);
+}
+
+
+/* =========================================================
+   SVG ICON
+========================================================= */
+
+svg{
+
+    width:20px;
+
+    height:20px;
+
+    display:block;
+}
+
+
+/* =========================================================
+   MAIN WALLET CARD
+========================================================= */
+
+.wallet-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    width:100%;
+
+    min-height:292px;
+
+    padding:24px;
+
+    border:
+        1px solid
+        rgba(89,202,255,.20);
+
+    border-radius:29px;
+
+    background:
+
+        radial-gradient(
+            circle at 92% 8%,
+            rgba(51,213,255,.14),
+            transparent 29%
+        ),
+
+        radial-gradient(
+            circle at 5% 100%,
+            rgba(104,76,255,.15),
+            transparent 38%
+        ),
+
+        linear-gradient(
+            145deg,
+            #111a30 0%,
+            #0d1529 47%,
+            #090f1e 100%
+        );
+
+    box-shadow:
+
+        0 28px 70px
+        rgba(0,0,0,.34),
+
+        0 0 45px
+        rgba(18,190,255,.035),
+
+        inset 0 1px 0
+        rgba(255,255,255,.045);
+}
+
+
+/* =========================================================
+   CARD DECORATION
+========================================================= */
+
+.wallet-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:270px;
+
+    height:270px;
+
+    right:-125px;
+
+    top:-155px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(39,211,255,.17),
+            rgba(39,211,255,.03) 55%,
+            transparent 72%
+        );
+}
+
+.wallet-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:230px;
+
+    height:230px;
+
+    left:-155px;
+
+    bottom:-155px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(103,76,255,.17),
+            transparent 68%
+        );
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.wallet-card-content{
+
+    position:relative;
+
+    z-index:3;
+
+    min-height:244px;
+}
+
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.card-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+.card-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+}
+
+.brand-logo{
+
+    width:43px;
+
+    height:43px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(78,211,255,.22);
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25,210,255,.11),
+            rgba(106,76,255,.12)
+        );
+
+    color:#70e4ff;
+
+    box-shadow:
+        0 0 25px
+        rgba(37,204,255,.05);
+}
+
+.brand-name{
+
+    color:#f4f8ff;
+
+    font-size:12px;
+
+    font-weight:950;
+
+    letter-spacing:1.5px;
+}
+
+.brand-sub{
+
+    margin-top:4px;
+
+    color:#66738d;
+
+    font-size:7px;
+
+    font-weight:800;
+
+    letter-spacing:1.2px;
+}
+
+
+/* =========================================================
+   CARD CHIP
+========================================================= */
+
+.card-chip{
+
+    position:relative;
+
+    width:45px;
+
+    height:32px;
+
+    flex-shrink:0;
+
+    border:
+        1px solid
+        rgba(110,225,255,.21);
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.card-chip::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:25px;
+
+    height:25px;
+
+    left:9px;
+
+    top:2px;
+
+    border:
+        1px solid
+        rgba(125,224,255,.20);
+
+    border-radius:50%;
+}
+
+.card-chip::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:11px;
+
+    height:25px;
+
+    left:16px;
+
+    top:2px;
+
+    border:
+        1px solid
+        rgba(125,224,255,.20);
+
+    border-radius:50%;
+}
+
+
+/* =========================================================
+   BALANCE
+========================================================= */
+
+.balance-label{
+
+    margin-top:35px;
+
+    color:#697791;
+
+    font-size:8px;
+
+    font-weight:950;
+
+    letter-spacing:2.1px;
+}
+
+.balance{
+
+    margin-top:8px;
+
+    color:#f8faff;
+
+    font-size:44px;
+
+    line-height:1;
+
+    font-weight:950;
+
+    letter-spacing:-2px;
+}
+
+.balance-sub{
+
+    margin-top:9px;
+
+    color:#697690;
+
+    font-size:9px;
+
+    font-weight:650;
+}
+
+
+/* =========================================================
+   CARD BOTTOM
+========================================================= */
+
+.card-bottom{
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+.card-status{
+
+    color:#68758f;
+
+    font-size:7px;
+
+    font-weight:800;
+
+    letter-spacing:.7px;
+}
+
+.card-status strong{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    margin-top:5px;
+
+    color:#63e0af;
+
+    font-size:9px;
+
+    font-weight:900;
+}
+
+.status-dot{
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:#5de3a9;
+
+    box-shadow:
+        0 0 10px
+        rgba(93,227,169,.65);
+}
+
+.card-number{
+
+    color:#56627b;
+
+    font-size:7px;
+
+    font-weight:800;
+
+    letter-spacing:1.7px;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   BALANCE STATS
+========================================================= */
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:12px;
+
+    margin-top:13px;
+}
+
+.stat-card{
+
+    min-height:112px;
+
+    padding:17px;
+
+    border:
+        1px solid
+        rgba(111,140,195,.13);
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.90),
+            rgba(8,14,27,.97)
+        );
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.025);
+}
+
+.stat-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.stat-label{
+
+    color:#68758e;
+
+    font-size:8px;
+
+    font-weight:850;
+
+    letter-spacing:1.1px;
+}
+
+.stat-icon{
+
+    width:34px;
+
+    height:34px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(63,208,255,.13);
+
+    border-radius:11px;
+
+    background:
+        rgba(38,210,255,.035);
+
+    color:#5bdcff;
+}
+
+.stat-value{
+
+    margin-top:12px;
+
+    color:#f4f7ff;
+
+    font-size:20px;
+
+    line-height:1;
+
+    font-weight:950;
+}
+
+.stat-sub{
+
+    margin-top:6px;
+
+    color:#56637d;
+
+    font-size:8px;
+
+    font-weight:700;
+}
+
+
+/* =========================================================
+   SECTION HEAD
+========================================================= */
+
+.section-head{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin:
+        31px 0 13px;
+}
+
+.section-label{
+
+    color:#54dfff;
+
+    font-size:7px;
+
+    font-weight:950;
+
+    letter-spacing:2.5px;
+}
+
+.section-title{
+
+    margin-top:5px;
+
+    color:#f7f9ff;
+
+    font-size:23px;
+
+    line-height:1.05;
+
+    font-weight:950;
+
+    letter-spacing:-.6px;
+}
+
+.section-badge{
+
+    flex-shrink:0;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(77,210,255,.14);
+
+    border-radius:999px;
+
+    background:
+        rgba(34,210,255,.035);
+
+    color:#5edfff;
+
+    font-size:7px;
+
+    font-weight:950;
+}
+
+
+/* =========================================================
+   WITHDRAW CARD
+========================================================= */
+
+.withdraw-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:20px;
+
+    border:
+        1px solid
+        rgba(109,141,202,.14);
+
+    border-radius:25px;
+
+    background:
+
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(108,76,255,.09),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 0% 100%,
+            rgba(25,207,255,.055),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            145deg,
+            rgba(18,27,49,.95),
+            rgba(7,13,27,.98)
+        );
+
+    box-shadow:
+        0 18px 55px
+        rgba(0,0,0,.18);
+}
+
+.withdraw-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.withdraw-icon{
+
+    width:51px;
+
+    height:51px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(64,211,255,.15);
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(29,204,255,.08),
+            rgba(106,76,255,.11)
+        );
+
+    color:#5cddff;
+}
+
+.withdraw-heading strong{
+
+    display:block;
+
+    color:#f5f8ff;
+
+    font-size:15px;
+
+    font-weight:900;
+}
+
+.withdraw-heading small{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#66738c;
+
+    font-size:8px;
+
+    font-weight:700;
+}
+
+.withdraw-text{
+
+    margin-top:16px;
+
+    color:#7b88a1;
+
+    font-size:9px;
+
+    line-height:1.75;
+}
+
+
+/* =========================================================
+   PAYOUT INFO
+========================================================= */
+
+.payout-info{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:9px;
+
+    margin-top:16px;
+}
+
+.payout-box{
+
+    padding:12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.045);
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.022);
+}
+
+.payout-box small{
+
+    display:block;
+
+    color:#5e6a82;
+
+    font-size:7px;
+
+    font-weight:850;
+
+    letter-spacing:.7px;
+}
+
+.payout-box strong{
+
+    display:block;
+
+    margin-top:5px;
+
+    color:#e9eefb;
+
+    font-size:11px;
+
+    font-weight:900;
+}
+
+
+/* =========================================================
+   WITHDRAW BUTTON
+========================================================= */
+
+.withdraw-button{
+
+    width:100%;
+
+    min-height:54px;
+
+    margin-top:16px;
+
+    border:
+        1px solid
+        rgba(86,220,255,.18);
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            100deg,
+            #12bce9 0%,
+            #447cff 55%,
+            #714cff 100%
+        );
+
+    color:#fff;
+
+    font-size:11px;
+
+    font-weight:950;
+
+    letter-spacing:.2px;
+
+    box-shadow:
+        0 15px 35px
+        rgba(47,110,255,.19);
+
+    transition:
+        transform .15s ease,
+        filter .15s ease;
+}
+
+.withdraw-button:hover{
+
+    filter:
+        brightness(1.08);
+}
+
+.withdraw-button:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    filter:
+        grayscale(.25);
+
+    box-shadow:none;
+}
+
+
+/* =========================================================
+   SECURITY STRIP
+========================================================= */
+
+.security-strip{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    margin-top:11px;
+
+    color:#56627a;
+
+    font-size:7px;
+
+    font-weight:750;
+}
+
+.security-dot{
+
+    width:5px;
+
+    height:5px;
+
+    border-radius:50%;
+
+    background:#60dfad;
+
+    box-shadow:
+        0 0 8px
+        rgba(96,223,173,.55);
+}
+
+
+/* =========================================================
+   ACTIVITY
+========================================================= */
+
+.activity-card{
+
+    overflow:hidden;
+
+    min-height:145px;
+
+    padding:
+        0 17px;
+
+    border:
+        1px solid
+        rgba(101,136,200,.12);
+
+    border-radius:25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,25,46,.93),
+            rgba(7,13,27,.98)
+        );
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading{
+
+    padding:
+        38px 10px;
+
+    text-align:center;
+
+    color:#74819a;
+
+    font-size:9px;
+}
+
+.loader{
+
+    width:31px;
+
+    height:31px;
+
+    margin:
+        0 auto 12px;
+
+    border:
+        3px solid
+        rgba(255,255,255,.055);
+
+    border-top-color:#1bcdf5;
+
+    border-right-color:#704cff;
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty{
+
+    padding:
+        37px 10px;
+
+    text-align:center;
+
+    color:#697690;
+
+    font-size:9px;
+}
+
+.empty-icon{
+
+    width:52px;
+
+    height:52px;
+
+    margin:
+        0 auto 12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(100,76,255,.14);
+
+    border-radius:16px;
+
+    background:
+        rgba(100,76,255,.055);
+
+    color:#7770ff;
+}
+
+
+/* =========================================================
+   TRANSACTION
+========================================================= */
+
+.transaction{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:
+        15px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.045);
+}
+
+.transaction:last-child{
+
+    border-bottom:0;
+}
+
+.transaction-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    min-width:0;
+}
+
+.transaction-icon{
+
+    width:41px;
+
+    height:41px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:
+        1px solid
+        rgba(76,211,255,.12);
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(33,207,255,.055),
+            rgba(104,76,255,.06)
+        );
+
+    color:#55dcff;
+}
+
+.transaction-info{
+
+    min-width:0;
+}
+
+.transaction-info strong{
+
+    display:block;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    color:#e8edf9;
+
+    font-size:10px;
+
+    font-weight:850;
+}
+
+.transaction-info small{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#5d6981;
+
+    font-size:7px;
+
+    font-weight:650;
+}
+
+.transaction-amount{
+
+    flex-shrink:0;
+
+    font-size:10px;
+
+    font-weight:950;
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
+
+.wallet-error{
+
+    display:none;
+
+    margin-top:13px;
+
+    padding:14px;
+
+    border:
+        1px solid
+        rgba(255,112,135,.13);
+
+    border-radius:16px;
+
+    background:
+        rgba(255,80,110,.035);
+
+    color:#c98796;
+
+    font-size:8px;
+
+    line-height:1.6;
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    margin-top:28px;
+
+    padding-bottom:5px;
+
+    text-align:center;
+
+    color:#414d65;
+
+    font-size:8px;
+
+    letter-spacing:.7px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:500px){
+
+    .wallet-page{
+
+        padding-left:13px;
+
+        padding-right:13px;
+    }
+
+    .wallet-header{
+
+        margin-left:-13px;
+
+        margin-right:-13px;
+
+        padding-left:13px;
+
+        padding-right:13px;
+    }
+
+    .wallet-card{
+
+        min-height:278px;
+
+        padding:21px;
+
+        border-radius:26px;
+    }
+
+    .wallet-card-content{
+
+        min-height:237px;
+    }
+
+    .balance{
+
+        font-size:37px;
+
+        letter-spacing:-1.7px;
+    }
+
+    .section-title{
+
+        font-size:22px;
+    }
+
+}
+
+@media(max-width:360px){
+
+    .wallet-card{
+
+        padding:18px;
+
+        min-height:267px;
+    }
+
+    .wallet-card-content{
+
+        min-height:227px;
+    }
+
+    .balance{
+
+        font-size:33px;
+    }
+
+    .stats-grid{
+
+        gap:9px;
+    }
+
+    .stat-card{
+
+        padding:14px;
+    }
+
+    .card-number{
+
+        font-size:6px;
+
+        letter-spacing:1.1px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     BACKGROUND
+======================================================= -->
+
+<div class="bg-layer">
+
+    <div class="glow glow-a"></div>
+
+    <div class="glow glow-b"></div>
+
+    <div class="glow glow-c"></div>
+
+</div>
+
+
+
+<div class="wallet-page">
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="wallet-header">
+
+
+    <button
+        class="back-button"
+        id="walletBackButton"
+        type="button"
+        aria-label="Back">
+
+        ←
+
+    </button>
+
+
+    <div class="wallet-title">
+
+        <small>
+            TASKEARN FINANCE
+        </small>
+
+        <strong>
+            My <span>Wallet</span>
+        </strong>
+
+    </div>
+
+
+    <div class="header-wallet-icon">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <rect
+                x="3"
+                y="5"
+                width="18"
+                height="15"
+                rx="3"
+            ></rect>
+
+            <path
+                d="M3 8h18"
+            ></path>
+
+            <path
+                d="M16 14h2"
+            ></path>
+
+        </svg>
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =======================================================
+     WALLET CARD
+======================================================= -->
+
+<section class="wallet-card">
+
+
+    <div class="wallet-card-content">
+
+
+        <div class="card-top">
+
+
+            <div class="card-brand">
+
+
+                <div class="brand-logo">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <rect
+                            x="3"
+                            y="6"
+                            width="18"
+                            height="14"
+                            rx="3"
+                        ></rect>
+
+                        <path
+                            d="M3 9h18"
+                        ></path>
+
+                        <path
+                            d="M15 14h3"
+                        ></path>
+
+                    </svg>
+
+                </div>
+
+
+                <div>
+
+                    <div class="brand-name">
+                        TASKEARN
+                    </div>
+
+                    <div class="brand-sub">
+                        DIGITAL REWARDS WALLET
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="card-chip"></div>
+
+
+        </div>
+
+
+
+        <div class="balance-label">
+            AVAILABLE BALANCE
+        </div>
+
+
+        <div
+            class="balance"
+            id="walletBalance">
+
+            ₹0.00
+
+        </div>
+
+
+        <div class="balance-sub">
+            Eligible rewards available for withdrawal
+        </div>
+
+
+
+        <div class="card-bottom">
+
+
+            <div class="card-status">
+
+                WALLET STATUS
+
+                <strong>
+
+                    <span class="status-dot"></span>
+
+                    ACTIVE
+
+                </strong>
+
+            </div>
+
+
+            <div class="card-number">
+
+                •••• •••• EARN
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =======================================================
+     BALANCE STATS
+======================================================= -->
+
+<section class="stats-grid">
+
+
+    <div class="stat-card">
+
+
+        <div class="stat-top">
+
+
+            <div class="stat-label">
+                TOTAL EARNED
+            </div>
+
+
+            <div class="stat-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M12 3v18"
+                    ></path>
+
+                    <path
+                        d="M17 7.5c0-2-2.2-3.5-5-3.5s-5 1.3-5 3.5 1.8 3.2 5 4 5 1.8 5 4-2.2 3.5-5 3.5-5-1.5-5-3.5"
+                    ></path>
+
+                </svg>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            class="stat-value"
+            id="totalEarned">
+
+            ₹0.00
+
+        </div>
+
+
+        <div class="stat-sub">
+            Approved rewards
+        </div>
+
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+
+        <div class="stat-top">
+
+
+            <div class="stat-label">
+                TOTAL WITHDRAWN
+            </div>
+
+
+            <div
+                class="stat-icon"
+                style="color:#887bff;"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path
+                        d="M12 4v13"
+                    ></path>
+
+                    <path
+                        d="m7 12 5 5 5-5"
+                    ></path>
+
+                    <path
+                        d="M5 20h14"
+                    ></path>
+
+                </svg>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            class="stat-value"
+            id="totalWithdrawn">
+
+            ₹0.00
+
+        </div>
+
+
+        <div class="stat-sub">
+            Completed payouts
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =======================================================
+     WITHDRAW SECTION
+======================================================= -->
+
+<div class="section-head">
+
+
+    <div>
+
+        <div class="section-label">
+            PREMIUM PAYOUTS
+        </div>
+
+
+        <h2 class="section-title">
+            Withdraw
+        </h2>
+
+    </div>
+
+
+    <div class="section-badge">
+        SECURE
+    </div>
+
+
+</div>
+
+
+
+<section class="withdraw-card">
+
+
+    <div class="withdraw-top">
+
+
+        <div class="withdraw-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="15"
+                    rx="3"
+                ></rect>
+
+                <path
+                    d="M3 9h18"
+                ></path>
+
+                <path
+                    d="M15 14h3"
+                ></path>
+
+            </svg>
+
+        </div>
+
+
+        <div class="withdraw-heading">
+
+            <strong>
+                Cash out your balance
+            </strong>
+
+            <small>
+                Secure TaskEarn payout experience
+            </small>
+
+        </div>
+
+
+    </div>
+
+
+
+    <p class="withdraw-text">
+
+        Withdraw only from your available TaskEarn
+        balance. Your wallet balance shown here is
+        read directly from your account.
+
+    </p>
+
+
+
+    <div class="payout-info">
+
+
+        <div class="payout-box">
+
+            <small>
+                AVAILABLE
+            </small>
+
+            <strong id="payoutAvailable">
+                ₹0.00
+            </strong>
+
+        </div>
+
+
+        <div class="payout-box">
+
+            <small>
+                ACCOUNT
+            </small>
+
+            <strong id="walletStatus">
+                Checking...
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <button
+        class="withdraw-button"
+        id="withdrawButton"
+        type="button"
+    >
+
+        Withdraw
+
+    </button>
+
+
+</section>
+
+
+
+<div class="security-strip">
+
+    <span class="security-dot"></span>
+
+    Secure wallet
+
+    <span>•</span>
+
+    Verified account required
+
+</div>
+
+
+
+<!-- =======================================================
+     RECENT ACTIVITY
+======================================================= -->
+
+<div class="section-head">
+
+
+    <div>
+
+        <div class="section-label">
+            TRANSACTION HISTORY
+        </div>
+
+
+        <h2 class="section-title">
+            Recent Activity
+        </h2>
+
+    </div>
+
+
+    <div class="section-badge">
+        LATEST
+    </div>
+
+
+</div>
+
+
+
+<section class="activity-card">
+
+
+    <div
+        class="loading"
+        id="transactionLoading"
+    >
+
+        <div class="loader"></div>
+
+        Loading wallet activity...
+
+    </div>
+
+
+    <div
+        class="empty"
+        id="transactionEmpty"
+        style="display:none;"
+    >
+
+        <div class="empty-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <rect
+                    x="4"
+                    y="4"
+                    width="16"
+                    height="16"
+                    rx="3"
+                ></rect>
+
+                <path
+                    d="M8 9h8"
+                ></path>
+
+                <path
+                    d="M8 13h5"
+                ></path>
+
+                <path
+                    d="M8 17h3"
+                ></path>
+
+            </svg>
+
+        </div>
+
+        No wallet activity yet.
+
+    </div>
+
+
+    <div id="transactionList"></div>
+
+
+</section>
+
+
+
+<div
+    class="wallet-error"
+    id="walletError"
+></div>
+
+
+
+<div class="footer">
+
+    TaskEarn • Earn. Watch. Grow.
+
+</div>
+
+
+</div>
+
+
+
+<!-- =======================================================
+     SUPABASE
+======================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true
+            }
+        }
+    );
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const walletBalance =
+    document.getElementById(
+        "walletBalance"
+    );
+
+
+const payoutAvailable =
+    document.getElementById(
+        "payoutAvailable"
+    );
+
+
+const totalEarned =
+    document.getElementById(
+        "totalEarned"
+    );
+
+
+const totalWithdrawn =
+    document.getElementById(
+        "totalWithdrawn"
+    );
+
+
+const walletStatus =
+    document.getElementById(
+        "walletStatus"
+    );
+
+
+const transactionLoading =
+    document.getElementById(
+        "transactionLoading"
+    );
+
+
+const transactionEmpty =
+    document.getElementById(
+        "transactionEmpty"
+    );
+
+
+const transactionList =
+    document.getElementById(
+        "transactionList"
+    );
+
+
+const withdrawButton =
+    document.getElementById(
+        "withdrawButton"
+    );
+
+
+const walletBackButton =
+    document.getElementById(
+        "walletBackButton"
+    );
+
+
+const walletError =
+    document.getElementById(
+        "walletError"
+    );
+
+
+/* =========================================================
+   BACK TO HOME
+========================================================= */
+
+walletBackButton.addEventListener(
+    "click",
+    function(){
+
+        window.location.href =
+            "home.html";
+
+    }
+);
+
+
+/* =========================================================
+   WITHDRAW PAGE
+========================================================= */
+
+withdrawButton.addEventListener(
+    "click",
+    function(){
+
+        window.location.href =
+            "withdrawal.html";
+
+    }
+);
+
+
+/* =========================================================
+   MONEY FORMAT
+========================================================= */
+
+function formatMoney(
+    value
+){
+
+    const amount =
+        Number(
+            value || 0
+        );
+
+
+    if(
+        !Number.isFinite(
+            amount
+        )
+    ){
+
+        return "₹0.00";
+
+    }
+
+
+    return (
+        "₹" +
+        amount.toFixed(2)
+    );
+
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showWalletError(
+    message
+){
+
+    walletError.textContent =
+        message;
+
+    walletError.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   PAGE START
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
+
+        try{
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
+
+
+            if(error){
+
+                console.error(
+                    "Session error:",
+                    error
+                );
+
+
+                walletStatus.textContent =
+                    "Session Error";
+
+
+                showWalletError(
+                    "Unable to verify your account session."
+                );
+
+
+                return;
+
+            }
+
+
+            const session =
+                data?.session;
+
+
+            if(
+                !session ||
+                !session.user
+            ){
+
+                walletStatus.textContent =
+                    "Login Required";
+
+
+                /*
+                 * Redirect only when this page
+                 * is opened normally.
+                 */
+
+                if(
+                    window.location.protocol !==
+                    "content:"
+                ){
+
+                    window.location.replace(
+                        "login.html"
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            walletStatus.textContent =
+                "Account Active";
+
+
+            await loadWallet(
+                session.user.id
+            );
+
+
+            await loadTransactions(
+                session.user.id
+            );
+
+
+            subscribeToWallet(
+                session.user.id
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "Wallet page error:",
+                error
+            );
+
+
+            walletStatus.textContent =
+                "Error";
+
+
+            showWalletError(
+                "Something went wrong while loading your wallet."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOAD USER WALLET
+========================================================= */
+
+async function loadWallet(
+    userId
+){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "user_wallets"
+                )
+                .select(
+                    "balance,total_earned,total_withdrawn"
+                )
+                .eq(
+                    "user_id",
+                    userId
+                )
+                .maybeSingle();
+
+
+        if(error){
+
+            console.error(
+                "Wallet database error:",
+                error
+            );
+
+
+            showWalletError(
+                "Wallet data could not be loaded."
+            );
+
+
+            return;
+
+        }
+
+
+        /*
+         * IMPORTANT:
+         *
+         * No fake amount is created here.
+         * If database has no wallet row,
+         * display remains ₹0.00.
+         */
+
+        const balance =
+            Number(
+                data?.balance || 0
+            );
+
+
+        const earned =
+            Number(
+                data?.total_earned || 0
+            );
+
+
+        const withdrawn =
+            Number(
+                data?.total_withdrawn || 0
+            );
+
+
+        walletBalance.textContent =
+            formatMoney(
+                balance
+            );
+
+
+        payoutAvailable.textContent =
+            formatMoney(
+                balance
+            );
+
+
+        totalEarned.textContent =
+            formatMoney(
+                earned
+            );
+
+
+        totalWithdrawn.textContent =
+            formatMoney(
+                withdrawn
+            );
+
+
+        /*
+         * Keep withdraw button available.
+         * withdrawal.html should perform the
+         * final balance / minimum checks.
+         */
+
+        withdrawButton.disabled =
+            false;
+
+
+    }catch(error){
+
+        console.error(
+            "Wallet loading error:",
+            error
+        );
+
+
+        showWalletError(
+            "Wallet could not be loaded."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD TRANSACTIONS
+========================================================= */
+
+async function loadTransactions(
+    userId
+){
+
+    transactionLoading.style.display =
+        "block";
+
+
+    transactionEmpty.style.display =
+        "none";
+
+
+    transactionList.innerHTML =
+        "";
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "wallet_transactions"
+                )
+                .select("*")
+                .eq(
+                    "user_id",
+                    userId
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                )
+                .limit(20);
+
+
+        transactionLoading.style.display =
+            "none";
+
+
+        if(error){
+
+            console.error(
+                "Transaction error:",
+                error
+            );
+
+
+            transactionEmpty.style.display =
+                "block";
+
+
+            return;
+
+        }
+
+
+        if(
+            !data ||
+            data.length === 0
+        ){
+
+            transactionEmpty.style.display =
+                "block";
+
+
+            return;
+
+        }
+
+
+        data.forEach(
+            function(transaction){
+
+                renderTransaction(
+                    transaction
+                );
+
+            }
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Transaction loading error:",
+            error
+        );
+
+
+        transactionLoading.style.display =
+            "none";
+
+
+        transactionEmpty.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER TRANSACTION
+========================================================= */
+
+function renderTransaction(
+    transaction
+){
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+
+    item.className =
+        "transaction";
+
+
+    const left =
+        document.createElement(
+            "div"
+        );
+
+
+    left.className =
+        "transaction-left";
+
+
+    const icon =
+        document.createElement(
+            "div"
+        );
+
+
+    icon.className =
+        "transaction-icon";
+
+
+    icon.innerHTML = `
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+
+            <rect
+                x="4"
+                y="5"
+                width="16"
+                height="14"
+                rx="3"
+            ></rect>
+
+            <path
+                d="M8 9h8"
+            ></path>
+
+            <path
+                d="M8 13h5"
+            ></path>
+
+        </svg>
+
+    `;
+
+
+    const info =
+        document.createElement(
+            "div"
+        );
+
+
+    info.className =
+        "transaction-info";
+
+
+    const title =
+        document.createElement(
+            "strong"
+        );
+
+
+    title.textContent =
+        transaction.title ||
+        transaction.description ||
+        transaction.type ||
+        "Wallet Activity";
+
+
+    const date =
+        document.createElement(
+            "small"
+        );
+
+
+    if(
+        transaction.created_at
+    ){
+
+        const dateObject =
+            new Date(
+                transaction.created_at
+            );
+
+
+        if(
+            !isNaN(
+                dateObject.getTime()
+            )
+        ){
+
+            date.textContent =
+                dateObject.toLocaleString(
+                    undefined,
+                    {
+                        day:"2-digit",
+                        month:"short",
+                        year:"numeric"
+                    }
+                );
+
+        }else{
+
+            date.textContent =
+                "Recent activity";
+
+        }
+
+    }else{
+
+        date.textContent =
+            "Recent activity";
+
+    }
+
+
+    info.appendChild(
+        title
+    );
+
+
+    info.appendChild(
+        date
+    );
+
+
+    left.appendChild(
+        icon
+    );
+
+
+    left.appendChild(
+        info
+    );
+
+
+    const amount =
+        document.createElement(
+            "strong"
+        );
+
+
+    amount.className =
+        "transaction-amount";
+
+
+    const value =
+        Number(
+            transaction.amount || 0
+        );
+
+
+    const positive =
+        value >= 0;
+
+
+    amount.textContent =
+        (
+            positive
+            ? "+"
+            : ""
+        ) +
+        formatMoney(
+            value
+        );
+
+
+    amount.style.color =
+        positive
+        ? "#68e4b0"
+        : "#ff9eae";
+
+
+    item.appendChild(
+        left
+    );
+
+
+    item.appendChild(
+        amount
+    );
+
+
+    transactionList.appendChild(
+        item
+    );
+
+}
+
+
+/* =========================================================
+   REALTIME WALLET
+========================================================= */
+
+function subscribeToWallet(
+    userId
+){
+
+    try{
+
+        supabaseClient
+            .channel(
+                "taskearn-user-wallet-" +
+                userId
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event:"*",
+                    schema:"public",
+                    table:"user_wallets",
+                    filter:
+                        "user_id=eq." +
+                        userId
+                },
+                function(){
+
+                    loadWallet(
+                        userId
+                    );
+
+                }
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event:"*",
+                    schema:"public",
+                    table:"wallet_transactions",
+                    filter:
+                        "user_id=eq." +
+                        userId
+                },
+                function(){
+
+                    loadWallet(
+                        userId
+                    );
+
+
+                    loadTransactions(
+                        userId
+                    );
+
+                }
+            )
+
+            .subscribe();
+
+    }catch(error){
+
+        console.warn(
+            "Realtime wallet unavailable:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        function(
+            event,
+            session
+        ){
+
+            if(
+                event ===
+                "SIGNED_IN" &&
+                session?.user
+            ){
+
+                walletStatus.textContent =
+                    "Account Active";
+
+
+                loadWallet(
+                    session.user.id
+                );
+
+
+                loadTransactions(
+                    session.user.id
+                );
+
+            }
+
+
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
+
+                if(
+                    window.location.protocol !==
+                    "content:"
+                ){
+
+                    window.location.replace(
+                        "login.html"
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,5379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080a1b">
+<title>TaskEarn — Projects</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#080a1b;
+  color:#f5f6ff;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+:root{
+  --bg:#080a1b;
+  --card:#101327;
+  --card2:#12162d;
+  --line:rgba(255,255,255,.075);
+  --blue:#718cff;
+  --blue2:#536fe4;
+  --purple:#9174ff;
+  --green:#39dfad;
+  --yellow:#ffc94d;
+  --red:#ff617d;
+  --text:#f5f6ff;
+  --muted:#858eaa;
+  --muted2:#646d88;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-2;
+
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(77,102,255,.20),
+      transparent 29%
+    ),
+    radial-gradient(
+      circle at 100% 22%,
+      rgba(142,91,255,.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 45% 70%,
+      rgba(54,91,210,.06),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #090b20 0%,
+      #070918 62%,
+      #080a1b 100%
+    );
+}
+
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.022) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.022) 1px,
+      transparent 1px
+    );
+
+  background-size:42px 42px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 88%
+    );
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  height:76px;
+
+  display:flex;
+  align-items:center;
+  gap:14px;
+
+  padding:0 15px;
+
+  background:rgba(8,10,27,.91);
+  backdrop-filter:blur(20px);
+
+  border-bottom:1px solid rgba(255,255,255,.065);
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,.16);
+}
+
+.back{
+  width:46px;
+  height:46px;
+
+  flex:0 0 46px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #171d3b,
+      #0c1024
+    );
+
+  border:1px solid rgba(255,255,255,.10);
+
+  color:#e9ecff;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.045),
+    0 7px 20px rgba(0,0,0,.18);
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+.back:active{
+  transform:scale(.91);
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.02),
+    0 3px 9px rgba(0,0,0,.25);
+}
+
+.back svg{
+  width:23px;
+  height:23px;
+}
+
+.header-title{
+  min-width:0;
+  flex:1;
+
+  font-size:20px;
+  font-weight:950;
+
+  letter-spacing:-.7px;
+}
+
+.header-title span{
+  color:#718cff;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:100%;
+  max-width:760px;
+
+  margin:auto;
+
+  padding:
+    14px
+    14px
+    42px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+
+  padding:21px 18px;
+
+  border-radius:23px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(107,125,255,.20),
+      transparent 37%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(139,105,255,.08),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #171c3d,
+      #101326
+    );
+
+  border:1px solid rgba(112,135,255,.19);
+
+  box-shadow:
+    0 20px 48px rgba(0,0,0,.27),
+    inset 0 1px rgba(255,255,255,.04);
+
+  animation:
+    heroIn .45s ease both;
+}
+
+@keyframes heroIn{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+
+  width:150px;
+  height:150px;
+
+  right:-70px;
+  bottom:-85px;
+
+  border-radius:50%;
+
+  border:1px solid rgba(113,139,255,.10);
+}
+
+.live{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  padding:8px 11px;
+
+  border-radius:11px;
+
+  color:#b4c0ff;
+
+  background:rgba(105,130,255,.11);
+
+  border:1px solid rgba(105,130,255,.19);
+
+  font-size:10px;
+  font-weight:950;
+
+  letter-spacing:1px;
+}
+
+.live-dot{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#39dfad;
+
+  box-shadow:
+    0 0 12px #39dfad;
+
+  animation:
+    livePulse 1.6s ease-in-out infinite;
+}
+
+@keyframes livePulse{
+  50%{
+    transform:scale(1.3);
+    opacity:.65;
+  }
+}
+
+.hero h1{
+  margin:13px 0 6px;
+
+  font-size:31px;
+
+  line-height:1.04;
+
+  letter-spacing:-1.35px;
+}
+
+.hero h1 span{
+  color:#718cff;
+}
+
+.hero p{
+  max-width:560px;
+
+  margin:0;
+
+  color:#8992ad;
+
+  font-size:13px;
+
+  line-height:1.55;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:9px;
+
+  margin-top:11px;
+}
+
+.summary-item{
+  min-width:0;
+
+  padding:14px 12px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17,21,43,.96),
+      rgba(12,15,31,.96)
+    );
+
+  border:1px solid var(--line);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.025);
+}
+
+.summary-value{
+  overflow:hidden;
+
+  font-size:18px;
+  font-weight:950;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.summary-label{
+  margin-top:4px;
+
+  color:#68718d;
+
+  font-size:9px;
+  font-weight:850;
+
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   COMPANY WORK — HIGHER / COMPACT
+========================================================= */
+
+.company-section{
+  margin-top:12px;
+}
+
+.company-card{
+  position:relative;
+  overflow:hidden;
+
+  padding:15px;
+
+  border-radius:20px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(145,116,255,.18),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(71,99,255,.08),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #171633,
+      #0e1125
+    );
+
+  border:1px solid rgba(145,116,255,.20);
+
+  box-shadow:
+    0 13px 34px rgba(0,0,0,.22),
+    inset 0 1px rgba(255,255,255,.035);
+}
+
+.company-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.company-icon{
+  width:47px;
+  height:47px;
+
+  flex:0 0 47px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:15px;
+
+  color:#aa92ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(145,116,255,.17),
+      rgba(91,72,180,.08)
+    );
+
+  border:1px solid rgba(153,128,255,.21);
+
+  box-shadow:
+    0 8px 20px rgba(91,68,185,.14);
+}
+
+.company-icon svg{
+  width:23px;
+  height:23px;
+}
+
+.company-info{
+  min-width:0;
+  flex:1;
+}
+
+.company-badges{
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  margin-bottom:4px;
+}
+
+.company-badge{
+  padding:4px 7px;
+
+  border-radius:7px;
+
+  color:#b29eff;
+
+  background:rgba(145,116,255,.10);
+
+  font-size:8px;
+  font-weight:950;
+
+  letter-spacing:.5px;
+}
+
+.company-badge.green{
+  color:#55e5b8;
+  background:rgba(55,224,174,.07);
+}
+
+.company-title{
+  overflow:hidden;
+
+  font-size:15px;
+  font-weight:950;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.company-desc{
+  margin-top:3px;
+
+  color:#737d98;
+
+  font-size:9px;
+
+  line-height:1.4;
+}
+
+.company-reward{
+  flex:0 0 auto;
+
+  text-align:right;
+}
+
+.company-reward strong{
+  display:block;
+
+  font-size:17px;
+  font-weight:950;
+}
+
+.company-reward span{
+  color:#656e88;
+
+  font-size:7px;
+  font-weight:850;
+}
+
+.company-requirements{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:7px;
+
+  margin-top:12px;
+}
+
+.requirement{
+  min-width:0;
+
+  padding:9px;
+
+  border-radius:11px;
+
+  background:rgba(255,255,255,.035);
+
+  border:1px solid rgba(255,255,255,.055);
+}
+
+.requirement strong{
+  display:block;
+
+  font-size:11px;
+  font-weight:950;
+}
+
+.requirement span{
+  display:block;
+
+  margin-top:2px;
+
+  color:#68718d;
+
+  font-size:7px;
+  font-weight:800;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.company-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-top:11px;
+}
+
+.company-status{
+  min-width:0;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  color:#ffcF67;
+
+  font-size:9px;
+  font-weight:900;
+}
+
+.company-status-dot{
+  width:7px;
+  height:7px;
+
+  flex:0 0 7px;
+
+  border-radius:50%;
+
+  background:#ffc94d;
+
+  box-shadow:
+    0 0 9px rgba(255,201,77,.45);
+}
+
+.company-btn{
+  min-height:40px;
+
+  flex:0 0 auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  padding:0 14px;
+
+  border-radius:12px;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8c70ff,
+      #6251d9
+    );
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 9px 20px rgba(91,73,210,.22),
+    inset 0 1px rgba(255,255,255,.13);
+
+  font-size:10px;
+  font-weight:950;
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+.company-btn:active{
+  transform:
+    scale(.94)
+    translateY(2px);
+
+  box-shadow:
+    0 4px 10px rgba(91,73,210,.18);
+}
+
+.company-btn svg{
+  width:15px;
+  height:15px;
+}
+
+
+/* =========================================================
+   MY ACTIVE WORK
+========================================================= */
+
+.active-section{
+  margin-top:12px;
+}
+
+.active-panel{
+  overflow:hidden;
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,20,42,.98),
+      rgba(10,13,28,.98)
+    );
+
+  border:1px solid rgba(112,135,255,.14);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.19);
+}
+
+.active-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:13px 14px;
+
+  border-bottom:1px solid rgba(255,255,255,.055);
+}
+
+.active-title-wrap{
+  min-width:0;
+}
+
+.active-title{
+  font-size:14px;
+  font-weight:950;
+}
+
+.active-subtitle{
+  margin-top:2px;
+
+  color:#69738f;
+
+  font-size:8px;
+  font-weight:750;
+}
+
+.active-count{
+  min-width:31px;
+  height:27px;
+
+  display:grid;
+  place-items:center;
+
+  padding:0 8px;
+
+  border-radius:9px;
+
+  color:#aebcff;
+
+  background:rgba(105,130,255,.10);
+
+  border:1px solid rgba(105,130,255,.15);
+
+  font-size:10px;
+  font-weight:950;
+}
+
+.active-list{
+  display:flex;
+  flex-direction:column;
+}
+
+.active-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:12px 14px;
+
+  border-bottom:1px solid rgba(255,255,255,.045);
+}
+
+.active-item:last-child{
+  border-bottom:0;
+}
+
+.active-icon{
+  width:40px;
+  height:40px;
+
+  flex:0 0 40px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:12px;
+
+  color:#8398ff;
+
+  background:rgba(105,130,255,.09);
+
+  border:1px solid rgba(105,130,255,.13);
+}
+
+.active-icon.waiting{
+  color:#ffd269;
+  background:rgba(255,201,77,.07);
+  border-color:rgba(255,201,77,.12);
+}
+
+.active-icon.completed{
+  color:#46e1b1;
+  background:rgba(55,224,174,.07);
+  border-color:rgba(55,224,174,.12);
+}
+
+.active-icon.rejected{
+  color:#ff7188;
+  background:rgba(255,97,125,.07);
+  border-color:rgba(255,97,125,.12);
+}
+
+.active-icon svg{
+  width:19px;
+  height:19px;
+}
+
+.active-info{
+  min-width:0;
+  flex:1;
+}
+
+.active-name{
+  overflow:hidden;
+
+  font-size:12px;
+  font-weight:900;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.active-meta{
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  margin-top:4px;
+
+  color:#68718d;
+
+  font-size:8px;
+  font-weight:800;
+}
+
+.active-timer{
+  margin-top:4px;
+
+  color:#8da1ff;
+
+  font-size:9px;
+  font-weight:950;
+  font-variant-numeric:tabular-nums;
+}
+
+.active-timer.waiting{
+  color:#ffd269;
+}
+
+.active-timer.completed{
+  color:#48dfb1;
+}
+
+.active-timer.rejected{
+  color:#ff7188;
+}
+
+.active-action{
+  min-width:76px;
+  height:38px;
+
+  flex:0 0 auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+
+  padding:0 9px;
+
+  border-radius:11px;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d88ff,
+      #536ddd
+    );
+
+  border:1px solid rgba(255,255,255,.07);
+
+  box-shadow:
+    0 7px 16px rgba(78,103,225,.18),
+    inset 0 1px rgba(255,255,255,.10);
+
+  font-size:9px;
+  font-weight:950;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.active-action:active{
+  transform:scale(.92);
+}
+
+.active-action svg{
+  width:13px;
+  height:13px;
+}
+
+.active-empty{
+  padding:16px;
+
+  color:#68718d;
+
+  text-align:center;
+
+  font-size:9px;
+  font-weight:750;
+}
+
+
+/* =========================================================
+   SUBMISSION SHORTCUT
+========================================================= */
+
+.submission{
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-top:10px;
+
+  padding:13px 14px;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(48,222,175,.08),
+      rgba(91,113,244,.07)
+    );
+
+  border:1px solid rgba(54,219,175,.15);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.025);
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+.submission:active{
+  transform:scale(.975);
+}
+
+.sub-left{
+  display:flex;
+  align-items:center;
+  gap:11px;
+
+  min-width:0;
+}
+
+.sub-icon{
+  width:37px;
+  height:37px;
+
+  flex:0 0 37px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:11px;
+
+  color:#40e1b0;
+
+  background:rgba(51,222,174,.10);
+
+  border:1px solid rgba(51,222,174,.10);
+}
+
+.sub-icon svg{
+  width:18px;
+  height:18px;
+}
+
+.sub-title{
+  font-size:12px;
+  font-weight:950;
+}
+
+.sub-small{
+  margin-top:3px;
+
+  color:#68718d;
+
+  font-size:8px;
+  font-weight:750;
+}
+
+.sub-arrow{
+  color:#718cff;
+
+  flex:0 0 auto;
+}
+
+.sub-arrow svg{
+  width:18px;
+  height:18px;
+}
+
+
+/* =========================================================
+   SECTION HEAD
+========================================================= */
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin:
+    17px
+    2px
+    9px;
+}
+
+.section-title{
+  font-size:16px;
+  font-weight:950;
+  letter-spacing:-.45px;
+}
+
+.section-small{
+  margin-top:3px;
+
+  color:#66708c;
+
+  font-size:9px;
+  font-weight:750;
+}
+
+
+/* =========================================================
+   FILTER PANEL
+========================================================= */
+
+.filter-panel{
+  padding:11px;
+
+  border-radius:19px;
+
+  background:
+    rgba(12,15,32,.93);
+
+  border:1px solid var(--line);
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.13);
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search{
+  height:47px;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:0 13px;
+
+  border-radius:13px;
+
+  background:#090c1e;
+
+  border:1px solid rgba(255,255,255,.075);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.025);
+
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease;
+}
+
+.search:focus-within{
+  border-color:rgba(111,140,255,.35);
+
+  box-shadow:
+    0 0 0 3px rgba(111,140,255,.06);
+}
+
+.search svg{
+  width:18px;
+  height:18px;
+
+  flex:0 0 18px;
+
+  color:#69738f;
+}
+
+.search input{
+  min-width:0;
+  width:100%;
+
+  border:0;
+  outline:0;
+
+  background:none;
+
+  color:white;
+
+  font-size:12px;
+}
+
+.search input::placeholder{
+  color:#565f7b;
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.filters{
+  display:flex;
+
+  gap:7px;
+
+  overflow-x:auto;
+
+  padding-top:10px;
+
+  scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar{
+  display:none;
+}
+
+.filter{
+  flex:0 0 auto;
+
+  min-height:36px;
+
+  padding:
+    0
+    12px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:10px;
+
+  color:#737d99;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:1px solid rgba(255,255,255,.065);
+
+  font-size:10px;
+  font-weight:900;
+
+  white-space:nowrap;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.018);
+
+  transition:
+    transform .14s ease,
+    background .14s ease,
+    color .14s ease,
+    border-color .14s ease,
+    box-shadow .14s ease;
+}
+
+.filter:active{
+  transform:scale(.92);
+}
+
+.filter.active{
+  color:#edf0ff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(103,128,255,.19),
+      rgba(91,112,237,.10)
+    );
+
+  border-color:
+    rgba(108,133,255,.31);
+
+  box-shadow:
+    0 6px 16px rgba(73,97,221,.13),
+    inset 0 1px rgba(255,255,255,.045);
+}
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+.sort-line{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-top:10px;
+}
+
+.result{
+  min-width:0;
+
+  overflow:hidden;
+
+  color:#636d89;
+
+  font-size:9px;
+  font-weight:800;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.sort{
+  min-height:35px;
+
+  padding:0 10px;
+
+  border-radius:9px;
+
+  outline:none;
+
+  color:#aab2c9;
+
+  background:#090c1e;
+
+  border:1px solid rgba(255,255,255,.075);
+
+  font-size:9px;
+  font-weight:850;
+}
+
+
+/* =========================================================
+   PROJECT LIST
+========================================================= */
+
+.project-list{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+}
+
+
+/* =========================================================
+   PROJECT CARD
+========================================================= */
+
+.project{
+  position:relative;
+  overflow:hidden;
+
+  padding:15px;
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,22,44,.98),
+      rgba(11,14,29,.99)
+    );
+
+  border:1px solid rgba(255,255,255,.075);
+
+  box-shadow:
+    0 10px 27px rgba(0,0,0,.19),
+    inset 0 1px rgba(255,255,255,.022);
+
+  transition:
+    transform .17s ease,
+    border-color .17s ease,
+    box-shadow .17s ease;
+
+  animation:
+    cardIn .32s ease both;
+}
+
+@keyframes cardIn{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.project:active{
+  transform:scale(.982);
+
+  border-color:
+    rgba(110,135,255,.27);
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,.22);
+}
+
+.project.company{
+  border-color:
+    rgba(139,105,255,.20);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(139,105,255,.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #161632,
+      #0e1125
+    );
+}
+
+
+/* =========================================================
+   PROJECT TOP
+========================================================= */
+
+.project-top{
+  display:flex;
+
+  gap:12px;
+}
+
+.project-icon{
+  width:46px;
+  height:46px;
+
+  flex:0 0 46px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1b2450,
+      #11152c
+    );
+
+  border:1px solid rgba(105,130,255,.19);
+
+  color:#8499ff;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.035);
+}
+
+.project-icon.green{
+  color:#42dfb0;
+
+  background:
+    rgba(45,223,174,.08);
+
+  border-color:
+    rgba(45,223,174,.15);
+}
+
+.project-icon.purple{
+  color:#a081ff;
+
+  background:
+    rgba(139,105,255,.10);
+
+  border-color:
+    rgba(139,105,255,.18);
+}
+
+.project-icon svg{
+  width:22px;
+  height:22px;
+}
+
+.project-info{
+  min-width:0;
+  flex:1;
+}
+
+.project-name{
+  overflow:hidden;
+
+  color:#edf0ff;
+
+  font-size:14px;
+  font-weight:950;
+
+  line-height:1.3;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.project-description{
+  overflow:hidden;
+
+  margin-top:4px;
+
+  color:#68728e;
+
+  font-size:10px;
+
+  line-height:1.45;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badges{
+  display:flex;
+
+  gap:5px;
+
+  margin-bottom:5px;
+
+  overflow:hidden;
+}
+
+.badge{
+  flex:0 0 auto;
+
+  padding:4px 7px;
+
+  border-radius:7px;
+
+  color:#8ca1ff;
+
+  background:rgba(102,128,255,.08);
+
+  font-size:8px;
+  font-weight:950;
+
+  letter-spacing:.4px;
+}
+
+.badge.green{
+  color:#4ae1b3;
+
+  background:rgba(47,224,174,.07);
+}
+
+.badge.red{
+  color:#ff748c;
+
+  background:rgba(255,95,122,.07);
+}
+
+.badge.gold{
+  color:#ffd269;
+
+  background:rgba(255,200,77,.07);
+}
+
+.badge.purple{
+  color:#ae91ff;
+
+  background:rgba(139,105,255,.08);
+}
+
+
+/* =========================================================
+   REWARD
+========================================================= */
+
+.reward{
+  flex:0 0 auto;
+
+  text-align:right;
+
+  white-space:nowrap;
+}
+
+.reward-value{
+  color:#f6f7ff;
+
+  font-size:20px;
+  font-weight:950;
+
+  letter-spacing:-.6px;
+}
+
+.reward-label{
+  margin-top:2px;
+
+  color:#5f6883;
+
+  font-size:8px;
+  font-weight:850;
+}
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.meta-row{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:7px;
+
+  margin-top:12px;
+}
+
+.meta{
+  min-width:0;
+
+  min-height:35px;
+
+  display:flex;
+  align-items:center;
+
+  gap:6px;
+
+  padding:0 9px;
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  color:#717b97;
+
+  font-size:9px;
+  font-weight:800;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+
+  border:1px solid rgba(255,255,255,.035);
+}
+
+.meta svg{
+  width:14px;
+  height:14px;
+
+  flex:0 0 14px;
+
+  color:#748aff;
+}
+
+
+/* =========================================================
+   PROJECT BOTTOM
+========================================================= */
+
+.project-bottom{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-top:12px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+
+  gap:6px;
+
+  min-width:0;
+
+  color:#68718d;
+
+  font-size:9px;
+  font-weight:900;
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+
+  flex:0 0 7px;
+
+  border-radius:50%;
+
+  background:#68718d;
+}
+
+.status.working{
+  color:#8ca2ff;
+}
+
+.status.working .status-dot{
+  background:#718cff;
+  box-shadow:0 0 9px rgba(113,140,255,.5);
+}
+
+.status.waiting{
+  color:#ffd269;
+}
+
+.status.waiting .status-dot{
+  background:#ffc94d;
+}
+
+.status.completed{
+  color:#48dfb1;
+}
+
+.status.completed .status-dot{
+  background:#38dfad;
+}
+
+.status.rejected{
+  color:#ff7188;
+}
+
+.status.rejected .status-dot{
+  background:#ff617d;
+}
+
+.view-btn{
+  min-height:40px;
+
+  flex:0 0 auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:6px;
+
+  padding:0 14px;
+
+  border-radius:11px;
+
+  color:white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d88ff,
+      #536ddd
+    );
+
+  border:1px solid rgba(255,255,255,.075);
+
+  box-shadow:
+    0 8px 19px rgba(78,103,225,.20),
+    inset 0 1px rgba(255,255,255,.11);
+
+  font-size:10px;
+  font-weight:950;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.view-btn:active{
+  transform:
+    scale(.92)
+    translateY(2px);
+
+  box-shadow:
+    0 4px 10px rgba(78,103,225,.14);
+}
+
+.view-btn svg{
+  width:14px;
+  height:14px;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING
+========================================================= */
+
+.empty{
+  display:none;
+
+  padding:38px 18px;
+
+  text-align:center;
+
+  border-radius:18px;
+
+  border:1px dashed rgba(255,255,255,.11);
+
+  background:rgba(255,255,255,.015);
+
+  color:#68718d;
+
+  font-size:11px;
+  font-weight:750;
+}
+
+.loading{
+  padding:40px 15px;
+
+  text-align:center;
+
+  color:#68718d;
+
+  font-size:10px;
+  font-weight:800;
+}
+
+.spinner{
+  width:25px;
+  height:25px;
+
+  margin:
+    0
+    auto
+    10px;
+
+  border-radius:50%;
+
+  border:
+    2px solid
+    rgba(255,255,255,.08);
+
+  border-top-color:#718cff;
+
+  animation:
+    spin .7s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+  bottom:24px;
+
+  z-index:300;
+
+  width:max-content;
+  max-width:calc(100% - 28px);
+
+  padding:
+    12px
+    15px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #191e38,
+      #11152a
+    );
+
+  border:1px solid rgba(255,255,255,.10);
+
+  color:#e9ecfb;
+
+  font-size:10px;
+  font-weight:850;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transform:
+    translate(-50%,18px);
+
+  transition:.22s ease;
+
+  box-shadow:
+    0 17px 38px rgba(0,0,0,.48);
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:520px){
+
+  .header{
+    height:72px;
+    padding:0 12px;
+  }
+
+  .back{
+    width:44px;
+    height:44px;
+    flex-basis:44px;
+  }
+
+  .header-title{
+    font-size:19px;
+  }
+
+  .page{
+    padding-left:11px;
+    padding-right:11px;
+  }
+
+  .hero{
+    padding:19px 16px;
+    border-radius:21px;
+  }
+
+  .hero h1{
+    font-size:29px;
+  }
+
+  .hero p{
+    font-size:12px;
+  }
+
+  .summary{
+    gap:7px;
+  }
+
+  .summary-item{
+    padding:12px 9px;
+  }
+
+  .summary-value{
+    font-size:16px;
+  }
+
+  .summary-label{
+    font-size:8px;
+  }
+
+  .company-card{
+    padding:13px;
+  }
+
+  .company-icon{
+    width:43px;
+    height:43px;
+    flex-basis:43px;
+  }
+
+  .company-title{
+    font-size:13px;
+  }
+
+  .company-desc{
+    font-size:8px;
+  }
+
+  .company-reward strong{
+    font-size:15px;
+  }
+
+  .requirement{
+    padding:8px 7px;
+  }
+
+  .requirement strong{
+    font-size:10px;
+  }
+
+  .requirement span{
+    font-size:7px;
+  }
+
+  .company-btn{
+    min-height:38px;
+    padding:0 11px;
+    font-size:9px;
+  }
+
+  .active-item{
+    padding:11px 12px;
+  }
+
+  .active-action{
+    min-width:70px;
+    height:37px;
+    padding:0 8px;
+  }
+
+  .project{
+    padding:14px;
+  }
+
+  .project-icon{
+    width:43px;
+    height:43px;
+    flex-basis:43px;
+  }
+
+  .project-name{
+    font-size:13px;
+  }
+
+  .project-description{
+    font-size:9px;
+  }
+
+  .reward-value{
+    font-size:18px;
+  }
+
+  .meta{
+    font-size:8px;
+    padding:0 7px;
+  }
+
+  .view-btn{
+    min-height:39px;
+    padding:0 11px;
+    font-size:9px;
+  }
+}
+
+@media(max-width:370px){
+
+  .project-top{
+    gap:8px;
+  }
+
+  .project-icon{
+    width:39px;
+    height:39px;
+    flex-basis:39px;
+  }
+
+  .project-icon svg{
+    width:19px;
+  }
+
+  .reward-value{
+    font-size:16px;
+  }
+
+  .meta-row{
+    gap:5px;
+  }
+
+  .meta{
+    padding:0 5px;
+    gap:4px;
+    font-size:7px;
+  }
+
+  .view-btn{
+    padding:0 9px;
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     ICON SPRITE
+======================================================= -->
+
+<svg width="0" height="0" style="position:absolute">
+
+<symbol id="back" viewBox="0 0 24 24">
+  <path
+    d="M15 5 8 12l7 7"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="search" viewBox="0 0 24 24">
+  <circle
+    cx="10.7"
+    cy="10.7"
+    r="6"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="m15.2 15.2 5 5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="briefcase" viewBox="0 0 24 24">
+  <rect
+    x="3"
+    y="7"
+    width="18"
+    height="13"
+    rx="2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+</symbol>
+
+<symbol id="clock" viewBox="0 0 24 24">
+  <circle
+    cx="12"
+    cy="12"
+    r="8.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M12 7v5l3 2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="users" viewBox="0 0 24 24">
+  <circle
+    cx="9"
+    cy="9"
+    r="3"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <circle
+    cx="17"
+    cy="10"
+    r="2.4"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M3.5 20c.5-3.6 2.3-5.3 5.5-5.3s5 1.7 5.5 5.3M14 15c3.5-.4 5.7 1.2 6.5 5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</symbol>
+
+<symbol id="check" viewBox="0 0 24 24">
+  <path
+    d="m5 12 4 4L19 6"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="bolt" viewBox="0 0 24 24">
+  <path
+    d="m13 2-8 12h6l-1 8 8-12h-6z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="star" viewBox="0 0 24 24">
+  <path
+    d="m12 3 2.7 5.6 6.3.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.5l6.3-.9z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="grid" viewBox="0 0 24 24">
+  <rect
+    x="4"
+    y="4"
+    width="6"
+    height="6"
+    rx="1.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <rect
+    x="14"
+    y="4"
+    width="6"
+    height="6"
+    rx="1.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <rect
+    x="4"
+    y="14"
+    width="6"
+    height="6"
+    rx="1.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <rect
+    x="14"
+    y="14"
+    width="6"
+    height="6"
+    rx="1.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+</symbol>
+
+<symbol id="lock" viewBox="0 0 24 24">
+  <rect
+    x="5"
+    y="10"
+    width="14"
+    height="11"
+    rx="2"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M8 10V7a4 4 0 0 1 8 0v3"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+</symbol>
+
+<symbol id="arrow" viewBox="0 0 24 24">
+  <path
+    d="m9 5 7 7-7 7"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="settings" viewBox="0 0 24 24">
+  <circle
+    cx="12"
+    cy="12"
+    r="3"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"/>
+  <path
+    d="M19 13.5a7 7 0 0 0 0-3l2-1.5-2-3-2.3 1a8 8 0 0 0-2.5-1.5L14 3h-4l-.3 2.5A8 8 0 0 0 7.2 7L5 6 3 9l2 1.5a7 7 0 0 0 0 3L3 15l2 3 2.2-1a8 8 0 0 0 2.5 1.5L10 21h4l.3-2.5a8 8 0 0 0 2.5-1.5l2.2 1 2-3z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linejoin="round"/>
+</symbol>
+
+</svg>
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header class="header">
+
+  <button
+    class="back"
+    id="backBtn"
+    aria-label="Back">
+
+    <svg>
+      <use href="#back"></use>
+    </svg>
+
+  </button>
+
+  <div class="header-title">
+    Task<span>Earn</span> — Projects
+  </div>
+
+</header>
+
+
+<main class="page">
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<section class="hero">
+
+  <div class="live">
+    <span class="live-dot"></span>
+    LIVE PROJECTS
+  </div>
+
+  <h1>
+    Explore <span>Projects</span>
+  </h1>
+
+  <p>
+    Find available work, continue your active projects,
+    complete the work and submit proof to earn rewards.
+  </p>
+
+</section>
+
+
+<!-- =======================================================
+     SUMMARY
+======================================================= -->
+
+<section class="summary">
+
+  <div class="summary-item">
+
+    <div
+      class="summary-value"
+      id="totalProjects">
+      —
+    </div>
+
+    <div class="summary-label">
+      Projects
+    </div>
+
+  </div>
+
+
+  <div class="summary-item">
+
+    <div
+      class="summary-value"
+      id="totalRewards">
+      ₹—
+    </div>
+
+    <div class="summary-label">
+      Available Rewards
+    </div>
+
+  </div>
+
+
+  <div class="summary-item">
+
+    <div
+      class="summary-value"
+      id="myProjects">
+      0
+    </div>
+
+    <div class="summary-label">
+      My Projects
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     COMPANY WORK — TOP
+======================================================= -->
+
+<section class="company-section">
+
+  <div class="section-head">
+
+    <div>
+      <div class="section-title">
+        Company Work
+      </div>
+
+      <div class="section-small">
+        Higher-value projects
+      </div>
+    </div>
+
+  </div>
+
+
+  <article class="company-card">
+
+    <div class="company-top">
+
+      <div class="company-icon">
+
+        <svg>
+          <use href="#briefcase"></use>
+        </svg>
+
+      </div>
+
+
+      <div class="company-info">
+
+        <div class="company-badges">
+
+          <span class="company-badge">
+            COMPANY
+          </span>
+
+          <span class="company-badge green">
+            FUTURE WORK
+          </span>
+
+        </div>
+
+        <div class="company-title">
+          TaskEarn Company Work Hub
+        </div>
+
+        <div class="company-desc">
+          Unlock higher-value company projects after qualification.
+        </div>
+
+      </div>
+
+
+      <div class="company-reward">
+
+        <strong>₹—</strong>
+
+        <span>VARIES</span>
+
+      </div>
+
+    </div>
+
+
+    <div class="company-requirements">
+
+      <div class="requirement">
+
+        <strong>10</strong>
+
+        <span>Qualified Referrals</span>
+
+      </div>
+
+
+      <div class="requirement">
+
+        <strong>5,000</strong>
+
+        <span>Minimum Points</span>
+
+      </div>
+
+
+      <div class="requirement">
+
+        <strong>✓</strong>
+
+        <span>Promo Approval</span>
+
+      </div>
+
+    </div>
+
+
+    <div class="company-bottom">
+
+      <div class="company-status">
+
+        <span class="company-status-dot"></span>
+
+        Qualification required
+
+      </div>
+
+
+      <a
+        href="company-jobs.html"
+        class="company-btn"
+        id="companyBtn">
+
+        Company Hub
+
+        <svg>
+          <use href="#arrow"></use>
+        </svg>
+
+      </a>
+
+    </div>
+
+  </article>
+
+</section>
+
+
+<!-- =======================================================
+     MY ACTIVE WORK
+======================================================= -->
+
+<section class="active-section">
+
+  <div class="section-head">
+
+    <div>
+      <div class="section-title">
+        My Active Work
+      </div>
+
+      <div class="section-small">
+        Working, timer & submission status
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="active-panel">
+
+    <div class="active-head">
+
+      <div class="active-title-wrap">
+
+        <div class="active-title">
+          Your Projects
+        </div>
+
+        <div class="active-subtitle">
+          Everything you're currently working on in one place
+        </div>
+
+      </div>
+
+
+      <div
+        class="active-count"
+        id="activeCount">
+        0
+      </div>
+
+    </div>
+
+
+    <div
+      class="active-list"
+      id="activeList">
+
+      <div class="active-empty">
+        No active project right now.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     SUBMISSIONS
+======================================================= -->
+
+<a
+  href="project-submit.html"
+  class="submission">
+
+  <div class="sub-left">
+
+    <div class="sub-icon">
+
+      <svg>
+        <use href="#check"></use>
+      </svg>
+
+    </div>
+
+
+    <div>
+
+      <div class="sub-title">
+        My Project Submissions
+      </div>
+
+      <div class="sub-small">
+        Completed • Waiting • Working • Rejected
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="sub-arrow">
+
+    <svg>
+      <use href="#arrow"></use>
+    </svg>
+
+  </div>
+
+</a>
+
+
+<!-- =======================================================
+     FILTER EXPLORER
+======================================================= -->
+
+<section>
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-title">
+        Project Explorer
+      </div>
+
+      <div class="section-small">
+        Choose any project type
+      </div>
+
+    </div>
+
+
+    <div
+      id="resultCount"
+      class="section-small">
+      Loading...
+    </div>
+
+  </div>
+
+
+  <div class="filter-panel">
+
+
+    <div class="search">
+
+      <svg>
+        <use href="#search"></use>
+      </svg>
+
+      <input
+        id="searchInput"
+        type="search"
+        autocomplete="off"
+        placeholder="Search projects...">
+
+    </div>
+
+
+    <div
+      class="filters"
+      id="filters">
+
+
+      <button
+        class="filter active"
+        data-filter="all">
+        All
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="latest">
+        Latest
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="old">
+        Old
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="working">
+        Working
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="waiting">
+        Waiting
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="completed">
+        Completed
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="rejected">
+        Rejected
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="new">
+        New
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="featured">
+        Featured
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="highest">
+        Highest Reward
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="lowest">
+        Lowest Reward
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="fast">
+        Fast
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="long">
+        Long
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="verified">
+        Verified
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="testing">
+        Testing
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="app">
+        App
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="general">
+        General
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="daily">
+        Daily
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="instant">
+        Instant
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="photo">
+        Photo Proof
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="text">
+        Text Proof
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="level">
+        Level Tasks
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="survival">
+        Survival
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="under5">
+        Under 5 Min
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="under15">
+        Under 15 Min
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="under30">
+        Under 30 Min
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="reward10">
+        ₹10+
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="reward25">
+        ₹25+
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="reward50">
+        ₹50+
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="company">
+        Company
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="available">
+        Available
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="my">
+        My Work
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="popular">
+        Popular
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="fresh">
+        Fresh
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="easy">
+        Easy
+      </button>
+
+
+      <button
+        class="filter"
+        data-filter="highdemand">
+        High Demand
+      </button>
+
+
+    </div>
+
+
+    <div class="sort-line">
+
+      <div
+        class="result"
+        id="sortResult">
+        Latest projects first
+      </div>
+
+
+      <select
+        class="sort"
+        id="sortSelect">
+
+        <option value="latest">
+          Latest
+        </option>
+
+        <option value="rewardHigh">
+          Reward High
+        </option>
+
+        <option value="rewardLow">
+          Reward Low
+        </option>
+
+        <option value="fastest">
+          Fastest
+        </option>
+
+        <option value="mostCompleted">
+          Most Completed
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     PROJECT LIST
+======================================================= -->
+
+<section>
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-title">
+        Latest Projects
+      </div>
+
+      <div class="section-small">
+        Available work opportunities
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="project-list"
+    id="projectList">
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      Loading projects...
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="empty"
+    id="emptyState">
+
+    No projects match this filter.
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
+
+<script>
+
+/* =========================================================
+   TASK EARN — PROJECTS
+   SAME SUPABASE CONNECTION
+========================================================= */
+
+const SUPABASE_URL =
+  "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   STARTING COMPLETION COUNTERS
+========================================================= */
+
+const STARTING_COMPLETIONS = {
+
+  1:178,
+  2:175,
+  3:589,
+  4:7,
+  5:264,
+  6:91,
+  7:42,
+  8:315,
+  9:128,
+  10:73,
+
+  11:204,
+  12:56,
+  13:391,
+  14:19,
+  15:147,
+  16:68,
+  17:522,
+  18:33,
+  19:86,
+  20:276
+
+};
+
+
+let projects = [];
+
+let currentFilter =
+  "all";
+
+let searchText =
+  "";
+
+let mySubmissionMap =
+  {};
+
+let activeTimerInterval =
+  null;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function money(value){
+
+  return "₹" +
+    Number(value || 0)
+      .toLocaleString(
+        "en-IN",
+        {
+          maximumFractionDigits:2
+        }
+      );
+
+}
+
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+
+}
+
+
+function minutes(value){
+
+  const m =
+    Number(value || 0);
+
+  if(!m){
+    return "Flexible";
+  }
+
+  if(m < 60){
+    return `${m} min`;
+  }
+
+  const h =
+    Math.floor(m / 60);
+
+  const r =
+    m % 60;
+
+  return r
+    ? `${h}h ${r}m`
+    : `${h} hr`;
+
+}
+
+
+function dateValue(value){
+
+  const d =
+    new Date(value);
+
+  const t =
+    d.getTime();
+
+  return Number.isFinite(t)
+    ? t
+    : 0;
+
+}
+
+
+function daysOld(value){
+
+  const age =
+    Date.now() -
+    dateValue(value);
+
+  return age /
+    86400000;
+
+}
+
+
+function showToast(text){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+  toast.textContent =
+    text;
+
+  toast.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+  window.toastTimer =
+    setTimeout(
+      ()=>{
+        toast.classList.remove(
+          "show"
+        );
+      },
+      2300
+    );
+
+}
+
+
+/* =========================================================
+   TASK / PROJECT MODE
+========================================================= */
+
+function getMode(task){
+
+  const text = (
+    `${task.title || ""} ` +
+    `${task.description || ""} ` +
+    `${task.category || ""} ` +
+    `${task.task_type || ""}`
+  ).toLowerCase();
+
+
+  if(
+    text.includes("survival") ||
+    text.includes("60 minute") ||
+    text.includes("1 hour survival")
+  ){
+
+    return "survival";
+
+  }
+
+
+  if(
+    text.includes("level") ||
+    text.includes("play store") ||
+    text.includes("install app") ||
+    text.includes("download app") ||
+    text.includes("app_download") ||
+    text.includes("download_app")
+  ){
+
+    return "app";
+
+  }
+
+
+  if(
+    text.includes("instant") ||
+    text.includes("immediate")
+  ){
+
+    return "instant";
+
+  }
+
+
+  if(
+    text.includes("testing") ||
+    text.includes("test")
+  ){
+
+    return "testing";
+
+  }
+
+
+  return "general";
+
+}
+
+
+/* =========================================================
+   MY SUBMISSIONS
+========================================================= */
+
+async function loadMySubmissions(){
+
+  mySubmissionMap = {};
+
+  try{
+
+    const {
+      data:sessionData
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    const session =
+      sessionData?.session;
+
+
+    if(!session){
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("task_submissions")
+        .select(
+          "task_id,status,submitted_at"
+        )
+        .eq(
+          "user_id",
+          session.user.id
+        )
+        .order(
+          "submitted_at",
+          {
+            ascending:false
+          }
+        );
+
+
+    if(error){
+
+      console.warn(
+        "Submission status:",
+        error
+      );
+
+      return;
+
+    }
+
+
+    (data || []).forEach(
+      row => {
+
+        const id =
+          Number(row.task_id);
+
+
+        if(
+          !mySubmissionMap[id]
+        ){
+
+          mySubmissionMap[id] =
+            String(
+              row.status ||
+              "pending"
+            ).toLowerCase();
+
+        }
+
+      }
+    );
+
+
+  }catch(error){
+
+    console.warn(
+      "Submission load:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LOCAL WORKING PROJECTS
+========================================================= */
+
+function getWorkingProjects(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        "taskearn_working_projects"
+      );
+
+
+    if(!raw){
+      return [];
+    }
+
+
+    const list =
+      JSON.parse(raw);
+
+
+    if(!Array.isArray(list)){
+      return [];
+    }
+
+
+    return list.map(
+      value =>
+        String(value)
+    );
+
+
+  }catch{
+
+    return [];
+
+  }
+
+}
+
+
+function isWorking(task){
+
+  return getWorkingProjects()
+    .includes(
+      String(task.id)
+    );
+
+}
+
+
+/* =========================================================
+   CURRENT PROJECT LOCAL DATA
+========================================================= */
+
+function getCurrentProjectData(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        "taskearn_current_project"
+      );
+
+
+    if(!raw){
+      return null;
+    }
+
+
+    const data =
+      JSON.parse(raw);
+
+
+    return data &&
+      typeof data === "object"
+      ? data
+      : null;
+
+
+  }catch{
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   TIMER EXTRACTION
+========================================================= */
+
+function getProjectTimerEnd(projectId){
+
+  const current =
+    getCurrentProjectData();
+
+
+  if(
+    current &&
+    String(
+      current.id ??
+      current.project_id ??
+      ""
+    ) === String(projectId)
+  ){
+
+    const candidates = [
+      current.expiresAt,
+      current.expireAt,
+      current.timerEnd,
+      current.endAt,
+      current.deadline,
+      current.endsAt
+    ];
+
+
+    for(
+      const value of candidates
+    ){
+
+      const time =
+        Number(value) ||
+        dateValue(value);
+
+
+      if(
+        Number.isFinite(time) &&
+        time > Date.now()
+      ){
+
+        return time;
+
+      }
+
+    }
+
+  }
+
+
+  const keys = [
+
+    `taskearn_project_timer_${projectId}`,
+
+    `taskearn_project_end_${projectId}`,
+
+    `taskearn_project_expires_${projectId}`,
+
+    `taskearn_project_deadline_${projectId}`
+
+  ];
+
+
+  for(
+    const key of keys
+  ){
+
+    const value =
+      localStorage.getItem(key);
+
+
+    if(!value){
+      continue;
+    }
+
+
+    const time =
+      Number(value) ||
+      dateValue(value);
+
+
+    if(
+      Number.isFinite(time) &&
+      time > Date.now()
+    ){
+
+      return time;
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =========================================================
+   FORMAT TIMER
+========================================================= */
+
+function formatTimer(ms){
+
+  if(ms <= 0){
+    return "Time completed";
+  }
+
+
+  const total =
+    Math.floor(ms / 1000);
+
+
+  const days =
+    Math.floor(
+      total / 86400
+    );
+
+
+  const hours =
+    Math.floor(
+      (total % 86400) / 3600
+    );
+
+
+  const mins =
+    Math.floor(
+      (total % 3600) / 60
+    );
+
+
+  const secs =
+    total % 60;
+
+
+  if(days > 0){
+
+    return (
+      `${days}d ` +
+      `${String(hours).padStart(2,"0")}h ` +
+      `${String(mins).padStart(2,"0")}m`
+    );
+
+  }
+
+
+  return (
+    `${String(hours).padStart(2,"0")}:` +
+    `${String(mins).padStart(2,"0")}:` +
+    `${String(secs).padStart(2,"0")}`
+  );
+
+}
+
+
+/* =========================================================
+   PROJECT STATUS
+========================================================= */
+
+function projectStatus(task){
+
+  const submission =
+    mySubmissionMap[
+      Number(task.id)
+    ];
+
+
+  if(
+    submission === "approved"
+  ){
+
+    return {
+      key:"completed",
+      text:"Completed"
+    };
+
+  }
+
+
+  if(
+    submission === "rejected"
+  ){
+
+    return {
+      key:"rejected",
+      text:"Rejected"
+    };
+
+  }
+
+
+  if(
+    submission === "pending"
+  ){
+
+    return {
+      key:"waiting",
+      text:"Waiting"
+    };
+
+  }
+
+
+  if(
+    isWorking(task)
+  ){
+
+    return {
+      key:"working",
+      text:"Working"
+    };
+
+  }
+
+
+  return {
+    key:"available",
+    text:"Available"
+  };
+
+}
+
+
+/* =========================================================
+   ACTIVE PROJECT CHECK
+========================================================= */
+
+function isActiveProject(task){
+
+  const status =
+    projectStatus(task);
+
+
+  return (
+    status.key === "working" ||
+    status.key === "waiting" ||
+    status.key === "completed" ||
+    status.key === "rejected"
+  );
+
+}
+
+
+/* =========================================================
+   ACTIVE WORK RENDER
+========================================================= */
+
+function renderActiveWork(){
+
+  const container =
+    document.getElementById(
+      "activeList"
+    );
+
+
+  const countElement =
+    document.getElementById(
+      "activeCount"
+    );
+
+
+  if(
+    activeTimerInterval
+  ){
+
+    clearInterval(
+      activeTimerInterval
+    );
+
+  }
+
+
+  const active =
+    projects.filter(
+      task =>
+        isActiveProject(task)
+    );
+
+
+  countElement.textContent =
+    active.length;
+
+
+  if(!active.length){
+
+    container.innerHTML = `
+      <div class="active-empty">
+        No active project right now.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    active
+      .map(
+        task =>
+          activeProjectCard(task)
+      )
+      .join("");
+
+
+  updateActiveTimers();
+
+
+  activeTimerInterval =
+    setInterval(
+      updateActiveTimers,
+      1000
+    );
+
+}
+
+
+/* =========================================================
+   ACTIVE PROJECT CARD
+========================================================= */
+
+function activeProjectCard(task){
+
+  const status =
+    projectStatus(task);
+
+
+  let icon =
+    "briefcase";
+
+
+  if(status.key === "working"){
+    icon = "bolt";
+  }
+
+
+  if(status.key === "waiting"){
+    icon = "clock";
+  }
+
+
+  if(status.key === "completed"){
+    icon = "check";
+  }
+
+
+  if(status.key === "rejected"){
+    icon = "settings";
+  }
+
+
+  const timerEnd =
+    getProjectTimerEnd(
+      task.id
+    );
+
+
+  let timerText =
+    "";
+
+
+  if(
+    status.key === "working" &&
+    timerEnd
+  ){
+
+    timerText =
+      `Time left: <span data-timer="${task.id}">--:--:--</span>`;
+
+  }else if(
+    status.key === "working"
+  ){
+
+    timerText =
+      "Project is currently in progress";
+
+  }else if(
+    status.key === "waiting"
+  ){
+
+    timerText =
+      "Submission is being processed";
+
+  }else if(
+    status.key === "completed"
+  ){
+
+    timerText =
+      "Reward approved";
+
+  }else if(
+    status.key === "rejected"
+  ){
+
+    timerText =
+      "Submission rejected";
+
+  }
+
+
+  const iconClass =
+    status.key !== "working"
+      ? status.key
+      : "";
+
+
+  const actionText =
+    status.key === "working"
+      ? "Continue"
+      : status.key === "waiting"
+      ? "Status"
+      : status.key === "completed"
+      ? "View"
+      : status.key === "rejected"
+      ? "View"
+      : "Open";
+
+
+  return `
+
+    <div class="active-item">
+
+      <div class="active-icon ${iconClass}">
+
+        <svg>
+          <use href="#${icon}"></use>
+        </svg>
+
+      </div>
+
+
+      <div class="active-info">
+
+        <div class="active-name">
+
+          ${escapeHtml(
+            task.title ||
+            "Project"
+          )}
+
+        </div>
+
+
+        <div class="active-meta">
+
+          <span>
+            ${money(task.reward)}
+          </span>
+
+          <span>•</span>
+
+          <span>
+            ${escapeHtml(
+              task.category ||
+              "Project"
+            )}
+          </span>
+
+        </div>
+
+
+        <div
+          class="active-timer ${status.key}"
+          ${
+            timerEnd
+              ? `data-timer-box="${task.id}"`
+              : ""
+          }>
+
+          ${timerText}
+
+        </div>
+
+      </div>
+
+
+      <a
+        class="active-action"
+        href="project.details.html?id=${encodeURIComponent(task.id)}">
+
+        ${actionText}
+
+        <svg>
+          <use href="#arrow"></use>
+        </svg>
+
+      </a>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   ACTIVE TIMER UPDATE
+========================================================= */
+
+function updateActiveTimers(){
+
+  document
+    .querySelectorAll(
+      "[data-timer]"
+    )
+    .forEach(
+      element => {
+
+        const id =
+          element.dataset.timer;
+
+
+        const end =
+          getProjectTimerEnd(id);
+
+
+        if(!end){
+
+          element.textContent =
+            "Active";
+
+          return;
+
+        }
+
+
+        const remaining =
+          end - Date.now();
+
+
+        if(remaining <= 0){
+
+          element.textContent =
+            "Time completed";
+
+          return;
+
+        }
+
+
+        element.textContent =
+          formatTimer(
+            remaining
+          );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterProjects(){
+
+  let list =
+    [...projects];
+
+
+  const q =
+    searchText
+      .trim()
+      .toLowerCase();
+
+
+  if(q){
+
+    list =
+      list.filter(
+        task => {
+
+          const text =
+            `
+            ${task.title || ""}
+            ${task.description || ""}
+            ${task.category || ""}
+            ${task.task_type || ""}
+            `.toLowerCase();
+
+
+          return text.includes(q);
+
+        }
+      );
+
+  }
+
+
+  switch(currentFilter){
+
+    case "latest":
+
+      list =
+        list.filter(
+          x =>
+            daysOld(
+              x.created_at
+            ) <= 7
+        );
+
+      break;
+
+
+    case "old":
+
+      list =
+        list.filter(
+          x =>
+            daysOld(
+              x.created_at
+            ) > 7
+        );
+
+      break;
+
+
+    case "working":
+
+      list =
+        list.filter(
+          x =>
+            projectStatus(x).key ===
+            "working"
+        );
+
+      break;
+
+
+    case "waiting":
+
+      list =
+        list.filter(
+          x =>
+            projectStatus(x).key ===
+            "waiting"
+        );
+
+      break;
+
+
+    case "completed":
+
+      list =
+        list.filter(
+          x =>
+            projectStatus(x).key ===
+            "completed"
+        );
+
+      break;
+
+
+    case "rejected":
+
+      list =
+        list.filter(
+          x =>
+            projectStatus(x).key ===
+            "rejected"
+        );
+
+      break;
+
+
+    case "new":
+
+      list =
+        list.filter(
+          x =>
+            daysOld(
+              x.created_at
+            ) <= 2
+        );
+
+      break;
+
+
+    case "featured":
+
+      list =
+        list.filter(
+          (x,i) =>
+            i < 3
+        );
+
+      break;
+
+
+    case "highest":
+
+      list.sort(
+        (a,b) =>
+          Number(b.reward || 0) -
+          Number(a.reward || 0)
+      );
+
+      break;
+
+
+    case "lowest":
+
+      list.sort(
+        (a,b) =>
+          Number(a.reward || 0) -
+          Number(b.reward || 0)
+      );
+
+      break;
+
+
+    case "fast":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.duration_minutes || 9999
+            ) <= 15
+        );
+
+      break;
+
+
+    case "long":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.duration_minutes || 0
+            ) > 30
+        );
+
+      break;
+
+
+    case "verified":
+
+      list =
+        list.filter(
+          x =>
+            x.verified === true
+        );
+
+      break;
+
+
+    case "testing":
+
+      list =
+        list.filter(
+          x =>
+            getMode(x) ===
+            "testing"
+        );
+
+      break;
+
+
+    case "app":
+
+      list =
+        list.filter(
+          x =>
+            getMode(x) ===
+            "app"
+        );
+
+      break;
+
+
+    case "general":
+
+      list =
+        list.filter(
+          x =>
+            getMode(x) ===
+            "general"
+        );
+
+      break;
+
+
+    case "daily":
+
+      list =
+        list.filter(
+          x =>
+            /daily/i.test(
+              `${x.title} ${x.description}`
+            )
+        );
+
+      break;
+
+
+    case "instant":
+
+      list =
+        list.filter(
+          x =>
+            getMode(x) ===
+            "instant"
+        );
+
+      break;
+
+
+    case "photo":
+
+      list =
+        list.filter(
+          x =>
+            /photo|screenshot|image/i.test(
+              `${x.title} ${x.description}`
+            )
+        );
+
+      break;
+
+
+    case "text":
+
+      list =
+        list.filter(
+          x =>
+            !/photo|screenshot|image/i.test(
+              `${x.title} ${x.description}`
+            )
+        );
+
+      break;
+
+
+    case "level":
+
+      list =
+        list.filter(
+          x =>
+            /level|lv\s*\d+/i.test(
+              `${x.title} ${x.description}`
+            )
+        );
+
+      break;
+
+
+    case "survival":
+
+      list =
+        list.filter(
+          x =>
+            getMode(x) ===
+            "survival"
+        );
+
+      break;
+
+
+    case "under5":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.duration_minutes || 999
+            ) <= 5
+        );
+
+      break;
+
+
+    case "under15":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.duration_minutes || 999
+            ) <= 15
+        );
+
+      break;
+
+
+    case "under30":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.duration_minutes || 999
+            ) <= 30
+        );
+
+      break;
+
+
+    case "reward10":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.reward || 0
+            ) >= 10
+        );
+
+      break;
+
+
+    case "reward25":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.reward || 0
+            ) >= 25
+        );
+
+      break;
+
+
+    case "reward50":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.reward || 0
+            ) >= 50
+        );
+
+      break;
+
+
+    case "company":
+
+      list =
+        list.filter(
+          x =>
+            /company/i.test(
+              `${x.title} ${x.description} ${x.category} ${x.task_type}`
+            )
+        );
+
+      break;
+
+
+    case "available":
+
+      list =
+        list.filter(
+          x =>
+            projectStatus(x).key ===
+            "available"
+        );
+
+      break;
+
+
+    case "my":
+
+      list =
+        list.filter(
+          x =>
+            mySubmissionMap[
+              Number(x.id)
+            ]
+            ||
+            isWorking(x)
+        );
+
+      break;
+
+
+    case "popular":
+
+      list.sort(
+        (a,b) =>
+          Number(
+            b.completionCount || 0
+          ) -
+          Number(
+            a.completionCount || 0
+          )
+      );
+
+      break;
+
+
+    case "fresh":
+
+      list =
+        list.filter(
+          x =>
+            daysOld(
+              x.created_at
+            ) <= 3
+        );
+
+      break;
+
+
+    case "easy":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.duration_minutes || 999
+            ) <= 10
+        );
+
+      break;
+
+
+    case "highdemand":
+
+      list =
+        list.filter(
+          x =>
+            Number(
+              x.completionCount || 0
+            ) >= 150
+        );
+
+      break;
+
+  }
+
+
+  const sort =
+    document.getElementById(
+      "sortSelect"
+    ).value;
+
+
+  if(sort === "latest"){
+
+    list.sort(
+      (a,b) =>
+        dateValue(b.created_at) -
+        dateValue(a.created_at)
+    );
+
+  }
+
+
+  if(sort === "rewardHigh"){
+
+    list.sort(
+      (a,b) =>
+        Number(b.reward || 0) -
+        Number(a.reward || 0)
+    );
+
+  }
+
+
+  if(sort === "rewardLow"){
+
+    list.sort(
+      (a,b) =>
+        Number(a.reward || 0) -
+        Number(b.reward || 0)
+    );
+
+  }
+
+
+  if(sort === "fastest"){
+
+    list.sort(
+      (a,b) =>
+        Number(
+          a.duration_minutes || 99999
+        )
+        -
+        Number(
+          b.duration_minutes || 99999
+        )
+    );
+
+  }
+
+
+  if(sort === "mostCompleted"){
+
+    list.sort(
+      (a,b) =>
+        Number(
+          b.completionCount || 0
+        )
+        -
+        Number(
+          a.completionCount || 0
+        )
+    );
+
+  }
+
+
+  return list;
+
+}
+
+
+/* =========================================================
+   PROJECT CARD
+========================================================= */
+
+function projectCard(task,index){
+
+  const mode =
+    getMode(task);
+
+
+  const status =
+    projectStatus(task);
+
+
+  const reward =
+    Number(
+      task.reward || 0
+    );
+
+
+  const duration =
+    Number(
+      task.duration_minutes || 0
+    );
+
+
+  let icon =
+    "briefcase";
+
+
+  let iconClass =
+    "";
+
+
+  if(mode === "app"){
+
+    icon =
+      "bolt";
+
+  }
+
+
+  if(mode === "testing"){
+
+    icon =
+      "settings";
+
+    iconClass =
+      "green";
+
+  }
+
+
+  if(mode === "survival"){
+
+    icon =
+      "clock";
+
+    iconClass =
+      "purple";
+
+  }
+
+
+  if(status.key === "completed"){
+
+    icon =
+      "check";
+
+    iconClass =
+      "green";
+
+  }
+
+
+  const completion =
+    Number(
+      task.completionCount ||
+      STARTING_COMPLETIONS[
+        Number(task.id)
+      ] ||
+      0
+    );
+
+
+  const featured =
+    index < 2;
+
+
+  let badges =
+    "";
+
+
+  if(featured){
+
+    badges +=
+      `<span class="badge">
+        FEATURED
+      </span>`;
+
+  }
+
+
+  if(task.verified === true){
+
+    badges +=
+      `<span class="badge green">
+        VERIFIED
+      </span>`;
+
+  }
+
+
+  if(mode === "app"){
+
+    badges +=
+      `<span class="badge gold">
+        APP
+      </span>`;
+
+  }
+
+
+  if(mode === "instant"){
+
+    badges +=
+      `<span class="badge green">
+        INSTANT
+      </span>`;
+
+  }
+
+
+  if(
+    daysOld(task.created_at) <= 2
+  ){
+
+    badges +=
+      `<span class="badge">
+        NEW
+      </span>`;
+
+  }
+
+
+  return `
+
+    <article class="project">
+
+      <div class="project-top">
+
+
+        <div class="project-icon ${iconClass}">
+
+          <svg>
+            <use href="#${icon}"></use>
+          </svg>
+
+        </div>
+
+
+        <div class="project-info">
+
+
+          <div class="badges">
+
+            ${badges}
+
+          </div>
+
+
+          <div class="project-name">
+
+            ${escapeHtml(
+              task.title ||
+              "Untitled Project"
+            )}
+
+          </div>
+
+
+          <div class="project-description">
+
+            ${escapeHtml(
+              task.description ||
+              "Complete this project and submit the required proof."
+            )}
+
+          </div>
+
+
+        </div>
+
+
+        <div class="reward">
+
+          <div class="reward-value">
+
+            ${money(reward)}
+
+          </div>
+
+          <div class="reward-label">
+            REWARD
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="meta-row">
+
+
+        <div class="meta">
+
+          <svg>
+            <use href="#clock"></use>
+          </svg>
+
+          ${minutes(duration)}
+
+        </div>
+
+
+        <div class="meta">
+
+          <svg>
+            <use href="#users"></use>
+          </svg>
+
+          ${completion.toLocaleString("en-IN")}
+
+        </div>
+
+
+        <div class="meta">
+
+          <svg>
+            <use href="#grid"></use>
+          </svg>
+
+          ${escapeHtml(
+            task.category ||
+            "General"
+          )}
+
+        </div>
+
+
+      </div>
+
+
+      <div class="project-bottom">
+
+
+        <div class="status ${status.key}">
+
+          <span class="status-dot"></span>
+
+          ${status.text}
+
+        </div>
+
+
+        <a
+          href="project.details.html?id=${encodeURIComponent(task.id)}"
+          class="view-btn">
+
+          ${
+            status.key === "working"
+              ? "Continue"
+              : status.key === "waiting"
+              ? "View Status"
+              : status.key === "completed"
+              ? "View"
+              : status.key === "rejected"
+              ? "Review"
+              : "View Project"
+          }
+
+          <svg>
+            <use href="#arrow"></use>
+          </svg>
+
+        </a>
+
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render(){
+
+  const list =
+    document.getElementById(
+      "projectList"
+    );
+
+
+  const filtered =
+    filterProjects();
+
+
+  list.innerHTML =
+    "";
+
+
+  if(!filtered.length){
+
+    document.getElementById(
+      "emptyState"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "resultCount"
+    ).textContent =
+      "0 found";
+
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "emptyState"
+  ).style.display =
+    "none";
+
+
+  list.innerHTML =
+    filtered
+      .map(
+        projectCard
+      )
+      .join("");
+
+
+  document.getElementById(
+    "resultCount"
+  ).textContent =
+    `${filtered.length} found`;
+
+}
+
+
+/* =========================================================
+   LOAD PROJECTS
+========================================================= */
+
+async function loadProjects(){
+
+  const list =
+    document.getElementById(
+      "projectList"
+    );
+
+
+  list.innerHTML = `
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      Loading projects...
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("tasks")
+        .select(
+          `
+          id,
+          created_at,
+          title,
+          description,
+          reward,
+          duration_minutes,
+          category,
+          task_url,
+          status,
+          verified,
+          task_type
+          `
+        )
+        .eq(
+          "status",
+          "active"
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    projects =
+  Array.isArray(data)
+    ? data.filter(
+        task => Number(task.id) !== 4
+      )
+    : [];
+
+
+    projects =
+      projects.map(
+        task => ({
+
+          ...task,
+
+          completionCount:
+            STARTING_COMPLETIONS[
+              Number(task.id)
+            ] || 0
+
+        })
+      );
+
+
+    await loadRealCompletions();
+
+
+    render();
+
+    updateSummary();
+
+    renderActiveWork();
+
+
+  }catch(error){
+
+    console.error(
+      "Projects:",
+      error
+    );
+
+
+    list.innerHTML =
+      "";
+
+
+    document.getElementById(
+      "emptyState"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "resultCount"
+    ).textContent =
+      "Unable to load";
+
+
+    showToast(
+      "Projects could not be loaded."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   REAL APPROVED COMPLETIONS
+========================================================= */
+
+async function loadRealCompletions(){
+
+  if(!projects.length){
+    return;
+  }
+
+
+  try{
+
+    const ids =
+      projects.map(
+        x =>
+          Number(x.id)
+      );
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("task_submissions")
+        .select(
+          "task_id,status"
+        )
+        .in(
+          "task_id",
+          ids
+        );
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    const counts =
+      {};
+
+
+    (data || []).forEach(
+      row => {
+
+        if(
+          String(
+            row.status || ""
+          ).toLowerCase()
+          !==
+          "approved"
+        ){
+
+          return;
+
+        }
+
+
+        const id =
+          Number(
+            row.task_id
+          );
+
+
+        counts[id] =
+          (
+            counts[id] ||
+            0
+          ) + 1;
+
+      }
+    );
+
+
+    projects =
+      projects.map(
+        task => ({
+
+          ...task,
+
+          completionCount:
+            (
+              STARTING_COMPLETIONS[
+                Number(task.id)
+              ] || 0
+            )
+            +
+            (
+              counts[
+                Number(task.id)
+              ] || 0
+            )
+
+        })
+      );
+
+
+  }catch(error){
+
+    console.warn(
+      "Real completions:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function updateSummary(){
+
+  const count =
+    projects.length;
+
+
+  const rewards =
+    projects.reduce(
+      (sum,task) =>
+        sum +
+        Number(
+          task.reward || 0
+        ),
+      0
+    );
+
+
+  document.getElementById(
+    "totalProjects"
+  ).textContent =
+    count.toLocaleString(
+      "en-IN"
+    );
+
+
+  document.getElementById(
+    "totalRewards"
+  ).textContent =
+    money(rewards);
+
+
+  const mine =
+    projects.filter(
+      task =>
+        mySubmissionMap[
+          Number(task.id)
+        ]
+        ||
+        isWorking(task)
+    ).length;
+
+
+  document.getElementById(
+    "myProjects"
+  ).textContent =
+    mine.toLocaleString(
+      "en-IN"
+    );
+
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+document
+  .querySelectorAll(
+    ".filter"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          document
+            .querySelectorAll(
+              ".filter"
+            )
+            .forEach(
+              item =>
+                item.classList.remove(
+                  "active"
+                )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          currentFilter =
+            button.dataset.filter ||
+            "all";
+
+
+          render();
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+  .getElementById(
+    "searchInput"
+  )
+  .addEventListener(
+    "input",
+    event => {
+
+      searchText =
+        event.target.value ||
+        "";
+
+
+      render();
+
+    }
+  );
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+document
+  .getElementById(
+    "sortSelect"
+  )
+  .addEventListener(
+    "change",
+    ()=>{
+      render();
+    }
+  );
+
+
+/* =========================================================
+   BACK
+   DETERMINISTIC — NO HISTORY LOOP
+========================================================= */
+
+document
+  .getElementById(
+    "backBtn"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+
+      window.location.href =
+        "home.html";
+
+    }
+  );
+
+
+/* =========================================================
+   COMPANY HUB
+========================================================= */
+
+document
+  .getElementById(
+    "companyBtn"
+  )
+  .addEventListener(
+    "click",
+    event => {
+
+      /*
+        Company Work is a future/qualification-gated
+        page. Keep the route connected, but do not
+        pretend qualification is complete on the client.
+      */
+
+      event.preventDefault();
+
+      window.location.href =
+        "company-projects.html";
+
+    }
+  );
+
+
+/* =========================================================
+   VISIBILITY REFRESH
+========================================================= */
+
+document.addEventListener(
+  "visibilitychange",
+  async ()=>{
+
+    if(
+      document.visibilityState ===
+      "visible"
+    ){
+
+      await loadMySubmissions();
+
+
+      if(projects.length){
+
+        render();
+
+        updateSummary();
+
+        renderActiveWork();
+
+      }else{
+
+        await loadProjects();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+(async function(){
+
+  await loadMySubmissions();
+
+  await loadProjects();
+
+  updateSummary();
+
+  renderActiveWork();
+
+})();
+
+</script>
+
+</body>
+</html>

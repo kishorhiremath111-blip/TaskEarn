@@ -1,0 +1,3351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta
+    name="theme-color"
+    content="#050711"
+>
+
+<meta
+    name="color-scheme"
+    content="dark"
+>
+
+<title>TaskEarn — Login</title>
+
+
+<style>
+
+/* =========================================================
+   TASKEARN PREMIUM LOGIN
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+    background:#050711;
+}
+
+body{
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:#ffffff;
+
+    background:
+
+        radial-gradient(
+            circle at 5% -5%,
+            rgba(8,205,255,.18),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 105% 12%,
+            rgba(105,72,255,.22),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 50% 110%,
+            rgba(25,110,255,.11),
+            transparent 40%
+        ),
+
+        linear-gradient(
+            145deg,
+            #03050c 0%,
+            #080d1d 46%,
+            #050711 100%
+        );
+}
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    width:360px;
+    height:360px;
+
+    top:-190px;
+    left:-140px;
+
+    border-radius:50%;
+
+    background:rgba(8,205,255,.11);
+
+    filter:blur(80px);
+
+    pointer-events:none;
+}
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    width:360px;
+    height:360px;
+
+    right:-170px;
+    bottom:-150px;
+
+    border-radius:50%;
+
+    background:rgba(112,76,255,.12);
+
+    filter:blur(85px);
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+
+    position:relative;
+
+    z-index:2;
+
+    width:100%;
+    min-height:100vh;
+
+    padding:
+        7px 8px 22px;
+
+    display:flex;
+
+    align-items:flex-start;
+    justify-content:center;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.login-card{
+
+    position:relative;
+
+    width:100%;
+    max-width:600px;
+
+    margin-top:3px;
+
+    padding:
+        18px 24px 27px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius:28px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(18,29,60,.985),
+            rgba(6,12,29,.995)
+        );
+
+    box-shadow:
+
+        0 30px 90px
+        rgba(0,0,0,.58),
+
+        0 0 55px
+        rgba(20,90,255,.07),
+
+        inset 0 1px 0
+        rgba(255,255,255,.065);
+
+    backdrop-filter:blur(26px);
+
+    -webkit-backdrop-filter:blur(26px);
+
+    overflow:hidden;
+}
+
+.login-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:300px;
+    height:300px;
+
+    top:-210px;
+    right:-110px;
+
+    border-radius:50%;
+
+    background:rgba(112,76,255,.12);
+
+    filter:blur(12px);
+
+    pointer-events:none;
+}
+
+.login-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:240px;
+    height:240px;
+
+    left:-150px;
+    bottom:-140px;
+
+    border-radius:50%;
+
+    background:rgba(8,205,255,.08);
+
+    filter:blur(15px);
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand{
+
+    position:relative;
+
+    z-index:3;
+
+    text-align:center;
+
+    margin-top:7px;
+
+    margin-bottom:28px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo-wrap{
+
+    position:relative;
+
+    width:88px;
+    height:88px;
+
+    margin:
+        8px auto 16px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:transparent;
+
+    border:0;
+
+    box-shadow:none;
+
+    overflow:visible;
+}
+
+.logo-image{
+
+    position:relative;
+
+    z-index:3;
+
+    width:84px;
+    height:84px;
+
+    display:block;
+
+    object-fit:contain;
+
+    object-position:center;
+
+    border-radius:22px;
+
+    filter:
+        drop-shadow(
+            0 9px 17px
+            rgba(0,0,0,.36)
+        );
+}
+
+
+/* =========================================================
+   TAG
+========================================================= */
+
+.tag{
+
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:
+        8px 15px;
+
+    border:
+        1px solid
+        rgba(8,205,255,.22);
+
+    border-radius:999px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(8,205,255,.07),
+            rgba(8,205,255,.025)
+        );
+
+    color:#62ddff;
+
+    font-size:9px;
+
+    font-weight:950;
+
+    letter-spacing:1.9px;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.03);
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+h1{
+
+    margin:
+        14px 0 8px;
+
+    font-size:34px;
+
+    line-height:1.08;
+
+    font-weight:950;
+
+    letter-spacing:-.9px;
+}
+
+.title-gradient{
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #ffffff 0%,
+            #dcecff 32%,
+            #68dcff 67%,
+            #8468ff 100%
+        );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    color:transparent;
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.subtitle{
+
+    max-width:500px;
+
+    margin:
+        0 auto;
+
+    color:#8490aa;
+
+    text-align:center;
+
+    font-size:11px;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group{
+
+    position:relative;
+
+    z-index:3;
+
+    margin-top:20px;
+}
+
+label{
+
+    display:block;
+
+    margin:
+        0 4px 8px;
+
+    color:#c0cbe0;
+
+    font-size:9px;
+
+    font-weight:950;
+
+    letter-spacing:.75px;
+
+    text-transform:uppercase;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.input{
+
+    width:100%;
+
+    height:58px;
+
+    padding:
+        0 17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius:17px;
+
+    outline:none;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(27,40,73,.96),
+            rgba(14,23,48,.98)
+        );
+
+    color:#ffffff;
+
+    font-size:12px;
+
+    font-weight:650;
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.035),
+
+        0 8px 24px
+        rgba(0,0,0,.13);
+
+    transition:.2s ease;
+}
+
+.input::placeholder{
+
+    color:#65728f;
+}
+
+.input:focus{
+
+    border-color:
+        rgba(8,205,255,.48);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(24,38,70,.99),
+            rgba(14,25,51,.99)
+        );
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(8,205,255,.055),
+
+        0 12px 30px
+        rgba(0,0,0,.17),
+
+        inset 0 1px 0
+        rgba(255,255,255,.04);
+}
+
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+.input-wrap{
+
+    position:relative;
+
+    width:100%;
+}
+
+.password-input{
+
+    padding-right:68px;
+}
+
+
+/* =========================================================
+   PASSWORD EYE
+========================================================= */
+
+.eye-btn{
+
+    position:absolute;
+
+    top:5px;
+    right:5px;
+
+    width:48px;
+    height:48px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#7b89a7;
+
+    cursor:pointer;
+
+    transition:.16s ease;
+
+    touch-action:manipulation;
+
+    user-select:none;
+
+    -webkit-user-select:none;
+}
+
+.eye-btn svg{
+
+    width:21px;
+    height:21px;
+
+    stroke:currentColor;
+
+    fill:none;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+
+    pointer-events:none;
+}
+
+.eye-btn:hover,
+.eye-btn.active{
+
+    color:#59dfff;
+
+    background:
+        rgba(8,205,255,.065);
+}
+
+.eye-btn.active{
+
+    border-color:
+        rgba(8,205,255,.12);
+}
+
+.eye-btn:active{
+
+    transform:scale(.91);
+}
+
+
+/* =========================================================
+   FORGOT
+========================================================= */
+
+.forgot-row{
+
+    position:relative;
+
+    z-index:3;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin:
+        10px 4px 0;
+}
+
+.forgot-btn{
+
+    padding:
+        5px 0;
+
+    border:0;
+
+    background:transparent;
+
+    color:#5cddff;
+
+    font-size:9px;
+
+    font-weight:950;
+
+    cursor:pointer;
+}
+
+.forgot-btn:hover{
+
+    color:#9beaff;
+}
+
+.forgot-btn:active{
+
+    opacity:.65;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message{
+
+    position:relative;
+
+    z-index:3;
+
+    min-height:20px;
+
+    margin:
+        13px 4px 0;
+
+    text-align:center;
+
+    font-size:9px;
+
+    line-height:1.5;
+
+    font-weight:850;
+}
+
+.message.success{
+
+    color:#55e5a5;
+}
+
+.message.error{
+
+    color:#ff758d;
+}
+
+.message.info{
+
+    color:#5edcff;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-btn{
+
+    position:relative;
+
+    z-index:3;
+
+    width:100%;
+
+    height:58px;
+
+    margin-top:7px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius:17px;
+
+    background:
+
+        linear-gradient(
+            110deg,
+            #08bdf5 0%,
+            #237ff6 48%,
+            #704cff 100%
+        );
+
+    color:#ffffff;
+
+    font-size:12px;
+
+    font-weight:950;
+
+    cursor:pointer;
+
+    box-shadow:
+
+        0 16px 38px
+        rgba(35,100,255,.25),
+
+        inset 0 1px 0
+        rgba(255,255,255,.23);
+
+    overflow:hidden;
+
+    transition:.18s ease;
+}
+
+.login-btn::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-110%;
+
+    width:65%;
+    height:100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.18),
+            transparent
+        );
+
+    transform:skewX(-20deg);
+
+    animation:
+        loginShine 4s infinite;
+}
+
+@keyframes loginShine{
+
+    0%{
+        left:-110%;
+    }
+
+    45%,
+    100%{
+        left:150%;
+    }
+}
+
+.login-btn:active{
+
+    transform:scale(.985);
+}
+
+.login-btn:disabled{
+
+    opacity:.60;
+
+    cursor:not-allowed;
+}
+
+.button-content{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+}
+
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.spinner{
+
+    width:17px;
+    height:17px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.30);
+
+    border-top-color:#ffffff;
+
+    border-radius:50%;
+
+    animation:
+        spin .7s linear infinite;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider{
+
+    position:relative;
+
+    z-index:3;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    margin:
+        21px 0 11px;
+
+    color:#52617d;
+
+    font-size:8px;
+
+    font-weight:950;
+
+    letter-spacing:1.3px;
+}
+
+.divider::before,
+.divider::after{
+
+    content:"";
+
+    height:1px;
+
+    flex:1;
+
+    background:
+        rgba(255,255,255,.075);
+}
+
+
+/* =========================================================
+   SIGNUP
+========================================================= */
+
+.signup-btn{
+
+    position:relative;
+
+    z-index:3;
+
+    width:100%;
+
+    min-height:56px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius:17px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.06),
+            rgba(255,255,255,.025)
+        );
+
+    color:#edf4ff;
+
+    font-size:11px;
+
+    font-weight:950;
+
+    cursor:pointer;
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.04),
+
+        0 8px 24px
+        rgba(0,0,0,.10);
+
+    transition:.18s ease;
+}
+
+.signup-btn:hover{
+
+    border-color:
+        rgba(8,205,255,.24);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(8,205,255,.07),
+            rgba(255,255,255,.025)
+        );
+}
+
+.signup-btn:active{
+
+    transform:scale(.985);
+}
+
+.signup-btn:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+.security-note{
+
+    position:relative;
+
+    z-index:3;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    margin-top:20px;
+
+    color:#52617d;
+
+    text-align:center;
+
+    font-size:8px;
+
+    font-weight:750;
+
+    line-height:1.5;
+}
+
+.security-icon{
+
+    width:15px;
+    height:15px;
+
+    flex-shrink:0;
+
+    stroke:#637492;
+
+    fill:none;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+}
+
+
+/* =========================================================
+   PASSWORD RESET PANEL
+========================================================= */
+
+.reset-panel{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:100;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(2,5,14,.76);
+
+    backdrop-filter:blur(12px);
+
+    -webkit-backdrop-filter:blur(12px);
+}
+
+.reset-panel.show{
+
+    display:flex;
+}
+
+.reset-box{
+
+    width:100%;
+    max-width:430px;
+
+    padding:
+        25px 22px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:24px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #142044,
+            #080f27
+        );
+
+    box-shadow:
+        0 30px 90px
+        rgba(0,0,0,.65);
+}
+
+.reset-title{
+
+    text-align:center;
+
+    font-size:22px;
+
+    font-weight:950;
+
+    margin-bottom:8px;
+}
+
+.reset-subtitle{
+
+    text-align:center;
+
+    color:#8592af;
+
+    font-size:11px;
+
+    line-height:1.6;
+
+    margin-bottom:18px;
+}
+
+.reset-close{
+
+    width:100%;
+
+    height:48px;
+
+    margin-top:9px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    color:#dfe8ff;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+.reset-save{
+
+    width:100%;
+
+    height:50px;
+
+    border:0;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            110deg,
+            #08bdf5,
+            #237ff6,
+            #704cff
+        );
+
+    color:#fff;
+
+    font-size:11px;
+
+    font-weight:950;
+
+    cursor:pointer;
+}
+
+.reset-save:disabled,
+.reset-close:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+}
+
+.reset-message{
+
+    min-height:18px;
+
+    margin-top:11px;
+
+    text-align:center;
+
+    font-size:9px;
+
+    font-weight:850;
+
+    line-height:1.5;
+}
+
+.reset-message.success{
+    color:#55e5a5;
+}
+
+.reset-message.error{
+    color:#ff758d;
+}
+
+.reset-message.info{
+    color:#5edcff;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+    .page{
+
+        padding:
+            7px 8px 22px;
+    }
+
+    .login-card{
+
+        width:100%;
+
+        max-width:none;
+
+        padding:
+            18px 24px 25px;
+
+        border-radius:27px;
+    }
+
+    .brand{
+
+        margin-top:6px;
+
+        margin-bottom:27px;
+    }
+
+    .logo-wrap{
+
+        width:82px;
+        height:82px;
+
+        margin:
+            7px auto 15px;
+    }
+
+    .logo-image{
+
+        width:78px;
+        height:78px;
+
+        border-radius:20px;
+    }
+
+    .tag{
+
+        font-size:8px;
+
+        padding:
+            7px 13px;
+    }
+
+    h1{
+
+        font-size:31px;
+
+        margin-top:14px;
+    }
+
+    .subtitle{
+
+        max-width:390px;
+
+        font-size:10px;
+
+        line-height:1.7;
+    }
+
+    .form-group{
+
+        margin-top:19px;
+    }
+
+    .input{
+
+        height:58px;
+
+        border-radius:17px;
+
+        font-size:11px;
+    }
+
+    .login-btn{
+
+        height:58px;
+
+        border-radius:17px;
+
+        font-size:11px;
+    }
+
+    .signup-btn{
+
+        min-height:56px;
+
+        border-radius:17px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media(max-width:380px){
+
+    .page{
+
+        padding-left:6px;
+        padding-right:6px;
+    }
+
+    .login-card{
+
+        padding-left:18px;
+        padding-right:18px;
+    }
+
+    .logo-wrap{
+
+        width:76px;
+        height:76px;
+    }
+
+    .logo-image{
+
+        width:73px;
+        height:73px;
+
+        border-radius:18px;
+    }
+
+    h1{
+
+        font-size:28px;
+    }
+
+    .subtitle{
+
+        font-size:9px;
+    }
+
+    .input{
+
+        height:55px;
+    }
+
+    .login-btn{
+
+        height:55px;
+    }
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation:none !important;
+
+        transition:none !important;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     MAIN LOGIN PAGE
+========================================================= -->
+
+<div class="page">
+
+<main class="login-card">
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <div class="logo-wrap">
+
+            <img
+                src="./logos.png"
+                alt="TaskEarn"
+                class="logo-image"
+                onerror="this.style.display='none';"
+            >
+
+        </div>
+
+
+        <div class="tag">
+            TASKEARN MEMBER
+        </div>
+
+
+        <h1>
+
+            <span class="title-gradient">
+                Welcome Back
+            </span>
+
+        </h1>
+
+
+        <p class="subtitle">
+
+            Login to your TaskEarn account
+            and continue your rewards journey.
+
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         EMAIL
+    ====================================================== -->
+
+    <div class="form-group">
+
+        <label for="loginEmail">
+            Email Address
+        </label>
+
+        <input
+            id="loginEmail"
+            class="input"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            autocapitalize="none"
+            spellcheck="false"
+            inputmode="email"
+        >
+
+    </div>
+
+
+    <!-- =====================================================
+         PASSWORD
+    ====================================================== -->
+
+    <div class="form-group">
+
+        <label for="loginPassword">
+            Password
+        </label>
+
+
+        <div class="input-wrap">
+
+            <input
+                id="loginPassword"
+                class="input password-input"
+                type="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+            >
+
+
+            <button
+                id="passwordEye"
+                class="eye-btn"
+                type="button"
+                aria-label="Show password"
+                aria-pressed="false"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z"
+                    ></path>
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="2.7"
+                    ></circle>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORGOT PASSWORD
+    ====================================================== -->
+
+    <div class="forgot-row">
+
+        <button
+            id="forgotButton"
+            class="forgot-btn"
+            type="button"
+        >
+            Forgot Password?
+        </button>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+        id="loginMessage"
+        class="message"
+        aria-live="polite"
+    ></div>
+
+
+    <!-- =====================================================
+         LOGIN BUTTON
+    ====================================================== -->
+
+    <button
+        id="loginButton"
+        class="login-btn"
+        type="button"
+    >
+
+        <span
+            id="loginContent"
+            class="button-content"
+        >
+            Login to TaskEarn
+        </span>
+
+    </button>
+
+
+    <!-- =====================================================
+         DIVIDER
+    ====================================================== -->
+
+    <div class="divider">
+        NEW TO TASKEARN?
+    </div>
+
+
+    <!-- =====================================================
+         SIGNUP
+    ====================================================== -->
+
+    <button
+        id="signupButton"
+        class="signup-btn"
+        type="button"
+    >
+        Create New Account
+    </button>
+
+
+    <!-- =====================================================
+         SECURITY
+    ====================================================== -->
+
+    <div class="security-note">
+
+        <svg
+            class="security-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+
+            <path
+                d="M12 3L20 6V11.5C20 16.5 16.8 20 12 22C7.2 20 4 16.5 4 11.5V6L12 3Z"
+            ></path>
+
+            <path
+                d="M8.5 12L11 14.5L16 9.5"
+            ></path>
+
+        </svg>
+
+        <span>
+            Secure TaskEarn account access
+        </span>
+
+    </div>
+
+
+</main>
+
+</div>
+
+
+<!-- =========================================================
+     PASSWORD RESET PANEL
+========================================================= -->
+
+<div
+    id="resetPanel"
+    class="reset-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="resetTitle"
+>
+
+    <div class="reset-box">
+
+        <div
+            id="resetTitle"
+            class="reset-title"
+        >
+            Create New Password
+        </div>
+
+
+        <div class="reset-subtitle">
+
+            Enter a new password for your
+            TaskEarn account.
+
+        </div>
+
+
+        <input
+            id="newPassword"
+            class="input"
+            type="password"
+            placeholder="New password"
+            autocomplete="new-password"
+        >
+
+
+        <div style="height:10px;"></div>
+
+
+        <input
+            id="confirmNewPassword"
+            class="input"
+            type="password"
+            placeholder="Confirm new password"
+            autocomplete="new-password"
+        >
+
+
+        <div
+            id="resetMessage"
+            class="reset-message"
+            aria-live="polite"
+        ></div>
+
+
+        <button
+            id="savePasswordButton"
+            class="reset-save"
+            type="button"
+        >
+            Update Password
+        </button>
+
+
+        <button
+            id="closeResetButton"
+            class="reset-close"
+            type="button"
+        >
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SUPABASE
+========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   TASKEARN SUPABASE CONFIG
+========================================================= */
+
+const SUPABASE_URL =
+    "https://wfvmipwesttejtvwoasj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
+
+
+/* =========================================================
+   PAGE PATHS
+=========================================================
+
+   login.html
+   ├── Create Account -> signup.html
+   └── Successful Login -> home.html
+
+========================================================= */
+
+const SIGNUP_PAGE =
+    "./signup.html";
+
+const HOME_PAGE =
+    "./home.html";
+
+const LOGIN_PAGE =
+    "./login.html";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const emailInput =
+    document.getElementById("loginEmail");
+
+const passwordInput =
+    document.getElementById("loginPassword");
+
+const passwordEye =
+    document.getElementById("passwordEye");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const loginContent =
+    document.getElementById("loginContent");
+
+const signupButton =
+    document.getElementById("signupButton");
+
+const forgotButton =
+    document.getElementById("forgotButton");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+const resetPanel =
+    document.getElementById("resetPanel");
+const newPassword =
+    document.getElementById("newPassword");
+
+const confirmNewPassword =
+    document.getElementById("confirmNewPassword");
+
+const savePasswordButton =
+    document.getElementById("savePasswordButton");
+
+const closeResetButton =
+    document.getElementById("closeResetButton");
+
+const resetMessage =
+    document.getElementById("resetMessage");
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let supabaseClient = null;
+
+let loggingIn = false;
+
+let sendingReset = false;
+
+let updatingPassword = false;
+
+let recoveryMode = false;
+
+let redirecting = false;
+
+
+/* =========================================================
+   INITIALIZE SUPABASE
+========================================================= */
+
+function initializeSupabase(){
+
+    if(supabaseClient){
+
+        return true;
+
+    }
+
+
+    try{
+
+        if(
+            !window.supabase ||
+            typeof window.supabase.createClient !== "function"
+        ){
+
+            throw new Error(
+                "Supabase library not loaded."
+            );
+
+        }
+
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY,
+                {
+                    auth:{
+
+                        persistSession:true,
+
+                        autoRefreshToken:true,
+
+                        detectSessionInUrl:true
+
+                    }
+                }
+            );
+
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "TaskEarn Supabase initialization:",
+            error
+        );
+
+
+        showMessage(
+            "Secure login service is unavailable.",
+            "error"
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   MESSAGE FUNCTIONS
+========================================================= */
+
+function showMessage(
+    text,
+    type
+){
+
+    loginMessage.textContent =
+        text;
+
+    loginMessage.className =
+        "message";
+
+    if(type){
+
+        loginMessage.classList.add(
+            type
+        );
+
+    }
+
+}
+
+
+function clearMessage(){
+
+    loginMessage.textContent =
+        "";
+
+    loginMessage.className =
+        "message";
+
+}
+
+
+function showResetMessage(
+    text,
+    type
+){
+
+    resetMessage.textContent =
+        text;
+
+    resetMessage.className =
+        "reset-message";
+
+    if(type){
+
+        resetMessage.classList.add(
+            type
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGIN LOADING
+========================================================= */
+
+function setLoginLoading(
+    loading
+){
+
+    loginButton.disabled =
+        loading;
+
+    signupButton.disabled =
+        loading;
+
+    forgotButton.disabled =
+        loading;
+
+
+    if(loading){
+
+        loginContent.innerHTML =
+
+            '<span class="spinner"></span>' +
+
+            '<span>Logging in...</span>';
+
+    }else{
+
+        loginContent.textContent =
+            "Login to TaskEarn";
+
+    }
+
+}
+
+
+/* =========================================================
+   PASSWORD EYE ICON
+========================================================= */
+
+function setEyeIcon(
+    visible
+){
+
+    if(visible){
+
+        passwordEye.innerHTML =
+
+            '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+
+                '<path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z"></path>' +
+
+                '<path d="M4 4L20 20"></path>' +
+
+            '</svg>';
+
+    }else{
+
+        passwordEye.innerHTML =
+
+            '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+
+                '<path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z"></path>' +
+
+                '<circle cx="12" cy="12" r="2.7"></circle>' +
+
+            '</svg>';
+
+    }
+
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+passwordEye.addEventListener(
+    "click",
+    function(){
+
+        const shouldShow =
+            passwordInput.type === "password";
+
+
+        passwordInput.type =
+            shouldShow
+            ? "text"
+            : "password";
+
+
+        passwordEye.classList.toggle(
+            "active",
+            shouldShow
+        );
+
+
+        passwordEye.setAttribute(
+            "aria-pressed",
+            String(shouldShow)
+        );
+
+
+        passwordEye.setAttribute(
+            "aria-label",
+            shouldShow
+            ? "Hide password"
+            : "Show password"
+        );
+
+
+        setEyeIcon(
+            shouldShow
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ERROR MESSAGE CLEANUP
+========================================================= */
+
+function getErrorMessage(
+    error
+){
+
+    const raw =
+        String(
+            error?.message ||
+            error?.error_description ||
+            ""
+        ).trim();
+
+
+    const lower =
+        raw.toLowerCase();
+
+
+    if(
+        lower.includes(
+            "invalid login credentials"
+        )
+    ){
+
+        return "Email or password is incorrect.";
+
+    }
+
+
+    if(
+        lower.includes(
+            "email not confirmed"
+        )
+    ){
+
+        return "Please verify your email before logging in.";
+
+    }
+
+
+    if(
+        lower.includes(
+            "user not found"
+        )
+    ){
+
+        return "No account was found with this email.";
+
+    }
+
+
+    if(
+        lower.includes(
+            "too many"
+        ) ||
+        lower.includes(
+            "rate limit"
+        )
+    ){
+
+        return "Too many attempts. Please wait and try again.";
+
+    }
+
+
+    if(
+        lower.includes(
+            "network"
+        ) ||
+        lower.includes(
+            "failed to fetch"
+        ) ||
+        lower.includes(
+            "fetch"
+        )
+    ){
+
+        return "Connection problem. Please check your internet.";
+
+    }
+
+
+    if(
+        lower.includes(
+            "password"
+        )
+    ){
+
+        return raw ||
+            "Password update failed.";
+
+    }
+
+
+    return raw ||
+        "Something went wrong. Please try again.";
+
+}
+
+
+/* =========================================================
+   EMAIL VALIDATION
+========================================================= */
+
+function isValidEmail(
+    email
+){
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        email
+    );
+
+}
+
+
+/* =========================================================
+   SAFE HOME REDIRECT
+========================================================= */
+
+function goToHome(){
+
+    if(redirecting){
+
+        return;
+
+    }
+
+
+    redirecting = true;
+
+
+    window.location.replace(
+        HOME_PAGE
+    );
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+async function loginUser(){
+
+    if(loggingIn){
+
+        return;
+
+    }
+
+
+    clearMessage();
+
+
+    const email =
+        emailInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const password =
+        passwordInput.value;
+
+
+    /* -----------------------------------------
+       EMAIL CHECK
+    ----------------------------------------- */
+
+    if(
+        !isValidEmail(email)
+    ){
+
+        showMessage(
+            "Please enter a valid email address.",
+            "error"
+        );
+
+        emailInput.focus();
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       PASSWORD CHECK
+    ----------------------------------------- */
+
+    if(
+        password.length === 0
+    ){
+
+        showMessage(
+            "Please enter your password.",
+            "error"
+        );
+
+        passwordInput.focus();
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       SUPABASE
+    ----------------------------------------- */
+
+    if(
+        !initializeSupabase()
+    ){
+
+        return;
+
+    }
+
+
+    loggingIn = true;
+
+    setLoginLoading(true);
+
+
+    showMessage(
+        "Signing you in...",
+        "info"
+    );
+
+
+    try{
+
+        const result =
+            await supabaseClient.auth.signInWithPassword({
+
+                email:email,
+
+                password:password
+
+            });
+
+
+        const data =
+            result.data;
+
+        const error =
+            result.error;
+
+
+        if(error){
+
+            console.error(
+                "TaskEarn login:",
+                error
+            );
+
+
+            showMessage(
+                getErrorMessage(error),
+                "error"
+            );
+
+
+            loggingIn = false;
+
+            setLoginLoading(false);
+
+            return;
+
+        }
+
+
+        if(
+            data &&
+            data.session
+        ){
+
+            showMessage(
+                "Login successful. Opening TaskEarn...",
+                "success"
+            );
+
+
+            loginContent.textContent =
+                "Login Successful";
+
+
+            setTimeout(
+                function(){
+
+                    goToHome();
+
+                },
+                500
+            );
+
+
+            return;
+
+        }
+
+
+        showMessage(
+            "Login completed, but no session was created.",
+            "error"
+        );
+
+
+        loggingIn = false;
+
+        setLoginLoading(false);
+
+
+    }catch(error){
+
+        console.error(
+            "TaskEarn login exception:",
+            error
+        );
+
+
+        showMessage(
+            getErrorMessage(error),
+            "error"
+        );
+
+
+        loggingIn = false;
+
+        setLoginLoading(false);
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+loginButton.addEventListener(
+    "click",
+    loginUser
+);
+
+
+/* =========================================================
+   SIGNUP BUTTON
+========================================================= */
+
+signupButton.addEventListener(
+    "click",
+    function(){
+
+        if(
+            loggingIn ||
+            sendingReset
+        ){
+
+            return;
+
+        }
+
+
+        window.location.replace(
+            SIGNUP_PAGE
+        );
+
+    }
+);
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+async function sendPasswordReset(){
+
+    if(sendingReset){
+
+        return;
+
+    }
+
+
+    clearMessage();
+
+
+    const email =
+        emailInput.value
+            .trim()
+            .toLowerCase();
+
+
+    if(
+        !isValidEmail(email)
+    ){
+
+        showMessage(
+            "Enter your email address first.",
+            "error"
+        );
+
+        emailInput.focus();
+
+        return;
+
+    }
+
+
+    if(
+        !initializeSupabase()
+    ){
+
+        return;
+
+    }
+
+
+    sendingReset = true;
+
+    forgotButton.disabled =
+        true;
+
+    loginButton.disabled =
+        true;
+
+    signupButton.disabled =
+        true;
+
+
+    showMessage(
+        "Sending password reset email...",
+        "info"
+    );
+
+
+    try{
+
+        /*
+         * Recovery link returns to login.html.
+         *
+         * Example:
+         * pages/login.html
+         */
+
+        const resetUrl =
+            new URL(
+                LOGIN_PAGE,
+                window.location.href
+            ).href;
+
+
+        const {
+            error
+        } =
+            await supabaseClient.auth.resetPasswordForEmail(
+                email,
+                {
+                    redirectTo:resetUrl
+                }
+            );
+
+
+        if(error){
+
+            console.error(
+                "TaskEarn password reset:",
+                error
+            );
+
+
+            showMessage(
+                getErrorMessage(error),
+                "error"
+            );
+
+        }else{
+
+            showMessage(
+                "Password reset email sent. Check your inbox.",
+                "success"
+            );
+
+        }
+
+
+    }catch(error){
+
+        console.error(
+            "TaskEarn reset exception:",
+            error
+        );
+
+
+        showMessage(
+            getErrorMessage(error),
+            "error"
+        );
+
+    }
+
+
+    sendingReset = false;
+
+    forgotButton.disabled =
+        false;
+
+    loginButton.disabled =
+        false;
+
+    signupButton.disabled =
+        false;
+
+}
+
+
+/* =========================================================
+   FORGOT BUTTON
+========================================================= */
+
+forgotButton.addEventListener(
+    "click",
+    sendPasswordReset
+);
+
+
+/* =========================================================
+   RESET PANEL
+========================================================= */
+
+function openResetPanel(){
+
+    recoveryMode = true;
+
+
+    resetPanel.classList.add(
+        "show"
+    );
+
+
+    showResetMessage(
+        "",
+        ""
+    );
+
+
+    newPassword.value =
+        "";
+
+    confirmNewPassword.value =
+        "";
+
+
+    setTimeout(
+        function(){
+
+            newPassword.focus();
+
+        },
+        120
+    );
+
+}
+
+
+function closeResetPanel(){
+
+    resetPanel.classList.remove(
+        "show"
+    );
+
+
+    newPassword.value =
+        "";
+
+    confirmNewPassword.value =
+        "";
+
+
+    showResetMessage(
+        "",
+        ""
+    );
+
+
+    recoveryMode = false;
+
+}
+
+
+/* =========================================================
+   UPDATE PASSWORD
+========================================================= */
+
+async function updatePassword(){
+
+    if(updatingPassword){
+
+        return;
+
+    }
+
+
+    const password =
+        newPassword.value;
+
+
+    const confirm =
+        confirmNewPassword.value;
+
+
+    showResetMessage(
+        "",
+        ""
+    );
+
+
+    /* -----------------------------------------
+       MINIMUM PASSWORD
+    ----------------------------------------- */
+
+    if(
+        password.length < 6
+    ){
+
+        showResetMessage(
+            "Password must be at least 6 characters.",
+            "error"
+        );
+
+        newPassword.focus();
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       PASSWORD MATCH
+    ----------------------------------------- */
+
+    if(
+        password !== confirm
+    ){
+
+        showResetMessage(
+            "Passwords do not match.",
+            "error"
+        );
+
+        confirmNewPassword.focus();
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       SUPABASE
+    ----------------------------------------- */
+
+    if(
+        !initializeSupabase()
+    ){
+
+        return;
+
+    }
+
+
+    updatingPassword = true;
+
+    savePasswordButton.disabled =
+        true;
+
+    closeResetButton.disabled =
+        true;
+
+
+    showResetMessage(
+        "Updating password...",
+        "info"
+    );
+
+
+    try{
+
+        const {
+            error
+        } =
+            await supabaseClient.auth.updateUser({
+
+                password:password
+
+            });
+
+
+        if(error){
+
+            console.error(
+                "TaskEarn password update:",
+                error
+            );
+
+
+            showResetMessage(
+                getErrorMessage(error),
+                "error"
+            );
+
+
+            updatingPassword = false;
+
+            savePasswordButton.disabled =
+                false;
+
+            closeResetButton.disabled =
+                false;
+
+            return;
+
+        }
+
+
+        showResetMessage(
+            "Password updated successfully.",
+            "success"
+        );
+
+
+        setTimeout(
+            async function(){
+
+                try{
+
+                    await supabaseClient.auth.signOut();
+
+                }catch(error){
+
+                    console.warn(
+                        "TaskEarn sign out after reset:",
+                        error
+                    );
+
+                }
+
+
+                closeResetPanel();
+
+
+                clearMessage();
+
+
+                showMessage(
+                    "Password changed. Please login with your new password.",
+                    "success"
+                );
+
+
+                updatingPassword = false;
+
+                savePasswordButton.disabled =
+                    false;
+
+                closeResetButton.disabled =
+                    false;
+
+
+                passwordInput.value =
+                    "";
+
+                passwordInput.focus();
+
+            },
+            900
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "TaskEarn password update exception:",
+            error
+        );
+
+
+        showResetMessage(
+            getErrorMessage(error),
+            "error"
+        );
+
+
+        updatingPassword = false;
+
+        savePasswordButton.disabled =
+            false;
+
+        closeResetButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE PASSWORD BUTTON
+========================================================= */
+
+savePasswordButton.addEventListener(
+    "click",
+    updatePassword
+);
+
+
+/* =========================================================
+   CLOSE RESET BUTTON
+========================================================= */
+
+closeResetButton.addEventListener(
+    "click",
+    function(){
+
+        closeResetPanel();
+
+    }
+);
+
+
+/* =========================================================
+   CLICK OUTSIDE RESET BOX
+========================================================= */
+
+resetPanel.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target === resetPanel
+        ){
+
+            closeResetPanel();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape" &&
+            resetPanel.classList.contains("show")
+        ){
+
+            closeResetPanel();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENTER KEY — EMAIL
+========================================================= */
+
+emailInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter"
+        ){
+
+            event.preventDefault();
+
+            passwordInput.focus();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENTER KEY — PASSWORD
+========================================================= */
+
+passwordInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter"
+        ){
+
+            event.preventDefault();
+
+            loginUser();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENTER KEY — NEW PASSWORD
+========================================================= */
+
+newPassword.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter"
+        ){
+
+            event.preventDefault();
+
+            confirmNewPassword.focus();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENTER KEY — CONFIRM PASSWORD
+========================================================= */
+
+confirmNewPassword.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter"
+        ){
+
+            event.preventDefault();
+
+            updatePassword();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DETECT PASSWORD RECOVERY URL
+========================================================= */
+
+function detectRecoveryUrl(){
+
+    const hash =
+        window.location.hash || "";
+
+
+    const search =
+        window.location.search || "";
+
+
+    const combined =
+        (
+            hash +
+            "&" +
+            search
+        ).toLowerCase();
+
+
+    /*
+     * Supabase recovery URLs normally contain:
+     *
+     * type=recovery
+     *
+     * We also check for:
+     *
+     * access_token
+     * refresh_token
+     *
+     * because recovery sessions can be delivered
+     * through the URL.
+     */
+
+    if(
+        combined.includes(
+            "type=recovery"
+        )
+    ){
+
+        recoveryMode = true;
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   AUTH STATE LISTENER
+========================================================= */
+
+function setupAuthListener(){
+
+    if(
+        !supabaseClient
+    ){
+
+        return;
+
+    }
+
+
+    supabaseClient.auth.onAuthStateChange(
+        function(
+            event,
+            session
+        ){
+
+            console.log(
+                "TaskEarn Auth:",
+                event
+            );
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Never redirect to home during
+             * PASSWORD_RECOVERY.
+             */
+
+            if(
+                event === "PASSWORD_RECOVERY"
+            ){
+
+                openResetPanel();
+
+                return;
+
+            }
+
+
+            /*
+             * Login/session events.
+             *
+             * Only redirect when we are NOT
+             * inside recovery mode.
+             */
+
+            if(
+                event === "SIGNED_IN" &&
+                session &&
+                !recoveryMode &&
+                !redirecting
+            ){
+
+                /*
+                 * Do not immediately redirect here
+                 * when the login button is already
+                 * handling the login success.
+                 *
+                 * A small delay avoids duplicate
+                 * navigation.
+                 */
+
+                if(!loggingIn){
+
+                    goToHome();
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   EXISTING SESSION CHECK
+========================================================= */
+
+async function checkExistingSession(){
+
+    if(
+        !supabaseClient
+    ){
+
+        return;
+
+    }
+
+
+    /*
+     * Recovery URL must always stay on
+     * login page until password is changed.
+     */
+
+    if(
+        detectRecoveryUrl()
+    ){
+
+        /*
+         * Give Supabase a moment to process
+         * the recovery session from the URL.
+         */
+
+        setTimeout(
+            function(){
+
+                if(
+                    !resetPanel.classList.contains(
+                        "show"
+                    )
+                ){
+
+                    openResetPanel();
+
+                }
+
+            },
+            250
+        );
+
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if(error){
+
+            console.warn(
+                "TaskEarn session check:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if(
+            data &&
+            data.session
+        ){
+
+            goToHome();
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "TaskEarn session check exception:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIAL PAGE START
+========================================================= */
+
+function startTaskEarnLogin(){
+
+    /*
+     * First initialize Supabase.
+     */
+
+    const ready =
+        initializeSupabase();
+
+
+    if(!ready){
+
+        return;
+
+    }
+
+
+    /*
+     * Setup auth listener before checking
+     * existing session.
+     */
+
+    setupAuthListener();
+
+
+    /*
+     * Check recovery URL first.
+     */
+
+    const isRecovery =
+        detectRecoveryUrl();
+
+
+    if(isRecovery){
+
+        /*
+         * Supabase processes the recovery
+         * URL/session asynchronously.
+         *
+         * PASSWORD_RECOVERY event will open
+         * the panel.
+         */
+
+        setTimeout(
+            function(){
+
+                checkExistingSession();
+
+            },
+            200
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Normal login page:
+     *
+     * If session already exists,
+     * send user to home.html.
+     */
+
+    setTimeout(
+        function(){
+
+            checkExistingSession();
+
+        },
+        150
+    );
+
+}
+
+
+/* =========================================================
+   INITIAL UI
+========================================================= */
+
+setEyeIcon(false);
+
+
+/*
+ * Start everything.
+ */
+
+startTaskEarnLogin();
+
+
+/* =========================================================
+   DEBUG
+========================================================= */
+
+console.log(
+    "TaskEarn Premium Login Ready"
+);
+
+console.log(
+    "Login Page:",
+    window.location.href
+);
+
+console.log(
+    "Signup Page:",
+    SIGNUP_PAGE
+);
+
+console.log(
+    "Home Page:",
+    HOME_PAGE
+);
+
+</script>
+
+</body>
+
+</html>
