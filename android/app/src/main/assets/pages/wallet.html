@@ -3032,29 +3032,14 @@ function subscribeToWallet(
 
     try{
 
+        /*
+         * wallet_balances is a VIEW, not a realtime table.
+         * Subscribe only to the canonical wallet ledger.
+         */
         supabaseClient
             .channel(
                 "taskearn-user-wallet-" +
                 userId
-            )
-
-            .on(
-                "postgres_changes",
-                {
-                    event:"*",
-                    schema:"public",
-                    table:"user_wallets",
-                    filter:
-                        "user_id=eq." +
-                        userId
-                },
-                function(){
-
-                    loadWallet(
-                        userId
-                    );
-
-                }
             )
 
             .on(
