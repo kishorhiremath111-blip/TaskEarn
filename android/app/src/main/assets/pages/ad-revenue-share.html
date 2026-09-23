@@ -1774,6 +1774,12 @@ button:disabled{
     rgba(255,101,119,.2);
 }
 
+.toast.warning{
+  border-color:
+    rgba(255,200,87,.25);
+  color:#ffd16b;
+}
+
 .toast.success{
   border-color:
     rgba(54,215,156,.2);
@@ -1991,6 +1997,7 @@ button:disabled{
     class="back-btn"
     id="backButton"
     type="button"
+    aria-label="Go Back"
   >
 
     <svg>
@@ -2060,7 +2067,7 @@ button:disabled{
 
 <!-- =======================================================
      STATS
-======================================================= -->
+========================================================= -->
 
 <section class="stats-grid">
 
@@ -2185,7 +2192,7 @@ button:disabled{
 
 <!-- =======================================================
      COMPANY SETTLEMENT
-======================================================= -->
+========================================================= -->
 
 <section class="settlement-card">
 
@@ -2263,7 +2270,7 @@ button:disabled{
 
 <!-- =======================================================
      PAYMENT NOTICE
-======================================================= -->
+========================================================= -->
 
 <section class="notice-card">
 
@@ -2460,7 +2467,7 @@ button:disabled{
 
 <!-- =======================================================
      ADMOB PAYMENT TIMELINE
-======================================================= -->
+========================================================= -->
 
 <section class="payment-timeline">
 
@@ -2663,9 +2670,9 @@ button:disabled{
 </section>
 
 
-<!-- =======================================================
-     CURRENT MONTH
-======================================================= -->
+/* =========================================================
+   CURRENT MONTH
+========================================================= */
 
 <section class="month-section">
 
@@ -2807,11 +2814,8 @@ button:disabled{
 
 
 
-      <div
-        class="month-description"
-        id="previousMonthDescription"
-      >
-        Your previous monthly earnings will appear here.
+      <div class="month-description">
+        Your previous monthly verified earnings will appear here after the secure backend creates the collection bucket.
 
       </div>
 
@@ -2860,7 +2864,7 @@ button:disabled{
         id="carryNote"
       >
 
-        Your amount remains securely stored if collection is not yet available. It is not deleted while AdMob payment confirmation is pending.
+        If a collection window is missed, the amount remains stored as a separate carried-forward balance.
 
       </div>
 
@@ -2876,7 +2880,7 @@ button:disabled{
 
 <!-- =======================================================
      ACTIVE 24 HOUR REQUEST
-======================================================= -->
+========================================================= -->
 
 <section
   class="request-card"
@@ -2963,7 +2967,7 @@ button:disabled{
 
 <!-- =======================================================
      AD BLOCK WARNING
-======================================================= -->
+========================================================= -->
 
 <div
   class="adblock-warning"
@@ -2989,7 +2993,7 @@ button:disabled{
 
 <!-- =======================================================
      WATCH AD
-======================================================= -->
+========================================================= -->
 
 <section class="watch-card">
 
@@ -3069,7 +3073,7 @@ button:disabled{
 
 <!-- =======================================================
      HISTORY
-======================================================= -->
+========================================================= -->
 
 <div class="section-title">
 
@@ -3101,7 +3105,7 @@ button:disabled{
 
 <!-- =======================================================
      TRUST
-======================================================= -->
+========================================================= -->
 
 <section class="trust-card">
 
@@ -3127,11 +3131,13 @@ button:disabled{
 
 <!-- =======================================================
      TOAST
-======================================================= -->
+========================================================= -->
 
 <div
   class="toast"
   id="toast"
+  role="alert"
+  aria-live="polite"
 ></div>
 
 
@@ -3139,15 +3145,14 @@ button:disabled{
 <script>
 
 /* =========================================================
-   SUPABASE CONFIG
+   SUPABASE CONFIG — CANONICAL REAL KEY
 ========================================================= */
 
 const SUPABASE_URL =
   "https://wfvmipwesttejtvwoasj.supabase.co";
 
-
 const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+  "sb_publishable_o0R1owOtbfN-OsR_MzRg_lgbbqbV";
 
 
 /* =========================================================
@@ -3175,31 +3180,11 @@ const supabaseClient =
 const AD_SESSION_FUNCTION =
   "ad-revenue-session";
 
-
 const AD_FINALIZE_FUNCTION =
   "ad-revenue-finalize";
 
-
 const AD_COLLECT_FUNCTION =
   "ad-revenue-collect";
-
-
-/*
-  IMPORTANT:
-
-  This function must be implemented server-side.
-
-  It must return the authenticated user's:
-  - current monthly bucket
-  - previous collectible/carry-forward buckets
-  - collection window
-  - exact server-approved amount
-  - active 24-hour request
-  - settlement-aware availability
-
-  The browser must NEVER calculate the final
-  collectible amount itself.
-*/
 
 const AD_COLLECT_STATE_FUNCTION =
   "ad-revenue-collect-state";
@@ -3210,34 +3195,31 @@ const AD_COLLECT_STATE_FUNCTION =
 ========================================================= */
 
 let currentUser = null;
+let currentToken = null;
 
 let adEvents = [];
-
 let collectState = null;
 
 let authReady = false;
-
 let authReadyResolve = null;
 
 let countdownTimer = null;
-
 let requestTimer = null;
-
+let paymentTimelineTimer = null;
 let selectedBucketId = null;
+
+let isWatchActionActive = false;
+let isCollectActionActive = false;
 
 
 /* =========================================================
-   AUTH READY
+   AUTH READY PROMISE
 ========================================================= */
 
 const authReadyPromise =
   new Promise(resolve => {
-
-    authReadyResolve =
-      resolve;
-
+    authReadyResolve = resolve;
   });
-
 
 
 /* =========================================================
@@ -3245,150 +3227,74 @@ const authReadyPromise =
 ========================================================= */
 
 function $(id){
-
   return document.getElementById(id);
-
 }
 
 
+/* =========================================================
+   XSS SAFE ESCAPER
+========================================================= */
+
+function escapeHtml(str) {
+  if (typeof str !== "string") return String(str ?? "");
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 
 /* =========================================================
-   TOAST
+   TOAST NOTIFICATION
 ========================================================= */
 
 let toastTimer = null;
 
+function showToast(message, type=""){
+  const toast = $("toast");
+  if(!toast) return;
 
-function showToast(
-  message,
-  type=""
-){
+  toast.textContent = message;
+  toast.className = "toast show " + (type ? escapeHtml(type) : "");
 
-  const toast =
-    $("toast");
+  clearTimeout(toastTimer);
 
+  const duration = (type === "error" || type === "warning") ? 6500 : 3500;
 
-  if(!toast){
-    return;
-  }
-
-
-  toast.textContent =
-    message;
-
-
-  toast.className =
-    "toast show " + type;
-
-
-  clearTimeout(
-    toastTimer
-  );
-
-
-  toastTimer =
-    setTimeout(
-      () => {
-
-        toast.className =
-          "toast";
-
-      },
-      3400
-    );
-
+  toastTimer = setTimeout(() => {
+    toast.className = "toast";
+  }, duration);
 }
 
 
-
 /* =========================================================
-   MONEY
+   MONEY & NUMBERS
 ========================================================= */
 
 function money(value){
-
-  const amount =
-    Number(value || 0);
-
-
+  const amount = Number(value || 0);
   if(!Number.isFinite(amount)){
     return "₹0.00";
   }
-
-
-  return (
-    "₹" +
-    amount.toFixed(2)
-  );
-
+  return "₹" + amount.toFixed(2);
 }
-
-
-
-/* =========================================================
-   SAFE NUMBER
-========================================================= */
 
 function num(value){
-
-  const n =
-    Number(value || 0);
-
-
-  return Number.isFinite(n)
-    ? n
-    : 0;
-
+  const n = Number(value || 0);
+  return Number.isFinite(n) ? n : 0;
 }
-
-
-
-/* =========================================================
-   DATE
-========================================================= */
 
 function dateObject(value){
-
-  if(!value){
-    return null;
-  }
-
-
-  const d =
-    new Date(value);
-
-
-  if(
-    Number.isNaN(
-      d.getTime()
-    )
-  ){
-
-    return null;
-
-  }
-
-
-  return d;
-
+  if(!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
-
-
-/* =========================================================
-   FORMAT DATE
-========================================================= */
-
 function formatDate(value){
-
-  const date =
-    dateObject(value);
-
-
-  if(!date){
-    return "—";
-  }
-
+  const date = dateObject(value);
+  if(!date) return "—";
 
   return date.toLocaleString(
     "en-IN",
@@ -3400,25 +3306,11 @@ function formatDate(value){
       minute:"2-digit"
     }
   );
-
 }
 
-
-
-/* =========================================================
-   FORMAT MONTH
-========================================================= */
-
 function formatMonth(value){
-
-  const date =
-    dateObject(value);
-
-
-  if(!date){
-    return "Monthly Earnings";
-  }
-
+  const date = dateObject(value);
+  if(!date) return "Monthly Earnings";
 
   return date.toLocaleDateString(
     "en-IN",
@@ -3427,102 +3319,52 @@ function formatMonth(value){
       year:"numeric"
     }
   );
-
 }
 
+function formatDuration(milliseconds){
+  let ms = Math.max(0, Number(milliseconds || 0));
+  let totalSeconds = Math.floor(ms / 1000);
+
+  const days = Math.floor(totalSeconds / 86400);
+  totalSeconds %= 86400;
+
+  const hours = Math.floor(totalSeconds / 3600);
+  totalSeconds %= 3600;
+
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  const hh = String(hours).padStart(2,"0");
+  const mm = String(minutes).padStart(2,"0");
+  const ss = String(seconds).padStart(2,"0");
+
+  if(days > 0){
+    return days + "d " + hh + ":" + mm + ":" + ss;
+  }
+  return hh + ":" + mm + ":" + ss;
+}
 
 
 /* =========================================================
-   FORMAT DURATION
+   CLEANUP INTERVALS
 ========================================================= */
 
-function formatDuration(
-  milliseconds
-){
-
-  let ms =
-    Math.max(
-      0,
-      Number(milliseconds || 0)
-    );
-
-
-  let totalSeconds =
-    Math.floor(
-      ms / 1000
-    );
-
-
-  const days =
-    Math.floor(
-      totalSeconds / 86400
-    );
-
-
-  totalSeconds %=
-    86400;
-
-
-  const hours =
-    Math.floor(
-      totalSeconds / 3600
-    );
-
-
-  totalSeconds %=
-    3600;
-
-
-  const minutes =
-    Math.floor(
-      totalSeconds / 60
-    );
-
-
-  const seconds =
-    totalSeconds % 60;
-
-
-  const hh =
-    String(hours)
-      .padStart(2,"0");
-
-
-  const mm =
-    String(minutes)
-      .padStart(2,"0");
-
-
-  const ss =
-    String(seconds)
-      .padStart(2,"0");
-
-
-  if(days > 0){
-
-    return (
-      days +
-      "d " +
-      hh +
-      ":" +
-      mm +
-      ":" +
-      ss
-    );
-
+function clearAllTimers() {
+  if (paymentTimelineTimer) {
+    clearInterval(paymentTimelineTimer);
+    paymentTimelineTimer = null;
   }
-
-
-  return (
-    hh +
-    ":" +
-    mm +
-    ":" +
-    ss
-  );
-
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
+  if (requestTimer) {
+    clearInterval(requestTimer);
+    requestTimer = null;
+  }
 }
 
+window.addEventListener("beforeunload", clearAllTimers);
 
 
 /* =========================================================
@@ -3530,106 +3372,34 @@ function formatDuration(
 ========================================================= */
 
 async function loadCurrentSession(){
-
   try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .auth
-        .getSession();
-
-
-    if(error){
-
-      console.error(
-        "getSession:",
-        error
-      );
-
-    }
-
-
-    let session =
-      data?.session || null;
-
-
-    /*
-      Recover an existing session if possible.
-    */
+    const { data } = await supabaseClient.auth.getSession();
+    let session = data?.session || null;
 
     if(!session){
-
       try{
-
-        const refresh =
-          await supabaseClient
-            .auth
-            .refreshSession();
-
-
-        if(
-          !refresh.error
-        ){
-
-          session =
-            refresh.data?.session ||
-            null;
-
-        }
-
-      }catch(error){
-
-        console.warn(
-          "refreshSession:",
-          error
-        );
-
+        const refresh = await supabaseClient.auth.refreshSession();
+        session = refresh.data?.session || null;
+      }catch(err){
+        console.warn("Session refresh:", err);
       }
-
     }
 
-
-    currentUser =
-      session?.user || null;
-
-
+    currentUser = session?.user || null;
+    currentToken = session?.access_token || null;
   }catch(error){
-
-    console.error(
-      "Session error:",
-      error
-    );
-
-
-    currentUser =
-      null;
-
+    currentUser = null;
+    currentToken = null;
   }
 
-
-  authReady =
-    true;
-
-
+  authReady = true;
   if(authReadyResolve){
-
-    authReadyResolve(
-      currentUser
-    );
-
-    authReadyResolve =
-      null;
-
+    authReadyResolve(currentUser);
+    authReadyResolve = null;
   }
-
 
   return currentUser;
-
 }
-
 
 
 /* =========================================================
@@ -3637,134 +3407,71 @@ async function loadCurrentSession(){
 ========================================================= */
 
 async function getAccessToken(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .auth
-      .getSession();
-
-
-  if(error){
-
-    throw new Error(
-      "SESSION_NOT_FOUND"
-    );
-
-  }
-
-
-  const token =
-    data?.session?.access_token;
-
+  const { data } = await supabaseClient.auth.getSession();
+  let token = data?.session?.access_token;
 
   if(!token){
-
-    throw new Error(
-      "SESSION_NOT_FOUND"
-    );
-
+    const refresh = await supabaseClient.auth.refreshSession();
+    token = refresh?.data?.session?.access_token;
   }
 
+  if(!token){
+    throw new Error("AUTH_TOKEN_MISSING: User is not authenticated or session expired.");
+  }
 
+  currentToken = token;
   return token;
-
 }
-
 
 
 /* =========================================================
    AUTH FETCH
 ========================================================= */
 
-async function secureFetch(
-  functionName,
-  body
-){
+async function secureFetch(functionName, body){
+  const token = await getAccessToken();
 
-  const token =
-    await getAccessToken();
-
-
-  const response =
-    await fetch(
+  let response;
+  try {
+    response = await fetch(
       `${SUPABASE_URL}/functions/v1/${functionName}`,
       {
-
         method:"POST",
-
         headers:{
-
-          "Content-Type":
-            "application/json",
-
-          "Authorization":
-            `Bearer ${token}`
-
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+          "apikey": SUPABASE_PUBLISHABLE_KEY
         },
-
-        body:
-          JSON.stringify(
-            body || {}
-          )
-
+        body: JSON.stringify(body || {})
       }
     );
+  } catch(netErr) {
+    throw new Error(`NETWORK_ERROR: Unable to reach ${functionName} (${netErr.message})`);
+  }
 
-
-  const text =
-    await response.text();
-
-
-  let result =
-    null;
-
+  const text = await response.text();
+  let result = null;
 
   try{
-
-    result =
-      text
-        ? JSON.parse(text)
-        : {};
-
+    result = text ? JSON.parse(text) : {};
   }catch(error){
-
-    result = {
-      raw:text
-    };
-
+    result = { raw: text };
   }
 
+  if(!response.ok || result?.ok === false){
+    console.error(functionName, response.status, result);
 
-  if(!response.ok){
+    const serverDetail = 
+      result?.error || 
+      result?.message || 
+      (typeof result === "string" ? result : "") ||
+      `HTTP_${response.status}`;
 
-    console.error(
-      functionName,
-      result
-    );
-
-
-    const serverError =
-      result?.error ||
-      result?.message ||
-      "";
-
-
-    throw new Error(
-      serverError ||
-      functionName.toUpperCase() +
-      "_FAILED"
-    );
-
+    throw new Error(`[${functionName}] HTTP ${response.status}: ${serverDetail}`);
   }
-
 
   return result;
-
 }
-
 
 
 /* =========================================================
@@ -3772,23 +3479,14 @@ async function secureFetch(
 ========================================================= */
 
 function renderEmptyData(){
-
   adEvents = [];
-
   collectState = null;
-
   renderTotals();
-
   renderHistory();
-
   renderMonthlyState();
-
   renderActiveRequest();
-
   renderSettlementDate();
-
 }
-
 
 
 /* =========================================================
@@ -3796,26 +3494,15 @@ function renderEmptyData(){
 ========================================================= */
 
 async function loadAdRevenue(){
-
   if(!currentUser){
-
     renderEmptyData();
-
     return;
-
   }
 
-
   try{
-
-    const {
-      data,
-      error
-    } =
+    const { data, error } =
       await supabaseClient
-        .from(
-          "ad_revenue_events"
-        )
+        .from("ad_revenue_events")
         .select(`
           id,
           provider,
@@ -3832,74 +3519,26 @@ async function loadAdRevenue(){
           settled_at,
           collected_at
         `)
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        )
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending:false })
         .limit(100);
 
-
     if(error){
-
-      console.error(
-        "Ad Revenue DB:",
-        error
-      );
-
-
       adEvents = [];
-
-
-      renderTotals();
-
-      renderHistory();
-
-      renderSettlementDate();
-
-
-      return;
-
+    } else {
+      adEvents = data || [];
     }
 
-
-    adEvents =
-      data || [];
-
-
     renderTotals();
-
     renderHistory();
-
     renderSettlementDate();
-
-
   }catch(error){
-
-    console.error(
-      "loadAdRevenue:",
-      error
-    );
-
-
     adEvents = [];
-
-
     renderTotals();
-
     renderHistory();
-
     renderSettlementDate();
-
   }
-
 }
-
 
 
 /* =========================================================
@@ -3907,114 +3546,24 @@ async function loadAdRevenue(){
 ========================================================= */
 
 async function loadCollectState(){
-
   if(!currentUser){
-
     collectState = null;
-
     renderMonthlyState();
-
     renderActiveRequest();
-
     return;
-
   }
-
 
   try{
-
-    const result =
-      await secureFetch(
-        AD_COLLECT_STATE_FUNCTION,
-        {}
-      );
-
-
-    /*
-      Expected server response example:
-
-      {
-        current_month:{
-          earning_month:"2026-09-01",
-          label:"September 2026",
-          amount:123.45
-        },
-
-        previous_buckets:[
-          {
-            id:"uuid",
-            earning_month:"2026-08-01",
-            label:"August 2026",
-            amount:123.45,
-            status:"collectible",
-            window_start:"...",
-            window_end:"..."
-          }
-        ],
-
-        active_request:{
-          id:"uuid",
-          bucket_id:"uuid",
-          amount:123.45,
-          status:"pending",
-          created_at:"...",
-          release_at:"..."
-        },
-
-        total_available:123.45,
-        total_pending:10.00
-      }
-    */
-
-    collectState =
-      result || null;
-
-
+    const result = await secureFetch(AD_COLLECT_STATE_FUNCTION, {});
+    collectState = result || null;
     renderMonthlyState();
-
     renderActiveRequest();
-
-
   }catch(error){
-
-    console.error(
-      "Collection state:",
-      error
-    );
-
-
-    /*
-      Do not invent monthly amounts if the secure
-      backend state cannot be loaded.
-    */
-
     collectState = null;
-
-
     renderMonthlyState();
-
     renderActiveRequest();
-
-
-    if(
-      !String(
-        error.message || ""
-      ).includes(
-        "AD_REVENUE_COLLECT_STATE"
-      )
-    ){
-
-      showToast(
-        "Collection schedule could not be loaded.",
-        "error"
-      );
-
-    }
-
   }
-
 }
-
 
 
 /* =========================================================
@@ -4022,358 +3571,140 @@ async function loadCollectState(){
 ========================================================= */
 
 function renderTotals(){
-
   let totalGross = 0;
-
   let totalUser = 0;
-
   let totalAvailable = 0;
-
   let totalPending = 0;
-
   let completedAds = 0;
 
+  adEvents.forEach(event => {
+    const gross = num(event.gross_revenue);
+    const userShare = num(event.user_share);
 
-  adEvents.forEach(
-    event => {
-
-      const gross =
-        num(
-          event.gross_revenue
-        );
-
-
-      const userShare =
-        num(
-          event.user_share
-        );
-
-
-      if(
-        event.status ===
-        "verified"
-      ){
-
-        totalGross +=
-          gross;
-
-        totalUser +=
-          userShare;
-
-        completedAds++;
-
-      }
-
-
-      if(
-
-        event.status ===
-        "verified"
-
-        &&
-
-        event.settlement_status ===
-        "settled"
-
-        &&
-
-        !event.collected_at
-
-      ){
-
-        totalAvailable +=
-          userShare;
-
-      }
-
-
-      if(
-
-        event.status ===
-        "pending"
-
-        ||
-
-        (
-          event.status ===
-          "verified"
-
-          &&
-
-          event.settlement_status !==
-          "settled"
-        )
-
-      ){
-
-        totalPending +=
-          userShare;
-
-      }
-
+    if(event.status === "verified"){
+      totalGross += gross;
+      totalUser += userShare;
+      completedAds++;
     }
-  );
-
-
-  /*
-    If secure monthly state exists, use the server's
-    collection numbers for collection UI.
-
-    Never calculate the final collectible amount
-    from the browser.
-  */
-
-  if(
-    collectState
-  ){
 
     if(
-      collectState.total_available !==
-      undefined
+      event.status === "verified" &&
+      event.settlement_status === "settled" &&
+      !event.collected_at
     ){
-
-      totalAvailable =
-        num(
-          collectState.total_available
-        );
-
+      totalAvailable += userShare;
     }
-
 
     if(
-      collectState.total_pending !==
-      undefined
+      event.status === "pending" ||
+      (event.status === "verified" && event.settlement_status !== "settled")
     ){
-
-      totalPending =
-        num(
-          collectState.total_pending
-        );
-
+      totalPending += userShare;
     }
+  });
 
+  if(collectState){
+    if(collectState.total_available !== undefined){
+      totalAvailable = num(collectState.total_available);
+    }
+    if(collectState.total_pending !== undefined){
+      totalPending = num(collectState.total_pending);
+    }
   }
 
-
-  $("totalUserShare").textContent =
-    money(totalUser);
-
-
-  $("totalAds").textContent =
-    String(
-      completedAds
-    );
-
-
-  $("totalGross").textContent =
-    money(totalGross);
-
-
-  $("totalAvailable").textContent =
-    money(totalAvailable);
-
-
-  $("totalPending").textContent =
-    money(totalPending);
-
+  $("totalUserShare").textContent = money(totalUser);
+  $("totalAds").textContent = String(completedAds);
+  $("totalGross").textContent = money(totalGross);
+  $("totalAvailable").textContent = money(totalAvailable);
+  $("totalPending").textContent = money(totalPending);
 }
-
-
 
 
 /* =========================================================
    ADMOB PAYMENT TIMELINE
 ========================================================= */
 
-let paymentTimelineTimer = null;
-
 function firstDayOfMonth(value){
   const d = dateObject(value);
   if(!d) return null;
-
-  return new Date(
-    d.getFullYear(),
-    d.getMonth(),
-    1,
-    12,
-    0,
-    0,
-    0
-  );
+  return new Date(d.getFullYear(), d.getMonth(), 1, 12, 0, 0, 0);
 }
 
 function nextMonthDate(value, day){
   const d = firstDayOfMonth(value);
   if(!d) return null;
-
-  return new Date(
-    d.getFullYear(),
-    d.getMonth() + 1,
-    day,
-    12,
-    0,
-    0,
-    0
-  );
+  return new Date(d.getFullYear(), d.getMonth() + 1, day, 12, 0, 0, 0);
 }
 
 function nextBusinessDay(value){
   const d = dateObject(value);
   if(!d) return null;
-
   d.setHours(12,0,0,0);
-
-  while(
-    d.getDay() === 0 ||
-    d.getDay() === 6
-  ){
+  while(d.getDay() === 0 || d.getDay() === 6){
     d.setDate(d.getDate() + 1);
   }
-
   return d;
 }
 
 function addBusinessDays(value, count){
   const d = dateObject(value);
   if(!d) return null;
-
   d.setHours(12,0,0,0);
-
-  let remaining = Math.max(
-    0,
-    Number(count || 0)
-  );
-
+  let remaining = Math.max(0, Number(count || 0));
   while(remaining > 0){
     d.setDate(d.getDate() + 1);
-
-    if(
-      d.getDay() !== 0 &&
-      d.getDay() !== 6
-    ){
+    if(d.getDay() !== 0 && d.getDay() !== 6){
       remaining--;
     }
   }
-
   return d;
 }
 
 function businessDaysBetween(startValue, endValue){
   const start = dateObject(startValue);
   const end = dateObject(endValue);
-
   if(!start || !end) return 0;
-
   start.setHours(12,0,0,0);
   end.setHours(12,0,0,0);
-
   if(end <= start) return 0;
 
   let cursor = new Date(start);
   let count = 0;
-
   while(cursor < end){
     cursor.setDate(cursor.getDate() + 1);
-
-    if(
-      cursor.getDay() !== 0 &&
-      cursor.getDay() !== 6
-    ){
+    if(cursor.getDay() !== 0 && cursor.getDay() !== 6){
       count++;
     }
   }
-
   return count;
 }
 
 function formatDateOnly(value){
   const d = dateObject(value);
-
   if(!d) return "—";
-
-  return d.toLocaleDateString(
-    "en-IN",
-    {
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
-    }
-  );
+  return d.toLocaleDateString("en-IN", {
+    day:"2-digit", month:"short", year:"numeric"
+  });
 }
 
 function paymentMonthLabel(earningMonth){
   const d = firstDayOfMonth(earningMonth);
-
   if(!d) return "PAYMENT SCHEDULE";
-
-  return d.toLocaleDateString(
-    "en-IN",
-    {
-      month:"short",
-      year:"numeric"
-    }
-  ).toUpperCase();
+  return d.toLocaleDateString("en-IN", {
+    month:"short", year:"numeric"
+  }).toUpperCase();
 }
 
 function expectedAdMobDates(earningMonth){
-  const finalizationDate =
-    nextMonthDate(
-      earningMonth,
-      3
-    );
+  const finalizationDate = nextMonthDate(earningMonth, 3);
+  const nominalIssueDate = nextMonthDate(earningMonth, 21);
+  const issueDate = nextBusinessDay(nominalIssueDate);
+  const latestArrivalDate = addBusinessDays(issueDate, 7);
 
-  /*
-    Google says "around the 21st".
-    For a weekend, the issue date moves to the
-    following business day.
-  */
-  const nominalIssueDate =
-    nextMonthDate(
-      earningMonth,
-      21
-    );
-
-  const issueDate =
-    nextBusinessDay(
-      nominalIssueDate
-    );
-
-  /*
-    Google says up to seven business days after issue.
-  */
-  const latestArrivalDate =
-    addBusinessDays(
-      issueDate,
-      7
-    );
-
-  return {
-    finalizationDate,
-    nominalIssueDate,
-    issueDate,
-    latestArrivalDate
-  };
+  return { finalizationDate, nominalIssueDate, issueDate, latestArrivalDate };
 }
 
 function getPaymentConfirmationState(bucket){
-  /*
-    Backend-authoritative fields supported by this UI.
-    The frontend never invents confirmation.
-
-    Recommended ad-revenue-collect-state response:
-      bucket.admob_payment_status =
-        "pending" | "issued" | "received" | "delayed" | "rolled_over"
-
-      bucket.admob_payment_received_at = ISO timestamp
-      bucket.admob_payment_issue_at = ISO timestamp
-
-    Boolean compatibility:
-      bucket.admob_payment_confirmed === true
-
-    Until the secure backend sends confirmation, Collect
-    remains disabled.
-  */
-
   const state = String(
     bucket?.admob_payment_status ||
     collectState?.admob_payment_status ||
@@ -4384,9 +3715,7 @@ function getPaymentConfirmationState(bucket){
     bucket?.admob_payment_confirmed === true ||
     bucket?.admob_payment_received === true ||
     state === "received" ||
-    Boolean(
-      bucket?.admob_payment_received_at
-    );
+    Boolean(bucket?.admob_payment_received_at);
 
   const issued =
     received ||
@@ -4397,267 +3726,92 @@ function getPaymentConfirmationState(bucket){
     state === "delayed" ||
     state === "rolled_over";
 
-  return {
-    state,
-    received,
-    issued,
-    delayed
-  };
+  return { state, received, issued, delayed };
 }
 
 function startPaymentTimeline(earningMonth, bucket){
-  clearInterval(paymentTimelineTimer);
-
-  const dates =
-    expectedAdMobDates(
-      earningMonth
-    );
-
-  if(!dates.finalizationDate){
-    return;
+  if (paymentTimelineTimer) {
+    clearInterval(paymentTimelineTimer);
+    paymentTimelineTimer = null;
   }
 
-  $("paymentTimelineMonth").textContent =
-    paymentMonthLabel(
-      earningMonth
-    );
+  const dates = expectedAdMobDates(earningMonth);
+  if(!dates.finalizationDate) return;
 
+  $("paymentTimelineMonth").textContent = paymentMonthLabel(earningMonth);
   $("paymentTimelinePeriod").innerHTML =
-    "Schedule for <strong>" +
-    paymentMonthLabel(earningMonth) +
-    "</strong> earnings. " +
-    "This timeline describes Google's normal cycle; it does not guarantee a payment date.";
-
-  $("paymentFinalizationDate").textContent =
-    "Expected finalization: " +
-    formatDateOnly(
-      dates.finalizationDate
-    );
-
-  $("paymentIssueDate").textContent =
-    "Expected issue: around " +
-    formatDateOnly(
-      dates.issueDate
-    );
-
-  $("paymentArrivalDate").textContent =
-    "Latest normal EFT window: " +
-    formatDateOnly(
-      dates.latestArrivalDate
-    );
+    "Schedule for <strong>" + escapeHtml(paymentMonthLabel(earningMonth)) + "</strong> earnings. This timeline describes Google's normal cycle; it does not guarantee a payment date.";
+  $("paymentFinalizationDate").textContent = "Expected finalization: " + formatDateOnly(dates.finalizationDate);
+  $("paymentIssueDate").textContent = "Expected issue: around " + formatDateOnly(dates.issueDate);
+  $("paymentArrivalDate").textContent = "Latest normal EFT window: " + formatDateOnly(dates.latestArrivalDate);
 
   function update(){
-    const now =
-      new Date();
+    const now = new Date();
+    const confirmation = getPaymentConfirmationState(bucket);
 
-    const confirmation =
-      getPaymentConfirmationState(
-        bucket
-      );
-
-    /*
-      Finalization countdown
-    */
-    const finalizationRemaining =
-      dates.finalizationDate.getTime() -
-      now.getTime();
-
+    const finalizationRemaining = dates.finalizationDate.getTime() - now.getTime();
     $("paymentFinalizationCountdown").textContent =
-      finalizationRemaining > 0
-        ? formatDuration(finalizationRemaining)
-        : "Finalization date reached";
+      finalizationRemaining > 0 ? formatDuration(finalizationRemaining) : "Finalization date reached";
 
-    /*
-      Payment issue countdown
-    */
-    const issueRemaining =
-      dates.issueDate.getTime() -
-      now.getTime();
-
+    const issueRemaining = dates.issueDate.getTime() - now.getTime();
     if(issueRemaining > 0){
-      $("paymentIssueCountdown").textContent =
-        formatDuration(
-          issueRemaining
-        );
-
+      $("paymentIssueCountdown").textContent = formatDuration(issueRemaining);
       $("paymentIssueSub").textContent =
-        "Expected around " +
-        formatDateOnly(
-          dates.issueDate
-        ) +
-        ". Actual timing can move because of weekends, holidays, holds, threshold or account status.";
-
+        "Expected around " + formatDateOnly(dates.issueDate) + ". Actual timing can move because of weekends, holidays, holds, threshold or account status.";
     }else if(!confirmation.issued){
-      $("paymentIssueCountdown").textContent =
-        "Expected issue window reached";
-
-      $("paymentIssueSub").textContent =
-        "The expected issue date has passed. Waiting for secure payment confirmation.";
+      $("paymentIssueCountdown").textContent = "Expected issue window reached";
+      $("paymentIssueSub").textContent = "The expected issue date has passed. Waiting for secure payment confirmation.";
     }else{
-      $("paymentIssueCountdown").textContent =
-        "Payment issued";
-
-      $("paymentIssueSub").textContent =
-        "Secure payment status confirms the payment has been issued.";
+      $("paymentIssueCountdown").textContent = "Payment issued";
+      $("paymentIssueSub").textContent = "Secure payment status confirms the payment has been issued.";
     }
 
-    /*
-      Seven-business-day arrival countdown
-    */
     if(confirmation.received){
-
-      $("paymentArrivalCountdown").textContent =
-        "Payment received";
-
-      $("paymentArrivalStatus").textContent =
-        "PAYMENT CONFIRMED";
-
-      $("paymentArrivalStatus").className =
-        "payment-status-pill ready";
-
-      $("paymentArrivalSub").textContent =
-        "The secure backend has confirmed the AdMob payment.";
-
+      $("paymentArrivalCountdown").textContent = "Payment received";
+      $("paymentArrivalStatus").textContent = "PAYMENT CONFIRMED";
+      $("paymentArrivalStatus").className = "payment-status-pill ready";
+      $("paymentArrivalSub").textContent = "The secure backend has confirmed the AdMob payment.";
     }else if(confirmation.delayed){
-
-      $("paymentArrivalCountdown").textContent =
-        "Payment delayed / rolled over";
-
-      $("paymentArrivalStatus").textContent =
-        "WAITING FOR CONFIRMATION";
-
-      $("paymentArrivalStatus").className =
-        "payment-status-pill error";
-
-      $("paymentArrivalSub").textContent =
-        "The expected cycle was not confirmed. Your earning remains stored.";
-
+      $("paymentArrivalCountdown").textContent = "Payment delayed / rolled over";
+      $("paymentArrivalStatus").textContent = "WAITING FOR CONFIRMATION";
+      $("paymentArrivalStatus").className = "payment-status-pill error";
+      $("paymentArrivalSub").textContent = "The expected cycle was not confirmed. Your earning remains stored.";
     }else if(confirmation.issued){
-
-      const paymentIssueAt =
-        dateObject(
-          bucket?.admob_payment_issue_at ||
-          bucket?.payment_issue_at ||
-          dates.issueDate
-        );
-
-      const latest =
-        addBusinessDays(
-          paymentIssueAt,
-          7
-        );
-
-      const remaining =
-        latest.getTime() -
-        now.getTime();
-
-      const businessDaysLeft =
-        businessDaysBetween(
-          now,
-          latest
-        );
+      const paymentIssueAt = dateObject(bucket?.admob_payment_issue_at || bucket?.payment_issue_at || dates.issueDate);
+      const latest = addBusinessDays(paymentIssueAt, 7);
+      const remaining = latest.getTime() - now.getTime();
+      const businessDaysLeft = businessDaysBetween(now, latest);
 
       $("paymentArrivalCountdown").textContent =
-        remaining > 0
-          ? formatDuration(remaining)
-          : "7-business-day window reached";
-
-      $("paymentArrivalStatus").textContent =
-        "PAYMENT IN BANKING WINDOW";
-
-      $("paymentArrivalStatus").className =
-        "payment-status-pill";
-
+        remaining > 0 ? formatDuration(remaining) : "7-business-day window reached";
+      $("paymentArrivalStatus").textContent = "PAYMENT IN BANKING WINDOW";
+      $("paymentArrivalStatus").className = "payment-status-pill";
       $("paymentArrivalSub").textContent =
-        remaining > 0
-          ? Math.max(
-              0,
-              businessDaysLeft
-            ) +
-            " business day(s) remaining in the normal EFT arrival window."
-          : "The normal seven-business-day window has been reached. Waiting for confirmation.";
-
+        remaining > 0 ? Math.max(0, businessDaysLeft) + " business day(s) remaining in normal EFT arrival window." : "Normal window reached. Waiting for confirmation.";
     }else{
-
-      $("paymentArrivalCountdown").textContent =
-        "Waiting for payment issue";
-
-      $("paymentArrivalStatus").textContent =
-        "WAITING FOR ADMOB PAYMENT";
-
-      $("paymentArrivalStatus").className =
-        "payment-status-pill";
-
-      $("paymentArrivalSub").textContent =
-        "The seven-business-day arrival counter starts only after the payment is issued.";
+      $("paymentArrivalCountdown").textContent = "Waiting for payment issue";
+      $("paymentArrivalStatus").textContent = "WAITING FOR ADMOB PAYMENT";
+      $("paymentArrivalStatus").className = "payment-status-pill";
+      $("paymentArrivalSub").textContent = "The seven-business-day arrival counter starts only after payment is issued.";
     }
 
-    /*
-      Technical issue note after the latest expected arrival date,
-      unless payment has already been confirmed.
-    */
-    const technicalNote =
-      $("paymentTechnicalNote");
-
-    if(
-      technicalNote
-      &&
-      now.getTime() > dates.latestArrivalDate.getTime()
-      &&
-      !confirmation.received
-    ){
-      technicalNote.style.display =
-        "block";
-
-      if(
-        confirmation.delayed
-      ){
-        $("paymentTechnicalText").textContent =
-          "The normal payment window has passed and the secure backend has not confirmed payment. Your recorded earning remains stored. Collection stays disabled until payment confirmation.";
-      }else{
-        $("paymentTechnicalText").textContent =
-          "The normal seven-business-day arrival window has passed and the secure backend has not confirmed payment yet. This may be a payment, bank or technical processing delay. Your recorded earning remains stored and Collect stays disabled until confirmation.";
-      }
-
+    const technicalNote = $("paymentTechnicalNote");
+    if(technicalNote && now.getTime() > dates.latestArrivalDate.getTime() && !confirmation.received){
+      technicalNote.style.display = "block";
+      $("paymentTechnicalText").textContent =
+        "The normal arrival window has passed and secure backend has not confirmed payment yet. Your recorded earning remains stored.";
     }else if(technicalNote){
-      technicalNote.style.display =
-        "none";
+      technicalNote.style.display = "none";
     }
 
-    /*
-      Final collection gate.
-
-      Existing backend eligibility is still required.
-      Payment confirmation is an additional safety gate.
-    */
-    const button =
-      $("monthlyCollectButton");
-
-    if(
-      button &&
-      bucket &&
-      (
-        bucket.status === "collectible" ||
-        bucket.status === "open" ||
-        bucket.collect_enabled === true
-      )
-    ){
-      const backendEligible =
-        bucket.collect_enabled === true;
-
-      button.disabled =
-        !backendEligible ||
-        !confirmation.received;
+    const button = $("monthlyCollectButton");
+    if(button && bucket && (bucket.status === "collectible" || bucket.status === "open" || bucket.collect_enabled === true)){
+      button.disabled = !bucket.collect_enabled || !confirmation.received;
     }
   }
 
   update();
-
-  paymentTimelineTimer =
-    setInterval(
-      update,
-      1000
-    );
+  paymentTimelineTimer = setInterval(update, 1000);
 }
 
 
@@ -4666,677 +3820,171 @@ function startPaymentTimeline(earningMonth, bucket){
 ========================================================= */
 
 function renderMonthlyState(){
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
 
-  clearInterval(
-    countdownTimer
-  );
-
-
-  countdownTimer =
-    null;
-
-
-  const current =
-    collectState?.current_month ||
-    null;
-
-
-  const buckets =
-    Array.isArray(
-      collectState?.previous_buckets
-    )
-      ? collectState.previous_buckets
-      : [];
-
-
-  /*
-    CURRENT MONTH
-  */
+  const current = collectState?.current_month || null;
+  const buckets = Array.isArray(collectState?.previous_buckets) ? collectState.previous_buckets : [];
 
   if(current){
-
-    $("currentMonthTitle")
-      .textContent =
-      current.label ||
-      formatMonth(
-        current.earning_month
-      );
-
-
-    $("currentMonthAmount")
-      .textContent =
-      money(
-        current.amount
-      );
-
-
-    $("currentWindowText")
-      .textContent =
-      "Collection opens from the 1st to 5th of the following month.";
-
+    $("currentMonthTitle").textContent = current.label || formatMonth(current.earning_month);
+    $("currentMonthAmount").textContent = money(current.amount);
+    $("currentWindowText").textContent = "Collection opens from the 1st to 5th of the following month.";
   }else{
-
-    $("currentMonthTitle")
-      .textContent =
-      "Current Month";
-
-
-    $("currentMonthAmount")
-      .textContent =
-      "₹0.00";
-
-
-    $("currentWindowText")
-      .textContent =
-      "Current monthly earning bucket is not available.";
-
+    $("currentMonthTitle").textContent = "Current Month";
+    $("currentMonthAmount").textContent = "₹0.00";
+    $("currentWindowText").textContent = "Current monthly earning bucket is not available.";
   }
 
-
-  /*
-    Choose the oldest eligible previous bucket
-    first. This keeps monthly buckets separate.
-  */
-
-  const bucket =
-    buckets.length
-      ? buckets[0]
-      : null;
-
+  const bucket = buckets.length ? buckets[0] : null;
 
   if(!bucket){
+    if (paymentTimelineTimer) {
+      clearInterval(paymentTimelineTimer);
+      paymentTimelineTimer = null;
+    }
 
-    clearInterval(
-      paymentTimelineTimer
-    );
+    $("paymentTimelineMonth").textContent = "WAITING";
+    $("paymentTimelinePeriod").textContent = "A verified earning month is required before a payment timeline can be calculated.";
+    $("paymentFinalizationDate").textContent = "Expected finalization: —";
+    $("paymentIssueDate").textContent = "Expected issue: —";
+    $("paymentArrivalDate").textContent = "Latest expected window: —";
+    $("paymentFinalizationCountdown").textContent = "Waiting for earning month";
+    $("paymentIssueCountdown").textContent = "Waiting for earning month";
+    $("paymentArrivalCountdown").textContent = "Waiting for payment issue";
+    $("paymentArrivalStatus").textContent = "WAITING FOR ADMOB PAYMENT";
+    $("paymentArrivalStatus").className = "payment-status-pill";
+    $("paymentTechnicalNote").style.display = "none";
 
-    paymentTimelineTimer =
-      null;
+    selectedBucketId = null;
 
-    $("paymentTimelineMonth").textContent =
-      "WAITING";
-
-    $("paymentTimelinePeriod").textContent =
-      "A verified earning month is required before a payment timeline can be calculated.";
-
-    $("paymentFinalizationDate").textContent =
-      "Expected finalization: —";
-
-    $("paymentIssueDate").textContent =
-      "Expected issue: —";
-
-    $("paymentArrivalDate").textContent =
-      "Latest expected window: —";
-
-    $("paymentFinalizationCountdown").textContent =
-      "Waiting for earning month";
-
-    $("paymentIssueCountdown").textContent =
-      "Waiting for earning month";
-
-    $("paymentArrivalCountdown").textContent =
-      "Waiting for payment issue";
-
-    $("paymentArrivalStatus").textContent =
-      "WAITING FOR ADMOB PAYMENT";
-
-    $("paymentArrivalStatus").className =
-      "payment-status-pill";
-
-    $("paymentTechnicalNote").style.display =
-      "none";
-
-    selectedBucketId =
-      null;
-
-
-    $("previousMonthCard")
-      .className =
-      "month-card";
-
-
-    $("previousMonthTitle")
-      .textContent =
-      "Previous Month";
-
-
-    $("previousMonthSubtitle")
-      .textContent =
-      "No previous collection bucket found";
-
-
-    $("previousMonthAmount")
-      .textContent =
-      "₹0.00";
-
-
-    $("previousMonthPill")
-      .textContent =
-      "WAITING";
-
-
-    $("previousMonthPill")
-      .className =
-      "month-pill locked";
-
-
-    $("previousMonthDescription")
-      .textContent =
+    $("previousMonthCard").className = "month-card";
+    $("previousMonthTitle").textContent = "Previous Month";
+    $("previousMonthSubtitle").textContent = "No previous collection bucket found";
+    $("previousMonthAmount").textContent = "₹0.00";
+    $("previousMonthPill").textContent = "WAITING";
+    $("previousMonthPill").className = "month-pill locked";
+    $("previousMonthDescription").textContent =
       "Your previous monthly verified earnings will appear here after the secure backend creates the collection bucket.";
-
-
-    $("previousWindowText")
-      .textContent =
-      "No collection bucket is currently available.";
-
-
-    $("fiveDayCountdown")
-      .textContent =
-      "No active collection window";
-
-
-    $("fiveDayCountdown")
-      .className =
-      "countdown closed";
-
-
-    $("monthlyCollectButton")
-      .disabled =
-      true;
-
-
-    $("monthlyCollectButton")
-      .textContent =
-      "Collect Previous Month Earnings";
-
-
-    $("carryNote")
-      .textContent =
+    $("previousWindowText").textContent = "No collection bucket is currently available.";
+    $("fiveDayCountdown").textContent = "No active collection window";
+    $("fiveDayCountdown").className = "countdown closed";
+    $("monthlyCollectButton").disabled = true;
+    $("monthlyCollectButton").textContent = "Collect Previous Month Earnings";
+    $("carryNote").textContent =
       "If a collection window is missed, the amount remains stored as a separate carried-forward balance.";
-
-
     return;
-
   }
 
+  selectedBucketId = bucket.id || null;
+  startPaymentTimeline(bucket.earning_month, bucket);
 
-  selectedBucketId =
-    bucket.id || null;
+  const amount = num(bucket.amount ?? bucket.eligible_amount);
+  const status = String(bucket.status || "locked").toLowerCase();
 
+  $("previousMonthTitle").textContent = bucket.label || formatMonth(bucket.earning_month);
+  $("previousMonthAmount").textContent = money(amount);
+  $("previousMonthSubtitle").textContent =
+    status === "carried_forward" ? "Carried-forward verified earnings" : "Verified earnings awaiting collection";
+  $("previousMonthDescription").textContent =
+    status === "carried_forward" ? "This amount was not collected during its normal 5-day window. It remains stored separately and is still yours." : "This monthly bucket is kept separate from current month's earnings.";
 
-  /*
-    Start the Google AdMob payment timeline for this
-    earning month. The timer is informational; payment
-    confirmation remains backend-authoritative.
-  */
-  startPaymentTimeline(
-    bucket.earning_month,
-    bucket
-  );
+  if(status === "carried_forward"){
+    $("previousMonthCard").className = "month-card carried";
+    $("previousMonthPill").textContent = "CARRIED FORWARD";
+    $("previousMonthPill").className = "month-pill carried";
+    $("previousWindowText").textContent = "Normal 5-day window has closed. Your amount remains safely stored for later collection.";
+    $("fiveDayCountdown").textContent = "Stored • No expiry from the missed window";
+    $("fiveDayCountdown").className = "countdown warning";
 
-
-  const amount =
-    num(
-      bucket.amount ??
-      bucket.eligible_amount
-    );
-
-
-  const status =
-    String(
-      bucket.status ||
-      "locked"
-    ).toLowerCase();
-
-
-  $("previousMonthTitle")
-    .textContent =
-    bucket.label ||
-    formatMonth(
-      bucket.earning_month
-    );
-
-
-  $("previousMonthAmount")
-    .textContent =
-    money(amount);
-
-
-  $("previousMonthSubtitle")
-    .textContent =
-    status === "carried_forward"
-      ? "Carried-forward verified earnings"
-      : "Verified earnings awaiting collection";
-
-
-  $("previousMonthDescription")
-    .textContent =
-    status === "carried_forward"
-      ? "This amount was not collected during its normal 5-day window. It remains stored separately and is still yours."
-      : "This monthly bucket is kept separate from the current month's earnings.";
-
-
-  /*
-    CARRIED FORWARD
-  */
-
-  if(
-    status ===
-    "carried_forward"
-  ){
-
-    $("previousMonthCard")
-      .className =
-      "month-card carried";
-
-
-    $("previousMonthPill")
-      .textContent =
-      "CARRIED FORWARD";
-
-
-    $("previousMonthPill")
-      .className =
-      "month-pill carried";
-
-
-    $("previousWindowText")
-      .textContent =
-      "Normal 5-day window has closed. Your amount remains safely stored for later collection.";
-
-
-    $("fiveDayCountdown")
-      .textContent =
-      "Stored • No expiry from the missed window";
-
-
-    $("fiveDayCountdown")
-      .className =
-      "countdown warning";
-
-
-    /*
-      A carried-forward bucket can be shown for collection
-      according to the backend's eligibility decision.
-
-      The backend remains the authority.
-    */
-
-    const paymentConfirmed =
-      getPaymentConfirmationState(
-        bucket
-      ).received;
-
-    const eligible =
-      bucket.collect_enabled === true &&
-      paymentConfirmed;
-
-
-    $("monthlyCollectButton")
-      .disabled =
-      !eligible;
-
-
-    $("monthlyCollectButton")
-      .textContent =
-      eligible
-        ? "Collect Carried-Forward Earnings"
-        : paymentConfirmed
-          ? "Collection Unavailable"
-          : "Waiting for AdMob Payment";
-
-
-    $("carryNote")
-      .textContent =
-      "You did not lose this money by skipping the previous window. It stays stored as its own monthly balance and will not be mixed with new-month earnings.";
-
+    const paymentConfirmed = getPaymentConfirmationState(bucket).received;
+    const eligible = bucket.collect_enabled === true && paymentConfirmed;
+    $("monthlyCollectButton").disabled = !eligible;
+    $("monthlyCollectButton").textContent =
+      eligible ? "Collect Carried-Forward Earnings" : paymentConfirmed ? "Collection Unavailable" : "Waiting for AdMob Payment";
+    $("carryNote").textContent = "You did not lose this money. It stays stored as its own monthly balance.";
     return;
-
   }
 
+  if(status === "collectible" || status === "open" || bucket.collect_enabled === true){
+    $("previousMonthCard").className = "month-card collectible";
+    $("previousMonthPill").textContent = "COLLECT OPEN";
+    $("previousMonthPill").className = "month-pill open";
 
-  /*
-    COLLECTIBLE
-  */
-
-  if(
-    status ===
-    "collectible"
-
-    ||
-
-    status ===
-    "open"
-
-    ||
-
-    bucket.collect_enabled ===
-    true
-  ){
-
-    $("previousMonthCard")
-      .className =
-      "month-card collectible";
-
-
-    $("previousMonthPill")
-      .textContent =
-      "COLLECT OPEN";
-
-
-    $("previousMonthPill")
-      .className =
-      "month-pill open";
-
-
-    const paymentConfirmed =
-      getPaymentConfirmationState(
-        bucket
-      ).received;
-
-    $("monthlyCollectButton")
-      .disabled =
-      amount <= 0 ||
-      bucket.collect_enabled !== true ||
-      !paymentConfirmed;
-
-
-    $("monthlyCollectButton")
-      .textContent =
-      amount <= 0
-        ? "No Earnings to Collect"
-        : !paymentConfirmed
-          ? "Waiting for AdMob Payment"
-          : bucket.collect_enabled === true
-            ? "Collect Previous Month Earnings"
-            : "Collection Unavailable";
-
-
-    $("previousWindowText")
-      .textContent =
-      (
-        "Collect is available from " +
-        formatDate(
-          bucket.window_start
-        ) +
-        " until " +
-        formatDate(
-          bucket.window_end
-        ) +
-        "."
-      );
-
-
-    $("carryNote")
-      .textContent =
-      "Collect remains disabled until the secure backend confirms the AdMob payment and collection eligibility.";
-
-
-    startFiveDayCountdown(
-      bucket.window_end
-    );
-
-
+    const paymentConfirmed = getPaymentConfirmationState(bucket).received;
+    $("monthlyCollectButton").disabled = amount <= 0 || bucket.collect_enabled !== true || !paymentConfirmed;
+    $("monthlyCollectButton").textContent =
+      amount <= 0 ? "No Earnings to Collect" : !paymentConfirmed ? "Waiting for AdMob Payment" : bucket.collect_enabled === true ? "Collect Previous Month Earnings" : "Collection Unavailable";
+    $("previousWindowText").textContent = "Collect is available from " + formatDate(bucket.window_start) + " until " + formatDate(bucket.window_end) + ".";
+    startFiveDayCountdown(bucket.window_end);
     return;
-
   }
 
-
-  /*
-    PAID
-  */
-
-  if(
-    status ===
-    "paid"
-
-    ||
-
-    status ===
-    "collected"
-
-    ||
-
-    status ===
-    "completed"
-  ){
-
-    $("previousMonthCard")
-      .className =
-      "month-card";
-
-
-    $("previousMonthPill")
-      .textContent =
-      "COLLECTED";
-
-
-    $("previousMonthPill")
-      .className =
-      "month-pill open";
-
-
-    $("previousWindowText")
-      .textContent =
-      "This monthly bucket has already been collected.";
-
-
-    $("fiveDayCountdown")
-      .textContent =
-      "Collection completed";
-
-
-    $("fiveDayCountdown")
-      .className =
-      "countdown closed";
-
-
-    $("monthlyCollectButton")
-      .disabled =
-      true;
-
-
-    $("monthlyCollectButton")
-      .textContent =
-      "Already Collected";
-
-
-    $("carryNote")
-      .textContent =
-      "This bucket remains separate for accounting history. New-month earnings use a new collection bucket.";
-
+  if(status === "paid" || status === "collected" || status === "completed"){
+    $("previousMonthCard").className = "month-card";
+    $("previousMonthPill").textContent = "COLLECTED";
+    $("previousMonthPill").className = "month-pill open";
+    $("previousWindowText").textContent = "This monthly bucket has already been collected.";
+    $("fiveDayCountdown").textContent = "Collection completed";
+    $("fiveDayCountdown").className = "countdown closed";
+    $("monthlyCollectButton").disabled = true;
+    $("monthlyCollectButton").textContent = "Already Collected";
     return;
-
   }
 
-
-  /*
-    LOCKED / CLOSED
-  */
-
-  $("previousMonthCard")
-    .className =
-    "month-card";
-
-
-  $("previousMonthPill")
-    .textContent =
-    "CLOSED";
-
-
-  $("previousMonthPill")
-    .className =
-    "month-pill locked";
-
-
-  $("monthlyCollectButton")
-    .disabled =
-    true;
-
-
-  $("monthlyCollectButton")
-    .textContent =
-    "Collection Window Closed";
-
-
-  $("previousWindowText")
-    .textContent =
-    bucket.window_start &&
-    bucket.window_end
-      ? (
-        "Collection window: " +
-        formatDate(
-          bucket.window_start
-        ) +
-        " to " +
-        formatDate(
-          bucket.window_end
-        ) +
-        "."
-      )
-      : "The collection window is currently closed.";
-
-
-  $("fiveDayCountdown")
-    .textContent =
-    "5-day collection window closed";
-
-
-  $("fiveDayCountdown")
-    .className =
-    "countdown closed";
-
-
-  $("carryNote")
-    .textContent =
-    "The amount remains stored according to TaskEarn's monthly carry-forward rules. It is not deleted because the 5-day window was missed.";
-
+  $("previousMonthCard").className = "month-card";
+  $("previousMonthPill").textContent = "CLOSED";
+  $("previousMonthPill").className = "month-pill locked";
+  $("monthlyCollectButton").disabled = true;
+  $("monthlyCollectButton").textContent = "Collection Window Closed";
+  $("previousWindowText").textContent = "The collection window is currently closed.";
+  $("fiveDayCountdown").textContent = "5-day collection window closed";
+  $("fiveDayCountdown").className = "countdown closed";
 }
-
 
 
 /* =========================================================
    5-DAY COUNTDOWN
 ========================================================= */
 
-function startFiveDayCountdown(
-  windowEnd
-){
-
-  clearInterval(
-    countdownTimer
-  );
-
-
-  const end =
-    dateObject(
-      windowEnd
-    );
-
+function startFiveDayCountdown(windowEnd){
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
+  const end = dateObject(windowEnd);
 
   if(!end){
-
-    $("fiveDayCountdown")
-      .textContent =
-      "Collection window date pending";
-
-
-    $("fiveDayCountdown")
-      .className =
-      "countdown closed";
-
-
-    $("monthlyCollectButton")
-      .disabled =
-      true;
-
-
+    $("fiveDayCountdown").textContent = "Collection window date pending";
+    $("fiveDayCountdown").className = "countdown closed";
+    $("monthlyCollectButton").disabled = true;
     return;
-
   }
-
 
   function update(){
+    const now = Date.now();
+    const remaining = end.getTime() - now;
 
-    const now =
-      Date.now();
-
-
-    const remaining =
-      end.getTime() -
-      now;
-
-
-    if(
-      remaining <= 0
-    ){
-
-      $("fiveDayCountdown")
-        .textContent =
-        "5-day collection window closed";
-
-
-      $("fiveDayCountdown")
-        .className =
-        "countdown closed";
-
-
-      $("monthlyCollectButton")
-        .disabled =
-        true;
-
-
-      $("monthlyCollectButton")
-        .textContent =
-        "Collection Window Closed";
-
-
-      clearInterval(
-        countdownTimer
-      );
-
-
-      /*
-        Refresh from backend because the backend is the
-        final authority after a window closes.
-      */
-
+    if(remaining <= 0){
+      $("fiveDayCountdown").textContent = "5-day collection window closed";
+      $("fiveDayCountdown").className = "countdown closed";
+      $("monthlyCollectButton").disabled = true;
+      $("monthlyCollectButton").textContent = "Collection Window Closed";
+      clearInterval(countdownTimer);
+      countdownTimer = null;
       loadCollectState();
-
       return;
-
     }
 
-
-    $("fiveDayCountdown")
-      .textContent =
-      formatDuration(
-        remaining
-      ) +
-      " remaining";
-
-
-    $("fiveDayCountdown")
-      .className =
-      remaining <
-      24 * 60 * 60 * 1000
-        ? "countdown warning"
-        : "countdown";
-
+    $("fiveDayCountdown").textContent = formatDuration(remaining) + " remaining";
+    $("fiveDayCountdown").className = remaining < 24 * 60 * 60 * 1000 ? "countdown warning" : "countdown";
   }
 
-
   update();
-
-
-  countdownTimer =
-    setInterval(
-      update,
-      1000
-    );
-
+  countdownTimer = setInterval(update, 1000);
 }
-
 
 
 /* =========================================================
@@ -5344,168 +3992,51 @@ function startFiveDayCountdown(
 ========================================================= */
 
 function renderActiveRequest(){
+  if (requestTimer) {
+    clearInterval(requestTimer);
+    requestTimer = null;
+  }
 
-  clearInterval(
-    requestTimer
-  );
-
-
-  requestTimer =
-    null;
-
-
-  const request =
-    collectState?.active_request ||
-    null;
-
-
-  const card =
-    $("requestCard");
-
+  const request = collectState?.active_request || null;
+  const card = $("requestCard");
 
   if(!request){
-
-    card.classList.remove(
-      "show"
-    );
-
-
-    $("requestAmount")
-      .textContent =
-      "₹0.00";
-
-
-    $("requestCountdown")
-      .textContent =
-      "24:00:00";
-
-
-    $("requestSub")
-      .textContent =
-      "No active collection request.";
-
+    card.classList.remove("show");
+    $("requestAmount").textContent = "₹0.00";
+    $("requestCountdown").textContent = "24:00:00";
+    $("requestSub").textContent = "No active collection request.";
     return;
-
   }
 
+  card.classList.add("show");
+  $("requestAmount").textContent = money(request.amount);
+  $("requestStatus").textContent = String(request.status || "PROCESSING").replace(/_/g, " ").toUpperCase();
 
-  card.classList.add(
-    "show"
-  );
-
-
-  $("requestAmount")
-    .textContent =
-    money(
-      request.amount
-    );
-
-
-  $("requestStatus")
-    .textContent =
-    String(
-      request.status ||
-      "PROCESSING"
-    )
-      .replace(
-        /_/g,
-        " "
-      )
-      .toUpperCase();
-
-
-  const release =
-    dateObject(
-      request.release_at
-    );
-
-
+  const release = dateObject(request.release_at);
   if(!release){
-
-    $("requestCountdown")
-      .textContent =
-      "Processing";
-
-
-    $("requestSub")
-      .textContent =
-      "The secure backend is processing this request.";
-
-
+    $("requestCountdown").textContent = "Processing";
+    $("requestSub").textContent = "The secure backend is processing this request.";
     return;
-
   }
-
 
   function update(){
-
-    const remaining =
-      release.getTime() -
-      Date.now();
-
-
-    if(
-      remaining <= 0
-    ){
-
-      $("requestCountdown")
-        .textContent =
-        "RELEASE TIME REACHED";
-
-
-      $("requestSub")
-        .textContent =
-        "The request is now eligible for secure backend processing.";
-
-
-      clearInterval(
-        requestTimer
-      );
-
-
-      /*
-        Refresh shortly after release so the page reflects
-        the real backend result rather than assuming payment.
-      */
-
-      setTimeout(
-        () => {
-          loadCollectState();
-        },
-        1200
-      );
-
-
+    const remaining = release.getTime() - Date.now();
+    if(remaining <= 0){
+      $("requestCountdown").textContent = "RELEASE TIME REACHED";
+      $("requestSub").textContent = "The request is now eligible for secure backend processing.";
+      clearInterval(requestTimer);
+      requestTimer = null;
+      setTimeout(() => { loadCollectState(); }, 1200);
       return;
-
     }
 
-
-    $("requestCountdown")
-      .textContent =
-      formatDuration(
-        remaining
-      );
-
-
-    $("requestSub")
-      .textContent =
-      "Your 24-hour processing window is active.";
-
+    $("requestCountdown").textContent = formatDuration(remaining);
+    $("requestSub").textContent = "Your 24-hour processing window is active.";
   }
 
-
   update();
-
-
-  requestTimer =
-    setInterval(
-      update,
-      1000
-    );
-
+  requestTimer = setInterval(update, 1000);
 }
-
 
 
 /* =========================================================
@@ -5513,356 +4044,104 @@ function renderActiveRequest(){
 ========================================================= */
 
 function renderSettlementDate(){
+  const statusEl = $("settlementStatus");
+  const dateEl = $("settlementDate");
+  if(!statusEl || !dateEl) return;
 
-  const statusEl =
-    $("settlementStatus");
-
-
-  const dateEl =
-    $("settlementDate");
-
-
-  if(
-    !statusEl ||
-    !dateEl
-  ){
-    return;
-  }
-
-
-  const datedEvent =
-    adEvents.find(
-      event =>
-        event.expected_settlement_at
-    );
-
-
+  const datedEvent = adEvents.find(event => event.expected_settlement_at);
   if(!datedEvent){
-
-    statusEl.textContent =
-      "WAITING FOR SETTLEMENT";
-
-
-    dateEl.className =
-      "settlement-date empty";
-
-
-    dateEl.textContent =
-      "Actual payment date will appear here after the advertising provider confirms the settlement date.";
-
+    statusEl.textContent = "WAITING FOR SETTLEMENT";
+    dateEl.className = "settlement-date empty";
+    dateEl.textContent = "Actual payment date will appear here after advertising provider confirms settlement date.";
     return;
-
   }
 
-
-  const settlementDate =
-    dateObject(
-      datedEvent.expected_settlement_at
-    );
-
-
+  const settlementDate = dateObject(datedEvent.expected_settlement_at);
   if(!settlementDate){
-
-    statusEl.textContent =
-      "DATE NOT CONFIRMED";
-
-
-    dateEl.className =
-      "settlement-date empty";
-
-
-    dateEl.textContent =
-      "The provider has not supplied a valid settlement date yet.";
-
+    statusEl.textContent = "DATE NOT CONFIRMED";
+    dateEl.className = "settlement-date empty";
+    dateEl.textContent = "Provider has not supplied a valid settlement date yet.";
     return;
-
   }
 
-
-  if(
-    datedEvent.settlement_status ===
-    "settled"
-  ){
-
-    statusEl.textContent =
-      "PAYMENT RECEIVED";
-
-
-    dateEl.className =
-      "settlement-date";
-
-
-    dateEl.textContent =
-      "Payment received on " +
-      formatDate(
-        datedEvent.settled_at ||
-        datedEvent.expected_settlement_at
-      );
-
-
+  if(datedEvent.settlement_status === "settled"){
+    statusEl.textContent = "PAYMENT RECEIVED";
+    dateEl.className = "settlement-date";
+    dateEl.textContent = "Payment received on " + formatDate(datedEvent.settled_at || datedEvent.expected_settlement_at);
     return;
-
   }
 
-
-  statusEl.textContent =
-    "EXPECTED PAYMENT DATE";
-
-
-  dateEl.className =
-    "settlement-date";
-
-
-  dateEl.textContent =
-    formatDate(
-      datedEvent.expected_settlement_at
-    );
-
+  statusEl.textContent = "EXPECTED PAYMENT DATE";
+  dateEl.className = "settlement-date";
+  dateEl.textContent = formatDate(datedEvent.expected_settlement_at);
 }
-
 
 
 /* =========================================================
-   HISTORY
+   HISTORY (XSS ENHANCED SANITIZATION)
 ========================================================= */
 
 function renderHistory(){
-
-  const list =
-    $("historyList");
-
-
-  const count =
-    $("historyCount");
-
-
-  if(!list){
-    return;
-  }
-
+  const list = $("historyList");
+  const count = $("historyCount");
+  if(!list) return;
 
   if(count){
-
-    count.textContent =
-      adEvents.length +
-      (
-        adEvents.length === 1
-          ? " record"
-          : " records"
-      );
-
+    count.textContent = adEvents.length + (adEvents.length === 1 ? " record" : " records");
   }
 
-
-  if(
-    adEvents.length === 0
-  ){
-
-    list.innerHTML = `
-
-      <div class="history-empty">
-
-        No ad revenue records yet.
-
-      </div>
-
-    `;
-
+  if(adEvents.length === 0){
+    list.innerHTML = `<div class="history-empty">No ad revenue records yet.</div>`;
     return;
-
   }
 
-
-  list.innerHTML =
-    adEvents
-      .map(
-        event => {
-
-          const gross =
-            num(
-              event.gross_revenue
-            );
-
-
-          const userShare =
-            num(
-              event.user_share
-            );
-
-
-          const status =
-            String(
-              event.status ||
-              "pending"
-            )
-              .toLowerCase();
-
-
-          let statusClass =
-            "status-pending";
-
-
-          let statusText =
-            "PROCESSING";
-
-
-          if(
-
-            status ===
-            "verified"
-
-            &&
-
-            event.settlement_status ===
-            "settled"
-
-            &&
-
-            !event.collected_at
-
-          ){
-
-            statusClass =
-              "status-verified";
-
-
-            statusText =
-              "AVAILABLE";
-
-          }
-
-
-          if(
-
-            status ===
-            "verified"
-
-            &&
-
-            event.settlement_status !==
-            "settled"
-
-          ){
-
-            statusClass =
-              "status-pending";
-
-
-            statusText =
-              "SETTLEMENT PENDING";
-
-          }
-
-
-          if(
-            event.collected_at
-          ){
-
-            statusClass =
-              "status-collected";
-
-
-            statusText =
-              "COLLECTED";
-
-          }
-
-
-          if(
-            status ===
-            "rejected"
-          ){
-
-            statusClass =
-              "status-rejected";
-
-
-            statusText =
-              "REJECTED";
-
-          }
-
-
-          return `
-
-            <div class="history-item">
-
-
-              <div class="history-left">
-
-
-                <div class="history-icon">
-
-                  <svg>
-
-                    <use
-                      href="#i-chart"
-                    ></use>
-
-                  </svg>
-
-                </div>
-
-
-                <div class="history-name">
-
-                  <strong>
-                    Rewarded Advertisement
-                  </strong>
-
-
-                  <span>
-
-                    Revenue
-                    ${money(gross)}
-
-                    •
-                    ${formatDate(
-                      event.created_at
-                    )}
-
-                  </span>
-
-                </div>
-
-
-              </div>
-
-
-              <div class="history-right">
-
-
-                <strong>
-
-                  +${money(
-                    userShare
-                  )}
-
-                </strong>
-
-
-                <span
-                  class="${statusClass}"
-                >
-
-                  ${statusText}
-
-                </span>
-
-
-              </div>
-
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
+  list.innerHTML = adEvents.map(event => {
+    const gross = num(event.gross_revenue);
+    const userShare = num(event.user_share);
+    const status = String(event.status || "pending").toLowerCase();
+
+    let statusClass = "status-pending";
+    let statusText = "PROCESSING";
+
+    if(status === "verified" && event.settlement_status === "settled" && !event.collected_at){
+      statusClass = "status-verified";
+      statusText = "AVAILABLE";
+    }
+
+    if(status === "verified" && event.settlement_status !== "settled"){
+      statusClass = "status-pending";
+      statusText = "SETTLEMENT PENDING";
+    }
+
+    if(event.collected_at){
+      statusClass = "status-collected";
+      statusText = "COLLECTED";
+    }
+
+    if(status === "rejected"){
+      statusClass = "status-rejected";
+      statusText = "REJECTED";
+    }
+
+    return `
+      <div class="history-item">
+        <div class="history-left">
+          <div class="history-icon">
+            <svg><use href="#i-chart"></use></svg>
+          </div>
+          <div class="history-name">
+            <strong>Rewarded Advertisement</strong>
+            <span>Revenue ${escapeHtml(money(gross))} • ${escapeHtml(formatDate(event.created_at))}</span>
+          </div>
+        </div>
+        <div class="history-right">
+          <strong>+${escapeHtml(money(userShare))}</strong>
+          <span class="${escapeHtml(statusClass)}">${escapeHtml(statusText)}</span>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
-
 
 
 /* =========================================================
@@ -5870,81 +4149,25 @@ function renderHistory(){
 ========================================================= */
 
 async function detectAdBlocker(){
-
   try{
+    const bait = document.createElement("div");
+    bait.className = "adsbox ad-banner ad-placeholder";
+    bait.style.cssText = "position:absolute!important;left:-9999px!important;top:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important;";
+    document.body.appendChild(bait);
 
-    const bait =
-      document.createElement(
-        "div"
-      );
-
-
-    bait.className =
-      "adsbox ad-banner ad-placeholder";
-
-
-    bait.style.cssText = `
-
-      position:absolute!important;
-      left:-9999px!important;
-      top:-9999px!important;
-      width:1px!important;
-      height:1px!important;
-      overflow:hidden!important;
-
-    `;
-
-
-    document.body.appendChild(
-      bait
-    );
-
-
-    await new Promise(
-      resolve =>
-        setTimeout(
-          resolve,
-          100
-        )
-    );
-
-
-    const blocked =
-      bait.offsetParent === null
-      ||
-      bait.offsetHeight === 0
-      ||
-      bait.clientHeight === 0;
-
-
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const blocked = bait.offsetParent === null || bait.offsetHeight === 0 || bait.clientHeight === 0;
     bait.remove();
 
-
     if(blocked){
-
-      $("adBlockWarning")
-        .classList
-        .add("show");
-
-
+      $("adBlockWarning").classList.add("show");
       return true;
-
     }
-
   }catch(error){
-
-    console.warn(
-      "Ad block detection:",
-      error
-    );
-
+    console.warn("Ad block detection error:", error);
   }
-
-
   return false;
-
 }
-
 
 
 /* =========================================================
@@ -5952,62 +4175,18 @@ async function detectAdBlocker(){
 ========================================================= */
 
 async function createAdSession(){
-
   if(!currentUser){
-
-    throw new Error(
-      "USER_NOT_AUTHENTICATED"
-    );
-
+    throw new Error("USER_NOT_LOGGED_IN: Please log in to your account first.");
   }
 
-
-  return await secureFetch(
-    AD_SESSION_FUNCTION,
-    {
-      user_id:
-        currentUser.id
-    }
-  );
-
+  return await secureFetch(AD_SESSION_FUNCTION, {
+    user_id: currentUser.id
+  });
 }
 
 
-
 /* =========================================================
-   NATIVE AD BRIDGE
-
-   IMPORTANT — READ BEFORE CHANGING:
-
-   TaskEarnBridge.java#showRewardedAd() is fire-and-forget.
-   It returns a synchronous JSON string like
-   {"ok":true,"started":true,"session_id":"..."} the instant
-   the ad STARTS loading/showing — long before the user has
-   actually watched or completed it.
-
-   The real outcome arrives later, asynchronously, through
-   these JS callbacks that the native layer calls via
-   webView.evaluateJavascript(...):
-
-     window.TaskEarnNativeAdLoading(true)
-     window.TaskEarnNativeAdReady(true)
-     window.TaskEarnNativeAdStarted(true)
-     window.TaskEarnNativeAdShown(true)
-     window.TaskEarnNativeRewardEarned({ earned, reward_item_amount, ... })
-     window.TaskEarnNativeAdCompleted(true|false)   <-- fires on dismiss
-     window.TaskEarnNativeAdError("message")
-
-   Previously this bridge just awaited the synchronous
-   "started" response and treated it as the finished result,
-   so ad-revenue-finalize was called before the ad was even
-   watched — this is exactly what produced
-   "The advertisement could not be verified."
-
-   Fixed version below: showRewardedAd() returns a Promise
-   that only resolves once TaskEarnNativeAdCompleted(true)
-   (backed by TaskEarnNativeRewardEarned data) actually
-   fires, and rejects on AdError / AdCompleted(false) / a
-   safety timeout.
+   NATIVE AD BRIDGE INTEGRATION
 ========================================================= */
 
 let pendingAdResolve = null;
@@ -6016,706 +4195,239 @@ let pendingRewardData = null;
 let pendingAdTimeoutId = null;
 
 function clearPendingAdHandlers(){
-
   pendingAdResolve = null;
   pendingAdReject = null;
   pendingRewardData = null;
-
   if(pendingAdTimeoutId){
     clearTimeout(pendingAdTimeoutId);
     pendingAdTimeoutId = null;
   }
-
 }
 
-
-/*
-  Native -> JS callbacks.
-  These are called by TaskEarnBridge.java via
-  webView.evaluateJavascript("window.<name>(...)").
-*/
-
 window.TaskEarnNativeAdLoading = function(){};
-
 window.TaskEarnNativeAdReady = function(){};
+window.TaskEarnNativeAdStarted = function(){};
+window.TaskEarnNativeAdShown = function(){};
 
-window.TaskEarnNativeAdStarted = function(){
-
-  console.log(
-    "TaskEarn: native ad started"
-  );
-
-};
-
-window.TaskEarnNativeAdShown = function(){
-
-  console.log(
-    "TaskEarn: native ad shown"
-  );
-
-};
-
-window.TaskEarnNativeRewardEarned = function(
-  data
-){
-
+window.TaskEarnNativeRewardEarned = function(data){
   try{
-
-    pendingRewardData =
-      typeof data === "string"
-        ? JSON.parse(data)
-        : data;
-
+    pendingRewardData = typeof data === "string" ? JSON.parse(data) : data;
   }catch(error){
-
-    pendingRewardData = {
-      earned:true
-    };
-
+    pendingRewardData = { earned:true };
   }
-
 };
 
-window.TaskEarnNativeAdCompleted = function(
-  rewardEarnedFlag
-){
-
-  const earned =
-    rewardEarnedFlag === true ||
-    rewardEarnedFlag === "true";
-
-
+window.TaskEarnNativeAdCompleted = function(rewardEarnedFlag){
+  const earned = rewardEarnedFlag === true || rewardEarnedFlag === "true";
   const resolve = pendingAdResolve;
   const reject = pendingAdReject;
   const rewardData = pendingRewardData;
 
   clearPendingAdHandlers();
 
-
-  if(!resolve && !reject){
-    /*
-      No pending watchVerifiedAd() call is waiting
-      (stray or duplicate native callback). Ignore.
-    */
-    return;
-  }
-
+  if(!resolve && !reject) return;
 
   if(earned){
-
-    resolve(
-      rewardData || { earned:true }
-    );
-
+    resolve(rewardData || { earned:true });
   }else{
-
-    reject(
-      new Error("AD_NOT_COMPLETED")
-    );
-
+    reject(new Error("AD_CANCELLED: Ad dekhne ke dauran cancel kar diya gaya."));
   }
-
 };
 
-window.TaskEarnNativeAdError = function(
-  message
-){
-
+window.TaskEarnNativeAdError = function(message){
   const reject = pendingAdReject;
-
   clearPendingAdHandlers();
-
-
   if(reject){
-
-    reject(
-      new Error(
-        message || "AD_NATIVE_ERROR"
-      )
-    );
-
+    reject(new Error(message || "AD_NATIVE_PLAYBACK_ERROR"));
   }
-
 };
 
-
-/*
-  Maximum time to wait for a real completion/error
-  callback after the ad is asked to start. Prevents the
-  UI from hanging forever if the native layer never
-  calls back (e.g. WebView bridge lost, app backgrounded).
-*/
-
-const AD_COMPLETION_TIMEOUT_MS =
-  180000; // 3 minutes
-
+const AD_COMPLETION_TIMEOUT_MS = 180000;
 
 window.TaskEarnAdBridge = {
-
-  showRewardedAd(
-    adSession
-  ){
-
-    return new Promise(
-      (resolve, reject) => {
-
-        if(
-
-          !window.AndroidTaskEarnAds
-
-          ||
-
-          typeof
-          window.AndroidTaskEarnAds
-            .showRewardedAd
-          !==
-          "function"
-
-        ){
-
-          reject(
-            new Error(
-              "AD_PROVIDER_NOT_CONFIGURED"
-            )
-          );
-
-          return;
-
-        }
-
-
-        if(pendingAdResolve || pendingAdReject){
-
-          reject(
-            new Error(
-              "AD_ALREADY_IN_PROGRESS"
-            )
-          );
-
-          return;
-
-        }
-
-
-        pendingAdResolve = resolve;
-        pendingAdReject = reject;
-        pendingRewardData = null;
-
-
-        pendingAdTimeoutId =
-          setTimeout(
-            () => {
-
-              const timeoutReject =
-                pendingAdReject;
-
-              clearPendingAdHandlers();
-
-              if(timeoutReject){
-
-                timeoutReject(
-                  new Error("AD_TIMEOUT")
-                );
-
-              }
-
-            },
-            AD_COMPLETION_TIMEOUT_MS
-          );
-
-
-        /*
-          This call only STARTS the native ad flow.
-          It resolves synchronously with a "started" ack —
-          NOT the reward result. The real result comes
-          through the callbacks registered above.
-        */
-
-        let startAck = null;
-
-        try{
-
-          startAck =
-            window.AndroidTaskEarnAds
-              .showRewardedAd(
-
-                adSession.session_id,
-
-                adSession.nonce
-
-              );
-
-        }catch(error){
-
-          const startReject =
-            pendingAdReject;
-
-          clearPendingAdHandlers();
-
-          if(startReject){
-
-            startReject(
-              new Error(
-                "AD_NATIVE_CALL_FAILED"
-              )
-            );
-
-          }
-
-          return;
-
-        }
-
-
-        try{
-
-          const parsedAck =
-            typeof startAck === "string"
-              ? JSON.parse(startAck)
-              : startAck;
-
-
-          if(
-            parsedAck &&
-            parsedAck.ok === false
-          ){
-
-            const startFailReject =
-              pendingAdReject;
-
-            clearPendingAdHandlers();
-
-            if(startFailReject){
-
-              startFailReject(
-                new Error(
-                  parsedAck.error ||
-                  "AD_START_FAILED"
-                )
-              );
-
-            }
-
-          }
-
-          /*
-            If ok === true / started === true, do
-            nothing further here — wait for the
-            native completion callback.
-          */
-
-        }catch(error){
-
-          /*
-            Ack wasn't parseable JSON. Non-fatal —
-            still wait for the real completion
-            callback rather than failing the flow.
-          */
-
-        }
-
+  showRewardedAd(adSession){
+    return new Promise((resolve, reject) => {
+      if(!window.AndroidTaskEarnAds || typeof window.AndroidTaskEarnAds.showRewardedAd !== "function"){
+        reject(new Error("[STAGE 2 FAIL] BRIDGE_MISSING: Android WebView me 'AndroidTaskEarnAds' bridge connect nahi hai."));
+        return;
       }
-    );
 
+      if(pendingAdResolve || pendingAdReject){
+        reject(new Error("[STAGE 2 FAIL] AD_IN_PROGRESS: Pehle se ek ad process ho raha hai."));
+        return;
+      }
+
+      pendingAdResolve = resolve;
+      pendingAdReject = reject;
+      pendingRewardData = null;
+
+      pendingAdTimeoutId = setTimeout(() => {
+        const timeoutReject = pendingAdReject;
+        clearPendingAdHandlers();
+        if(timeoutReject){
+          timeoutReject(new Error("[STAGE 3 FAIL] AD_TIMEOUT: Ad playback start hone me time out ho gaya."));
+        }
+      }, AD_COMPLETION_TIMEOUT_MS);
+
+      let startAck = null;
+      try{
+        startAck = window.AndroidTaskEarnAds.showRewardedAd(
+          adSession.session_id,
+          adSession.nonce
+        );
+      }catch(error){
+        const startReject = pendingAdReject;
+        clearPendingAdHandlers();
+        if(startReject){
+          startReject(new Error(`[STAGE 2 FAIL] BRIDGE_CALL_CRASH: ${error.message}`));
+        }
+        return;
+      }
+
+      try{
+        if (startAck) {
+          const parsedAck = typeof startAck === "string" ? JSON.parse(startAck) : startAck;
+          if(parsedAck && parsedAck.ok === false){
+            const startFailReject = pendingAdReject;
+            clearPendingAdHandlers();
+            if(startFailReject){
+              startFailReject(new Error(`[STAGE 3 FAIL] AD_START_REJECTED: ${parsedAck.error || "Launch rejected"}`));
+            }
+          }
+        }
+      }catch(error){}
+    });
   }
-
 };
-
 
 
 /* =========================================================
    FINALIZE WITH RETRY
-
-   AdMob's SSV callback can arrive a few seconds after
-   onUserEarnedReward fires on-device (network round trip
-   to Google, then to ad-revenue-ssv). If ad-revenue-finalize
-   is called the instant the ad closes, the verified
-   ad_revenue_events row may not exist yet on the backend.
-
-   This retries finalize a few times with a short delay
-   ONLY when the backend reports the event isn't verified
-   yet — any other error (auth, session, etc.) fails fast.
-
-   ad-revenue-finalize should return / throw an error code
-   the frontend recognises as "not yet verified" — the
-   matches below cover the common namings. Adjust the
-   substrings here to match whatever the Edge Function
-   actually returns if it differs.
 ========================================================= */
 
-const FINALIZE_RETRY_ATTEMPTS = 6;
-
+const FINALIZE_RETRY_ATTEMPTS = 5;
 const FINALIZE_RETRY_DELAY_MS = 2500;
 
-
-function isRetryableFinalizeError(
-  message
-){
-
-  const text =
-    String(
-      message || ""
-    ).toUpperCase();
-
-
+function isRetryableFinalizeError(message){
+  const text = String(message || "").toUpperCase();
   return (
-
-    text.includes("NOT_VERIFIED")
-
-    ||
-
-    text.includes("NOT_FOUND")
-
-    ||
-
-    text.includes("PENDING")
-
-    ||
-
-    text.includes("SSV")
-
-    ||
-
-    text.includes("AWAITING")
-
-    ||
-
+    text.includes("NOT_VERIFIED") ||
+    text.includes("NOT_FOUND") ||
+    text.includes("PENDING") ||
+    text.includes("SSV") ||
+    text.includes("AWAITING") ||
     text.includes("RETRY")
-
   );
-
 }
 
-
-async function finalizeWithRetry(
-  sessionId,
-  providerResult
-){
-
+async function finalizeWithRetry(sessionId, providerResult){
   let lastError = null;
 
-
-  for(
-
-    let attempt = 0;
-
-    attempt < FINALIZE_RETRY_ATTEMPTS;
-
-    attempt++
-
-  ){
-
+  for(let attempt = 0; attempt < FINALIZE_RETRY_ATTEMPTS; attempt++){
     try{
-
-      return await secureFetch(
-        AD_FINALIZE_FUNCTION,
-        {
-
-          session_id:
-            sessionId,
-
-          provider_event_id:
-            providerResult?.provider_event_id ||
-            null,
-
-          completion_token:
-            providerResult?.completion_token ||
-            null
-
-        }
-      );
-
+      return await secureFetch(AD_FINALIZE_FUNCTION, {
+        session_id: sessionId,
+        provider_event_id: providerResult?.provider_event_id || null,
+        completion_token: providerResult?.completion_token || null
+      });
     }catch(error){
-
       lastError = error;
-
-
-      const retryable =
-        isRetryableFinalizeError(
-          error.message
-        );
-
-
-      const isLastAttempt =
-        attempt ===
-        FINALIZE_RETRY_ATTEMPTS - 1;
-
+      const retryable = isRetryableFinalizeError(error.message);
+      const isLastAttempt = (attempt === FINALIZE_RETRY_ATTEMPTS - 1);
 
       if(!retryable || isLastAttempt){
-
         throw error;
-
       }
 
-
-      showToast(
-        "Verifying with AdMob... please wait.",
-        ""
-      );
-
-
-      await new Promise(
-        resolve =>
-          setTimeout(
-            resolve,
-            FINALIZE_RETRY_DELAY_MS
-          )
-      );
-
+      showToast(`[STAGE 5] AdMob SSV sync ho raha hai (${attempt+1}/${FINALIZE_RETRY_ATTEMPTS})...`, "warning");
+      await new Promise(resolve => setTimeout(resolve, FINALIZE_RETRY_DELAY_MS));
     }
-
   }
 
-
-  throw (
-    lastError ||
-    new Error("AD_REVENUE_FINALIZE_FAILED")
-  );
-
+  throw (lastError || new Error("[STAGE 5 FAIL] AD_REVENUE_FINALIZE_TIMEOUT: Server ne reward verify nahi kiya."));
 }
-
 
 
 /* =========================================================
-   WATCH VERIFIED AD
+   WATCH VERIFIED AD (STEP-BY-STEP TRACKER WITH RACE GUARD)
 ========================================================= */
 
 async function watchVerifiedAd(){
+  if (isWatchActionActive) return;
+  isWatchActionActive = true;
 
   await authReadyPromise;
 
-
-  const button =
-    $("watchAdButton");
-
-
-  const text =
-    $("watchAdText");
-
+  const button = $("watchAdButton");
+  const text = $("watchAdText");
 
   if(!currentUser){
-
-    showToast(
-      "Please login first to watch rewarded ads.",
-      "error"
-    );
-
+    isWatchActionActive = false;
+    showToast("[STAGE 1 FAIL] User Login nahi hai. Pehle login karein.", "error");
     return;
-
   }
 
-
-  button.disabled =
-    true;
-
-
-  text.innerHTML =
-    `<span class="spin"></span>`;
-
+  button.disabled = true;
+  text.innerHTML = `<span class="spin"></span>`;
 
   try{
-
-    /*
-      STEP 1
-      Create secure session.
-    */
-
-    const adSession =
-      await createAdSession();
-
-
-    if(
-      !adSession ||
-      !adSession.session_id ||
-      !adSession.nonce
-    ){
-
-      throw new Error(
-        "AD_SESSION_FAILED"
-      );
-
+    if(window.AndroidTaskEarnAds && typeof window.AndroidTaskEarnAds.isRewardedAdReady === "function"){
+      const isReady = window.AndroidTaskEarnAds.isRewardedAdReady();
+      if(!isReady){
+        window.AndroidTaskEarnAds.loadRewardedAd();
+        showToast("[STAGE 2] AdMob ad RAM me buffer ho rahi hai. 5-10 sec me dobara tap karein.", "warning");
+      }
     }
 
+    let adSession;
+    try {
+      adSession = await createAdSession();
+    } catch(sessionErr) {
+      throw new Error(`[STAGE 3 FAIL] SESSION_CREATE_ERROR: ${sessionErr.message}`);
+    }
 
-    /*
-      STEP 2
-      Show actual rewarded advertisement.
+    if(!adSession || !adSession.session_id || !adSession.nonce){
+      throw new Error("[STAGE 3 FAIL] SESSION_EMPTY: Backend se session_id ya nonce gayab hai.");
+    }
 
-      This now genuinely waits for the native
-      TaskEarnNativeAdCompleted(true) callback —
-      i.e. the user actually watched and completed
-      the ad — before resolving. It does NOT resolve
-      on the synchronous "started" ack.
-    */
+    showToast("[STAGE 4] Ad open ho raha hai...", "success");
+    const providerResult = await window.TaskEarnAdBridge.showRewardedAd(adSession);
 
-    const providerResult =
-      await
-      window.TaskEarnAdBridge
-        .showRewardedAd(
-          adSession
-        );
+    showToast("[STAGE 5] Ad completed! Backend me reconcile ho raha hai...", "warning");
+    const result = await finalizeWithRetry(adSession.session_id, providerResult);
 
-
-    /*
-      STEP 3
-      Verify with backend.
-
-      Retries a few times if the backend hasn't
-      reconciled the AdMob SSV callback yet.
-    */
-
-    const result =
-      await finalizeWithRetry(
-        adSession.session_id,
-        providerResult
-      );
-
-
-    if(
-      result.status ===
-      "verified"
-    ){
-
-      showToast(
-        "Ad verified. Revenue is now being processed.",
-        "success"
-      );
-
+    if(result.status === "verified"){
+      showToast("Ad verified! Earning account me add ho gayi.", "success");
     }else{
-
-      showToast(
-        "Ad completed. Provider settlement is pending.",
-        ""
-      );
-
+      showToast("Ad completed. Provider settlement status pending hai.", "");
     }
-
 
     await Promise.all([
       loadAdRevenue(),
       loadCollectState()
     ]);
 
-
   }catch(error){
+    console.error("Watch Ad Flow Tracker:", error);
 
-    console.error(
-      "Watch Ad:",
-      error
-    );
+    const rawMessage = String(error.message || "");
 
-
-    const message =
-      String(
-        error.message || ""
-      );
-
-
-    if(
-      message ===
-      "AD_PROVIDER_NOT_CONFIGURED"
-    ){
-
-      showToast(
-        "Rewarded ad provider is not connected yet.",
-        "error"
-      );
-
-    }else if(
-      message ===
-      "AD_SESSION_FAILED"
-    ){
-
-      showToast(
-        "Secure ad session could not be created.",
-        "error"
-      );
-
-    }else if(
-      message ===
-      "SESSION_NOT_FOUND"
-    ){
-
-      showToast(
-        "Login session expired. Please login again.",
-        "error"
-      );
-
-    }else if(
-      message ===
-      "USER_NOT_AUTHENTICATED"
-    ){
-
-      showToast(
-        "Please login first.",
-        "error"
-      );
-
-    }else if(
-      message ===
-      "AD_NOT_COMPLETED"
-    ){
-
-      showToast(
-        "Ad was closed before it finished. No reward was earned.",
-        "error"
-      );
-
-    }else if(
-      message ===
-      "AD_TIMEOUT"
-    ){
-
-      showToast(
-        "Ad did not report completion in time. Please try again.",
-        "error"
-      );
-
-    }else if(
-      message ===
-      "AD_ALREADY_IN_PROGRESS"
-    ){
-
-      showToast(
-        "An ad is already in progress.",
-        "error"
-      );
-
-    }else if(
-      message ===
-      "AD_NATIVE_CALL_FAILED"
-      ||
-      message ===
-      "AD_START_FAILED"
-    ){
-
-      showToast(
-        "The ad could not be started. Please try again.",
-        "error"
-      );
-
+    if(rawMessage.includes("AUTH_TOKEN_MISSING") || rawMessage.includes("401")){
+      showToast(`[AUTH ERROR]: Login session expire ho gaya. Logout karke fresh login karo.`, "error");
+    }else if(rawMessage.includes("not ready") || rawMessage.includes("Rewarded ad is not ready")){
+      showToast(`[ADMOB BUFFER]: Ad unit abhi background me load ho raha hai. 10 sec wait karke dabao.`, "warning");
+    }else if(rawMessage.includes("violates check constraint")){
+      showToast(`[DB CONSTRAINT ERROR]: Table constraint me status fail hua.`, "error");
     }else{
-
-      showToast(
-        "The advertisement could not be verified.",
-        "error"
-      );
-
+      showToast(rawMessage, "error");
     }
 
   }finally{
-
-    button.disabled =
-      false;
-
-
-    text.textContent =
-      "Watch Eligible Ad";
-
+    button.disabled = false;
+    text.textContent = "Watch Eligible Ad";
+    isWatchActionActive = false;
   }
-
 }
-
 
 
 /* =========================================================
@@ -6723,378 +4435,109 @@ async function watchVerifiedAd(){
 ========================================================= */
 
 async function collectMonthlyBucket(){
+  if (isCollectActionActive) return;
+  isCollectActionActive = true;
 
   await authReadyPromise;
 
-
   if(!currentUser){
-
-    showToast(
-      "Please login first.",
-      "error"
-    );
-
+    isCollectActionActive = false;
+    showToast("Please login first.", "error");
     return;
-
   }
-
 
   if(!selectedBucketId){
-
-    showToast(
-      "No collectible monthly bucket is available.",
-      "error"
-    );
-
+    isCollectActionActive = false;
+    showToast("No collectible monthly bucket is available.", "error");
     return;
-
   }
 
-
-  const button =
-    $("monthlyCollectButton");
-
-
-  if(button.disabled){
-
+  const button = $("monthlyCollectButton");
+  if(button.disabled) {
+    isCollectActionActive = false;
     return;
-
   }
 
-
-  button.disabled =
-    true;
-
-
-  button.innerHTML =
-    `<span class="spin"></span>`;
-
+  button.disabled = true;
+  button.innerHTML = `<span class="spin"></span>`;
 
   try{
+    const result = await secureFetch(AD_COLLECT_FUNCTION, {
+      bucket_id: selectedBucketId
+    });
 
-    /*
-      IMPORTANT:
-
-      Only bucket_id is sent.
-
-      The browser NEVER sends:
-      - amount
-      - reward
-      - gross revenue
-      - wallet credit
-
-      Backend must calculate and lock the exact amount.
-    */
-
-    const result =
-      await secureFetch(
-        AD_COLLECT_FUNCTION,
-        {
-          bucket_id:
-            selectedBucketId
-        }
-      );
-
-
-    if(
-      result.status ===
-      "collected"
-    ){
-
-      showToast(
-        `${money(
-          result.amount
-        )} collection request created successfully.`,
-        "success"
-      );
-
-    }else if(
-      result.status ===
-      "pending"
-    ){
-
-      showToast(
-        "Your collection request is now processing.",
-        "success"
-      );
-
-    }else if(
-      result.status ===
-      "already_requested"
-    ){
-
-      showToast(
-        "A collection request already exists for this monthly bucket.",
-        ""
-      );
-
-    }else if(
-      result.status ===
-      "already_paid"
-    ){
-
-      showToast(
-        "This monthly bucket has already been collected.",
-        ""
-      );
-
+    if(result.status === "collected"){
+      showToast(`${money(result.amount)} collection request created successfully.`, "success");
+    }else if(result.status === "pending"){
+      showToast("Your collection request is now processing.", "success");
+    }else if(result.status === "already_requested"){
+      showToast("A collection request already exists for this monthly bucket.", "");
+    }else if(result.status === "already_paid"){
+      showToast("This monthly bucket has already been collected.", "");
     }else{
-
-      showToast(
-        "Collection status updated.",
-        ""
-      );
-
+      showToast("Collection status updated.", "");
     }
-
-
-    /*
-      Always reload from secure backend.
-
-      Do not assume that clicking the button means
-      wallet credit has already happened.
-    */
 
     await loadCollectState();
-
     await loadAdRevenue();
-
-
   }catch(error){
-
-    console.error(
-      "Collect:",
-      error
-    );
-
-
-    const message =
-      String(
-        error.message || ""
-      );
-
-
-    if(
-      message ===
-      "SESSION_NOT_FOUND"
-    ){
-
-      showToast(
-        "Login session expired. Please login again.",
-        "error"
-      );
-
-    }else if(
-      message.includes(
-        "WINDOW_CLOSED"
-      )
-    ){
-
-      showToast(
-        "The collection window is closed or payment confirmation is still pending.",
-        "error"
-      );
-
-
-    }else if(
-      message.includes(
-        "ALREADY"
-      )
-    ){
-
-      showToast(
-        "This monthly earning has already been requested.",
-        ""
-      );
-
-
-    }else if(
-      message.includes(
-        "NOT_ELIGIBLE"
-      )
-    ){
-
-      showToast(
-        "This amount is not currently eligible for collection.",
-        "error"
-      );
-
-
-    }else{
-
-      showToast(
-        "Collection could not be completed.",
-        "error"
-      );
-
-    }
-
+    console.error("Collect Error:", error);
+    showToast(error.message || "Collection could not be completed.", "error");
   }finally{
-
-    /*
-      Backend state decides whether it should be enabled
-      again. Reload state before enabling manually.
-    */
-
-    setTimeout(
-      () => {
-
-        if(
-          !collectState?.active_request
-        ){
-
-          renderMonthlyState();
-
-        }
-
-      },
-      300
-    );
-
+    button.disabled = false;
+    isCollectActionActive = false;
+    setTimeout(() => {
+      if(!collectState?.active_request){
+        renderMonthlyState();
+      }
+    }, 300);
   }
-
 }
 
 
-
 /* =========================================================
-   BACK BUTTON
+   EVENT LISTENERS
 ========================================================= */
 
-$("backButton")
-  .addEventListener(
-    "click",
-    function(){
+$("backButton").addEventListener("click", () => {
+  clearAllTimers();
+  window.location.href = "home.html";
+});
 
-      /*
-        ONLY manual Back goes Home.
+$("watchAdButton").addEventListener("click", watchVerifiedAd);
+$("monthlyCollectButton").addEventListener("click", collectMonthlyBucket);
 
-        No automatic login redirect.
-        No automatic home redirect.
-      */
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  currentUser = session?.user || null;
+  currentToken = session?.access_token || null;
 
-      window.location.href =
-        "home.html";
-
-    }
-  );
-
-
-
-/* =========================================================
-   WATCH BUTTON
-========================================================= */
-
-$("watchAdButton")
-  .addEventListener(
-    "click",
-    watchVerifiedAd
-  );
-
-
-
-/* =========================================================
-   COLLECT BUTTON
-========================================================= */
-
-$("monthlyCollectButton")
-  .addEventListener(
-    "click",
-    collectMonthlyBucket
-  );
-
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-supabaseClient
-  .auth
-  .onAuthStateChange(
-    (event, session) => {
-
-      console.log(
-        "TaskEarn Auth Event:",
-        event
-      );
-
-
-      currentUser =
-        session?.user || null;
-
-
-      /*
-        IMPORTANT:
-
-        Never redirect automatically.
-      */
-
-      if(currentUser){
-
-        setTimeout(
-          async () => {
-
-            await loadAdRevenue();
-
-            await loadCollectState();
-
-          },
-          0
-        );
-
-      }else{
-
-        renderEmptyData();
-
-      }
-
-    }
-  );
-
-
-
-/* =========================================================
-   PAGE START
-========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  async function(){
-
-    /*
-      Initialise authentication first.
-    */
-
-    await loadCurrentSession();
-
-
-    /*
-      Detect possible ad blocking.
-    */
-
-    await detectAdBlocker();
-
-
-    /*
-      NO LOGIN REDIRECT.
-      NO HOME REDIRECT.
-    */
-
-    if(currentUser){
-
+  if(currentUser){
+    setTimeout(async () => {
       await loadAdRevenue();
-
       await loadCollectState();
-
-    }else{
-
-      renderEmptyData();
-
-    }
-
+    }, 0);
+  }else{
+    renderEmptyData();
   }
-);
+});
+
+document.addEventListener("DOMContentLoaded", async function(){
+  await loadCurrentSession();
+  await detectAdBlocker();
+
+  if(window.AndroidTaskEarnAds && typeof window.AndroidTaskEarnAds.loadRewardedAd === "function"){
+    try{
+      window.AndroidTaskEarnAds.loadRewardedAd();
+    }catch(e){}
+  }
+
+  if(currentUser){
+    await loadAdRevenue();
+    await loadCollectState();
+  }else{
+    renderEmptyData();
+  }
+});
 
 </script>
 
