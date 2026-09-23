@@ -2127,8 +2127,8 @@ async function loadWallet(){
         error
     } =
     await supabaseClient
-        .from("user_wallets")
-        .select("balance")
+        .from("wallet_balances")
+        .select("*")
         .eq(
             "user_id",
             currentUser.id
@@ -2139,7 +2139,7 @@ async function loadWallet(){
     if(error){
 
         console.error(
-            "user_wallets:",
+            "wallet_balances:",
             error
         );
 
@@ -2152,7 +2152,7 @@ async function loadWallet(){
         Math.max(
             0,
             Number(
-                data?.balance || 0
+                data?.balance ?? data?.wallet_balance ?? 0
             )
         );
 
