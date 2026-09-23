@@ -3655,31 +3655,88 @@ async function loadHome(){
 
   try{
 
+    /*
+     * CANONICAL WALLET SOURCE:
+     * wallet_balances is the read-only balance view.
+     * The wallet ledger is wallet_transactions.
+     */
+
     const walletResult =
       await supabaseClient
-        .from("user_wallets")
-        .select(
-          "balance,total_earned"
-        )
+        .from("wallet_balances")
+        .select("*")
         .eq(
           "user_id",
           user.id
         )
         .maybeSingle();
 
-    if(!walletResult.error){
+
+    if(walletResult.error){
+
+      console.error(
+        "Wallet balance view error:",
+        walletResult.error
+      );
+
+    }else{
 
       const balance =
         Number(
-          walletResult.data?.balance ||
+          walletResult.data?.balance ??
+          walletResult.data?.wallet_balance ??
           0
         );
 
-      const totalEarned =
-        Number(
-          walletResult.data?.total_earned ||
-          0
+      /*
+       * Calculate total earned from the canonical ledger.
+       * This avoids depending on the removed legacy
+       * user_wallets table.
+       */
+
+      let totalEarned = Number(
+        walletResult.data?.total_earned ??
+        walletResult.data?.earned ??
+        0
+      );
+
+      const ledgerResult =
+        await supabaseClient
+          .from("wallet_transactions")
+          .select("amount")
+          .eq(
+            "user_id",
+            user.id
+          );
+
+      if(
+        !ledgerResult.error &&
+        Array.isArray(ledgerResult.data)
+      ){
+
+        totalEarned = 0;
+
+        ledgerResult.data.forEach(
+          row => {
+
+            const amount =
+              Number(
+                row?.amount || 0
+              );
+
+            if(
+              Number.isFinite(amount) &&
+              amount > 0
+            ){
+
+              totalEarned += amount;
+
+            }
+
+          }
         );
+
+      }
 
       const balanceElement =
         document.getElementById(
