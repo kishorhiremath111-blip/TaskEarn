@@ -7589,156 +7589,92 @@ async function loadAdminWalletTransactions(){
 
 /* ================= USER STATS ================= */
 
-async function loadUserStats(){
+async async function loadUserStats(){
 
   try{
 
-    const {
-      data,
-      error
-    } =
+    const { data, error } =
       await supabaseClient
-        .from(
-          "profiles"
-        )
+        .from("profiles")
         .select("*")
         .limit(10000);
 
+    if(error) throw error;
 
-    if(error){
+    const profiles = Array.isArray(data) ? data : [];
 
-      return;
-
-    }
-
-
-    const profiles =
-      data || [];
-
-
-    document.getElementById(
-      "registeredUsers"
-    ).textContent =
-      numberFormat(
-        profiles.length
-      );
-
+    document.getElementById("registeredUsers").textContent =
+      numberFormat(profiles.length);
 
     let active = 0;
     let activeTracked = false;
-
     let online = 0;
     let onlineTracked = false;
 
+    const now = Date.now();
 
-    const now =
-      Date.now();
+    profiles.forEach(profile => {
+      const activeValue =
+        profile.is_active ??
+        profile.active ??
+        (profile.status !== undefined
+          ? String(profile.status).toLowerCase() === "active"
+          : undefined);
 
-
-    profiles.forEach(
-      profile => {
-
-        if(
-          profile.is_active !== undefined ||
-          profile.active !== undefined ||
-          profile.status !== undefined
-        ){
-
-          activeTracked =
-            true;
-
-          if(
-            profile.is_active === true ||
-            profile.active === true ||
-            String(
-              profile.status || ""
-            ).toLowerCase() ===
-            "active"
-          ){
-
-            active++;
-
-          }
-
-        }
-
-
-        const lastSeen =
-          profile.last_seen ||
-          profile.last_active_at ||
-          profile.last_activity_at;
-
-
-        if(lastSeen){
-
-          onlineTracked =
-            true;
-
-
-          const t =
-            new Date(
-              lastSeen
-            ).getTime();
-
-
-          if(
-            !Number.isNaN(t) &&
-            now - t <=
-            5 * 60 * 1000
-          ){
-
-            online++;
-
-          }
-
-        }
-
+      if (activeValue !== undefined) {
+        activeTracked = true;
+        if (activeValue === true) active++;
       }
-    );
 
+      const lastSeen =
+        profile.last_seen ??
+        profile.last_active_at ??
+        profile.last_activity_at;
 
-    document.getElementById(
-      "activeUsers"
-    ).textContent =
-      activeTracked
-      ? numberFormat(active)
-      : "—";
+      if (lastSeen) {
+        onlineTracked = true;
+        const t = new Date(lastSeen).getTime();
+        if (Number.isFinite(t) && now - t <= 5 * 60 * 1000) {
+          online++;
+        }
+      }
+    });
 
+    document.getElementById("activeUsers").textContent =
+      activeTracked ? numberFormat(active) : "—";
+    document.getElementById("activeUsersNote").textContent =
+      activeTracked ? "Active accounts" : "Active status not tracked";
 
-    document.getElementById(
-      "activeUsersNote"
-    ).textContent =
-      activeTracked
-      ? "Active accounts"
-      : "Active status not tracked";
+    document.getElementById("onlineUsers").textContent =
+      onlineTracked ? numberFormat(online) : "—";
+    document.getElementById("onlineUsersNote").textContent =
+      onlineTracked ? "Seen within 5 minutes" : "Presence not tracked";
 
-
-    document.getElementById(
-      "onlineUsers"
-    ).textContent =
-      onlineTracked
-      ? numberFormat(online)
-      : "—";
-
-
-    document.getElementById(
-      "onlineUsersNote"
-    ).textContent =
-      onlineTracked
-      ? "Seen within 5 minutes"
-      : "Presence not tracked";
+    // Downloader count is intentionally not fabricated. The dashboard keeps
+    // the existing field and reports the missing event source explicitly.
+    document.getElementById("downloaders").textContent = "—";
+    document.getElementById("downloadersNote").textContent =
+      "Download event source not connected";
 
   }catch(error){
 
-    console.warn(
-      "User stats:",
-      error
-    );
+    console.warn("User stats:", error);
+
+    document.getElementById("registeredUsers").textContent = "—";
+    document.getElementById("activeUsers").textContent = "—";
+    document.getElementById("onlineUsers").textContent = "—";
+    document.getElementById("downloaders").textContent = "—";
+
+    document.getElementById("activeUsersNote").textContent =
+      "Data unavailable";
+    document.getElementById("onlineUsersNote").textContent =
+      "Data unavailable";
+    document.getElementById("downloadersNote").textContent =
+      "Data unavailable";
 
   }
 
 }
-
 
 /* ================= BACK ================= */
 
