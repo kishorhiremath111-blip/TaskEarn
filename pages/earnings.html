@@ -7358,95 +7358,50 @@ function renderTransactions(){
 
 function updateSummary(){
 
-  let approved = 0;
+  let taskRevenue = 0;
+  let projectRevenue = 0;
   let pending = 0;
   let completed = 0;
 
+  allTransactions.forEach(row => {
+    const amount = Number(row.normalizedAmount || 0);
 
-  allTransactions.forEach(
-    row => {
-
-      const amount =
-        Number(
-          row.normalizedAmount || 0
-        );
-
-
-      if(
-        row.normalizedStatus ===
-        "approved"
-      ){
-
-        approved += amount;
-        completed++;
-
-      }
-
-
-      if(
-        row.normalizedStatus ===
-        "pending"
-      ){
-
-        pending += amount;
-
-      }
-
+    if(row.normalizedStatus === "approved"){
+      completed++;
+      if(row.normalizedType === "project") projectRevenue += amount;
+      else taskRevenue += amount;
     }
-  );
 
+    if(row.normalizedStatus === "pending") pending += amount;
+  });
 
-  const businessRevenue =
-    approved +
-    Number(
-      adSummary.ownerShare || 0
-    );
+  // Keep the owner ad-share figure separate from user wallet accounting.
+  const ownerAdShare = Number(adSummary.ownerShare || 0);
+  const ownerTaskProjectRevenue = taskRevenue + projectRevenue;
+  const ownerTotalDisplayed = ownerTaskProjectRevenue + ownerAdShare;
+  const pendingTotal = pending + Number(adSummary.pending || 0);
 
+  document.getElementById("totalEarned").textContent =
+    money(ownerTotalDisplayed);
 
-  document.getElementById(
-    "totalEarned"
-  ).textContent =
-    money(
-      businessRevenue
-    );
+  document.getElementById("approvedAmount").textContent =
+    money(ownerTaskProjectRevenue);
 
+  document.getElementById("pendingAmount").textContent =
+    money(pendingTotal);
 
-  document.getElementById(
-    "approvedAmount"
-  ).textContent =
-    money(
-      businessRevenue
-    );
+  document.getElementById("completedCount").textContent =
+    numberFormat(completed);
 
+  document.getElementById("transactionCount").textContent =
+    numberFormat(allTransactions.length);
 
-  document.getElementById(
-    "pendingAmount"
-  ).textContent =
-    money(
-      pending +
-      Number(
-        adSummary.pending || 0
-      )
-    );
-
-
-  document.getElementById(
-    "completedCount"
-  ).textContent =
-    numberFormat(
-      completed
-    );
-
-
-  document.getElementById(
-    "transactionCount"
-  ).textContent =
-    numberFormat(
-      allTransactions.length
-    );
-
+  // Existing dashboard cards; use the same canonical task/project ledger data.
+  const projectEl = document.getElementById("ownerProjectRevenue");
+  const taskEl = document.getElementById("ownerTaskRevenue");
+  if(projectEl) projectEl.textContent = money(projectRevenue);
+  if(taskEl) taskEl.textContent = money(taskRevenue);
 }
-
 
 /* ================= WALLET HISTORY ================= */
 
