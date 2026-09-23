@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+>
+
+<meta name="theme-color" content="#05080d">
+
 <title>TaskEarn — Owner Earnings</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,18 +24,21 @@
 :root{
   --bg:#05080d;
   --bg2:#09101a;
-  --card:rgba(16,24,38,.84);
-  --card2:rgba(20,29,45,.94);
+  --card:rgba(15,23,37,.88);
+  --card2:rgba(19,29,46,.96);
   --line:rgba(255,255,255,.09);
-  --text:#f5f8fc;
+
+  --text:#ffffff;
   --muted:#8d99aa;
+
   --cyan:#56e6ff;
   --violet:#8d7cff;
   --gold:#e7c77a;
   --green:#5ee7a3;
   --red:#ff7184;
   --orange:#ffb86b;
-  --shadow:0 20px 60px rgba(0,0,0,.42);
+
+  --shadow:0 22px 65px rgba(0,0,0,.42);
 }
 
 html{
@@ -37,13 +47,41 @@ html{
 
 body{
   min-height:100vh;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--text);
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
   background:
-    radial-gradient(circle at 10% 0%,rgba(86,230,255,.10),transparent 28%),
-    radial-gradient(circle at 90% 8%,rgba(141,124,255,.13),transparent 30%),
-    linear-gradient(145deg,#04070b,#09111c 52%,#05080d);
+    radial-gradient(
+      circle at 5% 0%,
+      rgba(86,230,255,.10),
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 95% 8%,
+      rgba(141,124,255,.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #04070b,
+      #09111c 52%,
+      #05080d
+    );
+
   overflow-x:hidden;
+}
+
+button,
+input,
+select{
+  font-family:inherit;
 }
 
 button,
@@ -51,38 +89,62 @@ a{
   -webkit-tap-highlight-color:transparent;
 }
 
+button{
+  cursor:pointer;
+}
+
 a{
   color:inherit;
   text-decoration:none;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 .header{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:100;
+
   height:70px;
+
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:0 15px;
-  background:rgba(5,8,13,.86);
+  gap:9px;
+
+  padding:0 12px;
+
+  background:rgba(5,8,13,.90);
   backdrop-filter:blur(22px);
+
   border-bottom:1px solid var(--line);
 }
 
-.icon-btn{
-  width:42px;
-  height:42px;
-  border:1px solid var(--line);
+.icon-btn,
+.refresh-btn{
+  width:43px;
+  height:43px;
+
+  flex-shrink:0;
+
   border-radius:14px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   background:rgba(255,255,255,.035);
   color:#fff;
-  cursor:pointer;
+
+  border:1px solid var(--line);
+}
+
+.refresh-btn{
+  color:var(--cyan);
+  border-color:rgba(86,230,255,.18);
+}
+
+.refresh-btn.loading svg{
+  animation:spin .7s linear infinite;
 }
 
 .title-box{
@@ -91,69 +153,64 @@ a{
 }
 
 .title{
-  font-size:18px;
-  font-weight:850;
-  letter-spacing:-.3px;
+  font-size:17px;
+  font-weight:950;
+  letter-spacing:-.4px;
 }
 
 .subtitle{
   margin-top:2px;
   color:var(--muted);
-  font-size:10px;
-}
-
-.refresh-btn{
-  width:42px;
-  height:42px;
-  border:1px solid rgba(86,230,255,.18);
-  border-radius:14px;
-  background:rgba(86,230,255,.045);
-  color:var(--cyan);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
-
-.refresh-btn.loading svg{
-  animation:spin .7s linear infinite;
+  font-size:9px;
 }
 
 .wallet-btn{
+  min-height:40px;
+
   display:flex;
   align-items:center;
-  gap:7px;
-  padding:10px 11px;
+  justify-content:center;
+
+  padding:0 12px;
+
   border-radius:13px;
+
   border:1px solid rgba(86,230,255,.18);
-  background:linear-gradient(
-    135deg,
-    rgba(86,230,255,.09),
-    rgba(141,124,255,.08)
-  );
-  color:#eafcff;
-  font-size:11px;
-  font-weight:750;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(86,230,255,.09),
+      rgba(141,124,255,.08)
+    );
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:900;
 }
 
-/* MAIN */
+/* ================= CONTAINER ================= */
 
 .container{
   width:min(760px,100%);
   margin:auto;
-  padding:17px 14px 50px;
-}
 
-/* OWNER */
+  padding:16px 13px 80px;
+}
 
 .owner-panel{
   display:flex;
   align-items:center;
-  gap:11px;
+  gap:10px;
+
   padding:12px 14px;
   margin-bottom:13px;
-  border:1px solid rgba(231,199,122,.20);
+
   border-radius:17px;
+
+  border:1px solid rgba(231,199,122,.18);
+
   background:
     linear-gradient(
       135deg,
@@ -165,10 +222,14 @@ a{
 .owner-dot{
   width:9px;
   height:9px;
+
   border-radius:50%;
+
   background:var(--gold);
-  box-shadow:0 0 15px rgba(231,199,122,.75);
-  flex-shrink:0;
+
+  box-shadow:
+    0 0 16px
+    rgba(231,199,122,.8);
 }
 
 .owner-text{
@@ -181,53 +242,364 @@ a{
   color:var(--gold);
 }
 
-/* HERO */
+  /* ================= ITNA PAY KARO ================= */
+
+.pay-now-card{
+  position:relative;
+  overflow:hidden;
+
+  margin:0 0 14px;
+  padding:20px;
+
+  border-radius:24px;
+
+  border:1px solid rgba(255,184,107,.34);
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(255,184,107,.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(141,124,255,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(43,30,22,.98),
+      rgba(15,18,28,.98)
+    );
+
+  box-shadow:
+    0 0 0 1px rgba(255,184,107,.04),
+    0 18px 55px rgba(0,0,0,.38),
+    0 0 45px rgba(255,184,107,.10);
+
+  animation:
+    payCardGlow 2.8s ease-in-out infinite;
+}
+
+.pay-now-card::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 15%,
+      rgba(255,255,255,.045) 48%,
+      transparent 62%
+    );
+
+  transform:translateX(-100%);
+
+  animation:
+    paySweep 5s ease-in-out infinite;
+}
+
+.pay-now-glow{
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  top:-100px;
+  right:-70px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,184,107,.28),
+      transparent 68%
+    );
+
+  filter:blur(8px);
+
+  pointer-events:none;
+}
+
+.pay-now-top{
+  position:relative;
+
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:10px;
+}
+
+.pay-now-eyebrow{
+  color:var(--orange);
+
+  font-size:8px;
+  font-weight:950;
+
+  letter-spacing:1.6px;
+}
+
+.pay-now-title{
+  margin-top:5px;
+
+  color:#fff;
+
+  font-size:19px;
+  font-weight:950;
+
+  letter-spacing:-.5px;
+}
+
+.pay-now-badge{
+  padding:7px 9px;
+
+  border-radius:10px;
+
+  color:#241507;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--orange),
+      #ffd19b
+    );
+
+  font-size:7px;
+  font-weight:950;
+
+  white-space:nowrap;
+
+  box-shadow:
+    0 0 18px
+    rgba(255,184,107,.25);
+}
+
+.pay-now-amount{
+  position:relative;
+
+  margin-top:14px;
+
+  color:#fff;
+
+  font-size:40px;
+  line-height:1;
+
+  font-weight:950;
+
+  letter-spacing:-1.8px;
+
+  text-shadow:
+    0 0 25px
+    rgba(255,184,107,.22);
+}
+
+.pay-now-sub{
+  position:relative;
+
+  margin-top:7px;
+
+  color:#a99d91;
+
+  font-size:9px;
+}
+
+.pay-now-line{
+  height:1px;
+
+  margin:16px 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,184,107,.28),
+      rgba(255,255,255,.06),
+      transparent
+    );
+}
+
+.pay-now-bottom{
+  position:relative;
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:10px;
+}
+
+.pay-now-mini-label{
+  color:#81786f;
+
+  font-size:8px;
+}
+
+.pay-now-mini-value{
+  margin-top:4px;
+
+  color:#fff;
+
+  font-size:16px;
+  font-weight:950;
+}
+
+.pay-now-status{
+  display:inline-flex;
+
+  margin-top:4px;
+
+  padding:5px 8px;
+
+  border-radius:8px;
+
+  color:var(--orange);
+
+  background:
+    rgba(255,184,107,.07);
+
+  border:
+    1px solid
+    rgba(255,184,107,.16);
+
+  font-size:7px;
+  font-weight:950;
+}
+
+.pay-now-button{
+  position:relative;
+
+  width:100%;
+
+  min-height:46px;
+
+  margin-top:16px;
+
+  border:0;
+
+  border-radius:13px;
+
+  color:#1b1005;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffb86b,
+      #ffe0b8
+    );
+
+  font-size:10px;
+
+  font-weight:950;
+
+  letter-spacing:.8px;
+
+  box-shadow:
+    0 10px 28px
+    rgba(255,184,107,.14);
+
+  transition:.2s ease;
+}
+
+.pay-now-button:active{
+  transform:scale(.985);
+}
+
+.pay-now-button:hover{
+  box-shadow:
+    0 0 28px
+    rgba(255,184,107,.22);
+}
+
+@keyframes payCardGlow{
+
+  0%,100%{
+    box-shadow:
+      0 0 0 1px rgba(255,184,107,.04),
+      0 18px 55px rgba(0,0,0,.38),
+      0 0 38px rgba(255,184,107,.07);
+  }
+
+  50%{
+    box-shadow:
+      0 0 0 1px rgba(255,184,107,.08),
+      0 18px 55px rgba(0,0,0,.38),
+      0 0 58px rgba(255,184,107,.16);
+  }
+
+}
+
+@keyframes paySweep{
+
+  0%,55%,100%{
+    transform:translateX(-100%);
+  }
+
+  72%{
+    transform:translateX(100%);
+  }
+
+                    }
+/* ================= HERO ================= */
 
 .hero{
   position:relative;
   overflow:hidden;
+
   padding:23px;
+
+  border-radius:27px;
+
   border:1px solid rgba(255,255,255,.10);
-  border-radius:26px;
+
   background:
     radial-gradient(
-      circle at 85% 15%,
+      circle at 90% 5%,
       rgba(86,230,255,.15),
-      transparent 29%
+      transparent 30%
     ),
     radial-gradient(
-      circle at 10% 100%,
+      circle at 5% 100%,
       rgba(141,124,255,.13),
-      transparent 34%
+      transparent 35%
     ),
     linear-gradient(
       145deg,
-      rgba(18,28,44,.96),
-      rgba(7,12,20,.97)
+      rgba(18,28,44,.97),
+      rgba(7,12,20,.98)
     );
+
   box-shadow:var(--shadow);
 }
 
 .eyebrow{
   color:var(--cyan);
   text-transform:uppercase;
-  letter-spacing:1.7px;
+  letter-spacing:1.8px;
   font-size:9px;
-  font-weight:850;
+  font-weight:900;
 }
 
 .total{
-  margin-top:7px;
+  margin-top:8px;
+
+  color:#fff;
+
   font-size:40px;
-  line-height:1.1;
+  line-height:1.05;
   font-weight:950;
   letter-spacing:-1.8px;
 }
 
 .total-label{
-  margin-top:5px;
+  margin-top:6px;
+
   color:var(--muted);
-  font-size:11px;
+  font-size:10px;
 }
 
 .hero-line{
@@ -249,53 +621,52 @@ a{
 
 .mini-value{
   margin-top:4px;
+
+  color:#fff;
+
   font-size:17px;
-  font-weight:850;
+  font-weight:900;
 }
 
-/* STATS */
+/* ================= STATS ================= */
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:9px;
-  margin-top:11px;
+  gap:8px;
+
+  margin-top:10px;
 }
 
 .stat-card{
-  min-height:91px;
-  padding:14px;
-  border:1px solid var(--line);
+  min-height:88px;
+
+  padding:13px;
+
   border-radius:18px;
+
+  border:1px solid var(--line);
+
   background:var(--card);
+
   box-shadow:0 12px 35px rgba(0,0,0,.18);
 }
 
 .stat-title{
   color:var(--muted);
   font-size:9px;
-  line-height:1.3;
 }
 
 .stat-value{
   margin-top:9px;
-  font-size:19px;
-  font-weight:900;
+
+  color:#fff;
+
+  font-size:18px;
+  font-weight:950;
 }
 
-.approved .stat-value{
-  color:var(--green);
-}
-
-.pending .stat-value{
-  color:var(--gold);
-}
-
-.completed .stat-value{
-  color:var(--cyan);
-}
-
-/* SECTION */
+/* ================= SECTIONS ================= */
 
 .section{
   margin-top:21px;
@@ -305,52 +676,819 @@ a{
   display:flex;
   align-items:end;
   justify-content:space-between;
+
   gap:10px;
+
   margin-bottom:10px;
 }
 
 .section-title{
+  color:#fff;
   font-size:15px;
-  font-weight:880;
+  font-weight:950;
 }
 
 .section-note{
   color:var(--muted);
+  font-size:8px;
+}
+
+/* ================= OWNER WALLET ================= */
+
+.owner-wallet{
+  position:relative;
+  overflow:hidden;
+
+  padding:20px;
+
+  border-radius:23px;
+
+  border:1px solid rgba(231,199,122,.18);
+
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(231,199,122,.13),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(27,28,35,.97),
+      rgba(7,12,19,.97)
+    );
+}
+
+.owner-wallet-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.owner-wallet-title{
+  color:#fff;
+  font-size:15px;
+  font-weight:950;
+}
+
+.owner-wallet-sub{
+  margin-top:3px;
+  color:var(--muted);
   font-size:9px;
 }
 
-/* LIVE STATS */
+.owner-wallet-status{
+  padding:6px 9px;
+
+  border-radius:9px;
+
+  color:var(--green);
+
+  background:rgba(94,231,163,.08);
+  border:1px solid rgba(94,231,163,.15);
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.owner-wallet-balance{
+  margin-top:15px;
+
+  color:#fff;
+
+  font-size:36px;
+  font-weight:950;
+  letter-spacing:-1.5px;
+}
+
+.owner-wallet-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+
+  margin-top:16px;
+}
+
+.owner-mini{
+  padding:13px;
+
+  border:1px solid var(--line);
+  border-radius:15px;
+
+  background:rgba(255,255,255,.025);
+}
+
+.owner-mini-label{
+  color:var(--muted);
+  font-size:8px;
+}
+
+.owner-mini-value{
+  margin-top:5px;
+
+  color:#fff;
+
+  font-size:16px;
+  font-weight:900;
+}
+
+.owner-wallet-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+
+  margin-top:16px;
+}
+
+/* ================= BUTTONS ================= */
+
+.action-btn{
+  min-height:44px;
+
+  padding:0 16px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:13px;
+
+  border:1px solid var(--line);
+
+  background:rgba(255,255,255,.04);
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:900;
+}
+
+.action-btn.primary{
+  border:0;
+
+  color:#041015;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      #9af3ff
+    );
+}
+
+.action-btn.gold{
+  border:0;
+
+  color:#171205;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold),
+      #f3dda0
+    );
+}
+
+.action-btn.danger{
+  border:0;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d94c65,
+      #ff7184
+    );
+}
+
+.action-btn:active{
+  transform:scale(.98);
+}
+
+/* ================= PAYMENT ACCOUNT ================= */
+
+.payment-card{
+  padding:19px;
+
+  border-radius:23px;
+
+  border:1px solid rgba(86,230,255,.15);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(86,230,255,.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(17,28,44,.97),
+      rgba(7,12,20,.97)
+    );
+}
+
+.payment-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.payment-title{
+  color:#fff;
+  font-size:15px;
+  font-weight:950;
+}
+
+.payment-badge{
+  padding:6px 9px;
+
+  border-radius:9px;
+
+  color:var(--green);
+
+  background:rgba(94,231,163,.08);
+
+  border:1px solid rgba(94,231,163,.15);
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.payment-layout{
+  display:grid;
+  grid-template-columns:145px 1fr;
+  gap:18px;
+
+  margin-top:18px;
+}
+
+.qr-box{
+  width:145px;
+  height:145px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+
+  border-radius:17px;
+
+  background:#fff;
+
+  border:4px solid rgba(255,255,255,.9);
+}
+
+.qr-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.qr-empty{
+  padding:12px;
+
+  color:#69727f;
+
+  text-align:center;
+
+  font-size:9px;
+  line-height:1.5;
+}
+
+.payment-info{
+  min-width:0;
+}
+
+.payment-row{
+  margin-bottom:12px;
+}
+
+.payment-label{
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.7px;
+}
+
+.payment-value{
+  margin-top:3px;
+
+  color:#fff;
+
+  font-size:11px;
+  font-weight:850;
+
+  word-break:break-word;
+}
+
+.payment-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+
+  margin-top:13px;
+}
+
+.small-btn{
+  min-height:36px;
+
+  padding:0 11px;
+
+  border-radius:11px;
+
+  border:1px solid var(--line);
+
+  background:rgba(255,255,255,.04);
+
+  color:#fff;
+
+  font-size:9px;
+  font-weight:850;
+}
+
+.small-btn.primary{
+  border:0;
+
+  color:#061016;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      #9af3ff
+    );
+}
+
+.method-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+
+  margin-top:15px;
+}
+
+.method-card{
+  padding:13px;
+
+  border:1px solid var(--line);
+  border-radius:15px;
+
+  background:rgba(255,255,255,.025);
+}
+
+.method-name{
+  color:var(--muted);
+  font-size:8px;
+  text-transform:uppercase;
+}
+
+.method-value{
+  margin-top:6px;
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:850;
+
+  word-break:break-word;
+}
+
+/* ================= USER REQUESTS ================= */
+
+.request-card{
+  position:relative;
+
+  padding:16px;
+
+  border:1px solid rgba(255,255,255,.09);
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,27,42,.94),
+      rgba(8,14,23,.96)
+    );
+
+  box-shadow:0 12px 40px rgba(0,0,0,.18);
+}
+
+.request-card + .request-card{
+  margin-top:10px;
+}
+
+.request-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:10px;
+}
+
+.request-user{
+  min-width:0;
+}
+
+.request-name{
+  color:#fff;
+
+  font-size:12px;
+  font-weight:950;
+
+  word-break:break-word;
+}
+
+.request-id{
+  margin-top:4px;
+
+  color:#677487;
+
+  font-size:7px;
+
+  word-break:break-all;
+}
+
+.request-amount{
+  color:#fff;
+
+  font-size:19px;
+  font-weight:950;
+
+  white-space:nowrap;
+}
+
+.request-method{
+  display:inline-flex;
+  align-items:center;
+
+  margin-top:12px;
+
+  padding:6px 9px;
+
+  border-radius:9px;
+
+  color:#fff;
+
+  background:rgba(86,230,255,.07);
+
+  border:1px solid rgba(86,230,255,.14);
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.request-destination{
+  margin-top:11px;
+
+  padding:12px;
+
+  border:1px solid var(--line);
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.025);
+}
+
+.destination-label{
+  color:var(--muted);
+
+  font-size:7px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.7px;
+}
+
+.destination-value{
+  margin-top:4px;
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:800;
+
+  word-break:break-word;
+}
+
+.verify-result{
+  display:none;
+
+  margin-top:10px;
+
+  padding:11px 12px;
+
+  border-radius:13px;
+
+  background:rgba(94,231,163,.055);
+
+  border:1px solid rgba(94,231,163,.14);
+}
+
+.verify-result.show{
+  display:block;
+}
+
+.verify-result.error{
+  background:rgba(255,113,132,.055);
+  border-color:rgba(255,113,132,.15);
+}
+
+.verify-title{
+  color:var(--green);
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.verify-result.error .verify-title{
+  color:var(--red);
+}
+
+.verify-name{
+  margin-top:4px;
+
+  color:#fff;
+
+  font-size:12px;
+  font-weight:950;
+}
+
+.verify-meta{
+  margin-top:3px;
+
+  color:var(--muted);
+
+  font-size:8px;
+  line-height:1.5;
+}
+
+.request-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+
+  gap:8px;
+
+  margin-top:12px;
+}
+
+.request-btn{
+  min-height:42px;
+
+  border-radius:12px;
+
+  border:1px solid var(--line);
+
+  background:rgba(255,255,255,.035);
+
+  color:#fff;
+
+  font-size:9px;
+  font-weight:900;
+}
+
+.request-btn.verify{
+  color:#061016;
+
+  border:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      #9af3ff
+    );
+}
+
+.request-btn.pay{
+  color:#171205;
+
+  border:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold),
+      #f3dda0
+    );
+}
+
+.request-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.locked-amount{
+  margin-top:8px;
+
+  color:#7f8c9c;
+
+  font-size:8px;
+}
+
+.locked-amount strong{
+  color:#fff;
+}
+
+/* ================= FINANCE ================= */
+
+.finance-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.finance-card{
+  padding:16px;
+
+  border:1px solid var(--line);
+  border-radius:18px;
+
+  background:var(--card);
+}
+
+.finance-label{
+  color:var(--muted);
+  font-size:8px;
+}
+
+.finance-value{
+  margin-top:7px;
+
+  color:#fff;
+
+  font-size:20px;
+  font-weight:950;
+}
+
+/* ================= AD ================= */
+
+.ad-card{
+  padding:19px;
+
+  border:1px solid rgba(94,231,163,.14);
+
+  border-radius:21px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(94,231,163,.09),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15,28,31,.96),
+      rgba(7,14,19,.96)
+    );
+}
+
+.ad-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+.ad-stat{
+  padding:13px;
+
+  border:1px solid var(--line);
+  border-radius:15px;
+
+  background:rgba(255,255,255,.025);
+}
+
+.ad-label{
+  color:var(--muted);
+  font-size:8px;
+}
+
+.ad-value{
+  margin-top:5px;
+
+  color:#fff;
+
+  font-size:17px;
+  font-weight:950;
+}
+
+/* ================= LIST ================= */
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.transaction{
+  display:flex;
+  align-items:center;
+
+  gap:10px;
+
+  padding:13px;
+
+  border:1px solid var(--line);
+  border-radius:16px;
+
+  background:rgba(14,21,33,.74);
+}
+
+.tx-icon{
+  width:39px;
+  height:39px;
+
+  flex-shrink:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.045);
+
+  border:1px solid rgba(255,255,255,.07);
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:950;
+}
+
+.tx-main{
+  flex:1;
+  min-width:0;
+}
+
+.tx-title{
+  color:#fff;
+
+  font-size:11px;
+  font-weight:850;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.tx-date{
+  margin-top:3px;
+
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+.tx-right{
+  text-align:right;
+}
+
+.tx-amount{
+  color:#fff;
+
+  font-size:12px;
+  font-weight:900;
+
+  white-space:nowrap;
+}
+
+.tx-status{
+  margin-top:3px;
+
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+/* ================= LIVE ================= */
 
 .live-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:10px;
+  gap:9px;
 }
 
 .live-card{
-  position:relative;
-  padding:16px;
-  min-height:108px;
+  padding:15px;
+
+  min-height:105px;
+
   border:1px solid var(--line);
   border-radius:19px;
+
   background:
     linear-gradient(
       145deg,
       rgba(18,27,42,.90),
       rgba(9,14,23,.91)
     );
-  overflow:hidden;
-}
-
-.live-card:after{
-  content:"";
-  position:absolute;
-  width:100px;
-  height:100px;
-  right:-45px;
-  top:-45px;
-  border-radius:50%;
-  background:rgba(86,230,255,.07);
 }
 
 .live-top{
@@ -362,12 +1500,19 @@ a{
 .live-icon{
   width:35px;
   height:35px;
-  border-radius:11px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  border-radius:11px;
+
   background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.07);
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:950;
 }
 
 .live-name{
@@ -377,248 +1522,22 @@ a{
 
 .live-number{
   margin-top:12px;
-  font-size:24px;
+
+  color:#fff;
+
+  font-size:23px;
   font-weight:950;
 }
 
 .live-status{
   margin-top:3px;
+
   color:var(--muted);
+
   font-size:8px;
 }
 
-.live-green{
-  color:var(--green);
-}
-
-.live-cyan{
-  color:var(--cyan);
-}
-
-.live-violet{
-  color:var(--violet);
-}
-
-.live-gold{
-  color:var(--gold);
-}
-
-/* SOURCES */
-
-.source-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.source-card{
-  padding:17px;
-  border:1px solid var(--line);
-  border-radius:19px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(18,27,42,.90),
-      rgba(9,14,23,.90)
-    );
-}
-
-.source-top{
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.source-icon{
-  width:39px;
-  height:39px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(86,230,255,.055);
-  border:1px solid rgba(86,230,255,.13);
-  color:var(--cyan);
-}
-
-.source-name{
-  font-size:12px;
-  font-weight:850;
-}
-
-.source-count{
-  margin-top:2px;
-  color:var(--muted);
-  font-size:9px;
-}
-
-.source-money{
-  margin-top:16px;
-  font-size:21px;
-  font-weight:950;
-}
-
-/* FINANCE */
-
-.finance-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.finance-card{
-  padding:17px;
-  border:1px solid var(--line);
-  border-radius:19px;
-  background:var(--card);
-}
-
-.finance-label{
-  color:var(--muted);
-  font-size:9px;
-}
-
-.finance-value{
-  margin-top:7px;
-  font-size:21px;
-  font-weight:920;
-}
-
-.finance-value.green{
-  color:var(--green);
-}
-
-.finance-value.gold{
-  color:var(--gold);
-}
-
-.finance-value.red{
-  color:var(--red);
-}
-
-.finance-value.cyan{
-  color:var(--cyan);
-}
-
-/* FILTERS */
-
-.filters{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  scrollbar-width:none;
-}
-
-.filters::-webkit-scrollbar{
-  display:none;
-}
-
-.filter{
-  white-space:nowrap;
-  padding:8px 12px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  background:rgba(255,255,255,.035);
-  color:var(--muted);
-  font-size:10px;
-  font-weight:750;
-  cursor:pointer;
-}
-
-.filter.active{
-  color:#061016;
-  background:linear-gradient(
-    135deg,
-    var(--cyan),
-    #9af3ff
-  );
-  border-color:transparent;
-}
-
-/* TRANSACTIONS */
-
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.transaction{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:13px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(14,21,33,.74);
-}
-
-.tx-icon{
-  width:39px;
-  height:39px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  background:rgba(255,255,255,.045);
-  color:var(--cyan);
-}
-
-.tx-main{
-  flex:1;
-  min-width:0;
-}
-
-.tx-title{
-  font-size:11px;
-  font-weight:820;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.tx-date{
-  margin-top:3px;
-  color:var(--muted);
-  font-size:8px;
-}
-
-.tx-right{
-  text-align:right;
-}
-
-.tx-amount{
-  font-size:12px;
-  font-weight:880;
-}
-
-.tx-amount.positive{
-  color:var(--green);
-}
-
-.tx-amount.negative{
-  color:var(--red);
-}
-
-.tx-status{
-  margin-top:3px;
-  font-size:8px;
-}
-
-.status-approved{
-  color:var(--green);
-}
-
-.status-pending{
-  color:var(--gold);
-}
-
-.status-rejected{
-  color:var(--red);
-}
-
-/* QUICK */
+/* ================= QUICK ================= */
 
 .quick-links{
   display:grid;
@@ -628,51 +1547,92 @@ a{
 
 .quick-link{
   padding:12px 7px;
+
   text-align:center;
+
   border:1px solid var(--line);
   border-radius:14px;
+
   background:rgba(255,255,255,.025);
-  color:#cdd4df;
+
+  color:#fff;
+
   font-size:9px;
-  font-weight:750;
+  font-weight:800;
 }
 
-/* EMPTY */
+/* ================= NOTICE ================= */
+
+.notice{
+  margin-top:11px;
+
+  padding:11px 12px;
+
+  border-radius:12px;
+
+  color:#8c98a8;
+
+  background:rgba(255,255,255,.025);
+
+  border:1px solid var(--line);
+
+  font-size:8px;
+
+  line-height:1.65;
+}
+
+/* ================= EMPTY ================= */
 
 .empty{
   padding:25px 16px;
+
   text-align:center;
+
   border:1px dashed rgba(255,255,255,.11);
+
   border-radius:17px;
+
   color:var(--muted);
+
   font-size:10px;
+
   line-height:1.5;
 }
 
 .empty strong{
   display:block;
-  color:#e1e7ef;
+
   margin-bottom:4px;
+
+  color:#fff;
 }
 
-/* LOADING */
+/* ================= LOADING ================= */
 
 .loading{
   display:flex;
   align-items:center;
   justify-content:center;
+
   gap:8px;
+
+  padding:20px 4px;
+
   color:var(--muted);
+
   font-size:10px;
-  padding:18px 4px;
 }
 
 .spinner{
   width:14px;
   height:14px;
+
   border-radius:50%;
+
   border:2px solid rgba(255,255,255,.12);
+
   border-top-color:var(--cyan);
+
   animation:spin .8s linear infinite;
 }
 
@@ -682,56 +1642,460 @@ a{
   }
 }
 
-/* LAST UPDATE */
+/* ================= MODAL ================= */
 
-.last-update{
-  margin-top:16px;
-  text-align:center;
-  color:#667386;
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+
+  z-index:500;
+
+  display:none;
+
+  align-items:flex-end;
+  justify-content:center;
+
+  padding:14px;
+
+  background:rgba(0,0,0,.72);
+
+  backdrop-filter:blur(9px);
+}
+
+.modal-backdrop.show{
+  display:flex;
+}
+
+.modal{
+  width:min(540px,100%);
+
+  max-height:
+    calc(100vh - 25px);
+
+  overflow:auto;
+
+  padding:20px;
+
+  border-radius:25px;
+
+  border:1px solid rgba(255,255,255,.11);
+
+  background:
+    linear-gradient(
+      145deg,
+      #111b2a,
+      #070c14
+    );
+
+  box-shadow:
+    0 30px 100px
+    rgba(0,0,0,.60);
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-bottom:15px;
+}
+
+.modal-title{
+  color:#fff;
+
+  font-size:18px;
+  font-weight:950;
+}
+
+.close-btn{
+  width:36px;
+  height:36px;
+
+  border:1px solid var(--line);
+
+  border-radius:11px;
+
+  background:rgba(255,255,255,.04);
+
+  color:#fff;
+
+  font-size:20px;
+}
+
+.withdraw-balance{
+  padding:15px;
+
+  border:1px solid rgba(94,231,163,.15);
+
+  border-radius:15px;
+
+  background:rgba(94,231,163,.045);
+}
+
+.withdraw-balance-label{
+  color:var(--muted);
+
   font-size:8px;
 }
 
-/* MOBILE */
+.withdraw-balance-value{
+  margin-top:4px;
+
+  color:#fff;
+
+  font-size:25px;
+  font-weight:950;
+}
+
+.withdraw-methods{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+
+  margin-top:14px;
+}
+
+.method-option{
+  min-height:44px;
+
+  border:1px solid var(--line);
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.025);
+
+  color:#fff;
+
+  font-size:9px;
+  font-weight:900;
+}
+
+.method-option.active{
+  color:#061016;
+
+  border-color:transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      #9af3ff
+    );
+}
+
+.saved-badge,
+.verified-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+
+  margin-top:9px;
+
+  padding:6px 9px;
+
+  border-radius:9px;
+
+  color:var(--green);
+
+  background:rgba(94,231,163,.07);
+
+  border:1px solid rgba(94,231,163,.13);
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.field{
+  margin-top:12px;
+}
+
+.field-label{
+  margin-bottom:5px;
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.6px;
+}
+
+.field-row{
+  display:flex;
+  gap:7px;
+}
+
+.field-row .field-input{
+  flex:1;
+}
+
+.field-input{
+  width:100%;
+
+  height:45px;
+
+  padding:0 12px;
+
+  outline:none;
+
+  border:1px solid rgba(255,255,255,.09);
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.035);
+
+  color:#fff;
+
+  font-size:11px;
+}
+
+.field-input:focus{
+  border-color:rgba(86,230,255,.45);
+}
+
+.verify-input-btn{
+  min-width:82px;
+
+  height:45px;
+
+  border:0;
+
+  border-radius:12px;
+
+  color:#061016;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      #9af3ff
+    );
+
+  font-size:9px;
+  font-weight:950;
+}
+
+.verify-box{
+  display:none;
+
+  margin-top:11px;
+
+  padding:12px;
+
+  border-radius:14px;
+
+  background:rgba(94,231,163,.055);
+
+  border:1px solid rgba(94,231,163,.14);
+}
+
+.verify-box.show{
+  display:block;
+}
+
+.verify-box.error{
+  background:rgba(255,113,132,.055);
+
+  border-color:
+    rgba(255,113,132,.15);
+}
+
+.verify-box-title{
+  color:var(--green);
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.verify-box.error
+.verify-box-title{
+  color:var(--red);
+}
+
+.verified-name{
+  margin-top:4px;
+
+  color:#fff;
+
+  font-size:13px;
+  font-weight:950;
+}
+
+.verify-box-note{
+  margin-top:3px;
+
+  color:var(--muted);
+
+  font-size:8px;
+  line-height:1.5;
+}
+
+.amount-lock{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  min-height:45px;
+
+  padding:0 12px;
+
+  border-radius:12px;
+
+  border:1px solid rgba(255,255,255,.09);
+
+  background:rgba(255,255,255,.035);
+}
+
+.amount-lock-value{
+  color:#fff;
+
+  font-size:13px;
+  font-weight:950;
+}
+
+.lock-label{
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+.withdraw-note{
+  margin-top:12px;
+
+  color:#8290a2;
+
+  font-size:8px;
+
+  line-height:1.65;
+}
+
+.modal-actions{
+  display:grid;
+  grid-template-columns:1fr 1.3fr;
+
+  gap:8px;
+
+  margin-top:16px;
+}
+
+.modal-actions .action-btn{
+  width:100%;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+  bottom:20px;
+
+  z-index:900;
+
+  transform:
+    translate(-50%,20px);
+
+  min-width:240px;
+  max-width:90%;
+
+  padding:12px 15px;
+
+  border:1px solid rgba(255,255,255,.10);
+
+  border-radius:13px;
+
+  background:rgba(13,20,31,.97);
+
+  box-shadow:
+    0 20px 60px
+    rgba(0,0,0,.45);
+
+  color:#fff;
+
+  text-align:center;
+
+  font-size:9px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.25s ease;
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,0);
+}
+
+.toast.success{
+  border-color:
+    rgba(94,231,163,.25);
+}
+
+.toast.error{
+  border-color:
+    rgba(255,113,132,.25);
+}
+
+.toast.info{
+  border-color:
+    rgba(86,230,255,.25);
+}
+
+.last-update{
+  margin-top:18px;
+
+  text-align:center;
+
+  color:#667386;
+
+  font-size:8px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:560px){
+
+  .payment-layout{
+    grid-template-columns:1fr;
+  }
+
+  .qr-box{
+    margin:auto;
+  }
+
+  .method-grid{
+    grid-template-columns:1fr;
+  }
+
+}
 
 @media(max-width:430px){
 
   .header{
-    padding:0 11px;
+    padding:0 9px;
+    gap:6px;
+  }
+
+  .title{
+    font-size:15px;
   }
 
   .wallet-btn{
-    padding:9px;
-    font-size:10px;
+    padding:0 9px;
   }
 
   .container{
-    padding-left:11px;
-    padding-right:11px;
-  }
-
-  .stats{
-    gap:7px;
-  }
-
-  .stat-card{
-    padding:11px;
-  }
-
-  .stat-value{
-    font-size:17px;
-  }
-
-  .live-grid{
-    gap:8px;
-  }
-
-  .live-card{
-    padding:14px;
-  }
-
-  .source-grid,
-  .finance-grid{
-    gap:8px;
+    padding-left:10px;
+    padding-right:10px;
   }
 
   .hero{
@@ -742,9 +2106,39 @@ a{
     font-size:35px;
   }
 
-  .quick-links{
+  .owner-wallet{
+    padding:17px;
+  }
+
+  .owner-wallet-balance{
+    font-size:31px;
+  }
+
+  .stats{
+    gap:6px;
+  }
+
+  .stat-card{
+    padding:10px;
+  }
+
+  .stat-value{
+    font-size:16px;
+  }
+
+  .finance-grid,
+  .live-grid{
     gap:7px;
   }
+
+  .quick-links{
+    gap:6px;
+  }
+
+  .modal{
+    border-radius:22px 22px 0 0;
+  }
+
 }
 </style>
 </head>
@@ -753,8 +2147,17 @@ a{
 
 <header class="header">
 
-  <button class="icon-btn" onclick="goBack()" aria-label="Back">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+  <button
+    class="icon-btn"
+    onclick="goBack()"
+    aria-label="Back"
+  >
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
       <path
         d="M15 18l-6-6 6-6"
         stroke="currentColor"
@@ -766,8 +2169,15 @@ a{
   </button>
 
   <div class="title-box">
-    <div class="title">Owner Earnings</div>
-    <div class="subtitle">TaskEarn control dashboard</div>
+
+    <div class="title">
+      Owner Earnings
+    </div>
+
+    <div class="subtitle">
+      TaskEarn control dashboard
+    </div>
+
   </div>
 
   <button
@@ -776,7 +2186,12 @@ a{
     onclick="refreshDashboard()"
     aria-label="Refresh"
   >
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
       <path
         d="M20 11a8.1 8.1 0 0 0-14.8-4L4 9"
         stroke="currentColor"
@@ -788,46 +2203,24 @@ a{
         d="M4 4v5h5"
         stroke="currentColor"
         stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
       />
       <path
         d="M4 13a8.1 8.1 0 0 0 14.8 4L20 15"
         stroke="currentColor"
         stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
       />
       <path
         d="M20 20v-5h-5"
         stroke="currentColor"
         stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
       />
     </svg>
   </button>
 
-  <a class="wallet-btn" href="wallet.html">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 7.5A2.5 2.5 0 0 1 6.5 5H19a1 1 0 0 1 1 1v2H7"
-        stroke="currentColor"
-        stroke-width="1.7"
-        stroke-linecap="round"
-      />
-      <path
-        d="M5 7h14a1 1 0 0 1 1 1v9.5A1.5 1.5 0 0 1 18.5 19h-12A2.5 2.5 0 0 1 4 16.5v-9"
-        stroke="currentColor"
-        stroke-width="1.7"
-      />
-      <circle
-        cx="16.5"
-        cy="13.5"
-        r="1"
-        fill="currentColor"
-      />
-    </svg>
+  <a
+    class="wallet-btn"
+    href="admin-wallet.html"
+  >
     Wallet
   </a>
 
@@ -836,34 +2229,121 @@ a{
 
 <main class="container">
 
-  <!-- OWNER -->
-
   <div class="owner-panel">
 
     <div class="owner-dot"></div>
 
     <div class="owner-text">
       <strong>Owner Control</strong>
-      · Private TaskEarn earnings and business overview.
+      · Private TaskEarn earnings, wallet and payout dashboard.
+    </div>
+
+  </div>
+
+<!-- ================= PAY THIS AMOUNT ================= -->
+
+<section class="pay-now-card" id="payNowCard">
+
+  <div class="pay-now-glow"></div>
+
+  <div class="pay-now-top">
+
+    <div>
+
+      <div class="pay-now-eyebrow">
+        TASK EARN • OWNER PAYMENT
+      </div>
+
+      <div class="pay-now-title">
+        ITNA PAY KARO
+      </div>
+
+    </div>
+
+    <div class="pay-now-badge">
+      USER PAYOUT
     </div>
 
   </div>
 
 
-  <!-- TOTAL EARNINGS -->
+  <div
+    class="pay-now-amount"
+    id="payNowAmount"
+  >
+    ₹0.00
+  </div>
 
+
+  <div class="pay-now-sub">
+    Pending verified user collect requests ka total
+  </div>
+
+
+  <div class="pay-now-line"></div>
+
+
+  <div class="pay-now-bottom">
+
+    <div>
+
+      <div class="pay-now-mini-label">
+        Pending Users
+      </div>
+
+      <div
+        class="pay-now-mini-value"
+        id="payNowUsers"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <div class="pay-now-mini-label">
+        Payment Status
+      </div>
+
+      <div
+        class="pay-now-status"
+        id="payNowStatus"
+      >
+        CHECKING
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="pay-now-button"
+    onclick="scrollToPaymentQueue()"
+  >
+    PAY USERS
+  </button>
+
+</section>
+  <!-- HERO -->
+  
   <section class="hero">
 
     <div class="eyebrow">
-      Total Approved Earnings
+      TaskEarn Business Revenue
     </div>
 
-    <div class="total" id="totalEarned">
+    <div
+      class="total"
+      id="totalEarned"
+    >
       ₹0.00
     </div>
 
     <div class="total-label">
-      Real approved Task + Project rewards only
+      Verified Task + Project + Ad Revenue
     </div>
 
     <div class="hero-line"></div>
@@ -875,17 +2355,23 @@ a{
           Owner wallet
         </div>
 
-        <div class="mini-value" id="walletBalance">
+        <div
+          class="mini-value"
+          id="walletBalance"
+        >
           ₹0.00
         </div>
       </div>
 
       <div>
         <div class="mini-label">
-          Reward transactions
+          Ledger records
         </div>
 
-        <div class="mini-value" id="transactionCount">
+        <div
+          class="mini-value"
+          id="transactionCount"
+        >
           0
         </div>
       </div>
@@ -895,44 +2381,179 @@ a{
   </section>
 
 
-  <!-- EARNINGS SUMMARY -->
+  <!-- STATS -->
 
   <section class="stats">
 
-    <div class="stat-card approved">
-
+    <div class="stat-card">
       <div class="stat-title">
         Approved
       </div>
 
-      <div class="stat-value" id="approvedAmount">
-        ₹0
+      <div
+        class="stat-value"
+        id="approvedAmount"
+      >
+        ₹0.00
       </div>
-
     </div>
 
-
-    <div class="stat-card pending">
-
+    <div class="stat-card">
       <div class="stat-title">
         Pending
       </div>
 
-      <div class="stat-value" id="pendingAmount">
-        ₹0
+      <div
+        class="stat-value"
+        id="pendingAmount"
+      >
+        ₹0.00
       </div>
-
     </div>
 
-
-    <div class="stat-card completed">
-
+    <div class="stat-card">
       <div class="stat-title">
         Completed
       </div>
 
-      <div class="stat-value" id="completedCount">
+      <div
+        class="stat-value"
+        id="completedCount"
+      >
         0
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- OWNER WALLET -->
+
+  <section class="section">
+
+    <div class="section-head">
+
+      <div class="section-title">
+        TaskEarn Owner Wallet
+      </div>
+
+      <div class="section-note">
+        Your business money
+      </div>
+
+    </div>
+
+    <div class="owner-wallet">
+
+      <div class="owner-wallet-top">
+
+        <div>
+          <div class="owner-wallet-title">
+            Owner Available Balance
+          </div>
+
+          <div class="owner-wallet-sub">
+            Withdrawable business balance
+          </div>
+        </div>
+
+        <div
+          class="owner-wallet-status"
+          id="ownerWalletStatus"
+        >
+          Connected
+        </div>
+
+      </div>
+
+
+      <div
+        class="owner-wallet-balance"
+        id="ownerBusinessBalance"
+      >
+        ₹0.00
+      </div>
+
+
+      <div class="owner-wallet-grid">
+
+        <div class="owner-mini">
+          <div class="owner-mini-label">
+            TaskEarn Share
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="ownerRevenueShare"
+          >
+            ₹0.00
+          </div>
+        </div>
+
+        <div class="owner-mini">
+          <div class="owner-mini-label">
+            Ad Revenue Share
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="ownerAdShare"
+          >
+            ₹0.00
+          </div>
+        </div>
+
+        <div class="owner-mini">
+          <div class="owner-mini-label">
+            Money Added
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="ownerMoneyAdded"
+          >
+            ₹0.00
+          </div>
+        </div>
+
+        <div class="owner-mini">
+          <div class="owner-mini-label">
+            User Payouts
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="ownerPayouts"
+          >
+            ₹0.00
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="owner-wallet-actions">
+
+        <button
+          class="action-btn gold"
+          onclick="openWithdrawModal()"
+        >
+          Withdraw
+        </button>
+
+        <a
+          class="action-btn"
+          href="admin-wallet.html"
+        >
+          Manage Wallet
+        </a>
+
+      </div>
+
+
+      <div class="notice">
+        Owner withdrawal server-side verification ke baad process hogi.
+        Frontend amount ko trusted source nahi maana jayega.
       </div>
 
     </div>
@@ -940,7 +2561,544 @@ a{
   </section>
 
 
-  <!-- USERS / APP OVERVIEW -->
+  <!-- OFFICIAL PAYMENT ACCOUNT -->
+
+  <section class="section">
+
+    <div class="section-head">
+
+      <div class="section-title">
+        TaskEarn Official Payment Account
+      </div>
+
+      <div class="section-note">
+        QR · UPI · Bank · PayPal
+      </div>
+
+    </div>
+
+    <div class="payment-card">
+
+      <div class="payment-head">
+
+        <div class="payment-title">
+          Dashboard Funding Account
+        </div>
+
+        <div
+          class="payment-badge"
+          id="paymentStatus"
+        >
+          Checking
+        </div>
+
+      </div>
+
+
+      <div class="payment-layout">
+
+        <div
+          class="qr-box"
+          id="qrBox"
+        >
+          <div class="qr-empty">
+            Loading QR...
+          </div>
+        </div>
+
+
+        <div class="payment-info">
+
+          <div class="payment-row">
+
+            <div class="payment-label">
+              Account Name
+            </div>
+
+            <div
+              class="payment-value"
+              id="paymentAccountName"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="payment-row">
+
+            <div class="payment-label">
+              UPI ID
+            </div>
+
+            <div
+              class="payment-value"
+              id="paymentUpi"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="payment-row">
+
+            <div class="payment-label">
+              Bank
+            </div>
+
+            <div
+              class="payment-value"
+              id="paymentBank"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="payment-row">
+
+            <div class="payment-label">
+              Account / IFSC
+            </div>
+
+            <div
+              class="payment-value"
+              id="paymentBankDetails"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="payment-actions">
+
+            <button
+              class="small-btn primary"
+              onclick="copyTaskEarnUPI()"
+            >
+              Copy UPI
+            </button>
+
+            <button
+              class="small-btn"
+              onclick="openTaskEarnUPI()"
+            >
+              Open UPI
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="method-grid">
+
+        <div class="method-card">
+          <div class="method-name">
+            UPI
+          </div>
+
+          <div
+            class="method-value"
+            id="methodUpi"
+          >
+            —
+          </div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-name">
+            PayPal
+          </div>
+
+          <div
+            class="method-value"
+            id="methodPaypal"
+          >
+            —
+          </div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-name">
+            Bank Transfer
+          </div>
+
+          <div
+            class="method-value"
+            id="methodBank"
+          >
+            —
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="notice">
+        Ye TaskEarn ka official business payment account hai.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- USER COLLECT SUMMARY -->
+
+  <section class="section">
+
+    <div class="section-head">
+
+      <div class="section-title">
+        User Collect Requests
+      </div>
+
+      <div class="section-note">
+        Payment queue
+      </div>
+
+    </div>
+
+
+    <div class="finance-grid">
+
+      <div class="finance-card">
+
+        <div class="finance-label">
+          Pending Collect
+        </div>
+
+        <div
+          class="finance-value"
+          id="pendingWithdrawals"
+        >
+          ₹0.00
+        </div>
+
+      </div>
+
+
+      <div class="finance-card">
+
+        <div class="finance-label">
+          Total Paid
+        </div>
+
+        <div
+          class="finance-value"
+          id="totalWithdrawn"
+        >
+          ₹0.00
+        </div>
+
+      </div>
+
+
+      <div class="finance-card">
+
+        <div class="finance-label">
+          Total Requests
+        </div>
+
+        <div
+          class="finance-value"
+          id="withdrawalCount"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="finance-card">
+
+        <div class="finance-label">
+          Safe Payout
+        </div>
+
+        <div
+          class="finance-value"
+          id="safePayoutFinance"
+        >
+          ₹0.00
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- USER PAYMENT QUEUE -->
+
+  <section class="section">
+
+    <div class="section-head">
+
+      <div class="section-title">
+        User Collect Queue
+      </div>
+
+      <div class="section-note">
+        Verify → Pay
+      </div>
+
+    </div>
+
+
+    <div id="withdrawalQueue">
+
+      <div class="loading">
+
+        <div class="spinner"></div>
+
+        Loading user collect requests...
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ADMIN WALLET -->
+
+  <section class="section">
+
+    <div class="section-head">
+
+      <div class="section-title">
+        TaskEarn Admin Wallet
+      </div>
+
+      <div class="section-note">
+        Funding & payout control
+      </div>
+
+    </div>
+
+
+    <div class="owner-wallet">
+
+      <div class="owner-wallet-title">
+        Safe Wallet Balance
+      </div>
+
+      <div
+        class="owner-wallet-balance"
+        id="adminWalletBalance"
+      >
+        ₹0.00
+      </div>
+
+
+      <div class="owner-wallet-grid">
+
+        <div class="owner-mini">
+
+          <div class="owner-mini-label">
+            Money Added
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="adminWalletCredits"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+
+        <div class="owner-mini">
+
+          <div class="owner-mini-label">
+            User Payouts
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="adminWalletDebits"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+
+        <div class="owner-mini">
+
+          <div class="owner-mini-label">
+            Pending User Payout
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="adminPendingPayout"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+
+        <div class="owner-mini">
+
+          <div class="owner-mini-label">
+            Safe Available
+          </div>
+
+          <div
+            class="owner-mini-value"
+            id="safePayoutBalance"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- AD REVENUE -->
+
+  <section class="section">
+
+    <div class="section-head">
+
+      <div class="section-title">
+        Ad Revenue Share
+      </div>
+
+      <div class="section-note">
+        Verified ad ledger
+      </div>
+
+    </div>
+
+
+    <div class="ad-card">
+
+      <div class="ad-grid">
+
+        <div class="ad-stat">
+
+          <div class="ad-label">
+            Gross Revenue
+          </div>
+
+          <div
+            class="ad-value"
+            id="adGross"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+
+        <div class="ad-stat">
+
+          <div class="ad-label">
+            User Share
+          </div>
+
+          <div
+            class="ad-value"
+            id="adUserShare"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+
+        <div class="ad-stat">
+
+          <div class="ad-label">
+            TaskEarn Share
+          </div>
+
+          <div
+            class="ad-value"
+            id="adOwnerShare"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+
+        <div class="ad-stat">
+
+          <div class="ad-label">
+            Verified Ads
+          </div>
+
+          <div
+            class="ad-value"
+            id="adVerifiedCount"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="ad-stat">
+
+          <div class="ad-label">
+            Pending Revenue
+          </div>
+
+          <div
+            class="ad-value"
+            id="adPending"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+
+        <div class="ad-stat">
+
+          <div class="ad-label">
+            Rejected / Reversed
+          </div>
+
+          <div
+            class="ad-value"
+            id="adRejected"
+          >
+            ₹0.00
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="notice">
+        Sirf verified ad-revenue events business ledger mein count honge.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- APP OVERVIEW -->
 
   <section class="section">
 
@@ -951,7 +3109,7 @@ a{
       </div>
 
       <div class="section-note">
-        Live database data
+        Database data
       </div>
 
     </div>
@@ -959,42 +3117,12 @@ a{
 
     <div class="live-grid">
 
-      <!-- ACTIVE USERS -->
-
       <div class="live-card">
 
         <div class="live-top">
 
-          <div class="live-icon live-green">
-
-            <svg width="18" height="18"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <circle
-                cx="9"
-                cy="8"
-                r="3"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <path
-                d="M3.5 19c.7-3.1 2.5-4.5 5.5-4.5S13.8 15.9 14.5 19"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-              <path
-                d="M16 11h5M18.5 8.5v5"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-            </svg>
-
+          <div class="live-icon">
+            U
           </div>
 
           <div class="live-name">
@@ -1004,48 +3132,28 @@ a{
         </div>
 
         <div
-          class="live-number live-green"
+          class="live-number"
           id="activeUsers"
         >
           0
         </div>
 
-        <div class="live-status" id="activeUsersNote">
+        <div
+          class="live-status"
+          id="activeUsersNote"
+        >
           Checking...
         </div>
 
       </div>
 
 
-      <!-- ONLINE USERS -->
-
       <div class="live-card">
 
         <div class="live-top">
 
-          <div class="live-icon live-cyan">
-
-            <svg width="18" height="18"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <circle
-                cx="12"
-                cy="12"
-                r="8"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <circle
-                cx="12"
-                cy="12"
-                r="3"
-                fill="currentColor"
-              />
-
-            </svg>
-
+          <div class="live-icon">
+            O
           </div>
 
           <div class="live-name">
@@ -1055,55 +3163,28 @@ a{
         </div>
 
         <div
-          class="live-number live-cyan"
+          class="live-number"
           id="onlineUsers"
         >
           0
         </div>
 
-        <div class="live-status" id="onlineUsersNote">
+        <div
+          class="live-status"
+          id="onlineUsersNote"
+        >
           Checking...
         </div>
 
       </div>
 
 
-      <!-- REGISTERED USERS -->
-
       <div class="live-card">
 
         <div class="live-top">
 
-          <div class="live-icon live-violet">
-
-            <svg width="18" height="18"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <circle
-                cx="9"
-                cy="8"
-                r="3"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <path
-                d="M3.5 19c.7-3.1 2.5-4.5 5.5-4.5S13.8 15.9 14.5 19"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-              <path
-                d="M17 8h4M19 6v4"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-            </svg>
-
+          <div class="live-icon">
+            R
           </div>
 
           <div class="live-name">
@@ -1113,7 +3194,7 @@ a{
         </div>
 
         <div
-          class="live-number live-violet"
+          class="live-number"
           id="registeredUsers"
         >
           0
@@ -1126,42 +3207,12 @@ a{
       </div>
 
 
-      <!-- DOWNLOADERS -->
-
       <div class="live-card">
 
         <div class="live-top">
 
-          <div class="live-icon live-gold">
-
-            <svg width="18" height="18"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <path
-                d="M12 4v10"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-
-              <path
-                d="M8 11l4 4 4-4"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-
-              <path
-                d="M5 19h14"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-
-            </svg>
-
+          <div class="live-icon">
+            D
           </div>
 
           <div class="live-name">
@@ -1171,7 +3222,7 @@ a{
         </div>
 
         <div
-          class="live-number live-gold"
+          class="live-number"
           id="downloaders"
         >
           —
@@ -1191,234 +3242,7 @@ a{
   </section>
 
 
-  <!-- TASK / PROJECT -->
-
-  <section class="section">
-
-    <div class="section-head">
-
-      <div class="section-title">
-        Reward Sources
-      </div>
-
-      <div class="section-note">
-        Approved rewards
-      </div>
-
-    </div>
-
-
-    <div class="source-grid">
-
-      <!-- TASKS -->
-
-      <div class="source-card">
-
-        <div class="source-top">
-
-          <div class="source-icon">
-
-            <svg width="20" height="20"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <rect
-                x="4"
-                y="4"
-                width="16"
-                height="16"
-                rx="3"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <path
-                d="M8 9h8M8 13h5M8 17h3"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-            </svg>
-
-          </div>
-
-          <div>
-
-            <div class="source-name">
-              Tasks
-            </div>
-
-            <div
-              class="source-count"
-              id="taskCount"
-            >
-              0 completed
-            </div>
-
-          </div>
-
-        </div>
-
-        <div
-          class="source-money"
-          id="taskEarnings"
-        >
-          ₹0.00
-        </div>
-
-      </div>
-
-
-      <!-- PROJECTS -->
-
-      <div class="source-card">
-
-        <div class="source-top">
-
-          <div class="source-icon">
-
-            <svg width="20" height="20"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <path
-                d="M5 19V9l7-4 7 4v10"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-
-              <path
-                d="M9 19v-5h6v5M3 19h18"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-            </svg>
-
-          </div>
-
-          <div>
-
-            <div class="source-name">
-              Projects
-            </div>
-
-            <div
-              class="source-count"
-              id="projectCount"
-            >
-              0 completed
-            </div>
-
-          </div>
-
-        </div>
-
-        <div
-          class="source-money"
-          id="projectEarnings"
-        >
-          ₹0.00
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- OWNER MONEY -->
-
-  <section class="section">
-
-    <div class="section-head">
-
-      <div class="section-title">
-        Owner Funds
-      </div>
-
-      <div class="section-note">
-        Real wallet & withdrawals
-      </div>
-
-    </div>
-
-
-    <div class="finance-grid">
-
-      <div class="finance-card">
-
-        <div class="finance-label">
-          Current TaskEarn Funds
-        </div>
-
-        <div
-          class="finance-value cyan"
-          id="ownerFunds"
-        >
-          ₹0.00
-        </div>
-
-      </div>
-
-
-      <div class="finance-card">
-
-        <div class="finance-label">
-          Total Withdrawn
-        </div>
-
-        <div
-          class="finance-value green"
-          id="totalWithdrawn"
-        >
-          ₹0.00
-        </div>
-
-      </div>
-
-
-      <div class="finance-card">
-
-        <div class="finance-label">
-          Pending Withdrawals
-        </div>
-
-        <div
-          class="finance-value gold"
-          id="pendingWithdrawals"
-        >
-          ₹0.00
-        </div>
-
-      </div>
-
-
-      <div class="finance-card">
-
-        <div class="finance-label">
-          Withdrawal Requests
-        </div>
-
-        <div
-          class="finance-value"
-          id="withdrawalCount"
-        >
-          0
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- EARNINGS HISTORY -->
+  <!-- HISTORY -->
 
   <section class="section">
 
@@ -1435,50 +3259,10 @@ a{
     </div>
 
 
-    <div class="filters">
-
-      <button
-        class="filter active"
-        data-filter="all"
-      >
-        All
-      </button>
-
-      <button
-        class="filter"
-        data-filter="task"
-      >
-        Tasks
-      </button>
-
-      <button
-        class="filter"
-        data-filter="project"
-      >
-        Projects
-      </button>
-
-      <button
-        class="filter"
-        data-filter="approved"
-      >
-        Approved
-      </button>
-
-      <button
-        class="filter"
-        data-filter="pending"
-      >
-        Pending
-      </button>
-
-    </div>
-
-
-    <div style="height:10px"></div>
-
-
-    <div id="transactionList">
+    <div
+      class="list"
+      id="transactionList"
+    >
 
       <div class="loading">
 
@@ -1493,24 +3277,73 @@ a{
   </section>
 
 
-  <!-- QUICK ACCESS -->
+  <!-- WALLET HISTORY -->
 
   <section class="section">
 
     <div class="section-head">
 
       <div class="section-title">
-        Quick Access
+        Admin Wallet History
       </div>
 
       <div class="section-note">
-        TaskEarn
+        Funding & payouts
+      </div>
+
+    </div>
+
+
+    <div
+      id="adminWalletTransactions"
+      class="list"
+    >
+
+      <div class="loading">
+
+        <div class="spinner"></div>
+
+        Loading wallet history...
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- IMPORTANT PAGES -->
+
+  <section class="section">
+
+    <div class="section-head">
+
+      <div class="section-title">
+        Important Pages
+      </div>
+
+      <div class="section-note">
+        TaskEarn control
       </div>
 
     </div>
 
 
     <div class="quick-links">
+
+      <a
+        class="quick-link"
+        href="admin-wallet.html"
+      >
+        Owner Wallet
+      </a>
+
+      <a
+        class="quick-link"
+        href="ad-revenue-share.html"
+      >
+        Ad Revenue
+      </a>
 
       <a
         class="quick-link"
@@ -1530,14 +3363,14 @@ a{
         class="quick-link"
         href="wallet.html"
       >
-        Wallet
+        User Wallet
       </a>
 
       <a
         class="quick-link"
         href="rewards.html"
       >
-        Watch & Earn
+        Rewards
       </a>
 
       <a
@@ -1552,6 +3385,34 @@ a{
         href="notification.html"
       >
         Notifications
+      </a>
+
+      <a
+        class="quick-link"
+        href="profile.html"
+      >
+        Profile
+      </a>
+
+      <a
+        class="quick-link"
+        href="company-ad.html"
+      >
+        Company Ads
+      </a>
+
+      <a
+        class="quick-link"
+        href="company-project.html"
+      >
+        Company Projects
+      </a>
+
+      <a
+        class="quick-link"
+        href="Submission-status.html"
+      >
+        Submissions
       </a>
 
     </div>
@@ -1569,14 +3430,354 @@ a{
 </main>
 
 
+<!-- =====================================================
+     OWNER WITHDRAW MODAL
+===================================================== -->
+
+<div
+  class="modal-backdrop"
+  id="withdrawModal"
+>
+
+  <div class="modal">
+
+    <div class="modal-head">
+
+      <div class="modal-title">
+        Owner Withdraw
+      </div>
+
+      <button
+        class="close-btn"
+        onclick="closeWithdrawModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="withdraw-balance">
+
+      <div class="withdraw-balance-label">
+        Available to withdraw
+      </div>
+
+      <div
+        class="withdraw-balance-value"
+        id="withdrawAvailable"
+      >
+        ₹0.00
+      </div>
+
+    </div>
+
+
+    <div class="withdraw-methods">
+
+      <button
+        class="method-option active"
+        data-method="bank"
+        onclick="selectWithdrawMethod('bank')"
+      >
+        Bank
+      </button>
+
+      <button
+        class="method-option"
+        data-method="upi"
+        onclick="selectWithdrawMethod('upi')"
+      >
+        UPI
+      </button>
+
+      <button
+        class="method-option"
+        data-method="paypal"
+        onclick="selectWithdrawMethod('paypal')"
+      >
+        PayPal
+      </button>
+
+    </div>
+
+
+    <div
+      class="saved-badge"
+      id="savedMethodBadge"
+      style="display:none"
+    >
+      ✓ Saved details loaded
+    </div>
+
+
+    <!-- AMOUNT -->
+
+    <div class="field">
+
+      <div class="field-label">
+        Withdrawal Amount
+      </div>
+
+      <div class="field-row">
+
+        <input
+          class="field-input"
+          id="withdrawAmount"
+          type="number"
+          min="0"
+          step="0.01"
+          inputmode="decimal"
+          placeholder="Enter amount"
+        >
+
+        <button
+          class="verify-input-btn"
+          onclick="setMaxWithdraw()"
+        >
+          MAX
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- BANK -->
+
+    <div id="bankFields">
+
+      <div class="field">
+
+        <div class="field-label">
+          Account Holder Name
+        </div>
+
+        <input
+          class="field-input"
+          id="bankName"
+          placeholder="Account holder name"
+          autocomplete="name"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <div class="field-label">
+          Bank Name
+        </div>
+
+        <input
+          class="field-input"
+          id="bankBankName"
+          placeholder="Bank name"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <div class="field-label">
+          Bank Account Number
+        </div>
+
+        <input
+          class="field-input"
+          id="bankAccount"
+          inputmode="numeric"
+          placeholder="Bank account number"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <div class="field-label">
+          IFSC
+        </div>
+
+        <div class="field-row">
+
+          <input
+            class="field-input"
+            id="bankIfsc"
+            placeholder="IFSC code"
+          >
+
+          <button
+            class="verify-input-btn"
+            onclick="verifyOwnerPayoutDestination()"
+          >
+            VERIFY
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- UPI -->
+
+    <div
+      id="upiFields"
+      style="display:none"
+    >
+
+      <div class="field">
+
+        <div class="field-label">
+          UPI ID
+        </div>
+
+        <div class="field-row">
+
+          <input
+            class="field-input"
+            id="withdrawUpi"
+            placeholder="example@upi"
+            autocomplete="off"
+          >
+
+          <button
+            class="verify-input-btn"
+            onclick="verifyOwnerPayoutDestination()"
+          >
+            VERIFY
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- PAYPAL -->
+
+    <div
+      id="paypalFields"
+      style="display:none"
+    >
+
+      <div class="field">
+
+        <div class="field-label">
+          PayPal Email
+        </div>
+
+        <div class="field-row">
+
+          <input
+            class="field-input"
+            id="paypalEmail"
+            type="email"
+            placeholder="PayPal email"
+            autocomplete="email"
+          >
+
+          <button
+            class="verify-input-btn"
+            onclick="verifyOwnerPayoutDestination()"
+          >
+            VERIFY
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="verify-box"
+      id="ownerVerifyBox"
+    >
+
+      <div
+        class="verify-box-title"
+        id="ownerVerifyTitle"
+      >
+        Verified
+      </div>
+
+      <div
+        class="verified-name"
+        id="ownerVerifiedName"
+      >
+        —
+      </div>
+
+      <div
+        class="verify-box-note"
+        id="ownerVerifyNote"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="withdraw-note">
+
+      Payment details successful verification ke baad save ki ja sakti hain.
+      UPI PIN, ATM PIN, CVV ya OTP kabhi enter mat karo.
+      Actual payout server-side provider verification ke baad hoga.
+
+    </div>
+
+
+    <div class="modal-actions">
+
+      <button
+        class="action-btn"
+        onclick="saveCurrentPayoutMethod()"
+      >
+        Save Details
+      </button>
+
+      <button
+        class="action-btn gold"
+        onclick="submitOwnerWithdrawal()"
+      >
+        Request Withdraw
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
 <script>
-
 /* =========================================================
-   TASK EARN — OWNER EARNINGS DASHBOARD
-   ========================================================= */
+   TASK EARN OWNER EARNINGS
+   =========================================================
+
+   IMPORTANT:
+   1. No automatic redirect.
+   2. No location.reload().
+   3. No setInterval().
+   4. No frontend service-role key.
+   5. User payout amount comes from request on server.
+   6. Verification must be performed by backend/provider.
+========================================================= */
 
 
-/* ---------- SUPABASE ---------- */
+/* ================= SUPABASE ================= */
 
 const SUPABASE_URL =
   "https://wfvmipwesttejtvwoasj.supabase.co";
@@ -1584,49 +3785,104 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
 
-
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_ANON_KEY
+    SUPABASE_ANON_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:false
+      }
+    }
   );
 
 
-/* =========================================================
-   OWNER UID
-   =========================================================
-
-   IMPORTANT:
-   Replace the value below with YOUR OWN
-   Supabase Auth User UID.
-
-   Supabase Dashboard:
-   Authentication → Users → your account → User UID
-
-   Do NOT put someone else's UID.
-   ========================================================= */
-
+/*
+  IMPORTANT:
+  Yahan APNA actual owner Supabase Auth UID paste karo.
+  Memory wala UID use nahi kiya gaya hai.
+*/
 const OWNER_UID =
-  "PASTE_YOUR_SUPABASE_USER_UID_HERE";
+  "f43aee2c-bb9f-4342-9a86-59c1a48c6692";
 
 
-/* ---------- STATE ---------- */
+/* ================= BACKEND FUNCTIONS ================= */
+
+const ADMIN_SUMMARY_FUNCTION =
+  "admin-wallet-summary";
+
+const VERIFY_FUNCTION =
+  "admin-verify-payout-destination";
+
+const PAY_USER_FUNCTION =
+  "admin-pay-user-request";
+
+const OWNER_WITHDRAW_FUNCTION =
+  "admin-owner-withdraw";
+
+
+/* ================= TABLES ================= */
+
+const PAYOUT_METHOD_TABLE =
+  "owner_payout_methods";
+
+
+const WITHDRAWAL_TABLES = [
+  "user_withdrawal_requests",
+  "withdrawal_requests",
+  "wallet_withdrawal_requests"
+];
+
+
+/* ================= STATE ================= */
 
 let currentUser = null;
 
+let refreshInProgress = false;
+
+let paymentAccount = null;
+
+let selectedWithdrawMethod = "bank";
+
+let savedPayoutMethods = {
+  bank:null,
+  upi:null,
+  paypal:null
+};
+
+let adminWalletSummary = {
+  balance:0,
+  credits:0,
+  debits:0
+};
+
+let withdrawalSummary = {
+  pending:0,
+  paid:0,
+  count:0
+};
+
+let adSummary = {
+  gross:0,
+  userShare:0,
+  ownerShare:0,
+  pending:0,
+  rejected:0,
+  verifiedCount:0
+};
+
 let allTransactions = [];
 
-let activeFilter = "all";
+let lastWithdrawalRows = [];
 
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
+/* ================= HELPERS ================= */
 
 function money(value){
 
-  const number =
-    Number(value || 0);
+  const n = Number(value || 0);
 
   return new Intl.NumberFormat(
     "en-IN",
@@ -1636,23 +3892,9 @@ function money(value){
       minimumFractionDigits:2,
       maximumFractionDigits:2
     }
-  ).format(number);
-
-}
-
-
-function shortMoney(value){
-
-  const number =
-    Number(value || 0);
-
-  return "₹" +
-    number.toLocaleString(
-      "en-IN",
-      {
-        maximumFractionDigits:2
-      }
-    );
+  ).format(
+    Number.isFinite(n) ? n : 0
+  );
 
 }
 
@@ -1677,21 +3919,16 @@ function escapeHTML(value){
 }
 
 
-function formatDate(date){
+function formatDate(value){
 
-  if(!date)
+  if(!value)
     return "Date unavailable";
 
   const d =
-    new Date(date);
+    new Date(value);
 
-  if(
-    Number.isNaN(
-      d.getTime()
-    )
-  ){
+  if(Number.isNaN(d.getTime()))
     return "Date unavailable";
-  }
 
   return d.toLocaleString(
     "en-IN",
@@ -1707,33 +3944,3166 @@ function formatDate(date){
 }
 
 
-function normalizeStatus(value){
+function getAmount(row){
 
-  const status =
-    String(
-      value || "approved"
-    ).toLowerCase();
+  if(!row)
+    return 0;
 
-  if(
-    status.includes("pending") ||
-    status.includes("submitted") ||
-    status.includes("review")
-  ){
-    return "pending";
+  const fields = [
+    "amount",
+    "requested_amount",
+    "withdrawal_amount",
+    "reward_amount",
+    "reward",
+    "credit",
+    "value"
+  ];
+
+  for(const field of fields){
+
+    if(
+      row[field] !== undefined &&
+      row[field] !== null &&
+      row[field] !== "" &&
+      Number.isFinite(Number(row[field]))
+    ){
+
+      return Number(row[field]);
+
+    }
+
   }
 
-  if(
-    status.includes("reject") ||
-    status.includes("failed") ||
-    status.includes("cancel")
-  ){
-    return "rejected";
-  }
-
-  return "approved";
+  return 0;
 
 }
 
+
+function firstValue(row, fields){
+
+  if(!row)
+    return "";
+
+  for(const field of fields){
+
+    if(
+      row[field] !== undefined &&
+      row[field] !== null &&
+      String(row[field]).trim() !== ""
+    ){
+
+      return String(
+        row[field]
+      ).trim();
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+function showToast(
+  message,
+  type="success"
+){
+
+  const toast =
+    document.getElementById("toast");
+
+  if(!toast)
+    return;
+
+  toast.textContent =
+    message;
+
+  toast.className =
+    "toast show " + type;
+
+  clearTimeout(
+    window.__toastTimer
+  );
+
+  window.__toastTimer =
+    setTimeout(
+      function(){
+
+        toast.className =
+          "toast";
+
+      },
+      3000
+    );
+
+}
+
+/* ================= ITNA PAY KARO LOGIC ================= */
+
+function isPaidStatus(status){
+
+  const s =
+    String(status || "")
+      .toLowerCase();
+
+  return (
+    s.includes("paid") ||
+    s.includes("completed") ||
+    s.includes("success")
+  );
+
+}
+
+
+function isPendingStatus(status){
+
+  const s =
+    String(status || "")
+      .toLowerCase();
+
+  return (
+    s.includes("pending") ||
+    s.includes("requested") ||
+    s.includes("review") ||
+    s.includes("processing")
+  );
+
+}
+
+
+function isRequestVerified(row){
+
+  if(!row)
+    return false;
+
+
+  /*
+    Agar database mein verified boolean hai,
+    usko priority milegi.
+  */
+
+  if(
+    typeof row.verified ===
+    "boolean"
+  ){
+
+    return row.verified;
+
+  }
+
+
+  /*
+    Agar verification status column hai,
+    verified/approved request hi count hogi.
+  */
+
+  const verification =
+    String(
+      row.verification_status ??
+      row.payout_verification_status ??
+      row.destination_verification_status ??
+      ""
+    )
+    .toLowerCase()
+    .trim();
+
+
+  /*
+    Agar tumhare withdrawal table mein
+    verification column hi nahi hai,
+    pending request ko count karenge.
+  */
+
+  if(!verification)
+    return true;
+
+
+  return [
+    "verified",
+    "approved",
+    "success",
+    "passed",
+    "completed"
+  ].includes(
+    verification
+  );
+
+}
+
+
+function updatePayNowSection(){
+
+  const rows =
+    Array.isArray(
+      lastWithdrawalRows
+    )
+    ? lastWithdrawalRows
+    : [];
+
+
+  const pendingRows =
+    rows.filter(
+      row => {
+
+        const status =
+          row.status ||
+          "pending";
+
+
+        return (
+          isPendingStatus(status) &&
+          !isPaidStatus(status) &&
+          isRequestVerified(row)
+        );
+
+      }
+    );
+
+
+  const total =
+    pendingRows.reduce(
+      (
+        sum,
+        row
+      ) => {
+
+        return (
+          sum +
+          Math.max(
+            0,
+            getAmount(row)
+          )
+        );
+
+      },
+      0
+    );
+
+
+  const amountEl =
+    document.getElementById(
+      "payNowAmount"
+    );
+
+
+  const usersEl =
+    document.getElementById(
+      "payNowUsers"
+    );
+
+
+  const statusEl =
+    document.getElementById(
+      "payNowStatus"
+    );
+
+
+  if(amountEl){
+
+    amountEl.textContent =
+      money(total);
+
+  }
+
+
+  if(usersEl){
+
+    usersEl.textContent =
+      numberFormat(
+        pendingRows.length
+      );
+
+  }
+
+
+  if(statusEl){
+
+    const ready =
+      total > 0;
+
+
+    statusEl.textContent =
+      ready
+      ? "READY TO PAY"
+      : "CLEAR";
+
+
+    statusEl.style.color =
+      ready
+      ? "var(--orange)"
+      : "var(--green)";
+
+
+    statusEl.style.borderColor =
+      ready
+      ? "rgba(255,184,107,.16)"
+      : "rgba(94,231,163,.16)";
+
+
+    statusEl.style.background =
+      ready
+      ? "rgba(255,184,107,.07)"
+      : "rgba(94,231,163,.07)";
+
+  }
+
+}
+
+
+function scrollToPaymentQueue(){
+
+  const target =
+    document.getElementById(
+      "withdrawalQueue"
+    );
+
+
+  if(!target)
+    return;
+
+
+  target.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+} 
+/* ================= AUTH ================= */
+
+async function checkOwner(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    if(error){
+
+      console.error(
+        "Session error:",
+        error
+      );
+
+      showAccessMessage(
+        "Session unavailable",
+        "Supabase session read nahi ho paayi.",
+        true
+      );
+
+      return false;
+
+    }
+
+
+    const session =
+      data?.session;
+
+
+    if(!session?.user){
+
+      showAccessMessage(
+        "Owner Login Required",
+        "Owner account se login karke dashboard open karo.",
+        true
+      );
+
+      return false;
+
+    }
+
+
+    currentUser =
+      session.user;
+
+
+    /*
+      UID protection.
+      Agar placeholder hai to UID check skip nahi,
+      balki setup message dikhaya jayega.
+    */
+
+    if(
+      OWNER_UID ===
+      "PASTE_YOUR_SUPABASE_USER_UID_HERE"
+    ){
+
+      showAccessMessage(
+        "Owner UID Required",
+        "Code mein apna actual Supabase Owner UID paste karo."
+      );
+
+      return false;
+
+    }
+
+
+    if(
+      currentUser.id !== OWNER_UID
+    ){
+
+      showAccessMessage(
+        "Access Restricted",
+        "Ye dashboard sirf TaskEarn owner account ke liye hai."
+      );
+
+      return false;
+
+    }
+
+
+    document.getElementById(
+      "ownerWalletStatus"
+    ).textContent =
+      "Connected";
+
+
+    return true;
+
+  }catch(error){
+
+    console.error(
+      "Owner check:",
+      error
+    );
+
+    showAccessMessage(
+      "Dashboard Error",
+      "Owner session verify nahi ho paayi.",
+      true
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/*
+  IMPORTANT:
+  No automatic redirect from here.
+*/
+function showAccessMessage(
+  title,
+  message,
+  loginButton=false
+){
+
+  document.body.innerHTML = `
+
+    <div style="
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:25px;
+      background:#05080d;
+      color:#fff;
+      font-family:system-ui;
+      text-align:center;
+    ">
+
+      <div style="
+        width:min(420px,100%);
+      ">
+
+        <div style="
+          font-size:23px;
+          font-weight:950;
+          margin-bottom:10px;
+        ">
+          ${escapeHTML(title)}
+        </div>
+
+        <div style="
+          color:#8d99aa;
+          font-size:12px;
+          line-height:1.7;
+        ">
+          ${escapeHTML(message)}
+        </div>
+
+        ${
+          loginButton
+          ? `
+            <a
+              href="login.html"
+              style="
+                display:inline-flex;
+                margin-top:18px;
+                padding:13px 21px;
+                border-radius:13px;
+                background:
+                  linear-gradient(
+                    135deg,
+                    #56e6ff,
+                    #9af3ff
+                  );
+                color:#061016;
+                font-size:11px;
+                font-weight:950;
+              "
+            >
+              Open Login
+            </a>
+          `
+          : ""
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ================= SAVED METHODS ================= */
+
+async function loadSavedPayoutMethods(){
+
+  if(!currentUser)
+    return;
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(PAYOUT_METHOD_TABLE)
+        .select("*")
+        .eq(
+          "user_id",
+          currentUser.id
+        );
+
+
+    if(error){
+
+      console.warn(
+        "Saved payout methods:",
+        error
+      );
+
+      return;
+
+    }
+
+
+    savedPayoutMethods = {
+      bank:null,
+      upi:null,
+      paypal:null
+    };
+
+
+    (data || []).forEach(
+      row => {
+
+        const method =
+          String(
+            row.method || ""
+          ).toLowerCase();
+
+        if(
+          method === "bank" ||
+          method === "upi" ||
+          method === "paypal"
+        ){
+
+          savedPayoutMethods[
+            method
+          ] = row;
+
+        }
+
+      }
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Payout method load:",
+      error
+    );
+
+  }
+
+}
+
+
+function getCurrentPayoutData(){
+
+  if(
+    selectedWithdrawMethod === "bank"
+  ){
+
+    return {
+
+      method:"bank",
+
+      account_holder_name:
+        document
+          .getElementById("bankName")
+          .value
+          .trim(),
+
+      bank_name:
+        document
+          .getElementById("bankBankName")
+          .value
+          .trim(),
+
+      bank_account:
+        document
+          .getElementById("bankAccount")
+          .value
+          .trim(),
+
+      bank_ifsc:
+        document
+          .getElementById("bankIfsc")
+          .value
+          .replace(/\s/g,"")
+          .toUpperCase(),
+
+      upi_id:null,
+
+      paypal_email:null
+
+    };
+
+  }
+
+
+  if(
+    selectedWithdrawMethod === "upi"
+  ){
+
+    return {
+
+      method:"upi",
+
+      account_holder_name:null,
+
+      bank_name:null,
+
+      bank_account:null,
+
+      bank_ifsc:null,
+
+      upi_id:
+        document
+          .getElementById("withdrawUpi")
+          .value
+          .trim()
+          .toLowerCase(),
+
+      paypal_email:null
+
+    };
+
+  }
+
+
+  return {
+
+    method:"paypal",
+
+    account_holder_name:null,
+
+    bank_name:null,
+
+    bank_account:null,
+
+    bank_ifsc:null,
+
+    upi_id:null,
+
+    paypal_email:
+      document
+        .getElementById("paypalEmail")
+        .value
+        .trim()
+        .toLowerCase()
+
+  };
+
+}
+
+
+function validatePayoutData(data){
+
+  if(
+    data.method === "bank"
+  ){
+
+    if(
+      !data.account_holder_name ||
+      !data.bank_name ||
+      !data.bank_account ||
+      !data.bank_ifsc
+    ){
+
+      return "Bank holder name, bank, account number aur IFSC required hai.";
+
+    }
+
+
+    if(
+      !/^[A-Z]{4}0[A-Z0-9]{6}$/
+        .test(data.bank_ifsc)
+    ){
+
+      return "IFSC format check karo.";
+
+    }
+
+  }
+
+
+  if(
+    data.method === "upi"
+  ){
+
+    if(!data.upi_id){
+
+      return "UPI ID enter karo.";
+
+    }
+
+
+    if(
+      !/^[^@\s]+@[^@\s]+$/
+        .test(data.upi_id)
+    ){
+
+      return "Valid UPI ID enter karo.";
+
+    }
+
+  }
+
+
+  if(
+    data.method === "paypal"
+  ){
+
+    if(
+      !data.paypal_email
+    ){
+
+      return "PayPal email enter karo.";
+
+    }
+
+
+    if(
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(data.paypal_email)
+    ){
+
+      return "Valid PayPal email enter karo.";
+
+    }
+
+  }
+
+
+  return "";
+
+}
+
+
+/* ================= SAVE METHOD ================= */
+
+async function saveCurrentPayoutMethod(
+  silent=false
+){
+
+  if(!currentUser){
+
+    if(!silent){
+
+      showToast(
+        "Owner session available nahi hai.",
+        "error"
+      );
+
+    }
+
+    return false;
+
+  }
+
+
+  const payout =
+    getCurrentPayoutData();
+
+
+  const validation =
+    validatePayoutData(
+      payout
+    );
+
+
+  if(validation){
+
+    if(!silent){
+
+      showToast(
+        validation,
+        "error"
+      );
+
+    }
+
+    return false;
+
+  }
+
+
+  /*
+    Production mein is operation ko bhi Edge Function
+    se save karna better hai. Table RLS owner-only hona chahiye.
+  */
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(PAYOUT_METHOD_TABLE)
+        .upsert(
+          {
+            user_id:
+              currentUser.id,
+
+            method:
+              payout.method,
+
+            account_holder_name:
+              payout.account_holder_name,
+
+            bank_name:
+              payout.bank_name,
+
+            bank_account:
+              payout.bank_account,
+
+            bank_ifsc:
+              payout.bank_ifsc,
+
+            upi_id:
+              payout.upi_id,
+
+            paypal_email:
+              payout.paypal_email,
+
+            updated_at:
+              new Date().toISOString()
+
+          },
+          {
+            onConflict:
+              "user_id,method"
+          }
+        );
+
+
+    if(error){
+
+      console.error(
+        "Save payout:",
+        error
+      );
+
+      if(!silent){
+
+        showToast(
+          "Details save nahi hui. Table/RLS check karo.",
+          "error"
+        );
+
+      }
+
+      return false;
+
+    }
+
+
+    savedPayoutMethods[
+      payout.method
+    ] = {
+      ...payout,
+      user_id:
+        currentUser.id
+    };
+
+
+    if(!silent){
+
+      document.getElementById(
+        "savedMethodBadge"
+      ).style.display =
+        "inline-flex";
+
+
+      showToast(
+        "Payment details saved.",
+        "success"
+      );
+
+    }
+
+
+    return true;
+
+  }catch(error){
+
+    console.error(
+      "Save payout:",
+      error
+    );
+
+    if(!silent){
+
+      showToast(
+        "Payment details save nahi hui.",
+        "error"
+      );
+
+    }
+
+    return false;
+
+  }
+
+}
+
+
+/* ================= LOAD METHOD ================= */
+
+function loadSelectedMethod(){
+
+  const saved =
+    savedPayoutMethods[
+      selectedWithdrawMethod
+    ];
+
+
+  if(
+    selectedWithdrawMethod === "bank"
+  ){
+
+    document.getElementById(
+      "bankName"
+    ).value =
+      saved?.account_holder_name || "";
+
+    document.getElementById(
+      "bankBankName"
+    ).value =
+      saved?.bank_name || "";
+
+    document.getElementById(
+      "bankAccount"
+    ).value =
+      saved?.bank_account || "";
+
+    document.getElementById(
+      "bankIfsc"
+    ).value =
+      saved?.bank_ifsc || "";
+
+  }
+
+
+  if(
+    selectedWithdrawMethod === "upi"
+  ){
+
+    document.getElementById(
+      "withdrawUpi"
+    ).value =
+      saved?.upi_id || "";
+
+  }
+
+
+  if(
+    selectedWithdrawMethod === "paypal"
+  ){
+
+    document.getElementById(
+      "paypalEmail"
+    ).value =
+      saved?.paypal_email || "";
+
+  }
+
+
+  document.getElementById(
+    "savedMethodBadge"
+  ).style.display =
+    saved
+    ? "inline-flex"
+    : "none";
+
+
+  resetOwnerVerification();
+
+}
+
+
+function selectWithdrawMethod(
+  method
+){
+
+  selectedWithdrawMethod =
+    method;
+
+
+  document
+    .querySelectorAll(
+      ".method-option"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.method ===
+          method
+        );
+
+      }
+    );
+
+
+  document.getElementById(
+    "bankFields"
+  ).style.display =
+    method === "bank"
+      ? "block"
+      : "none";
+
+
+  document.getElementById(
+    "upiFields"
+  ).style.display =
+    method === "upi"
+      ? "block"
+      : "none";
+
+
+  document.getElementById(
+    "paypalFields"
+  ).style.display =
+    method === "paypal"
+      ? "block"
+      : "none";
+
+
+  loadSelectedMethod();
+
+}
+
+
+function resetOwnerVerification(){
+
+  const box =
+    document.getElementById(
+      "ownerVerifyBox"
+    );
+
+  box.className =
+    "verify-box";
+
+  document.getElementById(
+    "ownerVerifiedName"
+  ).textContent =
+    "—";
+
+  document.getElementById(
+    "ownerVerifyNote"
+  ).textContent =
+    "Verify payment destination before withdrawal.";
+
+}
+
+
+/* ================= OWNER VERIFY ================= */
+
+async function verifyOwnerPayoutDestination(){
+
+  if(!currentUser){
+
+    showToast(
+      "Owner session required.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  const payout =
+    getCurrentPayoutData();
+
+
+  const validation =
+    validatePayoutData(
+      payout
+    );
+
+
+  if(validation){
+
+    showToast(
+      validation,
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  const box =
+    document.getElementById(
+      "ownerVerifyBox"
+    );
+
+
+  const title =
+    document.getElementById(
+      "ownerVerifyTitle"
+    );
+
+
+  const name =
+    document.getElementById(
+      "ownerVerifiedName"
+    );
+
+
+  const note =
+    document.getElementById(
+      "ownerVerifyNote"
+    );
+
+
+  box.className =
+    "verify-box show";
+
+  title.textContent =
+    "Verifying...";
+
+  name.textContent =
+    "Please wait";
+
+  note.textContent =
+    "Secure provider verification chal rahi hai.";
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .functions
+        .invoke(
+          VERIFY_FUNCTION,
+          {
+            body:{
+              method:
+                payout.method,
+
+              account_holder_name:
+                payout.account_holder_name,
+
+              bank_name:
+                payout.bank_name,
+
+              bank_account:
+                payout.bank_account,
+
+              bank_ifsc:
+                payout.bank_ifsc,
+
+              upi_id:
+                payout.upi_id,
+
+              paypal_email:
+                payout.paypal_email
+            }
+          }
+        );
+
+
+    if(error)
+      throw error;
+
+
+    if(
+      !data ||
+      data.verified !== true ||
+      !data.full_name
+    ){
+
+      box.className =
+        "verify-box show error";
+
+      title.textContent =
+        "Verification Failed";
+
+      name.textContent =
+        "Name could not be verified";
+
+      note.textContent =
+        data?.error ||
+        "Provider ne destination verify nahi kiya.";
+
+      return false;
+
+    }
+
+
+    box.className =
+      "verify-box show";
+
+    title.textContent =
+      "✓ Payment Account Verified";
+
+    name.textContent =
+      data.full_name;
+
+    note.textContent =
+      data.masked_destination
+      ? data.method +
+        " · " +
+        data.masked_destination
+      : "Provider verification successful.";
+
+
+    /*
+      Verification ke baad hi save.
+    */
+
+    await saveCurrentPayoutMethod(
+      true
+    );
+
+
+    showToast(
+      "Account verified: " +
+      data.full_name,
+      "success"
+    );
+
+
+    return true;
+
+  }catch(error){
+
+    console.error(
+      "Owner verification:",
+      error
+    );
+
+    box.className =
+      "verify-box show error";
+
+    title.textContent =
+      "Verification Unavailable";
+
+    name.textContent =
+      "Could not verify";
+
+    note.textContent =
+      "Verification Edge Function/provider connected nahi hai.";
+
+    showToast(
+      "Real verification backend se connect karo.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ================= OWNER MODAL ================= */
+
+async function openWithdrawModal(){
+
+  const balance =
+    Math.max(
+      0,
+      Number(
+        adminWalletSummary.balance || 0
+      ) -
+      Number(
+        withdrawalSummary.pending || 0
+      )
+    );
+
+
+  document.getElementById(
+    "withdrawAvailable"
+  ).textContent =
+    money(balance);
+
+
+  document.getElementById(
+    "withdrawAmount"
+  ).value =
+    "";
+
+
+  await loadSavedPayoutMethods();
+
+
+  selectWithdrawMethod(
+    selectedWithdrawMethod
+  );
+
+
+  document.getElementById(
+    "withdrawModal"
+  ).classList.add(
+    "show"
+  );
+
+}
+
+
+function closeWithdrawModal(){
+
+  document.getElementById(
+    "withdrawModal"
+  ).classList.remove(
+    "show"
+  );
+
+}
+
+
+function setMaxWithdraw(){
+
+  const balance =
+    Math.max(
+      0,
+      Number(
+        adminWalletSummary.balance || 0
+      ) -
+      Number(
+        withdrawalSummary.pending || 0
+      )
+    );
+
+
+  document.getElementById(
+    "withdrawAmount"
+  ).value =
+    balance.toFixed(2);
+
+}
+
+
+/* ================= OWNER WITHDRAW ================= */
+
+async function submitOwnerWithdrawal(){
+
+  if(!currentUser){
+
+    showToast(
+      "Owner login required.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const amount =
+    Number(
+      document.getElementById(
+        "withdrawAmount"
+      ).value
+    );
+
+
+  const available =
+    Math.max(
+      0,
+      Number(
+        adminWalletSummary.balance || 0
+      ) -
+      Number(
+        withdrawalSummary.pending || 0
+      )
+    );
+
+
+  if(
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ){
+
+    showToast(
+      "Valid withdrawal amount enter karo.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(amount > available){
+
+    showToast(
+      "Amount available balance se zyada hai.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  /*
+    IMPORTANT:
+    Pehle actual provider verification.
+  */
+
+  const verified =
+    await verifyOwnerPayoutDestination();
+
+
+  if(!verified)
+    return;
+
+
+  const payout =
+    savedPayoutMethods[
+      selectedWithdrawMethod
+    ];
+
+
+  if(!payout){
+
+    showToast(
+      "Verified payout details unavailable.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    showToast(
+      "Withdrawal request submit ho rahi hai...",
+      "info"
+    );
+
+
+    /*
+      Production backend should independently
+      calculate/check the available amount.
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .functions
+        .invoke(
+          OWNER_WITHDRAW_FUNCTION,
+          {
+            body:{
+              amount:amount,
+
+              method:
+                selectedWithdrawMethod,
+
+              account_holder_name:
+                payout.account_holder_name || null,
+
+              bank_name:
+                payout.bank_name || null,
+
+              bank_account:
+                payout.bank_account || null,
+
+              bank_ifsc:
+                payout.bank_ifsc || null,
+
+              upi_id:
+                payout.upi_id || null,
+
+              paypal_email:
+                payout.paypal_email || null
+            }
+          }
+        );
+
+
+    if(error)
+      throw error;
+
+
+    if(
+      data &&
+      (
+        data.success === false ||
+        data.error
+      )
+    ){
+
+      showToast(
+        data.error ||
+        "Withdrawal rejected.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    closeWithdrawModal();
+
+
+    showToast(
+      "Owner withdrawal request submitted.",
+      "success"
+    );
+
+
+    await refreshDashboard();
+
+  }catch(error){
+
+    console.error(
+      "Owner withdrawal:",
+      error
+    );
+
+    showToast(
+      "Withdrawal backend response nahi de raha.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ================= PAYMENT ACCOUNT ================= */
+
+async function loadPaymentAccount(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "admin_payment_accounts"
+        )
+        .select("*")
+        .eq(
+          "is_active",
+          true
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(1)
+        .maybeSingle();
+
+
+    if(error){
+
+      console.warn(
+        "Payment account:",
+        error
+      );
+
+      renderPaymentAccount(
+        null
+      );
+
+      return;
+
+    }
+
+
+    paymentAccount =
+      data || null;
+
+
+    renderPaymentAccount(
+      paymentAccount
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Payment account:",
+      error
+    );
+
+    renderPaymentAccount(
+      null
+    );
+
+  }
+
+}
+
+
+function renderPaymentAccount(row){
+
+  const name =
+    firstValue(
+      row,
+      [
+        "account_name",
+        "name",
+        "account_holder_name",
+        "holder_name"
+      ]
+    );
+
+
+  const upi =
+    firstValue(
+      row,
+      [
+        "upi_id",
+        "upi",
+        "vpa",
+        "upi_address"
+      ]
+    );
+
+
+  const qr =
+    firstValue(
+      row,
+      [
+        "qr_image_url",
+        "qr_url",
+        "qr_image",
+        "qr_code_url",
+        "upi_qr_url"
+      ]
+    );
+
+
+  const bank =
+    firstValue(
+      row,
+      [
+        "bank_name",
+        "bank"
+      ]
+    );
+
+
+  const account =
+    firstValue(
+      row,
+      [
+        "account_number",
+        "bank_account",
+        "bank_account_number"
+      ]
+    );
+
+
+  const ifsc =
+    firstValue(
+      row,
+      [
+        "ifsc_code",
+        "ifsc"
+      ]
+    );
+
+
+  const paypal =
+    firstValue(
+      row,
+      [
+        "paypal_email",
+        "paypal",
+        "paypal_id",
+        "paypal_email_address"
+      ]
+    );
+
+
+  document.getElementById(
+    "paymentAccountName"
+  ).textContent =
+    name || "Not configured";
+
+
+  document.getElementById(
+    "paymentUpi"
+  ).textContent =
+    upi || "Not configured";
+
+
+  document.getElementById(
+    "paymentBank"
+  ).textContent =
+    bank || "Not configured";
+
+
+  document.getElementById(
+    "paymentBankDetails"
+  ).textContent =
+    account
+    ? account +
+      (
+        ifsc
+        ? " · " + ifsc
+        : ""
+      )
+    : "Not configured";
+
+
+  document.getElementById(
+    "methodUpi"
+  ).textContent =
+    upi || "Not configured";
+
+
+  document.getElementById(
+    "methodPaypal"
+  ).textContent =
+    paypal || "Not configured";
+
+
+  document.getElementById(
+    "methodBank"
+  ).textContent =
+    bank
+    ? bank +
+      (
+        ifsc
+        ? " · " + ifsc
+        : ""
+      )
+    : "Not configured";
+
+
+  document.getElementById(
+    "paymentStatus"
+  ).textContent =
+    row
+    ? "Active"
+    : "Not configured";
+
+
+  const box =
+    document.getElementById(
+      "qrBox"
+    );
+
+
+  if(qr){
+
+    box.innerHTML =
+      "";
+
+    const img =
+      document.createElement(
+        "img"
+      );
+
+    img.src =
+      qr;
+
+    img.alt =
+      "TaskEarn payment QR";
+
+    img.onerror =
+      function(){
+
+        box.innerHTML = `
+          <div class="qr-empty">
+            QR image could not load
+          </div>
+        `;
+
+      };
+
+    box.appendChild(
+      img
+    );
+
+  }else{
+
+    box.innerHTML = `
+      <div class="qr-empty">
+        TaskEarn QR<br>
+        not configured
+      </div>
+    `;
+
+  }
+
+}
+
+
+async function copyTaskEarnUPI(){
+
+  const upi =
+    firstValue(
+      paymentAccount,
+      [
+        "upi_id",
+        "upi",
+        "vpa",
+        "upi_address"
+      ]
+    );
+
+
+  if(!upi){
+
+    showToast(
+      "TaskEarn UPI configured nahi hai.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    await navigator.clipboard.writeText(
+      upi
+    );
+
+    showToast(
+      "UPI copied.",
+      "success"
+    );
+
+  }catch(error){
+
+    window.prompt(
+      "Copy TaskEarn UPI:",
+      upi
+    );
+
+  }
+
+}
+
+
+function openTaskEarnUPI(){
+
+  const upi =
+    firstValue(
+      paymentAccount,
+      [
+        "upi_id",
+        "upi",
+        "vpa",
+        "upi_address"
+      ]
+    );
+
+
+  if(!upi){
+
+    showToast(
+      "TaskEarn UPI configured nahi hai.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const name =
+    firstValue(
+      paymentAccount,
+      [
+        "account_name",
+        "name",
+        "account_holder_name"
+      ]
+    ) ||
+    "TaskEarn";
+
+
+  window.location.href =
+    "upi://pay?pa=" +
+    encodeURIComponent(upi) +
+    "&pn=" +
+    encodeURIComponent(name);
+
+}
+
+
+/* ================= ADMIN WALLET ================= */
+
+async function loadAdminSummary(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .functions
+        .invoke(
+          ADMIN_SUMMARY_FUNCTION,
+          {
+            body:{
+              action:"summary"
+            }
+          }
+        );
+
+
+    if(error){
+
+      console.warn(
+        "Admin summary:",
+        error
+      );
+
+      return;
+
+    }
+
+
+    const wallet =
+      data?.wallet ||
+      data?.admin_wallet ||
+      data?.summary ||
+      data;
+
+
+    if(!wallet)
+      return;
+
+
+    const balance =
+      Number(
+        wallet.balance ??
+        wallet.wallet_balance ??
+        wallet.available_balance ??
+        wallet.current_balance ??
+        0
+      );
+
+
+    const credits =
+      Number(
+        wallet.credits ??
+        wallet.total_credits ??
+        wallet.total_deposits ??
+        0
+      );
+
+
+    const debits =
+      Number(
+        wallet.debits ??
+        wallet.total_debits ??
+        wallet.total_payouts ??
+        0
+      );
+
+
+    adminWalletSummary = {
+
+      balance:
+        Number.isFinite(balance)
+        ? balance
+        : 0,
+
+      credits:
+        Number.isFinite(credits)
+        ? credits
+        : 0,
+
+      debits:
+        Number.isFinite(debits)
+        ? debits
+        : 0
+
+    };
+
+
+    renderAdminWallet();
+
+  }catch(error){
+
+    console.warn(
+      "Admin wallet summary:",
+      error
+    );
+
+  }
+
+}
+
+
+function renderAdminWallet(){
+
+  const balance =
+    Math.max(
+      0,
+      Number(
+        adminWalletSummary.balance || 0
+      )
+    );
+
+
+  const pending =
+    Math.max(
+      0,
+      Number(
+        withdrawalSummary.pending || 0
+      )
+    );
+
+
+  const safe =
+    Math.max(
+      0,
+      balance - pending
+    );
+
+
+  document.getElementById(
+    "adminWalletBalance"
+  ).textContent =
+    money(balance);
+
+
+  document.getElementById(
+    "adminWalletCredits"
+  ).textContent =
+    money(
+      adminWalletSummary.credits
+    );
+
+
+  document.getElementById(
+    "adminWalletDebits"
+  ).textContent =
+    money(
+      adminWalletSummary.debits
+    );
+
+
+  document.getElementById(
+    "adminPendingPayout"
+  ).textContent =
+    money(pending);
+
+
+  document.getElementById(
+    "safePayoutBalance"
+  ).textContent =
+    money(safe);
+
+
+  document.getElementById(
+    "safePayoutFinance"
+  ).textContent =
+    money(safe);
+
+
+  document.getElementById(
+    "ownerBusinessBalance"
+  ).textContent =
+    money(safe);
+
+
+  document.getElementById(
+    "walletBalance"
+  ).textContent =
+    money(safe);
+
+
+  document.getElementById(
+    "ownerMoneyAdded"
+  ).textContent =
+    money(
+      adminWalletSummary.credits
+    );
+
+
+  document.getElementById(
+    "ownerPayouts"
+  ).textContent =
+    money(
+      adminWalletSummary.debits
+    );
+
+
+  document.getElementById(
+    "ownerAdShare"
+  ).textContent =
+    money(
+      adSummary.ownerShare
+    );
+
+
+  document.getElementById(
+    "ownerRevenueShare"
+  ).textContent =
+    money(
+      adSummary.ownerShare
+    );
+
+}
+
+
+/* ================= USER WITHDRAWALS ================= */
+
+async function loadWithdrawals(){
+
+  let rows = [];
+
+
+  for(
+    const table
+    of WITHDRAWAL_TABLES
+  ){
+
+    try{
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(table)
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending:false
+            }
+          )
+          .limit(500);
+
+
+      if(
+        !error &&
+        Array.isArray(data)
+      ){
+
+        rows =
+          data;
+
+        break;
+
+      }
+
+    }catch(error){
+
+      console.warn(
+        table,
+        error
+      );
+
+    }
+
+  }
+
+
+  lastWithdrawalRows =
+    rows;
+
+
+  let pending = 0;
+  let paid = 0;
+
+
+  rows.forEach(
+    row => {
+
+      const amount =
+        getAmount(row);
+
+
+      const status =
+        String(
+          row.status || ""
+        ).toLowerCase();
+
+
+      if(
+        status.includes("pending") ||
+        status.includes("requested") ||
+        status.includes("review") ||
+        status.includes("processing")
+      ){
+
+        pending +=
+          amount;
+
+      }
+
+
+      if(
+        status.includes("paid") ||
+        status.includes("completed") ||
+        status.includes("success")
+      ){
+
+        paid +=
+          amount;
+
+      }
+
+    }
+  );
+
+
+  withdrawalSummary = {
+
+    pending,
+
+    paid,
+
+    count:
+      rows.length
+
+  };
+
+
+  document.getElementById(
+    "pendingWithdrawals"
+  ).textContent =
+    money(pending);
+
+
+  document.getElementById(
+    "totalWithdrawn"
+  ).textContent =
+    money(paid);
+
+
+  document.getElementById(
+    "withdrawalCount"
+  ).textContent =
+    numberFormat(
+      rows.length
+    );
+
+
+  renderWithdrawalQueue(
+  rows
+);
+
+updatePayNowSection();
+
+renderAdminWallet();
+
+}
+
+
+/* ================= USER REQUEST DATA ================= */
+
+function getRequestMethod(row){
+
+  return (
+    row.payment_method ||
+    row.payout_method ||
+    row.method ||
+    (
+      row.upi_id
+      ? "upi"
+      : row.paypal_email
+      ? "paypal"
+      : "bank"
+    )
+  )
+  .toString()
+  .toLowerCase();
+
+}
+
+
+function getRequestDestination(row){
+
+  const method =
+    getRequestMethod(
+      row
+    );
+
+
+  if(method === "upi"){
+
+    return (
+      row.upi_id ||
+      row.upi ||
+      row.vpa ||
+      row.destination ||
+      "UPI destination missing"
+    );
+
+  }
+
+
+  if(method === "paypal"){
+
+    return (
+      row.paypal_email ||
+      row.email ||
+      row.destination ||
+      "PayPal email missing"
+    );
+
+  }
+
+
+  const account =
+    row.bank_account ||
+    row.account_number ||
+    row.bank_account_number ||
+    row.destination ||
+    "";
+
+
+  const ifsc =
+    row.bank_ifsc ||
+    row.ifsc ||
+    row.ifsc_code ||
+    "";
+
+
+  const bank =
+    row.bank_name ||
+    row.bank ||
+    "";
+
+
+  return [
+    bank,
+    account,
+    ifsc
+  ]
+  .filter(Boolean)
+  .join(" · ") ||
+  "Bank destination missing";
+
+}
+
+
+function getRequestUser(row){
+
+  return (
+    row.user_name ||
+    row.full_name ||
+    row.name ||
+    row.username ||
+    row.user_email ||
+    row.email ||
+    row.user_id ||
+    "TaskEarn User"
+  );
+
+}
+
+
+/* ================= REQUEST QUEUE ================= */
+
+function renderWithdrawalQueue(rows){
+
+  const box =
+    document.getElementById(
+      "withdrawalQueue"
+    );
+
+
+  if(!rows.length){
+
+    box.innerHTML = `
+      <div class="empty">
+        <strong>
+          No user collect requests
+        </strong>
+        User withdrawal request karega to yahan appear hogi.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    rows
+      .slice(0,50)
+      .map(
+        row => {
+
+          const amount =
+            getAmount(row);
+
+
+          const status =
+            String(
+              row.status ||
+              "pending"
+            )
+            .toLowerCase();
+
+
+          const isPaid =
+            status.includes("paid") ||
+            status.includes("completed") ||
+            status.includes("success");
+
+
+          const method =
+            getRequestMethod(
+              row
+            );
+
+
+          const destination =
+            getRequestDestination(
+              row
+            );
+
+
+          const user =
+            getRequestUser(
+              row
+            );
+
+
+          const requestId =
+            row.id ||
+            row.request_id ||
+            row.withdrawal_id ||
+            "";
+
+
+          const safeRequestId =
+            String(
+              requestId
+            )
+            .replace(
+              /'/g,
+              "\\'"
+            );
+
+
+          const verificationId =
+            "verify_" +
+            String(
+              requestId
+            )
+            .replace(
+              /[^a-zA-Z0-9_-]/g,
+              ""
+            );
+
+
+          return `
+
+            <div
+              class="request-card"
+              id="request_${escapeHTML(String(requestId))}"
+            >
+
+              <div class="request-header">
+
+                <div class="request-user">
+
+                  <div class="request-name">
+                    ${escapeHTML(user)}
+                  </div>
+
+                  <div class="request-id">
+                    Request ID:
+                    ${escapeHTML(requestId)}
+                  </div>
+
+                </div>
+
+                <div class="request-amount">
+                  ${money(amount)}
+                </div>
+
+              </div>
+
+
+              <div class="request-method">
+                ${escapeHTML(
+                  method.toUpperCase()
+                )}
+              </div>
+
+
+              <div class="request-destination">
+
+                <div class="destination-label">
+                  Payment destination
+                </div>
+
+                <div class="destination-value">
+                  ${escapeHTML(destination)}
+                </div>
+
+              </div>
+
+
+              <div class="locked-amount">
+                Requested amount:
+                <strong>${money(amount)}</strong>
+                · server-side locked
+              </div>
+
+
+              <div
+                class="verify-result"
+                id="${verificationId}"
+              >
+
+                <div class="verify-title">
+                  Verification
+                </div>
+
+                <div
+                  class="verify-name"
+                  data-role="name"
+                >
+                  —
+                </div>
+
+                <div
+                  class="verify-meta"
+                  data-role="meta"
+                >
+                  —
+                </div>
+
+              </div>
+
+
+              <div class="request-actions">
+
+                <button
+                  class="request-btn verify"
+                  onclick="verifyUserRequest(
+                    '${safeRequestId}'
+                  )"
+                  ${isPaid ? "disabled" : ""}
+                >
+                  VERIFY
+                </button>
+
+
+                <button
+                  class="request-btn pay"
+                  onclick="payUserRequest(
+                    '${safeRequestId}'
+                  )"
+                  ${isPaid ? "disabled" : ""}
+                >
+                  ${isPaid ? "PAID" : "PAY USER"}
+                </button>
+
+              </div>
+
+
+              <div class="notice">
+                Amount manually change nahi kiya ja sakta.
+                Pay action server par request ke stored amount ko hi use karega.
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* ================= USER VERIFICATION ================= */
+
+async function verifyUserRequest(
+  requestId
+){
+
+  if(!requestId){
+
+    showToast(
+      "Request ID missing.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  const row =
+    lastWithdrawalRows.find(
+      item =>
+        String(
+          item.id ||
+          item.request_id ||
+          item.withdrawal_id ||
+          ""
+        ) ===
+        String(requestId)
+    );
+
+
+  if(!row){
+
+    showToast(
+      "Withdrawal request nahi mili.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  const resultBox =
+    document.getElementById(
+      "verify_" +
+      String(requestId)
+        .replace(
+          /[^a-zA-Z0-9_-]/g,
+          ""
+        )
+    );
+
+
+  if(!resultBox)
+    return false;
+
+
+  const nameEl =
+    resultBox.querySelector(
+      '[data-role="name"]'
+    );
+
+
+  const metaEl =
+    resultBox.querySelector(
+      '[data-role="meta"]'
+    );
+
+
+  resultBox.className =
+    "verify-result show";
+
+
+  nameEl.textContent =
+    "Verifying...";
+
+
+  metaEl.textContent =
+    "Secure provider verification chal rahi hai.";
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .functions
+        .invoke(
+          VERIFY_FUNCTION,
+          {
+            body:{
+              request_id:
+                requestId
+            }
+          }
+        );
+
+
+    if(error)
+      throw error;
+
+
+    if(
+      !data ||
+      data.verified !== true ||
+      !data.full_name
+    ){
+
+      resultBox.className =
+        "verify-result show error";
+
+      nameEl.textContent =
+        "Verification failed";
+
+      metaEl.textContent =
+        data?.error ||
+        "Payment destination provider se verify nahi hui.";
+
+      showToast(
+        "User payment account verify nahi hua.",
+        "error"
+      );
+
+      return false;
+
+    }
+
+
+    resultBox.className =
+      "verify-result show";
+
+
+    nameEl.textContent =
+      data.full_name;
+
+
+    metaEl.textContent =
+      [
+        data.method,
+        data.masked_destination
+      ]
+      .filter(Boolean)
+      .join(" · ") ||
+      "Provider verified";
+
+
+    showToast(
+      "Verified: " +
+      data.full_name,
+      "success"
+    );
+
+
+    return true;
+
+  }catch(error){
+
+    console.error(
+      "User payout verification:",
+      error
+    );
+
+
+    resultBox.className =
+      "verify-result show error";
+
+
+    nameEl.textContent =
+      "Verification unavailable";
+
+
+    metaEl.textContent =
+      "Backend/provider verification connected nahi hai.";
+
+
+    showToast(
+      "Real payout verification backend se connect karo.",
+      "error"
+    );
+
+
+    return false;
+
+  }
+
+}
+
+
+/* ================= PAY USER ================= */
+
+async function payUserRequest(
+  requestId
+){
+
+  if(!requestId){
+
+    showToast(
+      "Request ID missing.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const row =
+    lastWithdrawalRows.find(
+      item =>
+        String(
+          item.id ||
+          item.request_id ||
+          item.withdrawal_id ||
+          ""
+        ) ===
+        String(requestId)
+    );
+
+
+  if(!row){
+
+    showToast(
+      "Request nahi mili.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const status =
+    String(
+      row.status || ""
+    ).toLowerCase();
+
+
+  if(
+    status.includes("paid") ||
+    status.includes("completed") ||
+    status.includes("success")
+  ){
+
+    showToast(
+      "Ye request already paid hai.",
+      "info"
+    );
+
+    return;
+
+  }
+
+
+  /*
+    FIRST:
+    Verify actual payout destination.
+  */
+
+  const verified =
+    await verifyUserRequest(
+      requestId
+    );
+
+
+  if(!verified)
+    return;
+
+
+  const confirmPay =
+    window.confirm(
+      "User payment verify ho chuka hai.\n\n" +
+      "Request amount server-side locked hai.\n\n" +
+      "Kya payment process karna hai?"
+    );
+
+
+  if(!confirmPay)
+    return;
+
+
+  try{
+
+    showToast(
+      "User payment process ho rahi hai...",
+      "info"
+    );
+
+
+    /*
+      VERY IMPORTANT:
+      Frontend amount nahi bhej raha.
+      Sirf request_id bhej raha hai.
+      Backend stored request amount use karega.
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .functions
+        .invoke(
+          PAY_USER_FUNCTION,
+          {
+            body:{
+              request_id:
+                requestId
+            }
+          }
+        );
+
+
+    if(error)
+      throw error;
+
+
+    if(
+      data &&
+      (
+        data.success === false ||
+        data.error
+      )
+    ){
+
+      showToast(
+        data.error ||
+        "User payout rejected.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    showToast(
+      "User payment successfully processed.",
+      "success"
+    );
+
+
+    /*
+      Only after actual user action.
+    */
+
+    await refreshDashboard();
+
+  }catch(error){
+
+    console.error(
+      "Pay user:",
+      error
+    );
+
+    showToast(
+      "Payment backend response nahi de raha.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ================= AD REVENUE ================= */
+
+async function loadAdRevenue(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "ad_revenue_events"
+        )
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(10000);
+
+
+    if(error){
+
+      return;
+
+    }
+
+
+    let gross = 0;
+    let userShare = 0;
+    let ownerShare = 0;
+    let pending = 0;
+    let rejected = 0;
+    let verifiedCount = 0;
+
+
+    (data || []).forEach(
+      row => {
+
+        const status =
+          String(
+            row.status || ""
+          ).toLowerCase();
+
+
+        const g =
+          Number(
+            row.gross_revenue || 0
+          );
+
+
+        const u =
+          Number(
+            row.user_share || 0
+          );
+
+
+        const o =
+          Number(
+            row.owner_share || 0
+          );
+
+
+        if(status === "verified"){
+
+          gross += g;
+          userShare += u;
+          ownerShare += o;
+          verifiedCount++;
+
+        }
+
+
+        if(status === "pending"){
+
+          pending += g;
+
+        }
+
+
+        if(
+          status === "rejected" ||
+          status === "reversed"
+        ){
+
+          rejected += g;
+
+        }
+
+      }
+    );
+
+
+    adSummary = {
+
+      gross,
+      userShare,
+      ownerShare,
+      pending,
+      rejected,
+      verifiedCount
+
+    };
+
+
+    document.getElementById(
+      "adGross"
+    ).textContent =
+      money(gross);
+
+
+    document.getElementById(
+      "adUserShare"
+    ).textContent =
+      money(userShare);
+
+
+    document.getElementById(
+      "adOwnerShare"
+    ).textContent =
+      money(ownerShare);
+
+
+    document.getElementById(
+      "adVerifiedCount"
+    ).textContent =
+      numberFormat(
+        verifiedCount
+      );
+
+
+    document.getElementById(
+      "adPending"
+    ).textContent =
+      money(pending);
+
+
+    document.getElementById(
+      "adRejected"
+    ).textContent =
+      money(rejected);
+
+
+    renderAdminWallet();
+
+  }catch(error){
+
+    console.warn(
+      "Ad revenue:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ================= TRANSACTIONS ================= */
 
 function normalizeType(row){
 
@@ -1743,7 +7113,6 @@ function normalizeType(row){
       row.source ||
       row.category ||
       row.reward_type ||
-      row.transaction_type ||
       row.description ||
       row.title ||
       ""
@@ -1752,399 +7121,56 @@ function normalizeType(row){
     .toLowerCase();
 
 
+  return text.includes("project")
+    ? "project"
+    : "task";
+
+}
+
+
+function normalizeStatus(value){
+
+  const s =
+    String(
+      value || "approved"
+    )
+    .toLowerCase();
+
+
   if(
-    text.includes("project") ||
-    text.includes("project_reward")
-  ){
-    return "project";
-  }
-
-
-  return "task";
-
-}
-
-
-function getAmount(row){
-
-  const values = [
-
-    row.amount,
-
-    row.reward_amount,
-
-    row.reward,
-
-    row.credit,
-
-    row.credits,
-
-    row.value
-
-  ];
-
-
-  for(
-    const value of values
+    s.includes("pending") ||
+    s.includes("requested") ||
+    s.includes("submitted") ||
+    s.includes("review")
   ){
 
-    if(
-      value !== undefined &&
-      value !== null &&
-      value !== "" &&
-      !Number.isNaN(
-        Number(value)
-      )
-    ){
-
-      return Number(value);
-
-    }
-
-  }
-
-
-  return 0;
-
-}
-
-
-/* =========================================================
-   AUTHENTICATION
-   ========================================================= */
-
-async function checkOwner(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.getUser();
-
-
-  if(error){
-
-    console.error(
-      "Auth error:",
-      error
-    );
-
-    return false;
+    return "pending";
 
   }
 
 
   if(
-    !data ||
-    !data.user
+    s.includes("reject") ||
+    s.includes("failed") ||
+    s.includes("cancel") ||
+    s.includes("reversed")
   ){
 
-    return false;
+    return "rejected";
 
   }
 
 
-  currentUser =
-    data.user;
-
-
-  /*
-   Frontend owner visibility check.
-   Real database security must still be
-   handled by Supabase RLS.
-  */
-
-  if(
-    !OWNER_UID ||
-    OWNER_UID ===
-    "PASTE_YOUR_SUPABASE_USER_UID_HERE"
-  ){
-
-    alert(
-      "Owner UID is not configured in earnings.html."
-    );
-
-    return false;
-
-  }
-
-
-  if(
-    currentUser.id !==
-    OWNER_UID
-  ){
-
-    document.body.innerHTML = `
-
-      <div style="
-        min-height:100vh;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:25px;
-        background:#05080d;
-        color:#fff;
-        font-family:system-ui;
-        text-align:center;
-      ">
-
-        <div>
-
-          <div style="
-            font-size:20px;
-            font-weight:800;
-            margin-bottom:8px;
-          ">
-            Access Restricted
-          </div>
-
-          <div style="
-            color:#8f9bad;
-            font-size:12px;
-            line-height:1.5;
-          ">
-            This TaskEarn dashboard is available only
-            to the owner account.
-          </div>
-
-        </div>
-
-      </div>
-
-    `;
-
-    return false;
-
-  }
-
-
-  return true;
+  return "approved";
 
 }
 
-
-/* =========================================================
-   WALLET
-   ========================================================= */
-
-async function loadWallet(){
-
-  let balance =
-    null;
-
-
-  /*
-   Primary wallet table.
-  */
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("user_wallets")
-        .select("*")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .maybeSingle();
-
-
-    if(
-      !error &&
-      data
-    ){
-
-      balance =
-        data.balance ??
-        data.wallet_balance ??
-        data.available_balance ??
-        data.amount ??
-        0;
-
-    }
-
-  }catch(error){
-
-    console.warn(
-      "user_wallets:",
-      error
-    );
-
-  }
-
-
-  /*
-   Fallback wallet_balances table.
-  */
-
-  if(balance === null){
-
-    try{
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("wallet_balances")
-          .select("*")
-          .eq(
-            "user_id",
-            currentUser.id
-          )
-          .maybeSingle();
-
-
-      if(
-        !error &&
-        data
-      ){
-
-        balance =
-          data.balance ??
-          data.wallet_balance ??
-          data.available_balance ??
-          data.amount ??
-          0;
-
-      }
-
-    }catch(error){
-
-      console.warn(
-        "wallet_balances:",
-        error
-      );
-
-    }
-
-  }
-
-
-  if(balance === null)
-    balance = 0;
-
-
-  document.getElementById(
-    "walletBalance"
-  ).textContent =
-    money(balance);
-
-
-  document.getElementById(
-    "ownerFunds"
-  ).textContent =
-    money(balance);
-
-}
-
-
-/* =========================================================
-   WALLET TRANSACTIONS
-   ========================================================= */
 
 async function loadTransactions(){
 
-  const list =
-    document.getElementById(
-      "transactionList"
-    );
-
-
-  list.innerHTML = `
-
-    <div class="loading">
-
-      <div class="spinner"></div>
-
-      Loading earnings...
-
-    </div>
-
-  `;
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("wallet_transactions")
-      .select("*")
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      )
-      .limit(300);
-
-
-  if(error){
-
-    console.error(
-      "wallet_transactions:",
-      error
-    );
-
-    allTransactions = [];
-
-    updateSummary();
-
-    renderTransactions();
-
+  if(!currentUser)
     return;
 
-  }
-
-
-  allTransactions =
-    (data || [])
-      .map(row => {
-
-        const amount =
-          getAmount(row);
-
-        return {
-
-          ...row,
-
-          normalizedType:
-            normalizeType(row),
-
-          normalizedStatus:
-            normalizeStatus(
-              row.status
-            ),
-
-          normalizedAmount:
-            amount
-
-        };
-
-      });
-
-
-  updateSummary();
-
-  renderTransactions();
-
-}
-
-
-/* =========================================================
-   PROJECT REWARDS
-   ========================================================= */
-
-async function loadProjectRewards(){
 
   try{
 
@@ -2153,7 +7179,9 @@ async function loadProjectRewards(){
       error
     } =
       await supabaseClient
-        .from("project_rewards")
+        .from(
+          "wallet_transactions"
+        )
         .select("*")
         .eq(
           "user_id",
@@ -2170,78 +7198,50 @@ async function loadProjectRewards(){
 
     if(error){
 
-      console.warn(
-        "project_rewards:",
-        error
-      );
+      allTransactions =
+        [];
+
+      renderTransactions();
 
       return;
 
     }
 
 
-    let projectApproved = 0;
+    allTransactions =
+      (data || [])
+        .map(
+          row => {
 
-    let projectPending = 0;
+            return {
 
-    let projectCount = 0;
+              ...row,
 
+              normalizedType:
+                normalizeType(
+                  row
+                ),
 
-    (data || []).forEach(
-      row => {
+              normalizedStatus:
+                normalizeStatus(
+                  row.status
+                ),
 
-        const amount =
-          getAmount(row);
+              normalizedAmount:
+                Number(
+                  row.amount ||
+                  row.reward_amount ||
+                  row.reward ||
+                  0
+                )
 
-        const status =
-          normalizeStatus(
-            row.status
-          );
+            };
 
-
-        if(
-          status ===
-          "approved"
-        ){
-
-          projectApproved +=
-            amount;
-
-          projectCount++;
-
-        }
-
-
-        if(
-          status ===
-          "pending"
-        ){
-
-          projectPending +=
-            amount;
-
-        }
-
-      }
-    );
+          }
+        );
 
 
-    /*
-     Store direct project totals.
-    */
-
-    window.projectRewardSummary = {
-
-      approved:
-        projectApproved,
-
-      pending:
-        projectPending,
-
-      count:
-        projectCount
-
-    };
+    renderTransactions();
 
 
     updateSummary();
@@ -2249,7 +7249,7 @@ async function loadProjectRewards(){
   }catch(error){
 
     console.warn(
-      "project_rewards error:",
+      "Transactions:",
       error
     );
 
@@ -2257,1022 +7257,6 @@ async function loadProjectRewards(){
 
 }
 
-
-/* =========================================================
-   SUMMARY
-   ========================================================= */
-
-function updateSummary(){
-
-  let approved = 0;
-
-  let pending = 0;
-
-  let taskAmount = 0;
-
-  let projectAmount = 0;
-
-  let taskCount = 0;
-
-  let projectCount = 0;
-
-  let completed = 0;
-
-
-  allTransactions.forEach(
-    row => {
-
-      const amount =
-        Number(
-          row.normalizedAmount || 0
-        );
-
-
-      const type =
-        row.normalizedType;
-
-
-      const status =
-        row.normalizedStatus;
-
-
-      if(
-        status ===
-        "approved"
-      ){
-
-        approved += amount;
-
-        completed++;
-
-
-        if(
-          type ===
-          "project"
-        ){
-
-          projectAmount +=
-            amount;
-
-          projectCount++;
-
-        }else{
-
-          taskAmount +=
-            amount;
-
-          taskCount++;
-
-        }
-
-      }
-
-
-      if(
-        status ===
-        "pending"
-      ){
-
-        pending +=
-          amount;
-
-      }
-
-    }
-  );
-
-
-  /*
-   Direct project_rewards data is important
-   because project rewards can exist there even
-   before/without a wallet transaction row.
-  */
-
-  if(
-    window.projectRewardSummary
-  ){
-
-    const directProject =
-      window.projectRewardSummary;
-
-
-    projectAmount =
-      Math.max(
-        projectAmount,
-        Number(
-          directProject.approved || 0
-        )
-      );
-
-
-    projectCount =
-      Math.max(
-        projectCount,
-        Number(
-          directProject.count || 0
-        )
-      );
-
-
-    pending +=
-      Number(
-        directProject.pending || 0
-      );
-
-  }
-
-
-  document.getElementById(
-    "totalEarned"
-  ).textContent =
-    money(approved + projectAmount);
-
-
-  document.getElementById(
-    "approvedAmount"
-  ).textContent =
-    shortMoney(
-      approved + projectAmount
-    );
-
-
-  document.getElementById(
-    "pendingAmount"
-  ).textContent =
-    shortMoney(pending);
-
-
-  document.getElementById(
-    "completedCount"
-  ).textContent =
-    completed +
-    projectCount;
-
-
-  document.getElementById(
-    "taskEarnings"
-  ).textContent =
-    money(taskAmount);
-
-
-  document.getElementById(
-    "projectEarnings"
-  ).textContent =
-    money(projectAmount);
-
-
-  document.getElementById(
-    "taskCount"
-  ).textContent =
-    taskCount +
-    " completed";
-
-
-  document.getElementById(
-    "projectCount"
-  ).textContent =
-    projectCount +
-    " completed";
-
-
-  document.getElementById(
-    "transactionCount"
-  ).textContent =
-    allTransactions.length;
-
-}
-
-
-/* =========================================================
-   USER / APP STATS
-   ========================================================= */
-
-async function loadUserStats(){
-
-  let profiles = [];
-
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("profiles")
-        .select("*")
-        .limit(10000);
-
-
-    if(
-      !error &&
-      data
-    ){
-
-      profiles =
-        data;
-
-    }else{
-
-      console.warn(
-        "profiles:",
-        error
-      );
-
-    }
-
-  }catch(error){
-
-    console.warn(
-      "profiles exception:",
-      error
-    );
-
-  }
-
-
-  const registered =
-    profiles.length;
-
-
-  document.getElementById(
-    "registeredUsers"
-  ).textContent =
-    numberFormat(registered);
-
-
-  /*
-   ACTIVE USERS
-
-   We try common profile fields.
-  */
-
-  let activeCount = 0;
-
-  let activeFieldFound = false;
-
-
-  profiles.forEach(
-    profile => {
-
-      const hasActive =
-        profile.is_active !== undefined ||
-        profile.active !== undefined ||
-        profile.status !== undefined;
-
-
-      if(!hasActive)
-        return;
-
-
-      activeFieldFound = true;
-
-
-      if(
-        profile.is_active === true ||
-        profile.active === true ||
-        String(
-          profile.status || ""
-        ).toLowerCase() ===
-        "active"
-      ){
-
-        activeCount++;
-
-      }
-
-    }
-  );
-
-
-  if(activeFieldFound){
-
-    document.getElementById(
-      "activeUsers"
-    ).textContent =
-      numberFormat(activeCount);
-
-
-    document.getElementById(
-      "activeUsersNote"
-    ).textContent =
-      "Active accounts";
-
-  }else{
-
-    document.getElementById(
-      "activeUsers"
-    ).textContent =
-      "—";
-
-
-    document.getElementById(
-      "activeUsersNote"
-    ).textContent =
-      "Active status not tracked";
-
-  }
-
-
-  /*
-   ONLINE USERS
-
-   Online means last_seen within the
-   last 5 minutes, if profile has last_seen.
-  */
-
-  let onlineCount = 0;
-
-  let lastSeenFound = false;
-
-  const now =
-    Date.now();
-
-
-  profiles.forEach(
-    profile => {
-
-      const lastSeen =
-        profile.last_seen ??
-        profile.lastSeen ??
-        profile.last_active_at ??
-        profile.last_activity_at;
-
-
-      if(!lastSeen)
-        return;
-
-
-      lastSeenFound = true;
-
-
-      const time =
-        new Date(
-          lastSeen
-        ).getTime();
-
-
-      if(
-        !Number.isNaN(time) &&
-        now - time <=
-        5 * 60 * 1000
-      ){
-
-        onlineCount++;
-
-      }
-
-    }
-  );
-
-
-  if(lastSeenFound){
-
-    document.getElementById(
-      "onlineUsers"
-    ).textContent =
-      numberFormat(
-        onlineCount
-      );
-
-
-    document.getElementById(
-      "onlineUsersNote"
-    ).textContent =
-      "Seen within 5 minutes";
-
-  }else{
-
-    document.getElementById(
-      "onlineUsers"
-    ).textContent =
-      "—";
-
-
-    document.getElementById(
-      "onlineUsersNote"
-    ).textContent =
-      "Presence not tracked";
-
-  }
-
-
-  /*
-   APP DOWNLOADERS
-
-   We only count this when a real
-   download/install tracking table exists.
-  */
-
-  await loadDownloaders(profiles);
-
-}
-
-
-/* =========================================================
-   DOWNLOADERS
-   ========================================================= */
-
-async function loadDownloaders(
-  profiles
-){
-
-  const possibleTables = [
-
-    "app_downloads",
-
-    "downloads",
-
-    "download_events",
-
-    "app_download_events",
-
-    "app_installs",
-
-    "install_events"
-
-  ];
-
-
-  for(
-    const table of possibleTables
-  ){
-
-    try{
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from(table)
-          .select("*")
-          .limit(10000);
-
-
-      if(
-        !error &&
-        Array.isArray(data)
-      ){
-
-        const uniqueUsers =
-          new Set();
-
-
-        data.forEach(
-          row => {
-
-            const uid =
-              row.user_id ??
-              row.userId ??
-              row.profile_id;
-
-
-            if(uid){
-
-              uniqueUsers.add(
-                String(uid)
-              );
-
-            }
-
-          }
-        );
-
-
-        const count =
-          uniqueUsers.size > 0
-            ? uniqueUsers.size
-            : data.length;
-
-
-        document.getElementById(
-          "downloaders"
-        ).textContent =
-          numberFormat(count);
-
-
-        document.getElementById(
-          "downloadersNote"
-        ).textContent =
-          table +
-          " tracking";
-
-
-        return;
-
-      }
-
-    }catch(error){
-
-      /*
-       Table may not exist.
-       Continue checking next possible
-       real tracking table.
-      */
-
-    }
-
-  }
-
-
-  /*
-   Check profile fields if download/install
-   information is stored there.
-  */
-
-  const downloadFields = [
-
-    "downloaded_at",
-
-    "installed_at",
-
-    "app_installed_at",
-
-    "downloaded",
-
-    "app_installed",
-
-    "is_installed"
-
-  ];
-
-
-  let fieldFound = false;
-
-  let count = 0;
-
-
-  profiles.forEach(
-    profile => {
-
-      let found = false;
-
-
-      for(
-        const field of downloadFields
-      ){
-
-        if(
-          profile[field] !==
-          undefined &&
-          profile[field] !==
-          null
-        ){
-
-          fieldFound = true;
-
-
-          const value =
-            profile[field];
-
-
-          if(
-            value === true ||
-            (
-              typeof value ===
-              "string" &&
-              value.trim() !== ""
-            ) ||
-            (
-              value !== false &&
-              value !== 0
-            )
-          ){
-
-            found = true;
-
-          }
-
-        }
-
-      }
-
-
-      if(found)
-        count++;
-
-    }
-  );
-
-
-  if(fieldFound){
-
-    document.getElementById(
-      "downloaders"
-    ).textContent =
-      numberFormat(count);
-
-
-    document.getElementById(
-      "downloadersNote"
-    ).textContent =
-      "Install data";
-
-  }else{
-
-    document.getElementById(
-      "downloaders"
-    ).textContent =
-      "—";
-
-
-    document.getElementById(
-      "downloadersNote"
-    ).textContent =
-      "Download tracking not connected";
-
-  }
-
-}
-
-
-/* =========================================================
-   WITHDRAWALS
-   ========================================================= */
-
-async function loadWithdrawals(){
-
-  let totalWithdrawn = 0;
-
-  let pendingAmount = 0;
-
-  let requestCount = 0;
-
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("withdrawal_requests")
-        .select("*")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        )
-        .limit(500);
-
-
-    if(error){
-
-      console.warn(
-        "withdrawal_requests:",
-        error
-      );
-
-    }else{
-
-      const rows =
-        data || [];
-
-
-      requestCount =
-        rows.length;
-
-
-      rows.forEach(
-        row => {
-
-          const amount =
-            getAmount(row);
-
-
-          const status =
-            String(
-              row.status ||
-              ""
-            ).toLowerCase();
-
-
-          if(
-            status.includes("pending") ||
-            status.includes("processing") ||
-            status.includes("requested")
-          ){
-
-            pendingAmount +=
-              amount;
-
-          }
-
-
-          if(
-            status.includes("approved") ||
-            status.includes("completed") ||
-            status.includes("paid") ||
-            status.includes("success")
-          ){
-
-            totalWithdrawn +=
-              amount;
-
-          }
-
-        }
-      );
-
-    }
-
-  }catch(error){
-
-    console.warn(
-      "withdrawal exception:",
-      error
-    );
-
-  }
-
-
-  /*
-   Also check wallet_transactions for
-   actual withdrawal transaction records.
-  */
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("wallet_transactions")
-        .select("*")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .limit(500);
-
-
-    if(
-      !error &&
-      data
-    ){
-
-      let transactionWithdrawn =
-        0;
-
-
-      data.forEach(
-        row => {
-
-          const type =
-            String(
-              row.type ||
-              ""
-            ).toLowerCase();
-
-
-          const amount =
-            Math.abs(
-              Number(
-                row.amount || 0
-              )
-            );
-
-
-          if(
-            type.includes("withdraw")
-          ){
-
-            transactionWithdrawn +=
-              amount;
-
-          }
-
-        }
-      );
-
-
-      if(
-        transactionWithdrawn >
-        totalWithdrawn
-      ){
-
-        totalWithdrawn =
-          transactionWithdrawn;
-
-      }
-
-    }
-
-  }catch(error){
-
-    console.warn(
-      "withdrawal transactions:",
-      error
-    );
-
-  }
-
-
-  document.getElementById(
-    "totalWithdrawn"
-  ).textContent =
-    money(
-      totalWithdrawn
-    );
-
-
-  document.getElementById(
-    "pendingWithdrawals"
-  ).textContent =
-    money(
-      pendingAmount
-    );
-
-
-  document.getElementById(
-    "withdrawalCount"
-  ).textContent =
-    numberFormat(
-      requestCount
-    );
-
-}
-
-
-/* =========================================================
-   TRANSACTION ICON
-   ========================================================= */
-
-function transactionIcon(type){
-
-  if(
-    type ===
-    "project"
-  ){
-
-    return `
-
-      <svg
-        width="19"
-        height="19"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M5 19V9l7-4 7 4v10"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linejoin="round"
-        />
-
-        <path
-          d="M9 19v-5h6v5M3 19h18"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-    `;
-
-  }
-
-
-  if(
-    type ===
-    "withdrawal"
-  ){
-
-    return `
-
-      <svg
-        width="19"
-        height="19"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <rect
-          x="4"
-          y="6"
-          width="16"
-          height="12"
-          rx="2"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <path
-          d="M8 10h8M8 14h4"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-    `;
-
-  }
-
-
-  return `
-
-    <svg
-      width="19"
-      height="19"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-
-      <rect
-        x="4"
-        y="4"
-        width="16"
-        height="16"
-        rx="3"
-        stroke="currentColor"
-        stroke-width="1.7"
-      />
-
-      <path
-        d="M8 9h8M8 13h5M8 17h3"
-        stroke="currentColor"
-        stroke-width="1.7"
-        stroke-linecap="round"
-      />
-
-    </svg>
-
-  `;
-
-}
-
-
-/* =========================================================
-   TRANSACTION TITLE
-   ========================================================= */
-
-function transactionTitle(row){
-
-  const type =
-    String(
-      row.type || ""
-    ).toLowerCase();
-
-
-  if(
-    type.includes("withdraw")
-  ){
-
-    return "Wallet withdrawal";
-
-  }
-
-
-  if(row.title)
-    return row.title;
-
-
-  if(row.description)
-    return row.description;
-
-
-  if(
-    row.normalizedType ===
-    "project"
-  ){
-
-    return "Project reward";
-
-  }
-
-
-  return "Task reward";
-
-}
-
-
-/* =========================================================
-   TRANSACTION STATUS
-   ========================================================= */
-
-function transactionStatus(row){
-
-  return normalizeStatus(
-    row.status
-  );
-
-}
-
-
-/* =========================================================
-   RENDER TRANSACTIONS
-   ========================================================= */
 
 function renderTransactions(){
 
@@ -3282,85 +7266,15 @@ function renderTransactions(){
     );
 
 
-  let rows =
-    [...allTransactions];
-
-
-  if(
-    activeFilter ===
-    "task"
-  ){
-
-    rows =
-      rows.filter(
-        row =>
-          row.normalizedType ===
-          "task"
-      );
-
-  }
-
-
-  if(
-    activeFilter ===
-    "project"
-  ){
-
-    rows =
-      rows.filter(
-        row =>
-          row.normalizedType ===
-          "project"
-      );
-
-  }
-
-
-  if(
-    activeFilter ===
-    "approved"
-  ){
-
-    rows =
-      rows.filter(
-        row =>
-          row.normalizedStatus ===
-          "approved"
-      );
-
-  }
-
-
-  if(
-    activeFilter ===
-    "pending"
-  ){
-
-    rows =
-      rows.filter(
-        row =>
-          row.normalizedStatus ===
-          "pending"
-      );
-
-  }
-
-
-  if(!rows.length){
+  if(!allTransactions.length){
 
     list.innerHTML = `
-
       <div class="empty">
-
         <strong>
           No earnings transactions
         </strong>
-
-        Approved task and project rewards
-        will appear here.
-
+        Transactions yahan appear hongi.
       </div>
-
     `;
 
     return;
@@ -3369,181 +7283,380 @@ function renderTransactions(){
 
 
   list.innerHTML =
-    rows.map(
-      row => {
+    allTransactions
+      .slice(0,100)
+      .map(
+        row => {
 
-        const status =
-          transactionStatus(row);
-
-
-        const statusClass =
-          status === "approved"
-            ? "status-approved"
-            : status === "pending"
-              ? "status-pending"
-              : "status-rejected";
+          const amount =
+            Number(
+              row.normalizedAmount || 0
+            );
 
 
-        const statusText =
-          status
-            .charAt(0)
-            .toUpperCase() +
-          status.slice(1);
+          const title =
+            row.title ||
+            row.description ||
+            (
+              row.normalizedType === "project"
+              ? "Project reward"
+              : "Task reward"
+            );
 
 
-        const amount =
-          Number(
-            row.normalizedAmount || 0
-          );
+          return `
 
+            <div class="transaction">
 
-        const type =
-          row.normalizedType;
+              <div class="tx-icon">
+                ${
+                  row.normalizedType ===
+                  "project"
+                  ? "P"
+                  : "T"
+                }
+              </div>
 
+              <div class="tx-main">
 
-        return `
+                <div class="tx-title">
+                  ${escapeHTML(title)}
+                </div>
 
-          <div class="transaction">
-
-            <div class="tx-icon">
-
-              ${transactionIcon(type)}
-
-            </div>
-
-
-            <div class="tx-main">
-
-              <div class="tx-title">
-
-                ${escapeHTML(
-                  transactionTitle(row)
-                )}
+                <div class="tx-date">
+                  ${formatDate(
+                    row.created_at
+                  )}
+                </div>
 
               </div>
 
-              <div class="tx-date">
+              <div class="tx-right">
 
-                ${formatDate(
-                  row.created_at ||
-                  row.date ||
-                  row.timestamp
-                )}
+                <div class="tx-amount">
+                  ${money(amount)}
+                </div>
 
-              </div>
-
-            </div>
-
-
-            <div class="tx-right">
-
-              <div class="
-                tx-amount
-                ${amount >= 0
-                  ? "positive"
-                  : "negative"}
-              ">
-
-                ${amount >= 0
-                  ? "+"
-                  : ""}${money(amount)}
-
-              </div>
-
-
-              <div class="
-                tx-status
-                ${statusClass}
-              ">
-
-                ${statusText}
+                <div class="tx-status">
+                  ${escapeHTML(
+                    row.normalizedStatus
+                  )}
+                </div>
 
               </div>
 
             </div>
 
-          </div>
+          `;
 
-        `;
-
-      }
-    ).join("");
+        }
+      )
+      .join("");
 
 }
 
 
-/* =========================================================
-   FILTER BUTTONS
-   ========================================================= */
+function updateSummary(){
 
-document
-  .querySelectorAll(".filter")
-  .forEach(
-    button => {
+  let taskRevenue = 0;
+  let projectRevenue = 0;
+  let pending = 0;
+  let completed = 0;
 
-      button.addEventListener(
-        "click",
-        () => {
+  allTransactions.forEach(row => {
+    const amount = Number(row.normalizedAmount || 0);
 
-          document
-            .querySelectorAll(
-              ".filter"
-            )
-            .forEach(
-              btn =>
-                btn.classList
-                  .remove("active")
-            );
+    if(row.normalizedStatus === "approved"){
+      completed++;
+      if(row.normalizedType === "project") projectRevenue += amount;
+      else taskRevenue += amount;
+    }
+
+    if(row.normalizedStatus === "pending") pending += amount;
+  });
+
+  // Keep the owner ad-share figure separate from user wallet accounting.
+  const ownerAdShare = Number(adSummary.ownerShare || 0);
+  const ownerTaskProjectRevenue = taskRevenue + projectRevenue;
+  const ownerTotalDisplayed = ownerTaskProjectRevenue + ownerAdShare;
+  const pendingTotal = pending + Number(adSummary.pending || 0);
+
+  document.getElementById("totalEarned").textContent =
+    money(ownerTotalDisplayed);
+
+  document.getElementById("approvedAmount").textContent =
+    money(ownerTaskProjectRevenue);
+
+  document.getElementById("pendingAmount").textContent =
+    money(pendingTotal);
+
+  document.getElementById("completedCount").textContent =
+    numberFormat(completed);
+
+  document.getElementById("transactionCount").textContent =
+    numberFormat(allTransactions.length);
+
+  // Existing dashboard cards; use the same canonical task/project ledger data.
+}
+
+/* ================= WALLET HISTORY ================= */
+
+async function loadAdminWalletTransactions(){
+
+  const box =
+    document.getElementById(
+      "adminWalletTransactions"
+    );
 
 
-          button.classList.add(
-            "active"
-          );
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "admin_wallet_transactions"
+        )
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(100);
 
 
-          activeFilter =
-            button.dataset.filter;
+    if(error){
 
+      box.innerHTML = `
+        <div class="empty">
+          <strong>
+            Wallet history unavailable
+          </strong>
+          RLS/table access check karo.
+        </div>
+      `;
 
-          renderTransactions();
-
-        }
-      );
+      return;
 
     }
-  );
 
 
-/* =========================================================
-   BACK
-   ========================================================= */
+    if(!data?.length){
 
-function goBack(){
+      box.innerHTML = `
+        <div class="empty">
+          <strong>
+            No wallet transactions
+          </strong>
+          Abhi koi funding/payout ledger record nahi hai.
+        </div>
+      `;
 
-  if(
-    document.referrer &&
-    document.referrer.includes(
-      window.location.host
-    )
-  ){
+      return;
 
-    history.back();
+    }
 
-  }else{
 
-    window.location.href =
-      "home.html";
+    box.innerHTML =
+      data
+        .map(
+          row => {
+
+            const amount =
+              Math.abs(
+                Number(
+                  row.amount || 0
+                )
+              );
+
+
+            const type =
+              row.transaction_type ||
+              row.type ||
+              "transaction";
+
+
+            return `
+
+              <div class="transaction">
+
+                <div class="tx-icon">
+                  W
+                </div>
+
+                <div class="tx-main">
+
+                  <div class="tx-title">
+                    ${escapeHTML(
+                      row.description ||
+                      row.note ||
+                      type
+                    )}
+                  </div>
+
+                  <div class="tx-date">
+                    ${formatDate(
+                      row.created_at
+                    )}
+                  </div>
+
+                </div>
+
+                <div class="tx-right">
+
+                  <div class="tx-amount">
+                    ${money(amount)}
+                  </div>
+
+                  <div class="tx-status">
+                    ${escapeHTML(type)}
+                  </div>
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+  }catch(error){
+
+    console.warn(
+      "Wallet history:",
+      error
+    );
 
   }
 
 }
 
 
-/* =========================================================
-   REFRESH
-   ========================================================= */
+/* ================= USER STATS ================= */
+
+async async function loadUserStats(){
+
+  try{
+
+    const { data, error } =
+      await supabaseClient
+        .from("profiles")
+        .select("*")
+        .limit(10000);
+
+    if(error) throw error;
+
+    const profiles = Array.isArray(data) ? data : [];
+
+    document.getElementById("registeredUsers").textContent =
+      numberFormat(profiles.length);
+
+    let active = 0;
+    let activeTracked = false;
+    let online = 0;
+    let onlineTracked = false;
+
+    const now = Date.now();
+
+    profiles.forEach(profile => {
+      const activeValue =
+        profile.is_active ??
+        profile.active ??
+        (profile.status !== undefined
+          ? String(profile.status).toLowerCase() === "active"
+          : undefined);
+
+      if (activeValue !== undefined) {
+        activeTracked = true;
+        if (activeValue === true) active++;
+      }
+
+      const lastSeen =
+        profile.last_seen ??
+        profile.last_active_at ??
+        profile.last_activity_at;
+
+      if (lastSeen) {
+        onlineTracked = true;
+        const t = new Date(lastSeen).getTime();
+        if (Number.isFinite(t) && now - t <= 5 * 60 * 1000) {
+          online++;
+        }
+      }
+    });
+
+    document.getElementById("activeUsers").textContent =
+      activeTracked ? numberFormat(active) : "—";
+    document.getElementById("activeUsersNote").textContent =
+      activeTracked ? "Active accounts" : "Active status not tracked";
+
+    document.getElementById("onlineUsers").textContent =
+      onlineTracked ? numberFormat(online) : "—";
+    document.getElementById("onlineUsersNote").textContent =
+      onlineTracked ? "Seen within 5 minutes" : "Presence not tracked";
+
+    // Downloader count is intentionally not fabricated. The dashboard keeps
+    // the existing field and reports the missing event source explicitly.
+    document.getElementById("downloaders").textContent = "—";
+    document.getElementById("downloadersNote").textContent =
+      "Download event source not connected";
+
+  }catch(error){
+
+    console.warn("User stats:", error);
+
+    document.getElementById("registeredUsers").textContent = "—";
+    document.getElementById("activeUsers").textContent = "—";
+    document.getElementById("onlineUsers").textContent = "—";
+    document.getElementById("downloaders").textContent = "—";
+
+    document.getElementById("activeUsersNote").textContent =
+      "Data unavailable";
+    document.getElementById("onlineUsersNote").textContent =
+      "Data unavailable";
+    document.getElementById("downloadersNote").textContent =
+      "Data unavailable";
+
+  }
+
+}
+
+/* ================= BACK ================= */
+
+function goBack(){
+
+  /*
+    Sirf Back button se navigation.
+    Automatic navigation kahin nahi.
+  */
+
+  window.location.href =
+    "home.html";
+
+}
+
+
+/* ================= REFRESH ================= */
 
 async function refreshDashboard(){
+
+  if(refreshInProgress)
+    return;
+
+
+  if(!currentUser)
+    return;
+
+
+  refreshInProgress =
+    true;
+
 
   const button =
     document.getElementById(
@@ -3558,19 +7671,37 @@ async function refreshDashboard(){
 
   try{
 
-    await Promise.all([
+    /*
+      IMPORTANT:
+      No location.reload()
+      No setInterval()
+      No auth redirect.
+    */
 
-      loadWallet(),
+    await Promise.allSettled([
+
+      loadAdminSummary(),
+
+      loadPaymentAccount(),
+
+      loadWithdrawals(),
+
+      loadAdRevenue(),
 
       loadTransactions(),
 
-      loadProjectRewards(),
+      loadAdminWalletTransactions(),
 
       loadUserStats(),
 
-      loadWithdrawals()
+      loadSavedPayoutMethods()
 
     ]);
+
+
+    updateSummary();
+
+    renderAdminWallet();
 
 
     document.getElementById(
@@ -3594,19 +7725,82 @@ async function refreshDashboard(){
       error
     );
 
+    showToast(
+      "Kuch dashboard data unavailable hai.",
+      "error"
+    );
+
+  }finally{
+
+    button.classList.remove(
+      "loading"
+    );
+
+    refreshInProgress =
+      false;
+
   }
-
-
-  button.classList.remove(
-    "loading"
-  );
 
 }
 
 
-/* =========================================================
-   INIT
-   ========================================================= */
+/* ================= AUTH STATE ================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    function(event, session){
+
+      console.log(
+        "TaskEarn auth:",
+        event
+      );
+
+
+      /*
+        VERY IMPORTANT:
+
+        SIGNED_OUT par login.html redirect
+        NAHI HOGA.
+
+        Page automatic home par bhi nahi jayega.
+      */
+
+      if(session?.user){
+
+        currentUser =
+          session.user;
+
+      }
+
+    }
+  );
+
+
+/* ================= MODAL CLOSE ================= */
+
+document
+  .getElementById(
+    "withdrawModal"
+  )
+  .addEventListener(
+    "click",
+    function(event){
+
+      if(
+        event.target.id ===
+        "withdrawModal"
+      ){
+
+        closeWithdrawModal();
+
+      }
+
+    }
+  );
+
+
+/* ================= START ================= */
 
 async function init(){
 
@@ -3614,98 +7808,22 @@ async function init(){
     await checkOwner();
 
 
-  if(!owner){
-
-    /*
-     Unauthorized users are stopped here.
-    */
-
+  if(!owner)
     return;
 
-  }
 
+  await loadSavedPayoutMethods();
 
   await refreshDashboard();
 
 }
 
 
-/* =========================================================
-   AUTH STATE
-   ========================================================= */
-
-supabaseClient.auth.onAuthStateChange(
-  async (
-    event,
-    session
-  ) => {
-
-    if(
-      event ===
-      "SIGNED_OUT"
-    ){
-
-      window.location.href =
-        "login.html";
-
-      return;
-
-    }
-
-
-    if(
-      event ===
-      "SIGNED_IN" &&
-      session &&
-      session.user
-    ){
-
-      currentUser =
-        session.user;
-
-
-      if(
-        currentUser.id ===
-        OWNER_UID
-      ){
-
-        await refreshDashboard();
-
-      }
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   AUTO REFRESH
-   =========================================================
-
-   Refresh every 60 seconds so owner can see
-   changing user/earnings information.
-   ========================================================= */
-
-setInterval(
-  async () => {
-
-    if(
-      currentUser &&
-      currentUser.id ===
-      OWNER_UID
-    ){
-
-      await refreshDashboard();
-
-    }
-
-  },
-  60000
-);
-
-
-/* ---------- START ---------- */
+/*
+  ONLY ONE INITIAL LOAD.
+  No interval.
+  No automatic reload.
+*/
 
 init();
 
