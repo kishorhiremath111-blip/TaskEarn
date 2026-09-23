@@ -1,0 +1,109 @@
+name: TaskEarn Integrity Check
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify critical TaskEarn wiring
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          import sys
+
+          root = Path(".")
+          errors = []
+
+          def read(path):
+              p = root / path
+              if not p.exists():
+                  errors.append(f"MISSING FILE: {path}")
+                  return ""
+              return p.read_text(encoding="utf-8")
+
+          manifest = read("android/app/src/main/AndroidManifest.xml")
+          bridge = read("android/app/src/main/java/com/taskearn/app/TaskEarnBridge.java")
+          activity = read("android/app/src/main/java/com/taskearn/app/MainActivity.java")
+          gradle = read("android/app/build.gradle")
+          web_ad = read("pages/ad-revenue-share.html")
+          android_ad = read("android/app/src/main/assets/pages/ad-revenue-share.html")
+          web_wallet = read("pages/wallet.html")
+          android_wallet = read("android/app/src/main/assets/pages/wallet.html")
+          web_home = read("pages/home.html")
+          android_home = read("android/app/src/main/assets/pages/home.html")
+
+          EXPECTED_APP_ID = "ca-app-pub-6053164512172778~5887236512"
+          EXPECTED_REWARDED_ID = "ca-app-pub-6053164512172778/9063055035"
+          SUPABASE_URL = "https://wfvmipwesttejtvwoasj.supabase.co"
+
+          if EXPECTED_APP_ID not in manifest:
+              errors.append("AndroidManifest: TaskEarn AdMob App ID mismatch")
+
+          if EXPECTED_REWARDED_ID not in bridge:
+              errors.append("TaskEarnBridge: TaskEarn rewarded Ad Unit ID mismatch")
+
+          if "implementation 'com.google.android.gms:play-services-ads:24.6.0'" not in gradle:
+              errors.append("Android Gradle: Google Mobile Ads SDK dependency missing")
+
+          if 'webView.addJavascriptInterface(' not in activity or '"AndroidTaskEarnAds"' not in activity:
+              errors.append("MainActivity: AndroidTaskEarnAds bridge is not registered")
+
+          if 'webView.removeJavascriptInterface(' not in activity or '"AndroidTaskEarnAds"' not in activity:
+              errors.append("MainActivity: AndroidTaskEarnAds bridge cleanup missing")
+
+          if web_ad != android_ad:
+              errors.append("Ad Revenue page drift: root and Android asset copies differ")
+
+          if "wallet_balances" not in web_wallet or "wallet_transactions" not in web_wallet:
+              errors.append("Wallet: canonical wallet_balances + wallet_transactions wiring missing")
+
+          if re.search(r'from\(\s*["\']user_wallets["\']\s*\)', web_wallet):
+              errors.append("Wallet: legacy user_wallets table is still queried")
+
+          if re.search(r'from\(\s*["\']user_wallets["\']\s*\)', web_home):
+              errors.append("Home: legacy user_wallets table is still queried")
+
+          if "wallet_balances" not in web_home or "wallet_transactions" not in web_home:
+              errors.append("Home: canonical wallet wiring missing")
+
+          if SUPABASE_URL not in web_ad:
+              errors.append("Ad Revenue page: Supabase project URL mismatch")
+
+          forbidden = []
+          source_files = [
+              "index.html",
+              "js",
+              "pages",
+              "android/app/src/main/assets",
+          ]
+
+          for base in source_files:
+              p = root / base
+              paths = [p] if p.is_file() else list(p.rglob("*"))
+              for f in paths:
+                  if not f.is_file() or f.suffix.lower() not in {".html",".js",".java",".gradle",".xml",".ts",".tsx"}:
+                      continue
+                  text = f.read_text(encoding="utf-8", errors="ignore")
+                  if "SUPABASE_SERVICE_ROLE_KEY" in text or "sb_secret_" in text or "service_role" in text:
+                      forbidden.append(str(f))
+
+          if forbidden:
+              errors.append("Forbidden backend secret material detected in source: " + ", ".join(forbidden))
+
+          if errors:
+              print("TASK EARN INTEGRITY CHECK: FAILED")
+              for e in errors:
+                  print(" -", e)
+              sys.exit(1)
+
+          print("TASK EARN INTEGRITY CHECK: PASSED")
