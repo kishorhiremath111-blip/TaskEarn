@@ -60,17 +60,17 @@ public class TaskEarnBridge {
      * test ID.
      *
      * AdMob App ID (goes in AndroidManifest.xml, not here):
-     *   ca-app-pub-605316451217778~5887236512
+     *   ca-app-pub-6053164512172778~5887236512
      *
      * This Rewarded Ad Unit ID (used below):
-     *   ca-app-pub-605316451217778/9063055035
+     *   ca-app-pub-6053164512172778/9063055035
      *
      * DO NOT replace this with the Google sample/test ID
-     * (ca-app-pub-3940256099942544/5224354917) in a
+     * (ca-app-pub-6053164512172778/9063055035) in a
      * production build — that was the previous bug.
      */
     private static final String REWARDED_AD_UNIT_ID =
-        "ca-app-pub-605316451217778/9063055035";
+        "ca-app-pub-6053164512172778/9063055035";
 
 
 
