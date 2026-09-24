@@ -1864,9 +1864,7 @@ function renderProject(){
     */
 
     $("rewardValue").textContent =
-        money(
-            Number(companyAmount || 0)
-        );
+        money(calculateProjectUserReward(project.company_payout || 0));
 
 
     $("categoryValue").textContent =
