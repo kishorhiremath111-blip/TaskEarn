@@ -3004,35 +3004,9 @@ const supabaseClient =
 
 
 /* =========================================================
-   STARTING COMPLETION COUNTERS
+   COMPLETION COUNTERS
+   Loaded from the real projects / project_submissions data.
 ========================================================= */
-
-const STARTING_COMPLETIONS = {
-
-  1:178,
-  2:175,
-  3:589,
-  4:7,
-  5:264,
-  6:91,
-  7:42,
-  8:315,
-  9:128,
-  10:73,
-
-  11:204,
-  12:56,
-  13:391,
-  14:19,
-  15:147,
-  16:68,
-  17:522,
-  18:33,
-  19:86,
-  20:276
-
-};
-
 
 let projects = [];
 
@@ -3261,9 +3235,9 @@ async function loadMySubmissions(){
       error
     } =
       await supabaseClient
-        .from("task_submissions")
+        .from("project_submissions")
         .select(
-          "task_id,status,submitted_at"
+          "project_id,status,created_at"
         )
         .eq(
           "user_id",
@@ -3293,7 +3267,7 @@ async function loadMySubmissions(){
       row => {
 
         const id =
-          Number(row.task_id);
+          Number(row.project_id);
 
 
         if(
@@ -4606,9 +4580,6 @@ function projectCard(task,index){
   const completion =
     Number(
       task.completionCount ||
-      STARTING_COMPLETIONS[
-        Number(task.id)
-      ] ||
       0
     );
 
@@ -4919,25 +4890,26 @@ async function loadProjects(){
       error
     } =
       await supabaseClient
-        .from("tasks")
+        .from("projects")
         .select(
           `
           id,
-          created_at,
           title,
           description,
-          reward,
+          instructions,
+          company_name,
+          company_payout,
+          student_reward,
           duration_minutes,
-          category,
-          task_url,
+          max_submissions,
+          submissions_count,
           status,
-          verified,
-          task_type
+          created_at
           `
         )
         .eq(
           "status",
-          "active"
+          "open"
         )
         .order(
           "created_at",
@@ -4955,29 +4927,16 @@ async function loadProjects(){
 
 
     projects =
-  Array.isArray(data)
-    ? data.filter(
-        task => Number(task.id) !== 4
-      )
-    : [];
-
-
-    projects =
-      projects.map(
-        task => ({
-
-          ...task,
-
-          completionCount:
-            STARTING_COMPLETIONS[
-              Number(task.id)
-            ] || 0
-
-        })
-      );
-
-
-    await loadRealCompletions();
+      (Array.isArray(data) ? data : [])
+        .map(project => ({
+          ...project,
+          reward: Number(project.student_reward || 0),
+          category: project.company_name || "Project",
+          task_type: "project",
+          task_url: null,
+          verified: true,
+          completionCount: Number(project.submissions_count || 0)
+        }));
 
 
     render();
@@ -5045,9 +5004,9 @@ async function loadRealCompletions(){
       error
     } =
       await supabaseClient
-        .from("task_submissions")
+        .from("project_submissions")
         .select(
-          "task_id,status"
+          "project_id,status"
         )
         .in(
           "task_id",
@@ -5084,7 +5043,7 @@ async function loadRealCompletions(){
 
         const id =
           Number(
-            row.task_id
+            row.project_id
           );
 
 
@@ -5106,9 +5065,7 @@ async function loadRealCompletions(){
 
           completionCount:
             (
-              STARTING_COMPLETIONS[
-                Number(task.id)
-              ] || 0
+              0
             )
             +
             (
