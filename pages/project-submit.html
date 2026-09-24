@@ -5,7 +5,7 @@
 <meta name="viewport"
       content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-<title>TaskEarn • Submit Project</title>
+<title>TaskEarn • Upload Your Work Sample</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -884,7 +884,7 @@ a{
     </button>
 
     <div class="top-title">
-        <strong>Submit Project</strong>
+        <strong>Upload Your Work Sample</strong>
         <span id="topProjectName">Loading project...</span>
     </div>
 
@@ -1084,7 +1084,7 @@ a{
             </svg>
 
             <span>
-                Submit Project
+                Upload Your Work Sample
             </span>
 
         </button>
@@ -1458,9 +1458,7 @@ function money(value){
    SECURE SUPABASE BACKEND.
    ========================================================= */
 
-function calculateProjectUserReward(
-    companyAmount
-){
+function Number(project.company_payout || 0){
 
     const amount =
         Number(companyAmount || 0);
@@ -1794,7 +1792,7 @@ async function loadProject(){
 
     const result =
         await supabaseClient
-            .from("tasks")
+            .from("projects")
             .select(`
                 id,
                 created_at,
@@ -1887,9 +1885,7 @@ function renderProject(){
 
     $("rewardValue").textContent =
         money(
-            calculateProjectUserReward(
-                project.reward
-            )
+            Number(project.company_payout || 0)
         );
 
 
@@ -1944,10 +1940,10 @@ async function loadExistingSubmission(){
 
     const result =
         await supabaseClient
-            .from("task_submissions")
+            .from("project_submissions")
             .select(`
                 id,
-                task_id,
+                project_id,
                 user_id,
                 proof,
                 status,
@@ -1956,7 +1952,7 @@ async function loadExistingSubmission(){
                 reviewed_at
             `)
             .eq(
-                "task_id",
+                "project_id",
                 project.id
             )
             .eq(
@@ -1999,15 +1995,10 @@ async function loadExistingSubmission(){
         ).toLowerCase();
 
 
-    if(status === "approved"){
-
-        $("formSection")
-            .style.display =
-            "none";
-
-        showApproved(
-            currentSubmission
-        );
+    if(status === "approved"{
+            showCompletedProject(currentSubmission);
+            return;
+        }
 
         return;
     }
@@ -2374,676 +2365,10 @@ async function submitProject(){
         if(
             status === "pending" ||
             status === "processing" ||
-            status === "approved"
-        ){
-
-            showError(
-                "You already have an active submission for this project."
-            );
-
+            status === "approved"{
+            showCompletedProject(currentSubmission);
             return;
         }
-    }
-
-
-    const proofText =
-        $("proofText")
-            .value
-            .trim();
-
-
-    if(!proofText){
-
-        showError(
-            "Please describe the completed project."
-        );
-
-        $("proofText").focus();
-
-        return;
-    }
-
-
-    if(!proofFile){
-
-        showError(
-            "Please upload your project proof."
-        );
-
-        return;
-    }
-
-
-    if(
-        !$("confirmCheck").checked
-    ){
-
-        showError(
-            "Please confirm that your submitted work is genuine."
-        );
-
-        return;
-    }
-
-
-    const button =
-        $("submitBtn");
-
-
-    button.disabled =
-        true;
-
-
-    try{
-
-        /* =================================================
-           NATIVE AD
-           ================================================= */
-
-        button.innerHTML =
-            '<span class="loader"></span>' +
-            '<span>Preparing Submission...</span>';
-
-
-        await showSubmitAd();
-
-
-        /* =================================================
-           COMPRESS
-           ================================================= */
-
-        button.innerHTML =
-            '<span class="loader"></span>' +
-            '<span>Preparing Proof...</span>';
-
-
-        const compressed =
-            await compressImage(
-                proofFile
-            );
-
-
-        /* =================================================
-           UPLOAD
-           ================================================= */
-
-        button.innerHTML =
-            '<span class="loader"></span>' +
-            '<span>Uploading Proof...</span>';
-
-
-        const safeName =
-            proofFile.name
-                .replace(
-                    /[^a-zA-Z0-9._-]/g,
-                    "_"
-                );
-
-
-        const path =
-            session.user.id +
-            "/" +
-            project.id +
-            "/" +
-            Date.now() +
-            "_" +
-            safeName;
-
-
-        const uploadResult =
-            await supabaseClient
-                .storage
-                .from("task-proofs")
-                .upload(
-                    path,
-                    compressed,
-                    {
-                        contentType:
-                            "image/jpeg",
-                        upsert:false
-                    }
-                );
-
-
-        if(uploadResult.error){
-            throw uploadResult.error;
-        }
-
-
-        /* =================================================
-           PROOF JSON
-           ================================================= */
-
-        const proofPayload = {
-
-            text:
-                proofText,
-
-            photo_path:
-                path,
-
-            photo_name:
-                safeName,
-
-            mode:
-                "project",
-
-            submission_type:
-                "project",
-
-            submitted_from:
-                "TaskEarn APK",
-
-            /*
-              Company amount is stored only as submission
-              metadata. The secure backend remains the
-              final authority for reward calculation.
-            */
-
-            company_amount:
-                Number(
-                    project.reward || 0
-                ),
-
-            expected_user_reward:
-                calculateProjectUserReward(
-                    project.reward
-                ),
-
-            processing_minutes:
-                getProcessingMinutes(),
-
-            processing_time:
-                formatProcessingTime(
-                    getProcessingMinutes()
-                ),
-
-            submitted_at:
-                new Date().toISOString()
-        };
-
-
-        /* =================================================
-           DATABASE INSERT
-           ================================================= */
-
-        button.innerHTML =
-            '<span class="loader"></span>' +
-            '<span>Submitting Project...</span>';
-
-
-        /*
-          IMPORTANT:
-
-          Frontend does NOT decide the final reward.
-
-          reward = 0 is sent initially.
-
-          Secure Supabase trigger/function must calculate:
-
-          ₹500 or below  -> 55% user
-          Above ₹500     -> 50% user
-
-          This prevents browser-side reward manipulation.
-        */
-
-        const insertResult =
-            await supabaseClient
-                .from("task_submissions")
-                .insert({
-
-                    task_id:
-                        Number(
-                            project.id
-                        ),
-
-                    user_id:
-                        session.user.id,
-
-                    proof:
-                        JSON.stringify(
-                            proofPayload
-                        ),
-
-                    status:
-                        "pending",
-
-                    reward:
-                        0
-                })
-                .select(`
-                    id,
-                    task_id,
-                    user_id,
-                    proof,
-                    status,
-                    reward,
-                    submitted_at,
-                    reviewed_at
-                `)
-                .single();
-
-
-        if(insertResult.error){
-            throw insertResult.error;
-        }
-
-
-        currentSubmission =
-            insertResult.data;
-
-
-        /*
-          Processing countdown starts HERE,
-          after successful database submission.
-        */
-
-        saveSubmissionLocal(
-            currentSubmission
-        );
-
-
-        $("formSection")
-            .style.display =
-            "none";
-
-
-        showProcessing(
-            currentSubmission
-        );
-
-
-        toast(
-            "Project submitted. Processing timer started."
-        );
-
-
-    }catch(error){
-
-        console.error(
-            "Project submission error:",
-            error
-        );
-
-
-        showError(
-            error &&
-            error.message
-                ? error.message
-                : "Unable to submit project."
-        );
-
-
-    }finally{
-
-        button.disabled =
-            false;
-
-
-        button.innerHTML = `
-            <svg viewBox="0 0 24 24">
-                <path d="M22 2L11 13"/>
-                <path d="M22 2l-9 4 9-4z"/>
-                <path d="M22 2l-4 9-9 4z"/>
-            </svg>
-            <span>Submit Project</span>
-        `;
-    }
-}
-
-
-/* =========================================================
-   LOCAL SUBMISSION
-   ========================================================= */
-
-function saveSubmissionLocal(
-    submission
-){
-
-    try{
-
-        localStorage.setItem(
-            "taskearn_project_submission_" +
-            submission.task_id,
-
-            JSON.stringify({
-
-                id:
-                    submission.id,
-
-                task_id:
-                    submission.task_id,
-
-                submitted_at:
-                    submission.submitted_at,
-
-                reward:
-                    submission.reward,
-
-                processing_minutes:
-                    getProcessingMinutes()
-            })
-        );
-
-    }catch(error){
-
-        console.warn(
-            error
-        );
-    }
-}
-
-
-/* =========================================================
-   PROCESSING END
-   ========================================================= */
-
-function getProcessingEnd(
-    submission
-){
-
-    if(
-        !submission ||
-        !submission.submitted_at
-    ){
-
-        return Date.now() +
-            getProcessingMs();
-    }
-
-
-    return (
-        new Date(
-            submission.submitted_at
-        ).getTime()
-    ) +
-    getProcessingMs();
-}
-
-
-/* =========================================================
-   PROCESSING SCREEN
-   ========================================================= */
-
-function showProcessing(
-    submission
-){
-
-    $("formSection")
-        .style.display =
-        "none";
-
-
-    $("statusSection")
-        .classList.add("show");
-
-
-    $("approvedCard")
-        .classList.remove("show");
-
-
-    $("rejectedCard")
-        .classList.remove("show");
-
-
-    $("expiredWaitCard")
-        .style.display =
-        "none";
-
-
-    $("timerCard")
-        .style.display =
-        "block";
-
-
-    setStatusPending();
-
-
-    startTimer(
-        submission
-    );
-
-
-    startPolling();
-}
-
-
-/* =========================================================
-   PENDING STATUS
-   ========================================================= */
-
-function setStatusPending(){
-
-    const processingText =
-        formatProcessingTime(
-            getProcessingMinutes()
-        );
-
-
-    $("statusTitle").textContent =
-        "Project Submitted";
-
-
-    $("statusDescription").textContent =
-        "Your project is safely in processing. No action is required from you.";
-
-
-    $("statusText").textContent =
-        "PROCESSING";
-
-
-    $("statusPill")
-        .className =
-        "status-pill";
-
-
-    $("timerLabel").textContent =
-        "COMPANY PROCESSING • " +
-        processingText;
-
-
-    $("timerNote").textContent =
-        "Company processing time: " +
-        processingText +
-        ". The countdown started after successful proof submission.";
-}
-
-
-/* =========================================================
-   TIMER
-   ========================================================= */
-
-function startTimer(
-    submission
-){
-
-    clearInterval(
-        timerInterval
-    );
-
-
-    const processingMs =
-        getProcessingMs();
-
-
-    const end =
-        getProcessingEnd(
-            submission
-        );
-
-
-    function tick(){
-
-        const remaining =
-            Math.max(
-                0,
-                end - Date.now()
-            );
-
-
-        if(remaining <= 0){
-
-            $("timer")
-                .textContent =
-                "00:00:00";
-
-
-            $("progressBar")
-                .style.width =
-                "100%";
-
-
-            $("expiredWaitCard")
-                .style.display =
-                "block";
-
-
-            $("timerNote")
-                .textContent =
-                "Company processing time completed. Waiting for secure backend reward processing.";
-
-
-            clearInterval(
-                timerInterval
-            );
-
-            return;
-        }
-
-
-        $("timer")
-            .textContent =
-            formatCountdown(
-                remaining
-            );
-
-
-        const progress =
-            (
-                1 -
-                remaining /
-                processingMs
-            ) * 100;
-
-
-        $("progressBar")
-            .style.width =
-            Math.min(
-                100,
-                Math.max(
-                    0,
-                    progress
-                )
-            ) + "%";
-    }
-
-
-    tick();
-
-
-    timerInterval =
-        setInterval(
-            tick,
-            1000
-        );
-}
-
-
-/* =========================================================
-   STATUS POLLING
-   ========================================================= */
-
-function startPolling(){
-
-    clearInterval(
-        pollInterval
-    );
-
-
-    checkSubmissionStatus();
-
-
-    pollInterval =
-        setInterval(
-            checkSubmissionStatus,
-            5000
-        );
-}
-
-
-async function checkSubmissionStatus(){
-
-    if(
-        !currentSubmission ||
-        !session
-    ){
-
-        return;
-    }
-
-
-    try{
-
-        const result =
-            await supabaseClient
-                .from("task_submissions")
-                .select(`
-                    id,
-                    task_id,
-                    user_id,
-                    proof,
-                    status,
-                    reward,
-                    submitted_at,
-                    reviewed_at
-                `)
-                .eq(
-                    "id",
-                    currentSubmission.id
-                )
-                .maybeSingle();
-
-
-        if(result.error){
-
-            console.warn(
-                "Status polling:",
-                result.error
-            );
-
-            return;
-        }
-
-
-        if(!result.data){
-            return;
-        }
-
-
-        currentSubmission =
-            result.data;
-
-
-        const status =
-            String(
-                currentSubmission.status || ""
-            ).toLowerCase();
-
-
-        if(status === "approved"){
-
-            clearInterval(
-                pollInterval
-            );
-
-            clearInterval(
-                timerInterval
-            );
-
-
-            showApproved(
-                currentSubmission
-            );
 
             return;
         }
@@ -3162,9 +2487,9 @@ function showApproved(
     /*
       CRITICAL:
 
-      Never use project.reward here.
+      Never use project.company_payout here.
 
-      project.reward = company amount.
+      project.company_payout = company amount.
 
       submission.reward = secure backend-calculated
       user reward.
