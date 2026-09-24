@@ -2411,7 +2411,7 @@ async function renderProject(){
     "reward"
   ).textContent =
     money(
-      project.company_payout
+      companyAmount
     );
 
 
@@ -2730,7 +2730,7 @@ document
 
             reward:
               Number(
-                project.company_payout || 0
+                companyAmount || 0
               ),
 
             started_at:
