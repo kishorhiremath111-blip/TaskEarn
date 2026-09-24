@@ -1458,30 +1458,10 @@ function money(value){
    SECURE SUPABASE BACKEND.
    ========================================================= */
 
-function Number(project.company_payout || 0){
-
-    const amount =
-        Number(companyAmount || 0);
-
-    if(
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ){
-        return 0;
-    }
-
-    if(amount <= 500){
-
-        return Number(
-            (amount * 0.55)
-                .toFixed(2)
-        );
-    }
-
-    return Number(
-        (amount * 0.50)
-            .toFixed(2)
-    );
+function calculateProjectUserReward(companyAmount){
+  const amount = Number(companyAmount || 0);
+  if(amount <= 0) return 0;
+  return amount <= 500 ? Number((amount * 0.45).toFixed(2)) : Number((amount * 0.50).toFixed(2));
 }
 
 
@@ -1995,8 +1975,8 @@ async function loadExistingSubmission(){
         ).toLowerCase();
 
 
-    if(status === "approved"{
-            showCompletedProject(currentSubmission);
+    if(status === "approved"){
+            showProcessing(currentSubmission);
             return;
         }
 
@@ -2005,32 +1985,9 @@ async function loadExistingSubmission(){
 
 
     if(status === "rejected"){
-
-        $("formSection")
-            .style.display =
-            "none";
-
-        showRejected(
-            currentSubmission
-        );
-
-        return;
-    }
-
-
-    if(
-        status === "pending" ||
-        status === "processing"
-    ){
-
-        $("formSection")
-            .style.display =
-            "none";
-
-        showProcessing(
-            currentSubmission
-        );
-    }
+            showProcessing(currentSubmission);
+            return;
+        }
 }
 
 
@@ -2481,36 +2438,7 @@ function showApproved(
 
     $("statusPill")
         .className =
-        "status-pill approved";
-
-
-    /*
-      CRITICAL:
-
-      Never use project.company_payout here.
-
-      project.company_payout = company amount.
-
-      submission.reward = secure backend-calculated
-      user reward.
-
-      Therefore only submission.reward is displayed.
-    */
-
-    const finalReward =
-        Number(
-            submission &&
-            submission.reward != null
-                ? submission.reward
-                : 0
-        );
-
-
-    $("approvedAmount")
-        .textContent =
-        money(
-            finalReward
-        );
+        "status-pill;
 
 
     try{
@@ -2739,8 +2667,7 @@ $("walletBtn")
     "click",
     function(){
 
-        window.location.href =
-            ROUTES.wallet;
+        return;
     }
 );
 
