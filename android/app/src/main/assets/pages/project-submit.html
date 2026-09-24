@@ -1458,7 +1458,7 @@ function money(value){
    SECURE SUPABASE BACKEND.
    ========================================================= */
 
-function Number(project.company_payout || 0){
+function Number(companyAmount || 0){
 
     const amount =
         Number(companyAmount || 0);
@@ -1885,7 +1885,7 @@ function renderProject(){
 
     $("rewardValue").textContent =
         money(
-            Number(project.company_payout || 0)
+            Number(companyAmount || 0)
         );
 
 
@@ -2487,9 +2487,9 @@ function showApproved(
     /*
       CRITICAL:
 
-      Never use project.company_payout here.
+      Never use companyAmount here.
 
-      project.company_payout = company amount.
+      companyAmount = company amount.
 
       submission.reward = secure backend-calculated
       user reward.
