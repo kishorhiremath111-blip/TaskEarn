@@ -2410,9 +2410,7 @@ async function renderProject(){
   document.getElementById(
     "reward"
   ).textContent =
-    money(
-      project.company_payout
-    );
+    money(calculateProjectUserReward(project.company_payout));
 
 
   /* DURATION */
@@ -2460,9 +2458,7 @@ async function renderProject(){
 
 
   const starting =
-    STARTING_COMPLETIONS[
-      Number(project.id)
-    ] || 0;
+    0;
 
 
   const total =
@@ -2730,7 +2726,7 @@ document
 
             reward:
               Number(
-                project.company_payout || 0
+                calculateProjectUserReward(project.company_payout)
               ),
 
             started_at:
