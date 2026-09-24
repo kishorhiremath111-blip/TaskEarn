@@ -2410,7 +2410,7 @@ async function renderProject(){
   document.getElementById(
     "reward"
   ).textContent =
-    money(calculateProjectUserReward(project.company_payout));
+    money(calculateProjectUserReward(companyAmount));
 
 
   /* DURATION */
@@ -2726,7 +2726,7 @@ document
 
             reward:
               Number(
-                calculateProjectUserReward(project.company_payout)
+                calculateProjectUserReward(companyAmount)
               ),
 
             started_at:
