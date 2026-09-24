@@ -715,6 +715,14 @@ public class TaskEarnBridge {
                         JSONObject.quote("Rewarded ad is not ready yet.")
                 );
                 loadRewardedAdInternal();
+
+                /*
+                 * Do not clear the TaskEarn session/nonce here.
+                 * The existing page flow remains authoritative:
+                 * once the rewarded ad is actually loaded, the user
+                 * can retry and the same secure session can still be
+                 * handled by the normal session/SSV/finalize pipeline.
+                 */
                 return;
             }
 
