@@ -42,6 +42,12 @@ jobs:
           web_home = read("pages/home.html")
           android_home = read("android/app/src/main/assets/pages/home.html")
 
+          web_projects = read("pages/projects.html")
+          android_projects = read("android/app/src/main/assets/pages/projects.html")
+          web_tasks = read("pages/tasks.html")
+          android_tasks = read("android/app/src/main/assets/pages/tasks.html")
+
+
           EXPECTED_APP_ID = "ca-app-pub-6053164512172778~5887236512"
           EXPECTED_REWARDED_ID = "ca-app-pub-6053164512172778/9063055035"
           SUPABASE_URL = "https://wfvmipwesttejtvwoasj.supabase.co"
@@ -75,6 +81,27 @@ jobs:
 
           if "wallet_balances" not in web_home or "wallet_transactions" not in web_home:
               errors.append("Home: canonical wallet wiring missing")
+
+          if web_projects != android_projects:
+              errors.append("Projects page drift: root and Android asset copies differ")
+
+          if web_tasks != android_tasks:
+              errors.append("Tasks page drift: root and Android asset copies differ")
+
+          if re.search(r'\.from\(\s*["\']tasks["\']\s*\)', web_projects):
+              errors.append("Projects: must never load the tasks table")
+
+          if re.search(r'\.from\(\s*["\']task_submissions["\']\s*\)', web_projects):
+              errors.append("Projects: must never use task_submissions")
+
+          if 'from("projects")' not in web_projects:
+              errors.append("Projects: canonical projects table wiring missing")
+
+          if 'from("tasks")' not in web_tasks:
+              errors.append("Tasks: canonical tasks table wiring missing")
+
+          if "STARTING_COMPLETIONS" in web_projects:
+              errors.append("Projects: fake hardcoded completion counters detected")
 
           if SUPABASE_URL not in web_ad:
               errors.append("Ad Revenue page: Supabase project URL mismatch")
