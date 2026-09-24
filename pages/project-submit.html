@@ -1974,7 +1974,7 @@ async function loadExistingSubmission(){
 
 
     if(status === "approved"){
-            showProcessing(currentSubmission);
+            showCompletedProject(currentSubmission);
             return;
         }
 
@@ -2733,4 +2733,19 @@ init();
 </script>
 
 </body>
-</html>
+</htmlfunction showCompletedProject(submission){
+    clearInterval(timerInterval);
+    clearInterval(pollInterval);
+    document.getElementById("formSection").style.display="none";
+    document.getElementById("statusSection").classList.add("show");
+    document.getElementById("timerCard").style.display="none";
+    document.getElementById("approvedCard").classList.remove("show");
+    document.getElementById("rejectedCard").classList.remove("show");
+    document.getElementById("statusTitle").textContent="Completed Project";
+    document.getElementById("statusDescription").textContent="Your company work is marked completed.";
+    document.getElementById("statusText").textContent="COMPLETED";
+    document.getElementById("statusPill").className="status-pill approved";
+    document.getElementById("approvedCard").classList.add("show");
+    document.getElementById("approvedAmount").textContent="Completed";
+}
+>
