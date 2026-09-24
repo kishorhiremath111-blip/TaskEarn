@@ -1924,6 +1924,12 @@ function minutes(value){
 }
 
 
+function calculateProjectUserReward(companyAmount){
+  const amount = Number(companyAmount || 0);
+  if(amount <= 0) return 0;
+  return amount <= 500 ? Number((amount * 0.45).toFixed(2)) : Number((amount * 0.50).toFixed(2));
+}
+
 function escapeHtml(value){
 
   return String(
@@ -2497,7 +2503,7 @@ function renderProject(){
   document.getElementById(
     "projectReward"
   ).textContent =
-    money(calculateProjectUserReward(calculateProjectUserReward(project.company_payout)));
+    money(calculateProjectUserReward(project.company_payout));
 
 
   /* TIME */
