@@ -2390,7 +2390,7 @@ function renderProject(){
   let badges = "";
 
 
-  if(project.verified === true){
+  if(true){
 
     badges += `
       <span class="badge green">
@@ -2497,9 +2497,7 @@ function renderProject(){
   document.getElementById(
     "projectReward"
   ).textContent =
-    money(
-      project.company_payout
-    );
+    money(calculateProjectUserReward(calculateProjectUserReward(project.company_payout)));
 
 
   /* TIME */
@@ -2515,9 +2513,7 @@ function renderProject(){
   /* COMPLETED */
 
   const starting =
-    STARTING_COMPLETIONS[
-      Number(project.id)
-    ] || 0;
+    0;
 
 
   const completed =
@@ -2538,7 +2534,7 @@ function renderProject(){
   document.getElementById(
     "verification"
   ).textContent =
-    project.verified === true
+    true
       ? "Verified"
       : "Review";
 
