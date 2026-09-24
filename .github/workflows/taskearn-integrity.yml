@@ -111,8 +111,15 @@ jobs:
               errors.append("Company Projects drift: root and Android asset copies differ")
           if work_root != work_android:
               errors.append("Company Work details drift: root and Android asset copies differ")
-          if "company_projects" not in company_root:
-              errors.append("Company Projects: must use live company_projects source")
+          if 'company_projects' not in company_root:
+              errors.append("Company Projects: live company_projects source missing")
+
+          if 'company_job_submissions' not in work_root:
+              errors.append("Company Work: company_job_submissions source missing")
+
+          if 'submit_company_job' not in work_root:
+              errors.append("Company Work: secure submit_company_job RPC missing")
+
           if re.search(r'₹[0-9,]+', company_root):
               errors.append("Company Projects: hardcoded company payout detected in user-facing page")
           if 'company-job-samples' not in work_root:
