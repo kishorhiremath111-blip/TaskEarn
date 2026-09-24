@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#090b1d">
 
-<title>TaskEarn — Project Details</title>
+<title>TaskEarn — Company Project Details</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1375,7 +1375,7 @@ body:after{
   </button>
 
   <div class="header-title">
-    Task<span>Earn</span> — Project Details
+    Task<span>Earn</span> — Company Project Details
   </div>
 
 </header>
@@ -1860,33 +1860,6 @@ const DEFAULT_PROJECT_IMAGE = "";
    STARTING COMPLETION COUNTS
 ========================================================= */
 
-const STARTING_COMPLETIONS = {
-
-  1:178,
-  2:175,
-  3:589,
-  4:7,
-  5:264,
-  6:91,
-  7:42,
-  8:315,
-  9:128,
-  10:73,
-
-  11:204,
-  12:56,
-  13:391,
-  14:19,
-  15:147,
-  16:68,
-  17:522,
-  18:33,
-  19:86,
-  20:276
-
-};
-
-
 /* =========================================================
    PROJECT ID
 ========================================================= */
@@ -1950,6 +1923,12 @@ function minutes(value){
 
 }
 
+
+function calculateProjectUserReward(companyAmount){
+  const amount = Number(companyAmount || 0);
+  if(amount <= 0) return 0;
+  return amount <= 500 ? Number((amount * 0.45).toFixed(2)) : Number((amount * 0.50).toFixed(2));
+}
 
 function escapeHtml(value){
 
@@ -2102,7 +2081,7 @@ async function loadProject(){
       error
     } =
       await supabaseClient
-        .from("tasks")
+        .from("projects")
         .select(
           `
           id,
@@ -2182,12 +2161,12 @@ async function loadCompletionCount(){
       error
     } =
       await supabaseClient
-        .from("task_submissions")
+        .from("project_submissions")
         .select(
           "id,status"
         )
         .eq(
-          "task_id",
+          "project_id",
           projectId
         );
 
@@ -2256,12 +2235,12 @@ async function loadMyStatus(){
       error
     } =
       await supabaseClient
-        .from("task_submissions")
+        .from("project_submissions")
         .select(
           "status,submitted_at"
         )
         .eq(
-          "task_id",
+          "project_id",
           projectId
         )
         .eq(
@@ -2417,7 +2396,7 @@ function renderProject(){
   let badges = "";
 
 
-  if(project.verified === true){
+  if(true){
 
     badges += `
       <span class="badge green">
@@ -2524,9 +2503,7 @@ function renderProject(){
   document.getElementById(
     "projectReward"
   ).textContent =
-    money(
-      project.reward
-    );
+    money(calculateProjectUserReward(project.company_payout || 0));
 
 
   /* TIME */
@@ -2542,9 +2519,7 @@ function renderProject(){
   /* COMPLETED */
 
   const starting =
-    STARTING_COMPLETIONS[
-      Number(project.id)
-    ] || 0;
+    0;
 
 
   const completed =
@@ -2565,7 +2540,7 @@ function renderProject(){
   document.getElementById(
     "verification"
   ).textContent =
-    project.verified === true
+    true
       ? "Verified"
       : "Review";
 
@@ -2683,7 +2658,7 @@ function renderStatus(){
     );
 
     text.textContent =
-      "Project Working";
+      "Company Project Working";
 
     small.textContent =
       "You are currently working on this project.";
@@ -2710,7 +2685,7 @@ function renderStatus(){
    START PROJECT
    =========================================================
    IMPORTANT:
-   Details → Project Work
+   Details → Company Project Work
    No loop back to Details.
 ========================================================= */
 

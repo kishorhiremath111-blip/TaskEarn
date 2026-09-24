@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#080a1b">
 
-<title>TaskEarn — Project Work</title>
+<title>TaskEarn — Company Project Work</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1444,7 +1444,7 @@ body:after{
   </button>
 
   <div class="header-title">
-    Task<span>Earn</span> — Project Work
+    Task<span>Earn</span> — Company Project Work
   </div>
 
 </header>
@@ -1823,7 +1823,7 @@ body:after{
 
         <span class="section-dot"></span>
 
-        Project Workspace
+        Company Project Workspace
 
       </div>
 
@@ -1839,7 +1839,7 @@ body:after{
           <use href="#external"></use>
         </svg>
 
-        Open Project Workspace
+        Open Company Project Workspace
 
       </a>
 
@@ -1918,7 +1918,7 @@ body:after{
       <div class="next-text">
 
         <div class="next-title">
-          Next: Submit Project
+          Next: Upload Your Work Sample
         </div>
 
         <div class="next-sub">
@@ -2004,33 +2004,6 @@ let project = null;
 /* =========================================================
    STARTING COMPLETION COUNTS
 ========================================================= */
-
-const STARTING_COMPLETIONS = {
-
-  1:178,
-  2:175,
-  3:589,
-  4:7,
-  5:264,
-  6:91,
-  7:42,
-  8:315,
-  9:128,
-  10:73,
-
-  11:204,
-  12:56,
-  13:391,
-  14:19,
-  15:147,
-  16:68,
-  17:522,
-  18:33,
-  19:86,
-  20:276
-
-};
-
 
 /* =========================================================
    MONEY
@@ -2277,7 +2250,7 @@ async function loadProject(){
       error
     } =
       await supabaseClient
-        .from("tasks")
+        .from("projects")
         .select(
           `
           id,
@@ -2324,7 +2297,7 @@ async function loadProject(){
   catch(error){
 
     console.error(
-      "Project Work:",
+      "Company Project Work:",
       error
     );
 
@@ -2352,12 +2325,12 @@ async function getCompletionCount(){
       error
     } =
       await supabaseClient
-        .from("task_submissions")
+        .from("project_submissions")
         .select(
           "id,status"
         )
         .eq(
-          "task_id",
+          "project_id",
           projectId
         );
 
@@ -2437,9 +2410,7 @@ async function renderProject(){
   document.getElementById(
     "reward"
   ).textContent =
-    money(
-      project.reward
-    );
+    money(calculateProjectUserReward(companyAmount));
 
 
   /* DURATION */
@@ -2487,9 +2458,7 @@ async function renderProject(){
 
 
   const starting =
-    STARTING_COMPLETIONS[
-      Number(project.id)
-    ] || 0;
+    0;
 
 
   const total =
@@ -2757,7 +2726,7 @@ document
 
             reward:
               Number(
-                project.reward || 0
+                calculateProjectUserReward(companyAmount)
               ),
 
             started_at:
@@ -2866,12 +2835,12 @@ document
       /*
         Deterministic navigation:
 
-        Project Work
+        Company Project Work
              ↓
         Projects
 
         It does NOT recycle
-        through Project Details.
+        through Company Project Details.
       */
 
       window.location.replace(
