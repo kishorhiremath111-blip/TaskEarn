@@ -1458,30 +1458,10 @@ function money(value){
    SECURE SUPABASE BACKEND.
    ========================================================= */
 
-function Number(companyAmount || 0){
-
-    const amount =
-        Number(companyAmount || 0);
-
-    if(
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ){
-        return 0;
-    }
-
-    if(amount <= 500){
-
-        return Number(
-            (amount * 0.55)
-                .toFixed(2)
-        );
-    }
-
-    return Number(
-        (amount * 0.50)
-            .toFixed(2)
-    );
+function calculateProjectUserReward(companyAmount){
+  const amount = Number(companyAmount || 0);
+  if(amount <= 0) return 0;
+  return amount <= 500 ? Number((amount * 0.45).toFixed(2)) : Number((amount * 0.50).toFixed(2));
 }
 
 
@@ -1884,9 +1864,7 @@ function renderProject(){
     */
 
     $("rewardValue").textContent =
-        money(
-            Number(companyAmount || 0)
-        );
+        money(calculateProjectUserReward(project.company_payout || 0));
 
 
     $("categoryValue").textContent =
@@ -1937,7 +1915,6 @@ async function loadExistingSubmission(){
         return;
     }
 
-
     const result =
         await supabaseClient
             .from("project_submissions")
@@ -1951,85 +1928,34 @@ async function loadExistingSubmission(){
                 submitted_at,
                 reviewed_at
             `)
-            .eq(
-                "project_id",
-                project.id
-            )
-            .eq(
-                "user_id",
-                session.user.id
-            )
-            .order(
-                "submitted_at",
-                {
-                    ascending:false
-                }
-            )
+            .eq("project_id", project.id)
+            .eq("user_id", session.user.id)
+            .order("submitted_at",{ascending:false})
             .limit(1)
             .maybeSingle();
 
-
     if(result.error){
-
-        console.warn(
-            "Submission lookup:",
-            result.error
-        );
-
+        console.warn("Submission lookup:",result.error);
         return;
     }
-
 
     if(!result.data){
         return;
     }
 
-
-    currentSubmission =
-        result.data;
-
+    currentSubmission = result.data;
 
     const status =
-        String(
-            currentSubmission.status || ""
-        ).toLowerCase();
+        String(currentSubmission.status || "").toLowerCase();
 
-
-    if(status === "approved"{
-            showCompletedProject(currentSubmission);
-            return;
-        }
-
-        return;
-    }
-
-
-    if(status === "rejected"){
-
-        $("formSection")
-            .style.display =
-            "none";
-
-        showRejected(
-            currentSubmission
-        );
-
-        return;
-    }
-
-
+    /* User-facing state remains Pending / Reviewing. */
     if(
         status === "pending" ||
-        status === "processing"
+        status === "processing" ||
+        status === "approved" ||
+        status === "rejected"
     ){
-
-        $("formSection")
-            .style.display =
-            "none";
-
-        showProcessing(
-            currentSubmission
-        );
+        showProcessing(currentSubmission);
     }
 }
 
@@ -2481,36 +2407,7 @@ function showApproved(
 
     $("statusPill")
         .className =
-        "status-pill approved";
-
-
-    /*
-      CRITICAL:
-
-      Never use companyAmount here.
-
-      companyAmount = company amount.
-
-      submission.reward = secure backend-calculated
-      user reward.
-
-      Therefore only submission.reward is displayed.
-    */
-
-    const finalReward =
-        Number(
-            submission &&
-            submission.reward != null
-                ? submission.reward
-                : 0
-        );
-
-
-    $("approvedAmount")
-        .textContent =
-        money(
-            finalReward
-        );
+        "status-pill;
 
 
     try{
@@ -2739,8 +2636,7 @@ $("walletBtn")
     "click",
     function(){
 
-        window.location.href =
-            ROUTES.wallet;
+        return;
     }
 );
 
@@ -2808,4 +2704,19 @@ init();
 </script>
 
 </body>
-</html>
+</htmlfunction showCompletedProject(submission){
+    clearInterval(timerInterval);
+    clearInterval(pollInterval);
+    document.getElementById("formSection").style.display="none";
+    document.getElementById("statusSection").classList.add("show");
+    document.getElementById("timerCard").style.display="none";
+    document.getElementById("approvedCard").classList.remove("show");
+    document.getElementById("rejectedCard").classList.remove("show");
+    document.getElementById("statusTitle").textContent="Completed Project";
+    document.getElementById("statusDescription").textContent="Your company work is marked completed.";
+    document.getElementById("statusText").textContent="COMPLETED";
+    document.getElementById("statusPill").className="status-pill approved";
+    document.getElementById("approvedCard").classList.add("show");
+    document.getElementById("approvedAmount").textContent="Completed";
+}
+>
