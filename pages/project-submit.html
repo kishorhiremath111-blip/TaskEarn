@@ -1915,7 +1915,6 @@ async function loadExistingSubmission(){
         return;
     }
 
-
     const result =
         await supabaseClient
             .from("project_submissions")
@@ -1929,63 +1928,35 @@ async function loadExistingSubmission(){
                 submitted_at,
                 reviewed_at
             `)
-            .eq(
-                "project_id",
-                project.id
-            )
-            .eq(
-                "user_id",
-                session.user.id
-            )
-            .order(
-                "submitted_at",
-                {
-                    ascending:false
-                }
-            )
+            .eq("project_id", project.id)
+            .eq("user_id", session.user.id)
+            .order("submitted_at",{ascending:false})
             .limit(1)
             .maybeSingle();
 
-
     if(result.error){
-
-        console.warn(
-            "Submission lookup:",
-            result.error
-        );
-
+        console.warn("Submission lookup:",result.error);
         return;
     }
-
 
     if(!result.data){
         return;
     }
 
-
-    currentSubmission =
-        result.data;
-
+    currentSubmission = result.data;
 
     const status =
-        String(
-            currentSubmission.status || ""
-        ).toLowerCase();
+        String(currentSubmission.status || "").toLowerCase();
 
-
-    if(status === "approved"){
-            showCompletedProject(currentSubmission);
-            return;
-        }
-
-        return;
+    /* User-facing state remains Pending / Reviewing. */
+    if(
+        status === "pending" ||
+        status === "processing" ||
+        status === "approved" ||
+        status === "rejected"
+    ){
+        showProcessing(currentSubmission);
     }
-
-
-    if(status === "rejected"){
-            showProcessing(currentSubmission);
-            return;
-        }
 }
 
 
