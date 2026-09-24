@@ -2503,7 +2503,7 @@ function renderProject(){
   document.getElementById(
     "projectReward"
   ).textContent =
-    money(calculateProjectUserReward(companyAmount));
+    money(calculateProjectUserReward(project.company_payout || 0));
 
 
   /* TIME */
