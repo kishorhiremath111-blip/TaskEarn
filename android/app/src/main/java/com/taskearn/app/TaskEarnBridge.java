@@ -700,7 +700,7 @@ public class TaskEarnBridge {
                                 Math.min(adLoadRetryCount + 1, 4);
 
                         adRetryHandler.postDelayed(
-                                this::loadRewardedAdInternal,
+                                TaskEarnBridge.this::loadRewardedAdInternal,
                                 retryDelayMs
                         );
                     }
@@ -1062,18 +1062,28 @@ public class TaskEarnBridge {
             int precision
     ) {
 
+        /*
+         * Google Mobile Ads SDK 24.x exposes the precision type
+         * as an integer from getPrecisionType(). Keep this mapping
+         * numeric so the code remains compatible with the 24.x API.
+         *
+         * 0 = UNKNOWN
+         * 1 = ESTIMATED
+         * 2 = PUBLISHER_PROVIDED
+         * 3 = PRECISE
+         */
         switch (precision) {
 
-            case AdValue.PRECISION_PRECISE:
+            case 3:
                 return "PRECISE";
 
-            case AdValue.PRECISION_ESTIMATED:
+            case 1:
                 return "ESTIMATED";
 
-            case AdValue.PRECISION_PUBLISHER_PROVIDED:
+            case 2:
                 return "PUBLISHER_PROVIDED";
 
-            case AdValue.PRECISION_UNKNOWN:
+            case 0:
             default:
                 return "UNKNOWN";
         }
