@@ -5,6 +5,9 @@ on:
   push:
     branches: ["master"]
 
+permissions:
+  contents: write
+
 jobs:
   build-apk:
     runs-on: ubuntu-latest
@@ -24,7 +27,7 @@ jobs:
         with:
           gradle-version: "8.2"
 
-      - name: Build debug APK
+      - name: Build clean debug APK
         working-directory: android
         run: gradle --no-daemon clean assembleDebug
 
@@ -45,10 +48,22 @@ jobs:
           "$AAPT" dump badging "$APK" | head -n 25
           sha256sum "$APK"
 
-      - name: Upload installable APK
+      - name: Prepare direct APK
+        shell: bash
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk "TaskEarn-v1.0-debug.apk"
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: TaskEarn-installable-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: TaskEarn-v1.0-debug.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish direct APK release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="taskearn-apk-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" "TaskEarn-v1.0-debug.apk"             --title "TaskEarn APK ${GITHUB_RUN_NUMBER}"             --notes "TaskEarn Android APK build from commit ${GITHUB_SHA}."             --target "${GITHUB_SHA}"
