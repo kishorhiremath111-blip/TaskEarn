@@ -45,6 +45,7 @@ public class TaskEarnBridge {
     private boolean isLoadingAd = false;
     private boolean rewardEarned = false;
     private boolean adCurrentlyShowing = false;
+    private boolean pendingShowAfterLoad = false;
 
     private String activeSessionId = null;
     private String activeSessionNonce = null;
@@ -636,6 +637,19 @@ public class TaskEarnBridge {
                                 "TaskEarnNativeAdReady",
                                 "true"
                         );
+
+                        // If the user tapped Watch Ad while the
+                        // production ad was still loading, finish
+                        // that same secure session automatically
+                        // once AdMob becomes ready.
+                        if (pendingShowAfterLoad
+                                && activeSessionId != null
+                                && activeSessionNonce != null
+                                && !adCurrentlyShowing) {
+
+                            pendingShowAfterLoad = false;
+                            showLoadedRewardedAd();
+                        }
                     }
 
 
@@ -698,10 +712,12 @@ public class TaskEarnBridge {
         activeSessionId = sessionId.trim();
         activeSessionNonce = nonce.trim();
         lastPaidEvent = null;
+        pendingShowAfterLoad = true;
 
         activity.runOnUiThread(() -> {
 
             if (adCurrentlyShowing) {
+                pendingShowAfterLoad = false;
                 notifyJavascript(
                         "TaskEarnNativeAdError",
                         JSONObject.quote("A rewarded ad is already showing.")
@@ -710,467 +726,273 @@ public class TaskEarnBridge {
             }
 
             if (rewardedAd == null) {
-                notifyJavascript(
-                        "TaskEarnNativeAdError",
-                        JSONObject.quote("Rewarded ad is not ready yet.")
-                );
+                // Keep the secure session alive while AdMob loads.
+                // The page's existing session expiry remains the
+                // authoritative timeout.
                 loadRewardedAdInternal();
-
-                /*
-                 * Do not clear the TaskEarn session/nonce here.
-                 * The existing page flow remains authoritative:
-                 * once the rewarded ad is actually loaded, the user
-                 * can retry and the same secure session can still be
-                 * handled by the normal session/SSV/finalize pipeline.
-                 */
-                return;
-            }
-
-            rewardEarned = false;
-            adCurrentlyShowing = true;
-
-            RewardedAd adToShow = rewardedAd;
-            rewardedAd = null;
-
-            /*
-             * Bind this exact TaskEarn session to AdMob SSV.
-             * The nonce is only a correlation value, never money.
-             */
-            try {
-                ServerSideVerificationOptions options =
-                        new ServerSideVerificationOptions.Builder()
-                                .setCustomData(activeSessionNonce)
-                                .build();
-
-                adToShow.setServerSideVerificationOptions(options);
-
-            } catch (Exception e) {
-
-                adCurrentlyShowing = false;
-                rewardedAd = adToShow;
-
                 notifyJavascript(
-                        "TaskEarnNativeAdError",
-                        JSONObject.quote(
-                                "Secure ad verification could not be configured."
-                        )
+                        "TaskEarnNativeAdLoading",
+                        "true"
                 );
                 return;
             }
 
-            /*
-             * Impression-level paid event.
-             * This is display/reconciliation telemetry only.
-             */
-            adToShow.setOnPaidEventListener(
-                    new OnPaidEventListener() {
+            pendingShowAfterLoad = false;
+            showLoadedRewardedAd();
+        });
 
-                        @Override
-                        public void onPaidEvent(
-                                @NonNull AdValue adValue
-                        ) {
+        return successJson("AD_SHOW_REQUESTED");
+    }
 
-                            try {
+    /**
+     * Shows an already-loaded production RewardedAd.
+     * Must run on the Android UI thread.
+     */
+    private void showLoadedRewardedAd() {
 
-                                long valueMicros =
-                                        adValue.getValueMicros();
+        if (adCurrentlyShowing || rewardedAd == null) {
+            return;
+        }
 
-                                String currency =
-                                        adValue.getCurrencyCode();
-
-                                String precision =
-                                        precisionToString(
-                                                adValue.getPrecisionType()
-                                        );
-
-                                JSONObject paid =
-                                        new JSONObject();
-
-                                paid.put(
-                                        "value_micros",
-                                        valueMicros
-                                );
-
-                                paid.put(
-                                        "currency_code",
-                                        currency == null ? "" : currency
-                                );
-
-                                paid.put(
-                                        "precision",
-                                        precision
-                                );
-
-                                paid.put(
-                                        "ad_unit_id",
-                                        adToShow.getAdUnitId()
-                                );
-
-                                paid.put(
-                                        "session_id",
-                                        activeSessionId
-                                );
-
-                                paid.put(
-                                        "timestamp",
-                                        System.currentTimeMillis()
-                                );
-
-                                lastPaidEvent = paid;
-
-                                /*
-                                 * User sees only the money amount.
-                                 * No "Your 50%" / "50% share" wording.
-                                 */
-                                JSONObject display =
-                                        new JSONObject();
-
-                                display.put("available", true);
-                                display.put(
-                                        "currency_code",
-                                        currency == null ? "" : currency
-                                );
-                                display.put(
-                                        "precision",
-                                        precision
-                                );
-                                display.put(
-                                        "gross_value_micros",
-                                        valueMicros
-                                );
-                                display.put(
-                                        "user_value_micros",
-                                        valueMicros / 2L
-                                );
-
-                                notifyJavascript(
-                                        "TaskEarnNativeAdPaid",
-                                        display.toString()
-                                );
-
-                            } catch (Exception ignored) {
-                                // Never break ad playback.
-                            }
-                        }
-                    }
-            );
-
+        if (activeSessionId == null || activeSessionNonce == null) {
             notifyJavascript(
-                    "TaskEarnNativeAdStarted",
-                    "true"
+                    "TaskEarnNativeAdError",
+                    JSONObject.quote("Ad session is not active.")
             );
+            return;
+        }
 
-            adToShow.setFullScreenContentCallback(
-                    new FullScreenContentCallback() {
+        rewardEarned = false;
+        adCurrentlyShowing = true;
 
-                        @Override
-                        public void onAdShowedFullScreenContent() {
+        RewardedAd adToShow = rewardedAd;
+        rewardedAd = null;
 
-                            notifyJavascript(
-                                    "TaskEarnNativeAdShown",
-                                    "true"
-                            );
-                        }
+        /*
+         * Bind this exact TaskEarn session to AdMob SSV.
+         * The nonce is only a correlation value, never money.
+         */
+        try {
+            ServerSideVerificationOptions options =
+                    new ServerSideVerificationOptions.Builder()
+                            .setCustomData(activeSessionNonce)
+                            .build();
 
-                        @Override
-                        public void onAdDismissedFullScreenContent() {
+            adToShow.setServerSideVerificationOptions(options);
 
-                            adCurrentlyShowing = false;
+        } catch (Exception e) {
 
-                            notifyJavascript(
-                                    "TaskEarnNativeAdCompleted",
-                                    rewardEarned ? "true" : "false"
-                            );
-
-                            activeSessionId = null;
-                            activeSessionNonce = null;
-
-                            loadRewardedAdInternal();
-                        }
-
-                        @Override
-                        public void onAdFailedToShowFullScreenContent(
-                                @NonNull AdError adError
-                        ) {
-
-                            adCurrentlyShowing = false;
-                            rewardEarned = false;
-
-                            notifyJavascript(
-                                    "TaskEarnNativeAdCompleted",
-                                    "false"
-                            );
-
-                            notifyJavascript(
-                                    "TaskEarnNativeAdError",
-                                    JSONObject.quote(
-                                            adError.getMessage() == null
-                                                    ? "Rewarded ad failed to show."
-                                                    : adError.getMessage()
-                                    )
-                            );
-
-                            activeSessionId = null;
-                            activeSessionNonce = null;
-
-                            loadRewardedAdInternal();
-                        }
-                    }
+            adCurrentlyShowing = false;
+            rewardedAd = adToShow;
+            notifyJavascript(
+                    "TaskEarnNativeAdError",
+                    JSONObject.quote(
+                            "Secure ad verification could not be configured."
+                    )
             );
+            return;
+        }
 
-            /*
-             * ACTUAL REWARDED AD DISPLAY.
-             */
-            adToShow.show(
-                    activity,
-                    rewardItem -> {
+        /*
+         * Impression-level paid event.
+         * This is provider telemetry only and is never used
+         * as a client-authoritative wallet amount.
+         */
+        adToShow.setOnPaidEventListener(
+                new OnPaidEventListener() {
 
-                        rewardEarned = true;
+                    @Override
+                    public void onPaidEvent(
+                            @NonNull AdValue adValue
+                    ) {
 
-                        /*
-                         * reward_amount is the configured reward item,
-                         * NOT actual advertising revenue.
-                         */
                         try {
 
-                            JSONObject data =
+                            long valueMicros =
+                                    adValue.getValueMicros();
+
+                            String currency =
+                                    adValue.getCurrencyCode();
+
+                            String precision =
+                                    precisionToString(
+                                            adValue.getPrecisionType()
+                                    );
+
+                            JSONObject paid =
                                     new JSONObject();
 
-                            data.put(
-                                    "earned",
-                                    true
+                            paid.put(
+                                    "value_micros",
+                                    valueMicros
                             );
 
-                            data.put(
-                                    "reward_item_amount",
-                                    rewardItem.getAmount()
+                            paid.put(
+                                    "currency_code",
+                                    currency == null ? "" : currency
                             );
 
-                            data.put(
-                                    "reward_item_type",
-                                    rewardItem.getType()
+                            paid.put(
+                                    "precision",
+                                    precision
                             );
 
-                            data.put(
+                            paid.put(
+                                    "ad_unit_id",
+                                    adToShow.getAdUnitId()
+                            );
+
+                            paid.put(
+                                    "session_id",
+                                    activeSessionId
+                            );
+
+                            paid.put(
                                     "timestamp",
                                     System.currentTimeMillis()
                             );
 
-                            if (lastPaidEvent != null) {
-                                data.put(
-                                        "paid_event",
-                                        lastPaidEvent
-                                );
-                            }
+                            lastPaidEvent = paid;
+
+                            JSONObject display =
+                                    new JSONObject();
+
+                            display.put("available", true);
+                            display.put(
+                                    "currency_code",
+                                    currency == null ? "" : currency
+                            );
+                            display.put(
+                                    "precision",
+                                    precision
+                            );
+                            display.put(
+                                    "value_micros",
+                                    valueMicros
+                            );
 
                             notifyJavascript(
-                                    "TaskEarnNativeRewardEarned",
-                                    data.toString()
+                                    "TaskEarnNativeAdPaid",
+                                    display.toString()
                             );
 
                         } catch (Exception ignored) {
                         }
                     }
-            );
-        });
+                }
+        );
 
-        try {
+        adToShow.setFullScreenContentCallback(
+                new FullScreenContentCallback() {
 
-            JSONObject started =
-                    new JSONObject();
+                    @Override
+                    public void onAdShowedFullScreenContent() {
 
-            started.put("ok", true);
-            started.put("started", true);
-            started.put("session_id", activeSessionId);
+                        notifyJavascript(
+                                "TaskEarnNativeAdShown",
+                                "true"
+                        );
+                    }
 
-            return started.toString();
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
 
-        } catch (Exception e) {
+                        adCurrentlyShowing = false;
 
-            return "{\"ok\":true,\"started\":true}";
-        }
-    }
-
-
-    private String errorJson(
-            String error
-    ) {
-
-        try {
-
-            JSONObject result =
-                    new JSONObject();
-
-            result.put("ok", false);
-            result.put("error", error);
-
-            return result.toString();
-
-        } catch (Exception e) {
-
-            return "{\"ok\":false,\"error\":\"" +
-                    error +
-                    "\"}";
-        }
-    }
-
-
-    private String precisionToString(
-            int precision
-    ) {
-
-        switch (precision) {
-
-            case AdValue.PRECISION_PRECISE:
-                return "PRECISE";
-
-            case AdValue.PRECISION_ESTIMATED:
-                return "ESTIMATED";
-
-            case AdValue.PRECISION_PUBLISHER_PROVIDED:
-                return "PUBLISHER_PROVIDED";
-
-            case AdValue.PRECISION_UNKNOWN:
-            default:
-                return "UNKNOWN";
-        }
-    }
-
-
-    // =========================================================
-    // JAVASCRIPT CALLBACK SYSTEM
-    // =========================================================
-
-    private void notifyJavascript(
-            String functionName,
-            String value
-    ) {
-
-        if (webView == null) {
-            return;
-        }
-
-
-        activity.runOnUiThread(() -> {
-
-            try {
-
-                String safeValue =
-                        value == null
-                                ? "null"
-                                : value;
-
-
-                String javascript =
-                        "window." +
-                        functionName +
-                        " && window." +
-                        functionName +
-                        "(" +
-                        safeValue +
-                        ");";
-
-
-                webView.evaluateJavascript(
-                        javascript,
-                        null
-                );
-
-
-            } catch (Exception ignored) {
-            }
-        });
-    }
-
-
-    // =========================================================
-    // NETWORK SETTINGS
-    // =========================================================
-
-    @JavascriptInterface
-    public void openNetworkSettings() {
-
-        try {
-
-            Intent intent =
-                    new Intent(
-                            Settings.ACTION_WIRELESS_SETTINGS
-                    );
-
-
-            intent.addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK
-            );
-
-
-            context.startActivity(
-                    intent
-            );
-
-
-        } catch (Exception e) {
-
-            try {
-
-                Intent fallback =
-                        new Intent(
-                                Settings.ACTION_SETTINGS
+                        notifyJavascript(
+                                "TaskEarnNativeAdCompleted",
+                                rewardEarned ? "true" : "false"
                         );
 
+                        activeSessionId = null;
+                        activeSessionNonce = null;
+                        pendingShowAfterLoad = false;
 
-                fallback.addFlags(
-                        Intent.FLAG_ACTIVITY_NEW_TASK
-                );
+                        loadRewardedAdInternal();
+                    }
 
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(
+                            @NonNull AdError adError
+                    ) {
 
-                context.startActivity(
-                        fallback
-                );
+                        adCurrentlyShowing = false;
+                        rewardEarned = false;
+                        pendingShowAfterLoad = false;
 
+                        notifyJavascript(
+                                "TaskEarnNativeAdCompleted",
+                                "false"
+                        );
 
-            } catch (Exception ignored) {
-            }
-        }
+                        notifyJavascript(
+                                "TaskEarnNativeAdError",
+                                JSONObject.quote(
+                                        adError.getMessage() == null
+                                                ? "Rewarded ad failed to show."
+                                                : adError.getMessage()
+                                )
+                        );
+
+                        activeSessionId = null;
+                        activeSessionNonce = null;
+
+                        loadRewardedAdInternal();
+                    }
+                }
+        );
+
+        /*
+         * ACTUAL PRODUCTION REWARDED AD DISPLAY.
+         */
+        adToShow.show(
+                activity,
+                rewardItem -> {
+
+                    rewardEarned = true;
+
+                    try {
+
+                        JSONObject data =
+                                new JSONObject();
+
+                        data.put(
+                                "earned",
+                                true
+                        );
+
+                        data.put(
+                                "reward_item_amount",
+                                rewardItem.getAmount()
+                        );
+
+                        data.put(
+                                "reward_item_type",
+                                rewardItem.getType()
+                        );
+
+                        data.put(
+                                "timestamp",
+                                System.currentTimeMillis()
+                        );
+
+                        if (lastPaidEvent != null) {
+                            data.put(
+                                    "paid_event",
+                                    lastPaidEvent
+                            );
+                        }
+
+                        notifyJavascript(
+                                "TaskEarnNativeRewardEarned",
+                                data.toString()
+                        );
+
+                    } catch (Exception ignored) {
+                    }
+                }
+        );
     }
 
 
-    // =========================================================
-    // PRIVATE DNS SETTINGS
-    // =========================================================
 
-    @JavascriptInterface
-    public void openPrivateDnsSettings() {
-
-        try {
-
-            Intent intent =
-                    new Intent(
-                            Settings.ACTION_WIRELESS_SETTINGS
-                    );
-
-
-            intent.addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK
-            );
-
-
-            context.startActivity(
-                    intent
-            );
-
-
-        } catch (Exception ignored) {
-        }
-    }
-
-
-    // =========================================================
-    // NATIVE DETECTOR
-    // =========================================================
-
-    @JavascriptInterface
-    public boolean isNativeDetectorAvailable() {
-
-        return true;
-    }
-}
