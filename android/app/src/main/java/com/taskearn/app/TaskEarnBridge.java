@@ -8,6 +8,8 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -46,6 +48,8 @@ public class TaskEarnBridge {
     private boolean rewardEarned = false;
     private boolean adCurrentlyShowing = false;
     private boolean pendingShowAfterLoad = false;
+    private int adLoadRetryCount = 0;
+    private final Handler adRetryHandler = new Handler(Looper.getMainLooper());
 
     private String activeSessionId = null;
     private String activeSessionNonce = null;
@@ -680,6 +684,24 @@ public class TaskEarnBridge {
                                 JSONObject.quote(
                                         message
                                 )
+                        );
+
+                        // Keep trying to obtain a production rewarded ad
+                        // after transient no-fill/network failures. The
+                        // user's secure session is retained separately and
+                        // is only used if an ad actually becomes available.
+                        final long retryDelayMs =
+                                Math.min(
+                                        30000L,
+                                        3000L * (1L << Math.min(adLoadRetryCount, 3))
+                                );
+
+                        adLoadRetryCount =
+                                Math.min(adLoadRetryCount + 1, 4);
+
+                        adRetryHandler.postDelayed(
+                                this::loadRewardedAdInternal,
+                                retryDelayMs
                         );
                     }
                 }
