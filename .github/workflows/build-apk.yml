@@ -26,12 +26,29 @@ jobs:
 
       - name: Build debug APK
         working-directory: android
-        run: gradle --no-daemon assembleDebug
+        run: gradle --no-daemon clean assembleDebug
 
-      - name: Upload APK
+      - name: Validate APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          SDK="$ANDROID_HOME"
+          BUILD_TOOLS="$(ls -1 "$SDK/build-tools" | sort -V | tail -n 1)"
+          ZIPALIGN="$SDK/build-tools/$BUILD_TOOLS/zipalign"
+          APKSIGNER="$SDK/build-tools/$BUILD_TOOLS/apksigner"
+          AAPT="$SDK/build-tools/$BUILD_TOOLS/aapt"
+
+          test -s "$APK"
+          "$ZIPALIGN" -c -P 4 -v 4 "$APK"
+          "$APKSIGNER" verify --verbose "$APK"
+          "$AAPT" dump badging "$APK" | head -n 25
+          sha256sum "$APK"
+
+      - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: TaskEarn-debug-APK
+          name: TaskEarn-installable-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
