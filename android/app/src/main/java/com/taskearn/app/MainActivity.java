@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
 
+        // The app's HTML pages use a native Android bridge for
+        // Google Mobile Ads. File access is not needed for those
+        // pages, but WebView must keep normal JavaScript/DOM
+        // execution enabled.
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
 
