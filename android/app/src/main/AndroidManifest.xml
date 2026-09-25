@@ -8,6 +8,8 @@
         android:allowBackup="false"
         android:usesCleartextTraffic="false"
         android:label="TaskEarn"
+        android:icon="@drawable/ic_taskearn"
+        android:roundIcon="@drawable/ic_taskearn"
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
         android:hardwareAccelerated="true">
