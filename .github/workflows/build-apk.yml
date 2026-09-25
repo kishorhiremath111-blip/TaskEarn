@@ -1,37 +1,29 @@
 name: TaskEarn APK Build
-
 on:
   workflow_dispatch:
   push:
     branches: ["master"]
-
 permissions:
   contents: write
-
 jobs:
   build-apk:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout TaskEarn
         uses: actions/checkout@v4
-
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
-
       - name: Set up Gradle 8.2
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.2"
-
       - name: Build clean debug APK
         working-directory: android
         run: gradle --no-daemon clean assembleDebug
-
-      - name: Validate APK
+      - name: Validate APK install metadata
         shell: bash
         run: |
           set -euo pipefail
@@ -41,29 +33,35 @@ jobs:
           ZIPALIGN="$SDK/build-tools/$BUILD_TOOLS/zipalign"
           APKSIGNER="$SDK/build-tools/$BUILD_TOOLS/apksigner"
           AAPT="$SDK/build-tools/$BUILD_TOOLS/aapt"
-
           test -s "$APK"
           "$ZIPALIGN" -c -P 4 -v 4 "$APK"
           "$APKSIGNER" verify --verbose "$APK"
-          "$AAPT" dump badging "$APK" | head -n 25
+          BADGING="$("$AAPT" dump badging "$APK")"
+          echo "$BADGING"
+          if echo "$BADGING" | grep -qi "testOnly='true'"; then
+            echo "ERROR: APK is marked testOnly"
+            exit 1
+          fi
+          echo "$BADGING" | grep -q "package: name='com.taskearn.app'"
+          echo "$BADGING" | grep -q "versionName='1.0.1'"
           sha256sum "$APK"
-
       - name: Prepare direct APK
         shell: bash
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk "TaskEarn-v1.0-debug.apk"
-
+          cp android/app/build/outputs/apk/debug/app-debug.apk "TaskEarn-v1.0.1.apk"
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: TaskEarn-installable-APK
-          path: TaskEarn-v1.0-debug.apk
+          path: TaskEarn-v1.0.1.apk
           if-no-files-found: error
           retention-days: 30
-
       - name: Publish direct APK release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="taskearn-apk-${GITHUB_RUN_NUMBER}"
-          gh release create "$TAG" "TaskEarn-v1.0-debug.apk"             --title "TaskEarn APK ${GITHUB_RUN_NUMBER}"             --notes "TaskEarn Android APK build from commit ${GITHUB_SHA}."             --target "${GITHUB_SHA}"
+          gh release create "$TAG" "TaskEarn-v1.0.1.apk" \
+            --title "TaskEarn APK ${GITHUB_RUN_NUMBER}" \
+            --notes "TaskEarn Android APK build from commit ${GITHUB_SHA}." \
+            --target "${GITHUB_SHA}"
