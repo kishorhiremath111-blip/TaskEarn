@@ -20,48 +20,52 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.2"
-      - name: Build clean debug APK
+      - name: Build release APK
         working-directory: android
-        run: gradle --no-daemon clean assembleDebug
-      - name: Validate APK install metadata
+        run: gradle --no-daemon clean assembleRelease
+      - name: Sign release APK
         shell: bash
         run: |
           set -euo pipefail
-          APK="android/app/build/outputs/apk/debug/app-debug.apk"
-          SDK="$ANDROID_HOME"
-          BUILD_TOOLS="$(ls -1 "$SDK/build-tools" | sort -V | tail -n 1)"
-          ZIPALIGN="$SDK/build-tools/$BUILD_TOOLS/zipalign"
-          APKSIGNER="$SDK/build-tools/$BUILD_TOOLS/apksigner"
-          AAPT="$SDK/build-tools/$BUILD_TOOLS/aapt"
-          test -s "$APK"
+          UNSIGNED="android/app/build/outputs/apk/release/app-release-unsigned.apk"
+          SIGNED="TaskEarn-v1.0.2-release.apk"
+          KEYSTORE="$RUNNER_TEMP/taskearn-release.jks"
+          PASS="build-${GITHUB_RUN_ID}"
+          keytool -genkeypair -v -keystore "$KEYSTORE" -storepass "$PASS" -keypass "$PASS" -alias taskearn-release -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=TaskEarn, OU=TaskEarn, O=TaskEarn, L=India, ST=Maharashtra, C=IN"
+          BUILD_TOOLS="$(ls -1 "$ANDROID_HOME/build-tools" | sort -V | tail -n 1)"
+          ZIPALIGN="$ANDROID_HOME/build-tools/$BUILD_TOOLS/zipalign"
+          APKSIGNER="$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner"
+          "$ZIPALIGN" -f -P 4 "$UNSIGNED" "$SIGNED-aligned"
+          "$APKSIGNER" sign --ks "$KEYSTORE" --ks-pass "pass:$PASS" --key-pass "pass:$PASS" --ks-key-alias taskearn-release --out "$SIGNED" "$SIGNED-aligned"
+          rm -f "$SIGNED-aligned" "$KEYSTORE"
+      - name: Validate signed release APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="TaskEarn-v1.0.2-release.apk"
+          BUILD_TOOLS="$(ls -1 "$ANDROID_HOME/build-tools" | sort -V | tail -n 1)"
+          ZIPALIGN="$ANDROID_HOME/build-tools/$BUILD_TOOLS/zipalign"
+          APKSIGNER="$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner"
+          AAPT="$ANDROID_HOME/build-tools/$BUILD_TOOLS/aapt"
           "$ZIPALIGN" -c -P 4 -v 4 "$APK"
           "$APKSIGNER" verify --verbose "$APK"
           BADGING="$("$AAPT" dump badging "$APK")"
           echo "$BADGING"
-          if echo "$BADGING" | grep -qi "testOnly='true'"; then
-            echo "ERROR: APK is marked testOnly"
-            exit 1
-          fi
           echo "$BADGING" | grep -q "package: name='com.taskearn.app'"
-          echo "$BADGING" | grep -q "versionName='1.0.1'"
+          echo "$BADGING" | grep -q "versionName='1.0.2'"
+          echo "$BADGING" | grep -q "application-label:'TaskEarn'"
+          if echo "$BADGING" | grep -qi "testOnly='true'"; then exit 1; fi
           sha256sum "$APK"
-      - name: Prepare direct APK
-        shell: bash
-        run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk "TaskEarn-v1.0.1.apk"
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TaskEarn-installable-APK
-          path: TaskEarn-v1.0.1.apk
+          name: TaskEarn-release-APK
+          path: TaskEarn-v1.0.2-release.apk
           if-no-files-found: error
           retention-days: 30
       - name: Publish direct APK release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="taskearn-apk-${GITHUB_RUN_NUMBER}"
-          gh release create "$TAG" "TaskEarn-v1.0.1.apk" \
-            --title "TaskEarn APK ${GITHUB_RUN_NUMBER}" \
-            --notes "TaskEarn Android APK build from commit ${GITHUB_SHA}." \
-            --target "${GITHUB_SHA}"
+          TAG="taskearn-release-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" "TaskEarn-v1.0.2-release.apk" --title "TaskEarn Release APK ${GITHUB_RUN_NUMBER}" --notes "Signed TaskEarn release APK build from commit ${GITHUB_SHA}." --target "${GITHUB_SHA}"
