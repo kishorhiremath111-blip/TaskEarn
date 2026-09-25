@@ -30,14 +30,16 @@ jobs:
           UNSIGNED="android/app/build/outputs/apk/release/app-release-unsigned.apk"
           SIGNED="TaskEarn-v1.0.2-release.apk"
           KEYSTORE="$RUNNER_TEMP/taskearn-release.jks"
-          PASS="build-${GITHUB_RUN_ID}"
-          keytool -genkeypair -v -keystore "$KEYSTORE" -storepass "$PASS" -keypass "$PASS" -alias taskearn-release -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=TaskEarn, OU=TaskEarn, O=TaskEarn, L=India, ST=Maharashtra, C=IN"
+          ALIGNED="$RUNNER_TEMP/taskearn-release-aligned.apk"
+          PASS="TaskEarnBuild-${GITHUB_RUN_ID}-Safe"
+          keytool -genkeypair -noprompt -storetype JKS -keystore "$KEYSTORE" -storepass "$PASS" -keypass "$PASS" -alias taskearn-release -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=TaskEarn, OU=TaskEarn, O=TaskEarn, L=India, ST=Maharashtra, C=IN"
           BUILD_TOOLS="$(ls -1 "$ANDROID_HOME/build-tools" | sort -V | tail -n 1)"
           ZIPALIGN="$ANDROID_HOME/build-tools/$BUILD_TOOLS/zipalign"
           APKSIGNER="$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner"
-          "$ZIPALIGN" -f -P 4 "$UNSIGNED" "$SIGNED-aligned"
-          "$APKSIGNER" sign --ks "$KEYSTORE" --ks-pass "pass:$PASS" --key-pass "pass:$PASS" --ks-key-alias taskearn-release --out "$SIGNED" "$SIGNED-aligned"
-          rm -f "$SIGNED-aligned" "$KEYSTORE"
+          "$ZIPALIGN" -f -p 4 "$UNSIGNED" "$ALIGNED"
+          KS_PASS="$PASS" "$APKSIGNER" sign --ks "$KEYSTORE" --ks-pass env:KS_PASS --ks-key-alias taskearn-release --out "$SIGNED" "$ALIGNED"
+          "$APKSIGNER" verify --verbose "$SIGNED"
+          rm -f "$ALIGNED" "$KEYSTORE"
       - name: Validate signed release APK
         shell: bash
         run: |
