@@ -1033,6 +1033,7 @@ public class TaskEarnBridge {
                         }
                     }
             );
+        }
 
     private String errorJson(
             String error
