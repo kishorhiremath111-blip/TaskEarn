@@ -91,9 +91,9 @@ a,
 .youtube-card,
 .stat-card,
 .balance-card,
-.watch-card,
 .referral-card,
 .company-card,
+.ad-share-card,
 .nav-item{
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
@@ -746,220 +746,233 @@ a,
 }
 
 /* =========================================================
-   WATCH CARD
+   AD REVENUE SHARE
 ========================================================= */
 
-.watch-card{
+.ad-share-card{
   position:relative;
   overflow:hidden;
   margin-top:13px;
   padding:18px;
-  border:1px solid rgba(32,212,255,.28);
+  border:1px solid rgba(54,215,156,.20);
   border-radius:24px;
   background:
-    radial-gradient(circle at 90% 10%,rgba(255,195,45,.12),transparent 28%),
-    radial-gradient(circle at 5% 90%,rgba(32,212,255,.12),transparent 34%),
-    linear-gradient(135deg,#102d4a,#121a3c 48%,#21134b);
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(54,215,156,.13),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(32,212,255,.08),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15,40,43,.98),
+      rgba(9,18,32,.98)
+    );
   box-shadow:
-    0 20px 55px rgba(0,0,0,.35),
-    0 0 25px rgba(32,212,255,.06),
-    inset 0 1px 0 rgba(255,255,255,.08);
+    0 20px 55px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.06);
   transition:
     transform .22s cubic-bezier(.22,.61,.36,1),
     border-color .22s ease,
     box-shadow .22s ease;
 }
 
-.watch-card:hover{
-  transform:translateY(-2px);
-  border-color:rgba(32,212,255,.35);
-  box-shadow:
-    0 24px 60px rgba(0,0,0,.38),
-    0 0 30px rgba(32,212,255,.07),
-    inset 0 1px 0 rgba(255,255,255,.08);
+.ad-share-card::before{
+  content:"";
+  position:absolute;
+  width:190px;
+  height:190px;
+  right:-105px;
+  top:-120px;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(54,215,156,.11),
+    transparent 68%
+  );
+  pointer-events:none;
 }
 
-.watch-card:active{
+.ad-share-card::after{
+  content:"";
+  position:absolute;
+  width:140px;
+  height:140px;
+  left:-85px;
+  bottom:-95px;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(32,212,255,.08),
+    transparent 68%
+  );
+  pointer-events:none;
+}
+
+.ad-share-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(54,215,156,.34);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.34),
+    0 0 28px rgba(54,215,156,.055);
+}
+
+.ad-share-card:active{
   transform:scale(.992);
 }
 
-.watch-card:before{
-  content:"";
-  position:absolute;
-  width:230px;
-  height:230px;
-  right:-120px;
-  top:-140px;
-  border-radius:50%;
-  background:radial-gradient(
-    circle,
-    rgba(32,212,255,.10),
-    transparent 68%
-  );
-}
-
-.watch-card:after{
-  content:"";
-  position:absolute;
-  width:150px;
-  height:150px;
-  right:-70px;
-  bottom:-80px;
-  border-radius:50%;
-  background:radial-gradient(
-    circle,
-    rgba(255,196,40,.12),
-    transparent 68%
-  );
-}
-
-.watch-content{
+.ad-share-top{
   position:relative;
   z-index:2;
-}
-
-.watch-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.watch-top{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
 }
 
-.ad-logo{
-  width:52px;
-  height:52px;
+.ad-share-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.ad-share-icon{
+  width:50px;
+  height:50px;
+  flex:0 0 50px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:17px;
-  background:rgba(255,255,255,.06);
+  border:1px solid rgba(54,215,156,.20);
+  border-radius:16px;
+  background:rgba(54,215,156,.07);
+  color:#4ee0aa;
 }
 
-.ad-logo .icon{
-  width:30px;
-  height:30px;
-  color:#61e3ff;
+.ad-share-icon .icon{
+  width:23px;
+  height:23px;
 }
 
-.watch-title strong{
+.ad-share-title strong{
   display:block;
-  font-size:17px;
+  font-size:16px;
   font-weight:900;
-  background:linear-gradient(90deg,#fff,#68e4ff,#a98aff);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
 }
 
-.watch-title small{
+.ad-share-title small{
   display:block;
   margin-top:4px;
-  color:#91a0bc;
+  color:#8293a8;
   font-size:8px;
 }
 
-.ad-badge{
+.ad-share-badge{
   padding:6px 9px;
-  border:1px solid rgba(255,197,45,.20);
+  border:1px solid rgba(54,215,156,.18);
   border-radius:999px;
-  background:rgba(255,197,45,.05);
-  color:#ffd35a;
+  background:rgba(54,215,156,.05);
+  color:#62e4b0;
   font-size:7px;
   font-weight:900;
+  white-space:nowrap;
 }
 
-.watch-description{
+.ad-share-description{
+  position:relative;
+  z-index:2;
   margin-top:14px;
-  color:#91a0bc;
-  font-size:10px;
+  color:#8797ad;
+  font-size:9px;
   line-height:1.6;
 }
 
-.rewards-callout{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  margin-top:12px;
-  padding:9px 11px;
-  border:1px solid rgba(255,197,45,.12);
-  border-radius:12px;
-  background:rgba(255,197,45,.04);
-  font-size:8px;
-  font-weight:850;
+.ad-share-stats{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:13px;
 }
 
-.rewards-callout strong{
-  color:#ffd04a;
+.ad-share-stat{
+  padding:11px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
 }
 
-.watch-bottom{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:16px;
-}
-
-.watch-reward{
-  background:linear-gradient(90deg,#5ee7ff,#fff,#ffc52d);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  font-size:21px;
+.ad-share-stat span{
+  display:block;
+  color:#62718b;
+  font-size:7px;
   font-weight:900;
 }
 
-.watch-reward small{
+.ad-share-stat strong{
   display:block;
-  margin-top:3px;
-  color:#6b7892;
-  font-size:7px;
+  margin-top:5px;
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
 }
 
-.watch-button{
+.ad-share-button{
   position:relative;
-  overflow:hidden;
-  min-width:128px;
-  min-height:46px;
+  z-index:2;
+  width:100%;
+  min-height:44px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:7px;
-  padding:0 17px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#0bc7ee,#416dff,#6848e8);
-  box-shadow:0 9px 24px rgba(42,108,255,.22);
-  font-size:10px;
+  gap:8px;
+  margin-top:12px;
+  border-radius:13px;
+  background:
+    linear-gradient(
+      135deg,
+      #18cfa0,
+      #18bde0,
+      #5368ff
+    );
+  box-shadow:
+    0 10px 27px rgba(30,185,220,.18);
+  font-size:9px;
   font-weight:900;
   transition:
-    transform .18s cubic-bezier(.22,.61,.36,1),
+    transform .18s ease,
     filter .2s ease,
     box-shadow .2s ease;
 }
 
-.watch-button:hover{
-  filter:brightness(1.08);
-  box-shadow:0 12px 30px rgba(42,108,255,.30);
+.ad-share-button:hover{
+  filter:brightness(1.07);
+  box-shadow:
+    0 13px 31px rgba(30,185,220,.25);
 }
 
-.watch-button:active{
-  transform:scale(.955) translateY(1px);
-  filter:brightness(.92);
-  box-shadow:0 5px 14px rgba(42,108,255,.18);
+.ad-share-button:active{
+  transform:scale(.96);
 }
 
-.watch-button .icon{
-  width:14px;
-  height:14px;
-  fill:currentColor;
-  stroke:none;
+.ad-share-button .icon{
+  width:15px;
+  height:15px;
+}
+
+.ad-share-note{
+  position:relative;
+  z-index:2;
+  margin-top:9px;
+  color:#5f7188;
+  font-size:7px;
+  line-height:1.5;
+  text-align:center;
 }
 
 /* =========================================================
@@ -984,7 +997,6 @@ a,
   border-color:rgba(255,255,255,.10);
   box-shadow:0 13px 34px rgba(0,0,0,.20);
 }
-
 .youtube-card:active{
   transform:scale(.985);
 }
@@ -1693,35 +1705,25 @@ a,
     min-height:99px;
   }
 
-  .watch-bottom{
-    align-items:flex-end;
-  }
-
-  .watch-button{
-    min-width:120px;
-    padding-left:13px;
-    padding-right:13px;
-  }
-
 }
 
 @media(max-width:360px){
 
-  .watch-bottom{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .watch-button{
-    width:100%;
-  }
-
-  .ad-badge{
+  .ad-badge,
+  .ad-share-badge{
     font-size:6px;
   }
 
   .company-meta{
     grid-template-columns:1fr;
+  }
+
+  .ad-share-top{
+    align-items:flex-start;
+  }
+
+  .ad-share-badge{
+    margin-top:2px;
   }
 
 }
@@ -1854,10 +1856,6 @@ a,
 
 <div class="app">
 
-<!-- =======================================================
-     TOP BAR
-======================================================= -->
-
 <header class="topbar">
 
 <button
@@ -1925,10 +1923,6 @@ a,
 
 <main class="home">
 
-<!-- =======================================================
-     WELCOME
-======================================================= -->
-
 <section class="welcome">
 
   <div class="welcome-row">
@@ -1953,10 +1947,6 @@ a,
 
 </section>
 
-
-<!-- =======================================================
-     BALANCE
-======================================================= -->
 
 <section class="balance-card">
 
@@ -2006,8 +1996,7 @@ a,
       type="button"
     >
       <svg class="icon">
-        <use href="#i-task"></use>
-      </svg>
+        <use href="#i-task"></use>      </svg>
       Tasks
     </button>
 
@@ -2015,10 +2004,6 @@ a,
 
 </section>
 
-
-<!-- =======================================================
-     STATS
-======================================================= -->
 
 <section class="stats-grid">
 
@@ -2057,7 +2042,7 @@ a,
 
 
 <!-- =======================================================
-     COMPANY JOBS / PROJECTS
+     COMPANY JOBS
 ======================================================= -->
 
 <section class="company-card">
@@ -2151,94 +2136,97 @@ a,
 
 
 <!-- =======================================================
-     WATCH & EARN
+     AD REVENUE SHARE
 ======================================================= -->
 
-<section class="watch-card">
+<section class="ad-share-card">
 
-<div class="watch-content">
+  <div class="ad-share-top">
 
-  <div class="watch-top">
+    <div class="ad-share-left">
 
-    <div class="watch-left">
-
-      <div class="ad-logo">
+      <div class="ad-share-icon">
 
         <svg class="icon">
-          <use href="#i-play"></use>
+          <use href="#i-chart"></use>
         </svg>
 
       </div>
 
-
-      <div class="watch-title">
+      <div class="ad-share-title">
 
         <strong>
-          Watch &amp; Earn
+          Ad Revenue Share
         </strong>
 
         <small>
-          Complete ads • Unlock rewards
+          Verified ads • Share eligible revenue
         </small>
 
       </div>
 
     </div>
 
-
-    <span class="ad-badge">
-      REWARD EVENT
+    <span class="ad-share-badge">
+      50% USER SHARE
     </span>
 
   </div>
 
 
-  <p class="watch-description">
-    Watch eligible rewarded advertisements and build your monthly progress toward the TaskEarn Mystery Box.
+  <p class="ad-share-description">
+    Watch eligible rewarded advertisements. Only verified ad events are counted in this section.
   </p>
 
 
-  <div class="rewards-callout">
+  <div class="ad-share-stats">
 
-    <strong>WATCH</strong>
-    <span>•</span>
-    <span>COMPLETE</span>
-    <span>•</span>
-    <strong>WIN BIG</strong>
+    <div class="ad-share-stat">
 
-  </div>
+      <span>
+        YOUR EARNINGS
+      </span>
 
-
-  <div class="watch-bottom">
-
-    <div class="watch-reward">
-
-      ₹50 — ₹10,000
-
-      <small>
-        Possible monthly reward range
-      </small>
+      <strong id="homeAdShareEarning">
+        ₹0.00
+      </strong>
 
     </div>
 
 
-    <button
-      class="watch-button"
-      id="watchAdButton"
-      type="button"
-    >
+    <div class="ad-share-stat">
 
-      <svg class="icon">
-        <use href="#i-play"></use>
-      </svg>
+      <span>
+        ADS COMPLETED
+      </span>
 
-      Watch &amp; Win
+      <strong id="homeAdShareAds">
+        0
+      </strong>
 
-    </button>
+    </div>
 
   </div>
 
-</div>
+
+  <button
+    class="ad-share-button"
+    id="adRevenueShareButton"
+    type="button"
+  >
+
+    Enter Ad Revenue Share
+
+    <svg class="icon">
+      <use href="#i-arrow"></use>
+    </svg>
+
+  </button>
+
+
+  <div class="ad-share-note">
+    Rewards are credited only after eligible ad activity is verified.
+  </div>
 
 </section>
 
@@ -2696,7 +2684,6 @@ a,
 
 /* =========================================================
    TASK EARN CONFIG
-   EXACT SAME CONNECTION
 ========================================================= */
 
 const SUPABASE_URL =
@@ -2704,7 +2691,6 @@ const SUPABASE_URL =
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
-
 
 const OWNER_UID =
   "f43aee2c-bb9f-4342-9a86-59c1a48c6692";
@@ -2751,11 +2737,11 @@ const ROUTES = {
   notifications:
     "notification.html",
 
-  rewards:
-    "rewards.html",
-
   earnings:
-    "earnings.html"
+    "earnings.html",
+
+  adRevenueShare:
+    "ad-revenue-share.html"
 
 };
 
@@ -3010,7 +2996,6 @@ async function setupOwnerEarnings(){
     document.getElementById(
       "ownerEarningsButton"
     );
-
   if(!wrap || !button){
     return;
   }
@@ -3065,6 +3050,175 @@ async function setupOwnerEarnings(){
 
     wrap.style.display =
       "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   AD REVENUE SHARE HOME STATS
+   IMPORTANT:
+   ONLY VERIFIED SERVER-SIDE EVENTS ARE READ.
+   THIS DOES NOT CREDIT WALLET.
+========================================================= */
+
+async function loadAdRevenueShareHomeStats(userId){
+
+  const earningElement =
+    document.getElementById(
+      "homeAdShareEarning"
+    );
+
+  const adsElement =
+    document.getElementById(
+      "homeAdShareAds"
+    );
+
+  if(!earningElement || !adsElement){
+    return;
+  }
+
+  earningElement.textContent =
+    "₹0.00";
+
+  adsElement.textContent =
+    "0";
+
+
+  if(!userId){
+    return;
+  }
+
+
+  try{
+
+    /*
+      Preferred method:
+      secure RPC maintained by Supabase.
+
+      This prevents the frontend from needing
+      to download the entire revenue ledger.
+    */
+
+    const rpcResult =
+      await supabaseClient.rpc(
+        "get_ad_revenue_summary",
+        {
+          p_user_id:userId
+        }
+      );
+
+
+    if(
+      !rpcResult.error &&
+      rpcResult.data
+    ){
+
+      const row =
+        Array.isArray(rpcResult.data)
+          ? rpcResult.data[0]
+          : rpcResult.data;
+
+      const userShare =
+        Number(
+          row?.total_user_share || 0
+        );
+
+      const adsCompleted =
+        Number(
+          row?.ads_completed || 0
+        );
+
+      earningElement.textContent =
+        "₹" +
+        userShare.toFixed(2);
+
+      adsElement.textContent =
+        String(
+          Number.isFinite(adsCompleted)
+            ? adsCompleted
+            : 0
+        );
+
+      return;
+
+    }
+
+
+    /*
+      Fallback:
+      read verified events directly.
+
+      This is still separated from the normal
+      wallet/task system.
+    */
+
+    const result =
+      await supabaseClient
+        .from("ad_revenue_events")
+        .select(
+          "gross_revenue,user_share,status"
+        )
+        .eq(
+          "user_id",
+          userId
+        )
+        .eq(
+          "status",
+          "verified"
+        )
+        .limit(1000);
+
+
+    if(result.error){
+
+      console.warn(
+        "Ad share fallback error:",
+        result.error
+      );
+
+      return;
+
+    }
+
+
+    let totalUserShare =
+      0;
+
+    let adsCompleted =
+      0;
+
+
+    for(
+      const row of
+      result.data || []
+    ){
+
+      totalUserShare +=
+        Number(
+          row.user_share || 0
+        );
+
+      adsCompleted++;
+
+    }
+
+
+    earningElement.textContent =
+      "₹" +
+      totalUserShare.toFixed(2);
+
+    adsElement.textContent =
+      String(adsCompleted);
+
+
+  }catch(error){
+
+    console.error(
+      "Ad Revenue Share stats error:",
+      error
+    );
 
   }
 
@@ -3162,88 +3316,31 @@ async function loadHome(){
 
   try{
 
-    /*
-     * CANONICAL WALLET SOURCE:
-     * wallet_balances is the read-only balance view.
-     * The wallet ledger is wallet_transactions.
-     */
-
     const walletResult =
       await supabaseClient
-        .from("wallet_balances")
-        .select("*")
+        .from("user_wallets")
+        .select(
+          "balance,total_earned"
+        )
         .eq(
           "user_id",
           user.id
         )
         .maybeSingle();
 
-
-    if(walletResult.error){
-
-      console.error(
-        "Wallet balance view error:",
-        walletResult.error
-      );
-
-    }else{
+    if(!walletResult.error){
 
       const balance =
         Number(
-          walletResult.data?.balance ??
-          walletResult.data?.wallet_balance ??
+          walletResult.data?.balance ||
           0
         );
 
-      /*
-       * Calculate total earned from the canonical ledger.
-       * This avoids depending on the removed legacy
-       * user_wallets table.
-       */
-
-      let totalEarned = Number(
-        walletResult.data?.total_earned ??
-        walletResult.data?.earned ??
-        0
-      );
-
-      const ledgerResult =
-        await supabaseClient
-          .from("wallet_transactions")
-          .select("amount")
-          .eq(
-            "user_id",
-            user.id
-          );
-
-      if(
-        !ledgerResult.error &&
-        Array.isArray(ledgerResult.data)
-      ){
-
-        totalEarned = 0;
-
-        ledgerResult.data.forEach(
-          row => {
-
-            const amount =
-              Number(
-                row?.amount || 0
-              );
-
-            if(
-              Number.isFinite(amount) &&
-              amount > 0
-            ){
-
-              totalEarned += amount;
-
-            }
-
-          }
+      const totalEarned =
+        Number(
+          walletResult.data?.total_earned ||
+          0
         );
-
-      }
 
       const balanceElement =
         document.getElementById(
@@ -3328,6 +3425,15 @@ async function loadHome(){
     );
 
   }
+
+
+  /* =======================================================
+     AD REVENUE SHARE STATS
+  ======================================================= */
+
+  await loadAdRevenueShareHomeStats(
+    user.id
+  );
 
 
   /* REFERRAL */
@@ -3554,13 +3660,13 @@ function bindButton(
 
   element.addEventListener(
     "click",
-    function(event){
+    async function(event){
 
       event.preventDefault();
 
       try{
 
-        callback(event);
+        await callback(event);
 
       }catch(error){
 
@@ -3628,13 +3734,16 @@ function setupButtons(){
   );
 
 
+  /* =======================================================
+     NEW AD REVENUE SHARE BUTTON
+  ======================================================= */
+
   bindButton(
-    "watchAdButton",
+    "adRevenueShareButton",
     ()=>{
-      goTo("rewards");
+      goTo("adRevenueShare");
     }
   );
-
 
   bindButton(
     "subscribeButton",
@@ -3806,7 +3915,10 @@ function setupButtons(){
     "normalShare",
     async ()=>{
 
-      if(!window.ref.link){
+      const referralUrl =
+        window.ref.link;
+
+      if(!referralUrl){
 
         toast(
           "Referral link is loading..."
@@ -3816,6 +3928,48 @@ function setupButtons(){
 
       }
 
+      const shareTitle =
+        "TaskEarn";
+
+      const shareText =
+        "Join TaskEarn and earn rewards.";
+
+      /*
+       * Android native bridge:
+       * Opens Android's system chooser so all installed,
+       * share-capable apps can appear (WhatsApp, Instagram,
+       * Telegram, Gmail, etc.). It does NOT force WhatsApp.
+       */
+      try{
+
+        if(
+          window.Android &&
+          typeof window.Android.shareText ===
+            "function"
+        ){
+
+          window.Android.shareText(
+            shareText +
+            "\n" +
+            referralUrl
+          );
+
+          return;
+
+        }
+
+      }catch(error){
+
+        console.warn(
+          "Android share bridge failed:",
+          error
+        );
+
+      }
+
+      /*
+       * Standard Web Share API fallback.
+       */
       try{
 
         if(
@@ -3827,20 +3981,19 @@ function setupButtons(){
           await navigator.share({
 
             title:
-              "TaskEarn",
+              shareTitle,
 
             text:
-              "Join TaskEarn and earn rewards.",
+              shareText,
 
             url:
-              window.ref.link
+              referralUrl
 
           });
 
           return;
 
         }
-
       }catch(error){
 
         if(
@@ -3852,28 +4005,75 @@ function setupButtons(){
 
         }
 
+        console.warn(
+          "Web Share API failed:",
+          error
+        );
+
+      }
+
+      /*
+       * Android Intent fallback for older WebViews.
+       * This still launches the OS share chooser.
+       */
+      try{
+
+        const encodedText =
+          encodeURIComponent(
+            shareText +
+            "\n" +
+            referralUrl
+          );
+
+        const encodedTitle =
+          encodeURIComponent(
+            shareTitle
+          );
+
+        window.location.href =
+          "intent://share#Intent;" +
+          "action=android.intent.action.SEND;" +
+          "type=text/plain;" +
+          "S.android.intent.extra.TEXT=" +
+          encodedText +
+          ";" +
+          "S.android.intent.extra.TITLE=" +
+          encodedTitle +
+          ";" +
+          "end";
+
+        return;
+
+      }catch(error){
+
+        console.warn(
+          "Android intent share failed:",
+          error
+        );
+
       }
 
       const copied =
         await copyText(
-          window.ref.link
+          referralUrl
         );
 
       if(copied){
 
         toast(
-          "Referral link copied. Share it anywhere."
+          "Share sheet unavailable. Referral link copied."
         );
 
       }else{
 
         toast(
-          "Sharing is not available."
+          "Sharing is not available on this device."
         );
 
       }
 
     }
+
   );
 
 }
