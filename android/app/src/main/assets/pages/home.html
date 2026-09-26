@@ -94,7 +94,6 @@ a,
 .watch-card,
 .referral-card,
 .company-card,
-.ad-share-card,
 .nav-item{
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
@@ -747,239 +746,7 @@ a,
 }
 
 /* =========================================================
-   AD REVENUE SHARE
-   SEPARATE FROM WATCH & EARN
-========================================================= */
-
-.ad-share-card{
-  position:relative;
-  overflow:hidden;
-  margin-top:13px;
-  padding:18px;
-  border:1px solid rgba(54,215,156,.20);
-  border-radius:24px;
-  background:
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(54,215,156,.13),
-      transparent 31%
-    ),
-    radial-gradient(
-      circle at 0% 100%,
-      rgba(32,212,255,.08),
-      transparent 34%
-    ),
-    linear-gradient(
-      145deg,
-      rgba(15,40,43,.98),
-      rgba(9,18,32,.98)
-    );
-  box-shadow:
-    0 20px 55px rgba(0,0,0,.30),
-    inset 0 1px 0 rgba(255,255,255,.06);
-  transition:
-    transform .22s cubic-bezier(.22,.61,.36,1),
-    border-color .22s ease,
-    box-shadow .22s ease;
-}
-
-.ad-share-card::before{
-  content:"";
-  position:absolute;
-  width:190px;
-  height:190px;
-  right:-105px;
-  top:-120px;
-  border-radius:50%;
-  background:radial-gradient(
-    circle,
-    rgba(54,215,156,.11),
-    transparent 68%
-  );
-  pointer-events:none;
-}
-
-.ad-share-card::after{
-  content:"";
-  position:absolute;
-  width:140px;
-  height:140px;
-  left:-85px;
-  bottom:-95px;
-  border-radius:50%;
-  background:radial-gradient(
-    circle,
-    rgba(32,212,255,.08),
-    transparent 68%
-  );
-  pointer-events:none;
-}
-
-.ad-share-card:hover{
-  transform:translateY(-2px);
-  border-color:rgba(54,215,156,.34);
-  box-shadow:
-    0 24px 60px rgba(0,0,0,.34),
-    0 0 28px rgba(54,215,156,.055);
-}
-
-.ad-share-card:active{
-  transform:scale(.992);
-}
-
-.ad-share-top{
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.ad-share-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.ad-share-icon{
-  width:50px;
-  height:50px;
-  flex:0 0 50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid rgba(54,215,156,.20);
-  border-radius:16px;
-  background:rgba(54,215,156,.07);
-  color:#4ee0aa;
-}
-
-.ad-share-icon .icon{
-  width:23px;
-  height:23px;
-}
-
-.ad-share-title strong{
-  display:block;
-  font-size:16px;
-  font-weight:900;
-}
-
-.ad-share-title small{
-  display:block;
-  margin-top:4px;
-  color:#8293a8;
-  font-size:8px;
-}
-
-.ad-share-badge{
-  padding:6px 9px;
-  border:1px solid rgba(54,215,156,.18);
-  border-radius:999px;
-  background:rgba(54,215,156,.05);
-  color:#62e4b0;
-  font-size:7px;
-  font-weight:900;
-  white-space:nowrap;
-}
-
-.ad-share-description{
-  position:relative;
-  z-index:2;
-  margin-top:14px;
-  color:#8797ad;
-  font-size:9px;
-  line-height:1.6;
-}
-
-.ad-share-stats{
-  position:relative;
-  z-index:2;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:13px;
-}
-
-.ad-share-stat{
-  padding:11px;
-  border:1px solid rgba(255,255,255,.055);
-  border-radius:13px;
-  background:rgba(255,255,255,.025);
-}
-
-.ad-share-stat span{
-  display:block;
-  color:#62718b;
-  font-size:7px;
-  font-weight:900;
-}
-
-.ad-share-stat strong{
-  display:block;
-  margin-top:5px;
-  color:#fff;
-  font-size:15px;
-  font-weight:900;
-}
-
-.ad-share-button{
-  position:relative;
-  z-index:2;
-  width:100%;
-  min-height:44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  margin-top:12px;
-  border-radius:13px;
-  background:
-    linear-gradient(
-      135deg,
-      #18cfa0,
-      #18bde0,
-      #5368ff
-    );
-  box-shadow:
-    0 10px 27px rgba(30,185,220,.18);
-  font-size:9px;
-  font-weight:900;
-  transition:
-    transform .18s ease,
-    filter .2s ease,
-    box-shadow .2s ease;
-}
-
-.ad-share-button:hover{
-  filter:brightness(1.07);
-  box-shadow:
-    0 13px 31px rgba(30,185,220,.25);
-}
-
-.ad-share-button:active{
-  transform:scale(.96);
-}
-
-.ad-share-button .icon{
-  width:15px;
-  height:15px;
-}
-
-.ad-share-note{
-  position:relative;
-  z-index:2;
-  margin-top:9px;
-  color:#5f7188;
-  font-size:7px;
-  line-height:1.5;
-  text-align:center;
-}
-
-/* =========================================================
    WATCH CARD
-   EXISTING WATCH & EARN — UNCHANGED
 ========================================================= */
 
 .watch-card{
@@ -1949,21 +1716,12 @@ a,
     width:100%;
   }
 
-  .ad-badge,
-  .ad-share-badge{
+  .ad-badge{
     font-size:6px;
   }
 
   .company-meta{
     grid-template-columns:1fr;
-  }
-
-  .ad-share-top{
-    align-items:flex-start;
-  }
-
-  .ad-share-badge{
-    margin-top:2px;
   }
 
 }
@@ -2096,6 +1854,10 @@ a,
 
 <div class="app">
 
+<!-- =======================================================
+     TOP BAR
+======================================================= -->
+
 <header class="topbar">
 
 <button
@@ -2163,6 +1925,10 @@ a,
 
 <main class="home">
 
+<!-- =======================================================
+     WELCOME
+======================================================= -->
+
 <section class="welcome">
 
   <div class="welcome-row">
@@ -2187,6 +1953,10 @@ a,
 
 </section>
 
+
+<!-- =======================================================
+     BALANCE
+======================================================= -->
 
 <section class="balance-card">
 
@@ -2246,6 +2016,10 @@ a,
 </section>
 
 
+<!-- =======================================================
+     STATS
+======================================================= -->
+
 <section class="stats-grid">
 
   <div class="stat-card">
@@ -2283,7 +2057,7 @@ a,
 
 
 <!-- =======================================================
-     COMPANY JOBS
+     COMPANY JOBS / PROJECTS
 ======================================================= -->
 
 <section class="company-card">
@@ -2377,104 +2151,7 @@ a,
 
 
 <!-- =======================================================
-     AD REVENUE SHARE
-======================================================= -->
-
-<section class="ad-share-card">
-
-  <div class="ad-share-top">
-
-    <div class="ad-share-left">
-
-      <div class="ad-share-icon">
-
-        <svg class="icon">
-          <use href="#i-chart"></use>
-        </svg>
-
-      </div>
-
-      <div class="ad-share-title">
-
-        <strong>
-          Ad Revenue Share
-        </strong>
-
-        <small>
-          Verified ads • Share eligible revenue
-        </small>
-
-      </div>
-
-    </div>
-
-    <span class="ad-share-badge">
-      75% USER SHARE
-    </span>
-
-  </div>
-
-
-  <p class="ad-share-description">
-    Watch eligible rewarded advertisements. Only verified ad events are counted in this section. Ad Revenue Share is separate from Watch &amp; Earn.
-  </p>
-
-
-  <div class="ad-share-stats">
-
-    <div class="ad-share-stat">
-
-      <span>
-        YOUR EARNINGS
-      </span>
-
-      <strong id="homeAdShareEarning">
-        ₹0.00
-      </strong>
-
-    </div>
-
-
-    <div class="ad-share-stat">
-
-      <span>
-        ADS COMPLETED
-      </span>
-
-      <strong id="homeAdShareAds">
-        0
-      </strong>
-
-    </div>
-
-  </div>
-
-
-  <button
-    class="ad-share-button"
-    id="adRevenueShareButton"
-    type="button"
-  >
-
-    Enter Ad Revenue Share
-
-    <svg class="icon">
-      <use href="#i-arrow"></use>
-    </svg>
-
-  </button>
-
-
-  <div class="ad-share-note">
-    Rewards are credited only after eligible ad activity is verified.
-  </div>
-
-</section>
-
-
-<!-- =======================================================
      WATCH & EARN
-     EXISTING SECTION
 ======================================================= -->
 
 <section class="watch-card">
@@ -3019,6 +2696,7 @@ a,
 
 /* =========================================================
    TASK EARN CONFIG
+   EXACT SAME CONNECTION
 ========================================================= */
 
 const SUPABASE_URL =
@@ -3026,6 +2704,7 @@ const SUPABASE_URL =
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_o0R1owOtbfN-YaOsR_mzRg_lgbbqbvV";
+
 
 const OWNER_UID =
   "f43aee2c-bb9f-4342-9a86-59c1a48c6692";
@@ -3076,10 +2755,7 @@ const ROUTES = {
     "rewards.html",
 
   earnings:
-    "earnings.html",
-
-  adRevenueShare:
-    "ad-revenue-share.html"
+    "earnings.html"
 
 };
 
@@ -3396,175 +3072,6 @@ async function setupOwnerEarnings(){
 
 
 /* =========================================================
-   AD REVENUE SHARE HOME STATS
-   IMPORTANT:
-   ONLY VERIFIED SERVER-SIDE EVENTS ARE READ.
-   THIS DOES NOT CREDIT WALLET.
-========================================================= */
-
-async function loadAdRevenueShareHomeStats(userId){
-
-  const earningElement =
-    document.getElementById(
-      "homeAdShareEarning"
-    );
-
-  const adsElement =
-    document.getElementById(
-      "homeAdShareAds"
-    );
-
-  if(!earningElement || !adsElement){
-    return;
-  }
-
-  earningElement.textContent =
-    "₹0.00";
-
-  adsElement.textContent =
-    "0";
-
-
-  if(!userId){
-    return;
-  }
-
-
-  try{
-
-    /*
-      Preferred method:
-      secure RPC maintained by Supabase.
-
-      This prevents the frontend from needing
-      to download the entire revenue ledger.
-    */
-
-    const rpcResult =
-      await supabaseClient.rpc(
-        "get_ad_revenue_summary",
-        {
-          p_user_id:userId
-        }
-      );
-
-
-    if(
-      !rpcResult.error &&
-      rpcResult.data
-    ){
-
-      const row =
-        Array.isArray(rpcResult.data)
-          ? rpcResult.data[0]
-          : rpcResult.data;
-
-      const userShare =
-        Number(
-          row?.total_user_share || 0
-        );
-
-      const adsCompleted =
-        Number(
-          row?.ads_completed || 0
-        );
-
-      earningElement.textContent =
-        "₹" +
-        userShare.toFixed(2);
-
-      adsElement.textContent =
-        String(
-          Number.isFinite(adsCompleted)
-            ? adsCompleted
-            : 0
-        );
-
-      return;
-
-    }
-
-
-    /*
-      Fallback:
-      read verified events directly.
-
-      This is still separated from the normal
-      wallet/task system.
-    */
-
-    const result =
-      await supabaseClient
-        .from("ad_revenue_events")
-        .select(
-          "gross_revenue,user_share,status"
-        )
-        .eq(
-          "user_id",
-          userId
-        )
-        .eq(
-          "status",
-          "verified"
-        )
-        .limit(1000);
-
-
-    if(result.error){
-
-      console.warn(
-        "Ad share fallback error:",
-        result.error
-      );
-
-      return;
-
-    }
-
-
-    let totalUserShare =
-      0;
-
-    let adsCompleted =
-      0;
-
-
-    for(
-      const row of
-      result.data || []
-    ){
-
-      totalUserShare +=
-        Number(
-          row.user_share || 0
-        );
-
-      adsCompleted++;
-
-    }
-
-
-    earningElement.textContent =
-      "₹" +
-      totalUserShare.toFixed(2);
-
-    adsElement.textContent =
-      String(adsCompleted);
-
-
-  }catch(error){
-
-    console.error(
-      "Ad Revenue Share stats error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
    LOAD HOME
 ========================================================= */
 
@@ -3823,15 +3330,6 @@ async function loadHome(){
   }
 
 
-  /* =======================================================
-     AD REVENUE SHARE STATS
-  ======================================================= */
-
-  await loadAdRevenueShareHomeStats(
-    user.id
-  );
-
-
   /* REFERRAL */
 
   const code =
@@ -4056,13 +3554,13 @@ function bindButton(
 
   element.addEventListener(
     "click",
-    async function(event){
+    function(event){
 
       event.preventDefault();
 
       try{
 
-        await callback(event);
+        callback(event);
 
       }catch(error){
 
@@ -4129,23 +3627,6 @@ function setupButtons(){
     }
   );
 
-
-  /* =======================================================
-     NEW AD REVENUE SHARE BUTTON
-  ======================================================= */
-
-  bindButton(
-    "adRevenueShareButton",
-    ()=>{
-      goTo("adRevenueShare");
-    }
-  );
-
-
-  /* =======================================================
-     EXISTING WATCH & EARN
-     NOT CONNECTED TO AD REVENUE SHARE
-  ======================================================= */
 
   bindButton(
     "watchAdButton",
