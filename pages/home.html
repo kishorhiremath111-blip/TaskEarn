@@ -3316,66 +3316,66 @@ async function loadHome(){
 
   try{
 
+    /* Canonical read-only balance view. */
     const walletResult =
       await supabaseClient
-        .from("user_wallets")
-        .select(
-          "balance,total_earned"
-        )
-        .eq(
-          "user_id",
-          user.id
-        )
+        .from("wallet_balances")
+        .select("*")
+        .eq("user_id", user.id)
         .maybeSingle();
 
     if(!walletResult.error){
 
-      const balance =
-        Number(
-          walletResult.data?.balance ||
-          0
-        );
+      const balance = Number(
+        walletResult.data?.balance ??
+        walletResult.data?.wallet_balance ??
+        0
+      );
 
-      const totalEarned =
-        Number(
-          walletResult.data?.total_earned ||
-          0
-        );
+      let totalEarned = Number(
+        walletResult.data?.total_earned ??
+        walletResult.data?.earned ??
+        0
+      );
+
+      /* Canonical ledger: positive wallet transactions are earnings. */
+      const ledgerResult =
+        await supabaseClient
+          .from("wallet_transactions")
+          .select("amount")
+          .eq("user_id", user.id);
+
+      if(!ledgerResult.error && Array.isArray(ledgerResult.data)){
+
+        totalEarned = 0;
+
+        ledgerResult.data.forEach(row=>{
+          const amount = Number(row?.amount || 0);
+          if(Number.isFinite(amount) && amount > 0){
+            totalEarned += amount;
+          }
+        });
+      }
 
       const balanceElement =
-        document.getElementById(
-          "balanceAmount"
-        );
+        document.getElementById("balanceAmount");
 
       const totalElement =
-        document.getElementById(
-          "totalEarned"
-        );
+        document.getElementById("totalEarned");
 
       if(balanceElement){
-
-        balanceElement.textContent =
-          "₹" +
-          balance.toFixed(2);
-
+        balanceElement.textContent = "₹" + balance.toFixed(2);
       }
 
       if(totalElement){
-
-        totalElement.textContent =
-          "₹" +
-          totalEarned.toFixed(2);
-
+        totalElement.textContent = "₹" + totalEarned.toFixed(2);
       }
 
     }
 
   }catch(error){
 
-    console.error(
-      "Wallet loading error:",
-      error
-    );
+    console.error("Wallet loading error:", error);
 
   }
 
