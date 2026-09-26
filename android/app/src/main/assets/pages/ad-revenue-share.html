@@ -1845,44 +1845,7 @@ button:disabled{
 
 }
 
-
-<style>
-:root{--bg:#080a1b;--card:#101327;--blue:#718cff;--purple:#936fff;--green:#39dfad;--yellow:#ffd05a;--red:#ff7188;--text:#f4f6ff;--muted:#858eaa;--line:rgba(255,255,255,.07)}
-html,body{background:#080a1b!important;color:var(--text)!important}
-body{overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(circle at 8% 0%,rgba(83,105,255,.20),transparent 30%),radial-gradient(circle at 100% 25%,rgba(147,111,255,.16),transparent 32%),linear-gradient(180deg,#090b20,#070918 75%,#080a1b)}
-body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:42px 42px}
-.page{max-width:760px!important;padding:0 12px 75px!important}
-.topbar{position:sticky!important;top:0;z-index:50;min-height:68px!important;margin:0 -12px!important;padding:9px 14px!important;background:rgba(8,10,27,.90)!important;backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.065)!important}
-.back-btn{width:44px!important;height:44px!important;border-radius:14px!important;background:linear-gradient(145deg,#181c38,#0e1126)!important;border-color:rgba(255,255,255,.10)!important}
-.top-title strong{font-size:18px!important;letter-spacing:-.45px}.top-title span{color:#7f89a5!important;letter-spacing:1.5px!important}
-.hero{margin-top:13px!important;padding:22px 20px 20px!important;border-radius:24px!important;background:radial-gradient(circle at 100% 0%,rgba(113,140,255,.19),transparent 42%),radial-gradient(circle at 0% 100%,rgba(147,111,255,.10),transparent 34%),linear-gradient(145deg,#191e40,#101326)!important;border:1px solid rgba(113,140,255,.18)!important;box-shadow:0 22px 55px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.035)!important}
-.hero-label{color:#a7b4ff!important;background:rgba(113,140,255,.09)!important;border-color:rgba(113,140,255,.14)!important}
-.hero h1{font-size:clamp(38px,10vw,66px)!important;line-height:.90!important;font-weight:1000!important;letter-spacing:-2.5px!important;text-transform:uppercase}
-.hero h1 span{display:block!important}.hero h1 span:first-child,.hero h1 span:nth-child(3){color:#f4f6ff!important}.hero h1 span:nth-child(2){color:var(--blue)!important}
-.hero p{color:#8b94ad!important;font-size:11px!important;line-height:1.7!important}
-.stats-grid{gap:10px!important;margin-top:12px!important}.stat-card{min-height:125px!important;padding:16px!important;border-radius:20px!important;background:linear-gradient(145deg,#151936,#0e1228)!important;border:1px solid rgba(255,255,255,.065)!important;box-shadow:0 10px 28px rgba(0,0,0,.12)!important}
-.stat-label{color:#68728c!important;letter-spacing:1px!important}.stat-value.green{color:var(--green)!important}.stat-value.blue{color:#9babff!important}.stat-value.yellow{color:var(--yellow)!important}.stat-sub{color:#707a94!important}
-.settlement-card,.notice-card,.month-card,.request-card,.payment-timeline-card{border-radius:20px!important}
-.settlement-card{margin-top:12px!important;padding:18px!important;background:linear-gradient(145deg,#151936,#0e1228)!important;border-color:rgba(113,140,255,.12)!important}
-.settlement-icon{border-radius:13px!important;background:linear-gradient(145deg,#202958,#11162f)!important;color:#9cacff!important;border-color:rgba(113,140,255,.14)!important}
-.settlement-title strong{font-size:12px!important}.settlement-title span{color:#68728c!important}
-.settlement-status{border-radius:999px!important;background:rgba(255,208,90,.07)!important;border-color:rgba(255,208,90,.12)!important;color:#ffd36e!important}
-.settlement-date{font-size:18px!important}.settlement-date.empty{color:#75829a!important;font-size:11px!important}.settlement-note{color:#7d89a0!important;font-size:8px!important}
-.notice-card{margin-top:12px!important;padding:18px!important;background:radial-gradient(circle at 100% 0%,rgba(57,223,173,.08),transparent 35%),linear-gradient(145deg,#111b2b,#0d1424)!important;border-color:rgba(57,223,173,.12)!important}
-.notice-icon{color:#64e3b3!important;background:rgba(57,223,173,.06)!important;border-color:rgba(57,223,173,.12)!important;border-radius:13px!important}
-.notice-text,.notice-row p{color:#8996ab!important}.notice-row{border-radius:13px!important;background:rgba(255,255,255,.022)!important}.notice-number{border-radius:7px!important}
-.payment-timeline-card{background:radial-gradient(circle at 100% 0%,rgba(32,212,255,.08),transparent 34%),linear-gradient(145deg,#11182a,#0a1120)!important;border-color:rgba(32,212,255,.13)!important}
-.payment-step-icon{border-radius:10px!important}.payment-countdown{border-radius:13px!important}.payment-status-pill{border-radius:999px!important}
-.month-card{padding:18px!important;background:linear-gradient(145deg,#151936,#0d1127)!important;border-color:rgba(255,255,255,.065)!important}
-.month-card.collectible{background:radial-gradient(circle at 100% 0%,rgba(57,223,173,.08),transparent 35%),linear-gradient(145deg,#102120,#0b1420)!important;border-color:rgba(57,223,173,.16)!important}
-.month-card.carried{background:radial-gradient(circle at 100% 0%,rgba(255,208,90,.07),transparent 35%),linear-gradient(145deg,#211d16,#0b121f)!important;border-color:rgba(255,208,90,.15)!important}
-.month-card.current{background:radial-gradient(circle at 100% 0%,rgba(113,140,255,.09),transparent 35%),linear-gradient(145deg,#151936,#0d1127)!important;border-color:rgba(113,140,255,.15)!important}
-.month-pill{border-radius:999px!important}.collect-action{border-radius:14px!important;background:linear-gradient(135deg,#18cfa0,#19bddd,#566dff)!important}
-.request-card{background:radial-gradient(circle at 100% 0%,rgba(113,140,255,.10),transparent 38%),linear-gradient(145deg,#11182b,#0a1120)!important;border-color:rgba(113,140,255,.16)!important}
-.history-item{border-radius:16px!important;background:rgba(14,17,35,.92)!important;border-color:rgba(255,255,255,.05)!important}.history-icon{border-radius:11px!important}
-.footer-note{color:#4e5b72!important}.toast{border-radius:14px!important;background:rgba(12,15,34,.96)!important}
-</style></style>
+</style>
 </head>
 
 
