@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         // Google Mobile Ads. File access is not needed for those
         // pages, but WebView must keep normal JavaScript/DOM
         // execution enabled.
-        settings.setAllowFileAccess(false);
-        settings.setAllowContentAccess(false);
+        settings.setAllowFileAccess(true);
+        settings.setAllowContentAccess(true);
 
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
