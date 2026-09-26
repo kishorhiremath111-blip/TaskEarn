@@ -3886,6 +3886,30 @@ async function checkExistingSession(){
 
 
 /* =========================================================
+   STABLE PAGE START / NAVIGATION GUARD
+   Prevent duplicate startup navigation / reload loops.
+========================================================= */
+(function(){
+  let startupCompleted = false;
+  let navigationInProgress = false;
+
+  window.addEventListener('pageshow', function(){
+    navigationInProgress = false;
+  });
+
+  window.taskEarnSafeGoHome = function(){
+    if(navigationInProgress || !startupCompleted) return;
+    navigationInProgress = true;
+    window.location.replace(HOME_PAGE);
+  };
+
+  window.taskEarnMarkStartupCompleted = function(){
+    startupCompleted = true;
+  };
+})();
+
+
+/* =========================================================
    HOME
 ========================================================= */
 
@@ -3922,9 +3946,7 @@ function goToHome(){
         true;
 
 
-    window.location.replace(
-        HOME_PAGE
-    );
+    window.taskEarnSafeGoHome();
 
 }
 
@@ -4051,6 +4073,8 @@ async function start(){
 
     await
     checkExistingSession();
+
+    window.taskEarnMarkStartupCompleted();
 
 }
 
