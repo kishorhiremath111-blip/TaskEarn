@@ -3,12 +3,16 @@ package com.taskearn.app;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.net.Uri;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.webkit.WebViewAssetLoader;
 
 import com.google.android.gms.ads.MobileAds;
 
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private TaskEarnBridge bridge;
     private SharedPreferences runtimePrefs;
+    private WebViewAssetLoader assetLoader;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -80,8 +85,42 @@ public class MainActivity extends AppCompatActivity {
 
         WebView.setWebContentsDebuggingEnabled(false);
 
+        /*
+         * Use a stable HTTPS-like origin for packaged HTML assets.
+         * This keeps WebView DOM storage/localStorage shared across
+         * login.html -> home.html -> ad-revenue-share.html and avoids
+         * file:// asset routing problems.
+         */
+        assetLoader =
+                new WebViewAssetLoader.Builder()
+                        .addPathHandler(
+                                "/assets/",
+                                new WebViewAssetLoader.AssetsPathHandler(this)
+                        )
+                        .build();
+
         webView.setWebViewClient(
                 new WebViewClient() {
+
+                    @Override
+                    public WebResourceResponse shouldInterceptRequest(
+                            WebView view,
+                            WebResourceRequest request
+                    ) {
+                        return assetLoader.shouldInterceptRequest(
+                                request.getUrl()
+                        );
+                    }
+
+                    @Override
+                    public WebResourceResponse shouldInterceptRequest(
+                            WebView view,
+                            String url
+                    ) {
+                        return assetLoader.shouldInterceptRequest(
+                                Uri.parse(url)
+                        );
+                    }
 
                     @Override
                     public void onPageStarted(
@@ -147,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         webView.loadUrl(
-                "file:///android_asset/" + lastPage
+                "https://appassets.androidplatform.net/assets/" + lastPage
         );
     }
 
@@ -173,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        final String prefix = "file:///android_asset/";
+        final String prefix = "https://appassets.androidplatform.net/assets/";
         if (!url.startsWith(prefix)) {
             return;
         }
