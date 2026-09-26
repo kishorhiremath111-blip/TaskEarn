@@ -97,7 +97,7 @@ jobs:
           if 'from("projects")' not in web_projects:
               errors.append("Projects: canonical projects table wiring missing")
 
-          if 'from("tasks")' not in web_tasks:
+          if 'from("tasks")' not in web_tasks and "/rest/v1/tasks?" not in web_tasks:
               errors.append("Tasks: canonical tasks table wiring missing")
 
           if "STARTING_COMPLETIONS" in web_projects:
