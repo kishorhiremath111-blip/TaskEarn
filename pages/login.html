@@ -3812,101 +3812,34 @@ async function checkExistingSession(){
 
     try{
 
-        const {
-            data,
-            error
-        } =
-            await
-            supabaseClient.auth.getSession();
-
+        const { data, error } = await supabaseClient.auth.getSession();
 
         if(error){
-
-            console.warn(
-                error
-            );
-
+            console.warn(error);
             return;
-
         }
 
-
-        if(
-            data?.session
-        ){
-
-            const user =
-                data.session.user;
-
-
-            /*
-             * IMPORTANT:
-             *
-             * An existing Owner session does NOT
-             * automatically bypass fingerprint.
-             */
-
-            if(
-                user?.id === OWNER_UID
-            ){
-
-                await
-                supabaseClient.auth.signOut();
-
-
-                showMessage(
-                    "Owner account requires password and fingerprint verification.",
-                    "info"
-                );
-
-
-                return;
-
-            }
-
-
-            /*
-             * Normal users can continue.
-             */
-
-            goToHome();
-
+        if(!data?.session){
+            return;
         }
+
+        const user = data.session.user;
+
+        if(user?.id === OWNER_UID){
+            await supabaseClient.auth.signOut();
+            showMessage(
+                "Owner account requires password and fingerprint verification.",
+                "info"
+            );
+            return;
+        }
+
+        goToHome();
 
     }catch(error){
-
-        console.warn(
-            "Session check:",
-            error
-        );
-
+        console.warn("Session check:", error);
     }
-
 }
-
-
-/* =========================================================
-   STABLE PAGE START / NAVIGATION GUARD
-   Prevent duplicate startup navigation / reload loops.
-========================================================= */
-(function(){
-  let startupCompleted = false;
-  let navigationInProgress = false;
-
-  window.addEventListener('pageshow', function(){
-    navigationInProgress = false;
-  });
-
-  window.taskEarnSafeGoHome = function(){
-    if(navigationInProgress || !startupCompleted) return;
-    navigationInProgress = true;
-    window.location.replace(HOME_PAGE);
-  };
-
-  window.taskEarnMarkStartupCompleted = function(){
-    startupCompleted = true;
-  };
-})();
 
 
 /* =========================================================
@@ -3946,7 +3879,15 @@ function goToHome(){
         true;
 
 
-    window.taskEarnSafeGoHome();
+    if(redirecting){
+        return;
+    }
+
+    redirecting = true;
+
+    window.location.replace(
+        HOME_PAGE
+    );
 
 }
 
