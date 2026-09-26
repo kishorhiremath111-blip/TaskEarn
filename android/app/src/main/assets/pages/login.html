@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+
 
 <meta charset="UTF-8">
 
@@ -12,7 +12,7 @@
 
 <meta
     name="theme-color"
-    content="#050711"
+    content="#000000"
 >
 
 <meta
@@ -22,11 +22,14 @@
 
 <title>TaskEarn — Login</title>
 
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 /* =========================================================
    TASKEARN PREMIUM LOGIN
+   EXISTING DESIGN
 ========================================================= */
 
 *{
@@ -44,9 +47,7 @@ body{
 }
 
 body{
-
     min-height:100vh;
-
     overflow-x:hidden;
 
     font-family:
@@ -58,7 +59,6 @@ body{
     color:#ffffff;
 
     background:
-
         radial-gradient(
             circle at 5% -5%,
             rgba(8,205,255,.18),
@@ -86,44 +86,28 @@ body{
 }
 
 body::before{
-
     content:"";
-
     position:fixed;
-
     width:360px;
     height:360px;
-
     top:-190px;
     left:-140px;
-
     border-radius:50%;
-
     background:rgba(8,205,255,.11);
-
     filter:blur(80px);
-
     pointer-events:none;
 }
 
 body::after{
-
     content:"";
-
     position:fixed;
-
     width:360px;
     height:360px;
-
     right:-170px;
     bottom:-150px;
-
     border-radius:50%;
-
     background:rgba(112,76,255,.12);
-
     filter:blur(85px);
-
     pointer-events:none;
 }
 
@@ -133,19 +117,13 @@ body::after{
 ========================================================= */
 
 .page{
-
     position:relative;
-
     z-index:2;
-
     width:100%;
     min-height:100vh;
-
-    padding:
-        7px 8px 22px;
+    padding:7px 8px 22px;
 
     display:flex;
-
     align-items:flex-start;
     justify-content:center;
 }
@@ -156,16 +134,11 @@ body::after{
 ========================================================= */
 
 .login-card{
-
     position:relative;
-
     width:100%;
     max-width:600px;
-
     margin-top:3px;
-
-    padding:
-        18px 24px 27px;
+    padding:18px 24px 27px;
 
     border:
         1px solid
@@ -174,7 +147,6 @@ body::after{
     border-radius:28px;
 
     background:
-
         linear-gradient(
             145deg,
             rgba(18,29,60,.985),
@@ -182,62 +154,39 @@ body::after{
         );
 
     box-shadow:
-
-        0 30px 90px
-        rgba(0,0,0,.58),
-
-        0 0 55px
-        rgba(20,90,255,.07),
-
-        inset 0 1px 0
-        rgba(255,255,255,.065);
+        0 30px 90px rgba(0,0,0,.58),
+        0 0 55px rgba(20,90,255,.07),
+        inset 0 1px 0 rgba(255,255,255,.065);
 
     backdrop-filter:blur(26px);
-
     -webkit-backdrop-filter:blur(26px);
 
     overflow:hidden;
 }
 
 .login-card::before{
-
     content:"";
-
     position:absolute;
-
     width:300px;
     height:300px;
-
     top:-210px;
     right:-110px;
-
     border-radius:50%;
-
     background:rgba(112,76,255,.12);
-
     filter:blur(12px);
-
     pointer-events:none;
 }
 
 .login-card::after{
-
     content:"";
-
     position:absolute;
-
     width:240px;
     height:240px;
-
     left:-150px;
     bottom:-140px;
-
     border-radius:50%;
-
     background:rgba(8,205,255,.08);
-
     filter:blur(15px);
-
     pointer-events:none;
 }
 
@@ -247,15 +196,10 @@ body::after{
 ========================================================= */
 
 .brand{
-
     position:relative;
-
     z-index:3;
-
     text-align:center;
-
     margin-top:7px;
-
     margin-bottom:28px;
 }
 
@@ -265,33 +209,23 @@ body::after{
 ========================================================= */
 
 .logo-wrap{
-
     position:relative;
-
     width:88px;
     height:88px;
-
-    margin:
-        8px auto 16px;
+    margin:8px auto 16px;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
     background:transparent;
-
     border:0;
-
     box-shadow:none;
-
     overflow:visible;
 }
 
 .logo-image{
-
     position:relative;
-
     z-index:3;
 
     width:84px;
@@ -300,7 +234,6 @@ body::after{
     display:block;
 
     object-fit:contain;
-
     object-position:center;
 
     border-radius:22px;
@@ -318,14 +251,11 @@ body::after{
 ========================================================= */
 
 .tag{
-
     display:inline-flex;
-
     align-items:center;
     justify-content:center;
 
-    padding:
-        8px 15px;
+    padding:8px 15px;
 
     border:
         1px solid
@@ -334,7 +264,6 @@ body::after{
     border-radius:999px;
 
     background:
-
         linear-gradient(
             145deg,
             rgba(8,205,255,.07),
@@ -344,9 +273,7 @@ body::after{
     color:#62ddff;
 
     font-size:9px;
-
     font-weight:950;
-
     letter-spacing:1.9px;
 
     box-shadow:
@@ -360,23 +287,15 @@ body::after{
 ========================================================= */
 
 h1{
-
-    margin:
-        14px 0 8px;
-
+    margin:14px 0 8px;
     font-size:34px;
-
     line-height:1.08;
-
     font-weight:950;
-
     letter-spacing:-.9px;
 }
 
 .title-gradient{
-
     background:
-
         linear-gradient(
             90deg,
             #ffffff 0%,
@@ -386,9 +305,7 @@ h1{
         );
 
     -webkit-background-clip:text;
-
     background-clip:text;
-
     color:transparent;
 }
 
@@ -398,18 +315,11 @@ h1{
 ========================================================= */
 
 .subtitle{
-
     max-width:500px;
-
-    margin:
-        0 auto;
-
+    margin:0 auto;
     color:#8490aa;
-
     text-align:center;
-
     font-size:11px;
-
     line-height:1.7;
 }
 
@@ -419,29 +329,20 @@ h1{
 ========================================================= */
 
 .form-group{
-
     position:relative;
-
     z-index:3;
-
     margin-top:20px;
 }
 
 label{
-
     display:block;
-
-    margin:
-        0 4px 8px;
+    margin:0 4px 8px;
 
     color:#c0cbe0;
 
     font-size:9px;
-
     font-weight:950;
-
     letter-spacing:.75px;
-
     text-transform:uppercase;
 }
 
@@ -451,24 +352,18 @@ label{
 ========================================================= */
 
 .input{
-
     width:100%;
-
     height:58px;
-
-    padding:
-        0 17px;
+    padding:0 17px;
 
     border:
         1px solid
         rgba(255,255,255,.09);
 
     border-radius:17px;
-
     outline:none;
 
     background:
-
         linear-gradient(
             145deg,
             rgba(27,40,73,.96),
@@ -478,32 +373,24 @@ label{
     color:#ffffff;
 
     font-size:12px;
-
     font-weight:650;
 
     box-shadow:
-
-        inset 0 1px 0
-        rgba(255,255,255,.035),
-
-        0 8px 24px
-        rgba(0,0,0,.13);
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 8px 24px rgba(0,0,0,.13);
 
     transition:.2s ease;
 }
 
 .input::placeholder{
-
     color:#65728f;
 }
 
 .input:focus{
-
     border-color:
         rgba(8,205,255,.48);
 
     background:
-
         linear-gradient(
             145deg,
             rgba(24,38,70,.99),
@@ -511,15 +398,9 @@ label{
         );
 
     box-shadow:
-
-        0 0 0 3px
-        rgba(8,205,255,.055),
-
-        0 12px 30px
-        rgba(0,0,0,.17),
-
-        inset 0 1px 0
-        rgba(255,255,255,.04);
+        0 0 0 3px rgba(8,205,255,.055),
+        0 12px 30px rgba(0,0,0,.17),
+        inset 0 1px 0 rgba(255,255,255,.04);
 }
 
 
@@ -528,14 +409,11 @@ label{
 ========================================================= */
 
 .input-wrap{
-
     position:relative;
-
     width:100%;
 }
 
 .password-input{
-
     padding-right:68px;
 }
 
@@ -545,9 +423,7 @@ label{
 ========================================================= */
 
 .eye-btn{
-
     position:absolute;
-
     top:5px;
     right:5px;
 
@@ -555,45 +431,32 @@ label{
     height:48px;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
-    border:
-        1px solid
-        transparent;
-
+    border:1px solid transparent;
     border-radius:14px;
 
-    background:
-        rgba(255,255,255,.035);
+    background:rgba(255,255,255,.035);
 
     color:#7b89a7;
 
     cursor:pointer;
-
     transition:.16s ease;
 
     touch-action:manipulation;
-
     user-select:none;
-
     -webkit-user-select:none;
 }
 
 .eye-btn svg{
-
     width:21px;
     height:21px;
 
     stroke:currentColor;
-
     fill:none;
-
     stroke-width:1.8;
-
     stroke-linecap:round;
-
     stroke-linejoin:round;
 
     pointer-events:none;
@@ -601,21 +464,16 @@ label{
 
 .eye-btn:hover,
 .eye-btn.active{
-
     color:#59dfff;
-
-    background:
-        rgba(8,205,255,.065);
+    background:rgba(8,205,255,.065);
 }
 
 .eye-btn.active{
-
     border-color:
         rgba(8,205,255,.12);
 }
 
 .eye-btn:active{
-
     transform:scale(.91);
 }
 
@@ -625,44 +483,32 @@ label{
 ========================================================= */
 
 .forgot-row{
-
     position:relative;
-
     z-index:3;
 
     display:flex;
-
     justify-content:flex-end;
 
-    margin:
-        10px 4px 0;
+    margin:10px 4px 0;
 }
 
 .forgot-btn{
-
-    padding:
-        5px 0;
-
+    padding:5px 0;
     border:0;
-
     background:transparent;
 
     color:#5cddff;
 
     font-size:9px;
-
     font-weight:950;
-
     cursor:pointer;
 }
 
 .forgot-btn:hover{
-
     color:#9beaff;
 }
 
 .forgot-btn:active{
-
     opacity:.65;
 }
 
@@ -672,37 +518,28 @@ label{
 ========================================================= */
 
 .message{
-
     position:relative;
-
     z-index:3;
 
     min-height:20px;
-
-    margin:
-        13px 4px 0;
+    margin:13px 4px 0;
 
     text-align:center;
 
     font-size:9px;
-
     line-height:1.5;
-
     font-weight:850;
 }
 
 .message.success{
-
     color:#55e5a5;
 }
 
 .message.error{
-
     color:#ff758d;
 }
 
 .message.info{
-
     color:#5edcff;
 }
 
@@ -712,15 +549,11 @@ label{
 ========================================================= */
 
 .login-btn{
-
     position:relative;
-
     z-index:3;
 
     width:100%;
-
     height:58px;
-
     margin-top:7px;
 
     border:
@@ -730,7 +563,6 @@ label{
     border-radius:17px;
 
     background:
-
         linear-gradient(
             110deg,
             #08bdf5 0%,
@@ -741,30 +573,21 @@ label{
     color:#ffffff;
 
     font-size:12px;
-
     font-weight:950;
 
     cursor:pointer;
 
     box-shadow:
-
-        0 16px 38px
-        rgba(35,100,255,.25),
-
-        inset 0 1px 0
-        rgba(255,255,255,.23);
+        0 16px 38px rgba(35,100,255,.25),
+        inset 0 1px 0 rgba(255,255,255,.23);
 
     overflow:hidden;
-
     transition:.18s ease;
 }
 
 .login-btn::before{
-
     content:"";
-
     position:absolute;
-
     top:0;
     left:-110%;
 
@@ -772,7 +595,6 @@ label{
     height:100%;
 
     background:
-
         linear-gradient(
             90deg,
             transparent,
@@ -782,8 +604,7 @@ label{
 
     transform:skewX(-20deg);
 
-    animation:
-        loginShine 4s infinite;
+    animation:loginShine 4s infinite;
 }
 
 @keyframes loginShine{
@@ -799,27 +620,20 @@ label{
 }
 
 .login-btn:active{
-
     transform:scale(.985);
 }
 
 .login-btn:disabled{
-
     opacity:.60;
-
     cursor:not-allowed;
 }
 
 .button-content{
-
     position:relative;
-
     z-index:2;
 
     display:flex;
-
     align-items:center;
-
     justify-content:center;
 
     gap:9px;
@@ -831,7 +645,6 @@ label{
 ========================================================= */
 
 .spinner{
-
     width:17px;
     height:17px;
 
@@ -860,36 +673,27 @@ label{
 ========================================================= */
 
 .divider{
-
     position:relative;
-
     z-index:3;
 
     display:flex;
-
     align-items:center;
 
     gap:11px;
 
-    margin:
-        21px 0 11px;
+    margin:21px 0 11px;
 
     color:#52617d;
 
     font-size:8px;
-
     font-weight:950;
-
     letter-spacing:1.3px;
 }
 
 .divider::before,
 .divider::after{
-
     content:"";
-
     height:1px;
-
     flex:1;
 
     background:
@@ -902,13 +706,10 @@ label{
 ========================================================= */
 
 .signup-btn{
-
     position:relative;
-
     z-index:3;
 
     width:100%;
-
     min-height:56px;
 
     border:
@@ -918,7 +719,6 @@ label{
     border-radius:17px;
 
     background:
-
         linear-gradient(
             145deg,
             rgba(255,255,255,.06),
@@ -928,29 +728,22 @@ label{
     color:#edf4ff;
 
     font-size:11px;
-
     font-weight:950;
 
     cursor:pointer;
 
     box-shadow:
-
-        inset 0 1px 0
-        rgba(255,255,255,.04),
-
-        0 8px 24px
-        rgba(0,0,0,.10);
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 8px 24px rgba(0,0,0,.10);
 
     transition:.18s ease;
 }
 
 .signup-btn:hover{
-
     border-color:
         rgba(8,205,255,.24);
 
     background:
-
         linear-gradient(
             145deg,
             rgba(8,205,255,.07),
@@ -959,14 +752,11 @@ label{
 }
 
 .signup-btn:active{
-
     transform:scale(.985);
 }
 
 .signup-btn:disabled{
-
     opacity:.55;
-
     cursor:not-allowed;
 }
 
@@ -976,15 +766,11 @@ label{
 ========================================================= */
 
 .security-note{
-
     position:relative;
-
     z-index:3;
 
     display:flex;
-
     align-items:center;
-
     justify-content:center;
 
     gap:7px;
@@ -996,28 +782,241 @@ label{
     text-align:center;
 
     font-size:8px;
-
     font-weight:750;
-
     line-height:1.5;
 }
 
 .security-icon{
-
     width:15px;
     height:15px;
 
     flex-shrink:0;
 
     stroke:#637492;
-
     fill:none;
-
     stroke-width:1.8;
-
     stroke-linecap:round;
-
     stroke-linejoin:round;
+}
+
+
+/* =========================================================
+   BIOMETRIC PANEL
+========================================================= */
+
+.biometric-panel{
+    position:relative;
+    z-index:5;
+
+    display:none;
+
+    margin-top:17px;
+    padding:17px;
+
+    border:
+        1px solid
+        rgba(54,215,156,.18);
+
+    border-radius:20px;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(54,215,156,.10),
+            transparent 38%
+        ),
+
+        linear-gradient(
+            145deg,
+            rgba(13,31,38,.96),
+            rgba(7,15,28,.98)
+        );
+
+    box-shadow:
+        0 16px 40px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.biometric-panel.show{
+    display:block;
+}
+
+.biometric-head{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.biometric-icon{
+    width:43px;
+    height:43px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    background:
+        rgba(54,215,156,.07);
+
+    border:
+        1px solid
+        rgba(54,215,156,.15);
+
+    color:#53dfaa;
+}
+
+.biometric-icon svg{
+    width:21px;
+    height:21px;
+
+    stroke:currentColor;
+    fill:none;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.biometric-head strong{
+    display:block;
+    font-size:12px;
+    font-weight:950;
+}
+
+.biometric-head span{
+    display:block;
+    margin-top:4px;
+    color:#708198;
+    font-size:7px;
+}
+
+.biometric-status{
+    margin-top:12px;
+    padding:11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+    border-radius:13px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color:#8493a9;
+
+    font-size:8px;
+    line-height:1.6;
+}
+
+.biometric-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+
+    margin-top:11px;
+}
+
+.bio-btn{
+    min-height:43px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:13px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#dce7f7;
+
+    font-size:8px;
+    font-weight:900;
+
+    transition:.18s ease;
+}
+
+.bio-btn:active{
+    transform:scale(.97);
+}
+
+.bio-btn.primary{
+    border-color:
+        rgba(54,215,156,.16);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(24,207,160,.16),
+            rgba(32,212,255,.08)
+        );
+
+    color:#65e6b2;
+}
+
+.bio-btn.danger{
+    border-color:
+        rgba(255,101,119,.12);
+
+    color:#ff8291;
+}
+
+.bio-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.biometric-slots{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+
+    margin-top:11px;
+}
+
+.bio-slot{
+    min-height:57px;
+
+    padding:8px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+
+    border-radius:13px;
+
+    background:
+        rgba(255,255,255,.02);
+
+    text-align:center;
+}
+
+.bio-slot strong{
+    display:block;
+    color:#65758c;
+    font-size:7px;
+    font-weight:900;}
+
+.bio-slot span{
+    display:block;
+    margin-top:5px;
+    color:#8190a6;
+    font-size:7px;
+    font-weight:800;
+}
+
+.bio-slot.added{
+    border-color:
+        rgba(54,215,156,.15);
+
+    background:
+        rgba(54,215,156,.035);
+}
+
+.bio-slot.added span{
+    color:#55dfaa;
 }
 
 
@@ -1026,11 +1025,8 @@ label{
 ========================================================= */
 
 .reset-panel{
-
     position:fixed;
-
     inset:0;
-
     z-index:100;
 
     display:none;
@@ -1044,22 +1040,18 @@ label{
         rgba(2,5,14,.76);
 
     backdrop-filter:blur(12px);
-
     -webkit-backdrop-filter:blur(12px);
 }
 
 .reset-panel.show{
-
     display:flex;
 }
 
 .reset-box{
-
     width:100%;
     max-width:430px;
 
-    padding:
-        25px 22px;
+    padding:25px 22px;
 
     border:
         1px solid
@@ -1068,7 +1060,6 @@ label{
     border-radius:24px;
 
     background:
-
         linear-gradient(
             145deg,
             #142044,
@@ -1081,35 +1072,28 @@ label{
 }
 
 .reset-title{
-
     text-align:center;
 
     font-size:22px;
-
     font-weight:950;
 
     margin-bottom:8px;
 }
 
 .reset-subtitle{
-
     text-align:center;
 
     color:#8592af;
 
     font-size:11px;
-
     line-height:1.6;
 
     margin-bottom:18px;
 }
 
 .reset-close{
-
     width:100%;
-
     height:48px;
-
     margin-top:9px;
 
     border:
@@ -1124,16 +1108,13 @@ label{
     color:#dfe8ff;
 
     font-size:11px;
-
     font-weight:900;
 
     cursor:pointer;
 }
 
 .reset-save{
-
     width:100%;
-
     height:50px;
 
     border:0;
@@ -1151,7 +1132,6 @@ label{
     color:#fff;
 
     font-size:11px;
-
     font-weight:950;
 
     cursor:pointer;
@@ -1159,14 +1139,11 @@ label{
 
 .reset-save:disabled,
 .reset-close:disabled{
-
     opacity:.55;
-
     cursor:not-allowed;
 }
 
 .reset-message{
-
     min-height:18px;
 
     margin-top:11px;
@@ -1174,9 +1151,7 @@ label{
     text-align:center;
 
     font-size:9px;
-
     font-weight:850;
-
     line-height:1.5;
 }
 
@@ -1200,15 +1175,11 @@ label{
 @media(max-width:600px){
 
     .page{
-
-        padding:
-            7px 8px 22px;
+        padding:7px 8px 22px;
     }
 
     .login-card{
-
         width:100%;
-
         max-width:none;
 
         padding:
@@ -1218,166 +1189,340 @@ label{
     }
 
     .brand{
-
         margin-top:6px;
-
         margin-bottom:27px;
     }
 
     .logo-wrap{
-
         width:82px;
         height:82px;
-
-        margin:
-            7px auto 15px;
+        margin:7px auto 15px;
     }
 
     .logo-image{
-
         width:78px;
         height:78px;
-
         border-radius:20px;
     }
 
     .tag{
-
         font-size:8px;
-
-        padding:
-            7px 13px;
+        padding:7px 13px;
     }
 
     h1{
-
         font-size:31px;
-
         margin-top:14px;
     }
 
     .subtitle{
-
         max-width:390px;
-
         font-size:10px;
-
         line-height:1.7;
     }
 
     .form-group{
-
         margin-top:19px;
     }
 
     .input{
-
         height:58px;
-
         border-radius:17px;
-
         font-size:11px;
     }
 
     .login-btn{
-
         height:58px;
-
         border-radius:17px;
-
         font-size:11px;
     }
 
     .signup-btn{
-
         min-height:56px;
-
         border-radius:17px;
     }
 }
 
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
-
 @media(max-width:380px){
 
     .page{
-
         padding-left:6px;
         padding-right:6px;
     }
 
     .login-card{
-
         padding-left:18px;
         padding-right:18px;
     }
 
     .logo-wrap{
-
         width:76px;
         height:76px;
     }
 
     .logo-image{
-
         width:73px;
         height:73px;
-
         border-radius:18px;
     }
 
     h1{
-
         font-size:28px;
     }
 
     .subtitle{
-
         font-size:9px;
     }
 
     .input{
-
         height:55px;
     }
 
     .login-btn{
-
         height:55px;
     }
+
+    .biometric-slots{
+        grid-template-columns:1fr;
+    }
 }
-
-
-/* =========================================================
-   REDUCE MOTION
-========================================================= */
 
 @media(prefers-reduced-motion:reduce){
 
     *,
     *::before,
     *::after{
-
         animation:none !important;
-
         transition:none !important;
+    }
+}
+
+
+
+/* =========================================================
+   TASKEARN — CHATGPT BLACK EXECUTIVE THEME
+   Visual-only override: existing login/auth flow preserved.
+========================================================= */
+
+:root{
+    --te-accent:#b7d77a;
+}
+
+html,
+body{
+    background:#000000 !important;
+}
+
+body{
+    font-family:
+        "Satoshi",
+        "Geist",
+        "Outfit",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    color:#f5f5f5;
+    background:#000000 !important;
+}
+
+body::before,
+body::after{
+    display:none !important;
+}
+
+.page{
+    background:#000000;
+}
+
+.login-card{
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:24px;
+    background:#0a0a0a !important;
+    box-shadow:
+        0 24px 70px rgba(0,0,0,.62),
+        inset 0 1px 0 rgba(255,255,255,.035);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+}
+
+.login-card::before,
+.login-card::after{
+    display:none !important;
+}
+
+.tag{
+    border-color:rgba(183,215,122,.20);
+    background:rgba(183,215,122,.10);
+    color:var(--te-accent);
+}
+
+.title-gradient{
+    background:none;
+    color:#f5f5f5;
+}
+
+.subtitle{
+    color:#858585;
+}
+
+label{
+    color:#bdbdbd;
+}
+
+.input{
+    border-color:rgba(255,255,255,.085);
+    background:#111111 !important;
+    color:#f5f5f5;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.input:focus{
+    border-color:rgba(183,215,122,.45);
+    background:#141414 !important;
+    box-shadow:
+        0 0 0 3px rgba(183,215,122,.055),
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.input::placeholder{
+    color:#626262;
+}
+
+.eye-btn{
+    background:#181818;
+    color:#8e8e8e;
+}
+
+.eye-btn:hover,
+.eye-btn.active{
+    color:var(--te-accent);
+    background:rgba(183,215,122,.07);
+}
+
+.eye-btn.active{
+    border-color:rgba(183,215,122,.14);
+}
+
+.forgot-btn{
+    color:var(--te-accent);
+}
+
+.forgot-btn:hover{
+    color:#d2e8a4;
+}
+
+.message.success,
+.message.info{
+    color:var(--te-accent);
+}
+
+.login-btn{
+    border-color:rgba(183,215,122,.18);
+    background:#b7d77a !important;
+    color:#080808;
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+.login-btn::before{
+    display:none;
+}
+
+.divider{
+    color:#555555;
+}
+
+.divider::before,
+.divider::after{
+    background:rgba(255,255,255,.075);
+}
+
+.signup-btn{
+    border-color:rgba(255,255,255,.10);
+    background:#111111 !important;
+    color:#eeeeee;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.signup-btn:hover{
+    border-color:rgba(183,215,122,.25);
+    background:#151515 !important;
+}
+
+.security-note{
+    color:#626262;
+}
+
+.security-icon{
+    stroke:#777777;
+}
+
+.biometric-panel{
+    border-color:rgba(183,215,122,.16);
+    background:#0d0d0d !important;
+    box-shadow:
+        0 16px 40px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.biometric-icon{
+    background:rgba(183,215,122,.07);
+    border-color:rgba(183,215,122,.15);
+    color:var(--te-accent);
+}
+
+.biometric-status,
+.bio-slot{
+    background:#111111;
+    border-color:rgba(255,255,255,.06);
+}
+
+.bio-btn{
+    background:#151515;
+    border-color:rgba(255,255,255,.08);
+}
+
+.bio-btn.primary{
+    border-color:rgba(183,215,122,.18);
+    background:rgba(183,215,122,.08);
+    color:var(--te-accent);
+}
+
+@media (max-width:520px){
+    .page{
+        padding:0 8px 18px;
+    }
+
+    .login-card{
+        margin-top:0;
+        min-height:100vh;
+        border-radius:0;
+        border-left:0;
+        border-right:0;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    *,
+    *::before,
+    *::after{
+        animation:none !important;
+        transition:none !important;
+        scroll-behavior:auto !important;
     }
 }
 
 </style>
 
-</head>
+</>
 
 
 <body>
 
-
-<!-- =========================================================
-     MAIN LOGIN PAGE
-========================================================= -->
 
 <div class="page">
 
@@ -1399,34 +1544,25 @@ label{
 
         </div>
 
-
         <div class="tag">
             TASKEARN MEMBER
         </div>
 
-
         <h1>
-
             <span class="title-gradient">
                 Welcome Back
             </span>
-
         </h1>
 
-
         <p class="subtitle">
-
             Login to your TaskEarn account
             and continue your rewards journey.
-
         </p>
 
     </div>
 
 
-    <!-- =====================================================
-         EMAIL
-    ====================================================== -->
+    <!-- EMAIL -->
 
     <div class="form-group">
 
@@ -1448,16 +1584,13 @@ label{
     </div>
 
 
-    <!-- =====================================================
-         PASSWORD
-    ====================================================== -->
+    <!-- PASSWORD -->
 
     <div class="form-group">
 
         <label for="loginPassword">
             Password
         </label>
-
 
         <div class="input-wrap">
 
@@ -1468,7 +1601,6 @@ label{
                 placeholder="Enter your password"
                 autocomplete="current-password"
             >
-
 
             <button
                 id="passwordEye"
@@ -1502,9 +1634,7 @@ label{
     </div>
 
 
-    <!-- =====================================================
-         FORGOT PASSWORD
-    ====================================================== -->
+    <!-- FORGOT -->
 
     <div class="forgot-row">
 
@@ -1528,9 +1658,7 @@ label{
     ></div>
 
 
-    <!-- =====================================================
-         LOGIN BUTTON
-    ====================================================== -->
+    <!-- LOGIN -->
 
     <button
         id="loginButton"
@@ -1549,17 +1677,175 @@ label{
 
 
     <!-- =====================================================
-         DIVIDER
+         OWNER BIOMETRIC SECURITY
     ====================================================== -->
+
+    <section
+        id="biometricPanel"
+        class="biometric-panel"
+    >
+
+        <div class="biometric-head">
+
+            <div class="biometric-icon">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path
+                        d="M7 8.5A5 5 0 0 1 17 9"
+                    ></path>
+
+                    <path
+                        d="M5.5 11A6.5 6.5 0 0 1 18.5 12"
+                    ></path>
+
+                    <path
+                        d="M7 14c0 3 1.5 5 5 7"
+                    ></path>
+
+                    <path
+                        d="M12 8a3 3 0 0 1 3 3c0 4-.5 6.5-2 9"
+                    ></path>
+
+                    <path
+                        d="M9 11c0 4 .5 6 2 8"
+                    ></path>
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Fingerprint Security
+                </strong>
+
+                <span>
+                    Owner account biometric protection
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="biometricStatus"
+            class="biometric-status"
+        >
+            Fingerprint verification is required
+            before opening the Owner account.
+        </div>
+
+
+        <div
+            id="biometricSlots"
+            class="biometric-slots"
+        >
+
+            <div
+                id="bioSlot1"
+                class="bio-slot"
+            >
+                <strong>FINGER 1</strong>
+                <span>Not configured</span>
+            </div>
+
+            <div
+                id="bioSlot2"
+                class="bio-slot"
+            >
+                <strong>FINGER 2</strong>
+                <span>Not configured</span>
+            </div>
+
+            <div
+                id="bioSlot3"
+                class="bio-slot"
+            >
+                <strong>FINGER 3</strong>
+                <span>Not configured</span>
+            </div>
+
+        </div>
+
+
+        <div
+            class="biometric-actions"
+            id="biometricActions"
+        >
+
+            <button
+                id="verifyFingerprintButton"
+                class="bio-btn primary"
+                type="button"
+            >
+                Verify Fingerprint
+            </button>
+
+            <button
+                id="fingerprintSettingsButton"
+                class="bio-btn"
+                type="button"
+            >
+                Manage
+            </button>
+
+        </div>
+
+
+        <div
+            class="biometric-actions"
+            id="biometricManageActions"
+            style="display:none;"
+        >
+
+            <button
+                id="addFinger1Button"
+                class="bio-btn primary"
+                type="button"
+            >
+                Add / Re-add 1
+            </button>
+
+            <button
+                id="addFinger2Button"
+                class="bio-btn primary"
+                type="button"
+            >
+                Add / Re-add 2
+            </button>
+
+            <button
+                id="addFinger3Button"
+                class="bio-btn primary"
+                type="button"
+            >
+                Add / Re-add 3
+            </button>
+
+            <button
+                id="resetFingerprintsButton"
+                class="bio-btn danger"
+                type="button"
+            >
+                Reset All
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- DIVIDER -->
 
     <div class="divider">
         NEW TO TASKEARN?
     </div>
 
 
-    <!-- =====================================================
-         SIGNUP
-    ====================================================== -->
+    <!-- SIGNUP -->
 
     <button
         id="signupButton"
@@ -1570,9 +1856,7 @@ label{
     </button>
 
 
-    <!-- =====================================================
-         SECURITY
-    ====================================================== -->
+    <!-- SECURITY -->
 
     <div class="security-note">
 
@@ -1605,7 +1889,7 @@ label{
 
 
 <!-- =========================================================
-     PASSWORD RESET PANEL
+     PASSWORD RESET
 ========================================================= -->
 
 <div
@@ -1613,26 +1897,20 @@ label{
     class="reset-panel"
     role="dialog"
     aria-modal="true"
-    aria-labelledby="resetTitle"
 >
 
     <div class="reset-box">
 
         <div
-            id="resetTitle"
             class="reset-title"
         >
             Create New Password
         </div>
 
-
         <div class="reset-subtitle">
-
             Enter a new password for your
             TaskEarn account.
-
         </div>
-
 
         <input
             id="newPassword"
@@ -1642,9 +1920,7 @@ label{
             autocomplete="new-password"
         >
 
-
         <div style="height:10px;"></div>
-
 
         <input
             id="confirmNewPassword"
@@ -1654,13 +1930,11 @@ label{
             autocomplete="new-password"
         >
 
-
         <div
             id="resetMessage"
             class="reset-message"
             aria-live="polite"
         ></div>
-
 
         <button
             id="savePasswordButton"
@@ -1669,7 +1943,6 @@ label{
         >
             Update Password
         </button>
-
 
         <button
             id="closeResetButton"
@@ -1684,22 +1957,13 @@ label{
 </div>
 
 
-<!-- =========================================================
-     SUPABASE
-========================================================= -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
-
-
 <script>
 
 "use strict";
 
 
 /* =========================================================
-   TASKEARN SUPABASE CONFIG
+   SUPABASE CONNECTION
 ========================================================= */
 
 const SUPABASE_URL =
@@ -1709,14 +1973,42 @@ const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_o0R1owOtbfN-YaOsR_MzRg_lgbbqbvV";
 
 
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true
+            }
+        }
+    );
+
+
+/* =========================================================
+   OWNER SECURITY
+========================================================= */
+
+const OWNER_UID =
+    "f43eea2c-bb9f-4342-9a86-59c1a48c6692";
+
+
+/*
+ * Owner fingerprint is mandatory. *
+ * Normal users do NOT get this requirement.
+ */
+
+let ownerFingerprintVerified = false;
+
+let biometricBusy = false;
+
+let managingBiometrics = false;
+
+
 /* =========================================================
    PAGE PATHS
-=========================================================
-
-   login.html
-   ├── Create Account -> signup.html
-   └── Successful Login -> home.html
-
 ========================================================= */
 
 const SIGNUP_PAGE =
@@ -1757,29 +2049,86 @@ const forgotButton =
 const loginMessage =
     document.getElementById("loginMessage");
 
+
+const biometricPanel =
+    document.getElementById("biometricPanel");
+
+const biometricStatus =
+    document.getElementById("biometricStatus");
+
+const biometricActions =
+    document.getElementById("biometricActions");
+
+const biometricManageActions =
+    document.getElementById(
+        "biometricManageActions"
+    );
+
+const verifyFingerprintButton =
+    document.getElementById(
+        "verifyFingerprintButton"
+    );
+
+const fingerprintSettingsButton =
+    document.getElementById(
+        "fingerprintSettingsButton"
+    );
+
+const addFinger1Button =
+    document.getElementById(
+        "addFinger1Button"
+    );
+
+const addFinger2Button =
+    document.getElementById(
+        "addFinger2Button"
+    );
+
+const addFinger3Button =
+    document.getElementById(
+        "addFinger3Button"
+    );
+
+const resetFingerprintsButton =
+    document.getElementById(
+        "resetFingerprintsButton"
+    );
+
+
 const resetPanel =
-    document.getElementById("resetPanel");
+    document.getElementById(
+        "resetPanel"
+    );
+
 const newPassword =
-    document.getElementById("newPassword");
+    document.getElementById(
+        "newPassword"
+    );
 
 const confirmNewPassword =
-    document.getElementById("confirmNewPassword");
+    document.getElementById(
+        "confirmNewPassword"
+    );
 
 const savePasswordButton =
-    document.getElementById("savePasswordButton");
+    document.getElementById(
+        "savePasswordButton"
+    );
 
 const closeResetButton =
-    document.getElementById("closeResetButton");
+    document.getElementById(
+        "closeResetButton"
+    );
 
 const resetMessage =
-    document.getElementById("resetMessage");
+    document.getElementById(
+        "resetMessage"
+    );
 
 
 /* =========================================================
    STATE
 ========================================================= */
-
-let supabaseClient = null;
 
 let loggingIn = false;
 
@@ -1793,80 +2142,12 @@ let redirecting = false;
 
 
 /* =========================================================
-   INITIALIZE SUPABASE
-========================================================= */
-
-function initializeSupabase(){
-
-    if(supabaseClient){
-
-        return true;
-
-    }
-
-
-    try{
-
-        if(
-            !window.supabase ||
-            typeof window.supabase.createClient !== "function"
-        ){
-
-            throw new Error(
-                "Supabase library not loaded."
-            );
-
-        }
-
-
-        supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_PUBLISHABLE_KEY,
-                {
-                    auth:{
-
-                        persistSession:true,
-
-                        autoRefreshToken:true,
-
-                        detectSessionInUrl:true
-
-                    }
-                }
-            );
-
-
-        return true;
-
-    }catch(error){
-
-        console.error(
-            "TaskEarn Supabase initialization:",
-            error
-        );
-
-
-        showMessage(
-            "Secure login service is unavailable.",
-            "error"
-        );
-
-
-        return false;
-
-    }
-
-}
-
-
-/* =========================================================
-   MESSAGE FUNCTIONS
+   MESSAGE
 ========================================================= */
 
 function showMessage(
     text,
-    type
+    type=""
 ){
 
     loginMessage.textContent =
@@ -1899,7 +2180,7 @@ function clearMessage(){
 
 function showResetMessage(
     text,
-    type
+    type=""
 ){
 
     resetMessage.textContent =
@@ -1920,131 +2201,10 @@ function showResetMessage(
 
 
 /* =========================================================
-   LOGIN LOADING
+   ERROR MESSAGE
 ========================================================= */
 
-function setLoginLoading(
-    loading
-){
-
-    loginButton.disabled =
-        loading;
-
-    signupButton.disabled =
-        loading;
-
-    forgotButton.disabled =
-        loading;
-
-
-    if(loading){
-
-        loginContent.innerHTML =
-
-            '<span class="spinner"></span>' +
-
-            '<span>Logging in...</span>';
-
-    }else{
-
-        loginContent.textContent =
-            "Login to TaskEarn";
-
-    }
-
-}
-
-
-/* =========================================================
-   PASSWORD EYE ICON
-========================================================= */
-
-function setEyeIcon(
-    visible
-){
-
-    if(visible){
-
-        passwordEye.innerHTML =
-
-            '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-
-                '<path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z"></path>' +
-
-                '<path d="M4 4L20 20"></path>' +
-
-            '</svg>';
-
-    }else{
-
-        passwordEye.innerHTML =
-
-            '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-
-                '<path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z"></path>' +
-
-                '<circle cx="12" cy="12" r="2.7"></circle>' +
-
-            '</svg>';
-
-    }
-
-}
-
-
-/* =========================================================
-   PASSWORD TOGGLE
-========================================================= */
-
-passwordEye.addEventListener(
-    "click",
-    function(){
-
-        const shouldShow =
-            passwordInput.type === "password";
-
-
-        passwordInput.type =
-            shouldShow
-            ? "text"
-            : "password";
-
-
-        passwordEye.classList.toggle(
-            "active",
-            shouldShow
-        );
-
-
-        passwordEye.setAttribute(
-            "aria-pressed",
-            String(shouldShow)
-        );
-
-
-        passwordEye.setAttribute(
-            "aria-label",
-            shouldShow
-            ? "Hide password"
-            : "Show password"
-        );
-
-
-        setEyeIcon(
-            shouldShow
-        );
-
-    }
-);
-
-
-/* =========================================================
-   ERROR MESSAGE CLEANUP
-========================================================= */
-
-function getErrorMessage(
-    error
-){
+function getErrorMessage(error){
 
     const raw =
         String(
@@ -2082,17 +2242,6 @@ function getErrorMessage(
 
     if(
         lower.includes(
-            "user not found"
-        )
-    ){
-
-        return "No account was found with this email.";
-
-    }
-
-
-    if(
-        lower.includes(
             "too many"
         ) ||
         lower.includes(
@@ -2107,29 +2256,14 @@ function getErrorMessage(
 
     if(
         lower.includes(
-            "network"
-        ) ||
-        lower.includes(
             "failed to fetch"
         ) ||
         lower.includes(
-            "fetch"
+            "network"
         )
     ){
 
         return "Connection problem. Please check your internet.";
-
-    }
-
-
-    if(
-        lower.includes(
-            "password"
-        )
-    ){
-
-        return raw ||
-            "Password update failed.";
 
     }
 
@@ -2141,7 +2275,7 @@ function getErrorMessage(
 
 
 /* =========================================================
-   EMAIL VALIDATION
+   EMAIL
 ========================================================= */
 
 function isValidEmail(
@@ -2156,26 +2290,834 @@ function isValidEmail(
 
 
 /* =========================================================
-   SAFE HOME REDIRECT
+   PASSWORD EYE
 ========================================================= */
 
-function goToHome(){
+function setEyeIcon(
+    visible
+){
 
-    if(redirecting){
+    if(visible){
+
+        passwordEye.innerHTML =
+
+            '<svg viewBox="0 0 24 24">' +
+
+                '<path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z"></path>' +
+
+                '<path d="M4 4L20 20"></path>' +
+
+            '</svg>';
+
+    }else{
+
+        passwordEye.innerHTML =
+
+            '<svg viewBox="0 0 24 24">' +
+
+                '<path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z"></path>' +
+
+                '<circle cx="12" cy="12" r="2.7"></circle>' +
+
+            '</svg>';
+
+    }
+
+}
+
+
+passwordEye.addEventListener(
+    "click",
+    function(){
+
+        const visible =
+            passwordInput.type ===
+            "password";
+
+
+        passwordInput.type =
+            visible
+            ? "text"
+            : "password";
+
+
+        passwordEye.classList.toggle(
+            "active",
+            visible
+        );
+
+
+        passwordEye.setAttribute(
+            "aria-pressed",
+            String(visible)
+        );
+
+
+        setEyeIcon(
+            visible
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LOGIN BUTTON LOADING
+========================================================= */
+
+function setLoginLoading(
+    loading
+){
+
+    loginButton.disabled =
+        loading;
+
+    signupButton.disabled =
+        loading;
+
+    forgotButton.disabled =
+        loading;
+
+
+    if(loading){
+
+        loginContent.innerHTML =
+            '<span class="spinner"></span>' +
+            '<span>Signing in...</span>';
+
+    }else{
+
+        loginContent.textContent =
+            "Login to TaskEarn";
+
+    }
+
+}
+
+
+/* =========================================================
+   BIOMETRIC BRIDGE CHECK
+========================================================= */
+
+function biometricBridgeAvailable(){
+
+    return !!(
+        window.AndroidTaskEarnFingerprint &&
+        typeof
+        window.AndroidTaskEarnFingerprint.verify ===
+        "function"
+    );
+
+}
+
+
+/* =========================================================
+   BIOMETRIC STATUS
+========================================================= */
+
+function setBiometricStatus(
+    text,
+    type=""
+){
+
+    biometricStatus.textContent =
+        text;
+
+    biometricStatus.style.color =
+        type === "success"
+            ? "#55dfaa"
+            : type === "error"
+                ? "#ff7c8d"
+                : "#8493a9";
+
+}
+
+
+/* =========================================================
+   SHOW OWNER BIOMETRIC
+========================================================= */
+
+function showOwnerBiometric(){
+
+    biometricPanel.classList.add(
+        "show"
+    );
+
+    setBiometricStatus(
+        "Password verified. Fingerprint verification is required before opening the Owner account.",
+        "info"
+    );
+
+}
+
+
+/* =========================================================
+   HIDE OWNER BIOMETRIC
+========================================================= */
+
+function hideOwnerBiometric(){
+
+    biometricPanel.classList.remove(
+        "show"
+    );
+
+    biometricManageActions.style.display =
+        "none";
+
+    biometricActions.style.display =
+        "grid";
+
+}
+
+
+/* =========================================================
+   VERIFY OWNER FINGERPRINT
+========================================================= */
+
+async function verifyOwnerFingerprint(){
+
+    if(
+        biometricBusy ||
+        redirecting
+    ){
 
         return;
 
     }
 
 
-    redirecting = true;
+    if(
+        !biometricBridgeAvailable()
+    ){
+
+        setBiometricStatus(
+            "Fingerprint is not connected to this APK yet. The Android biometric bridge is required.",
+            "error"
+        );
+
+        showMessage(
+            "Fingerprint security is not available in this APK yet.",
+            "error"
+        );
+
+        return;
+
+    }
 
 
-    window.location.replace(
-        HOME_PAGE
+    biometricBusy = true;
+
+    verifyFingerprintButton.disabled =
+        true;
+
+    fingerprintSettingsButton.disabled =
+        true;
+
+
+    setBiometricStatus(
+        "Waiting for fingerprint verification..."
+    );
+
+
+    try{
+
+        /*
+         * Native Android side performs the actual
+         * biometric authentication.
+         *
+         * Browser never receives fingerprint data.
+         */
+
+        const result =
+            await
+            window.AndroidTaskEarnFingerprint
+                .verify();
+
+
+        if(
+            result &&
+            (
+                result.success === true ||
+                result.verified === true
+            )
+        ){
+
+            ownerFingerprintVerified =
+                true;
+
+
+            setBiometricStatus(
+                "Fingerprint verified successfully.",
+                "success"
+            );
+
+
+            showMessage(
+                "Fingerprint verified. Opening TaskEarn...",
+                "success"
+            );
+
+
+            setTimeout(
+                function(){
+
+                    goToHome();
+
+                },
+                450
+            );
+
+
+            return;
+
+        }
+
+
+        ownerFingerprintVerified =
+            false;
+
+
+        setBiometricStatus(
+            "Fingerprint verification failed or was cancelled.",
+            "error"
+        );
+
+
+        showMessage(
+            "Fingerprint verification is required.",
+            "error"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "TaskEarn fingerprint:",
+            error
+        );
+
+
+        ownerFingerprintVerified =
+            false;
+
+
+        setBiometricStatus(
+            "Fingerprint verification could not be completed.",
+            "error"
+        );
+
+
+        showMessage(
+            "Fingerprint verification failed.",
+            "error"
+        );
+
+    }finally{
+
+        biometricBusy =
+            false;
+
+        verifyFingerprintButton.disabled =
+            false;
+
+        fingerprintSettingsButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   BIOMETRIC MANAGEMENT BRIDGE
+========================================================= */
+
+function biometricManagementAvailable(){
+
+    return !!(
+        window.AndroidTaskEarnFingerprint
     );
 
 }
+
+
+/* =========================================================
+   ADD / RE-ADD FINGER
+========================================================= */
+
+async function enrollFingerprint(
+    slot
+){
+
+    if(
+        !biometricManagementAvailable()
+    ){
+
+        setBiometricStatus(
+            "Fingerprint management requires the native Android biometric bridge.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        typeof
+        window.AndroidTaskEarnFingerprint.enroll !==
+        "function"
+    ){
+
+        setBiometricStatus(
+            "This APK does not currently expose fingerprint enrollment.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        managingBiometrics
+    ){
+
+        return;
+
+    }
+
+
+    managingBiometrics =
+        true;
+
+
+    disableBiometricManagement(
+        true
+    );
+
+
+    setBiometricStatus(
+        "Follow the Android biometric instructions to configure Finger " +
+        slot +
+        "..."
+    );
+
+
+    try{
+
+        const result =
+            await
+            window.AndroidTaskEarnFingerprint
+                .enroll(
+                    slot
+                );
+
+
+        if(
+            result &&
+            (
+                result.success === true ||
+                result.enrolled === true
+            )
+        ){
+
+            setBiometricStatus(
+                "Fingerprint " +
+                slot +
+                " was configured successfully.",
+                "success"
+            );
+
+
+            updateSlotUI(
+                slot,
+                true
+            );
+
+        }else{
+
+            setBiometricStatus(
+                "Fingerprint " +
+                slot +
+                " was not configured.",
+                "error"
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Fingerprint enrollment:",
+            error
+        );
+
+
+        setBiometricStatus(
+            "Fingerprint " +
+            slot +
+            " could not be configured.",
+            "error"
+        );
+
+    }finally{
+
+        managingBiometrics =
+            false;
+
+        disableBiometricManagement(
+            false
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RESET ALL FINGERPRINTS
+========================================================= */
+
+async function resetFingerprints(){
+
+    if(
+        !biometricManagementAvailable()
+    ){
+
+        setBiometricStatus(
+            "Fingerprint management requires the native Android biometric bridge.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        typeof
+        window.AndroidTaskEarnFingerprint.reset !==
+        "function"
+    ){
+
+        setBiometricStatus(
+            "This APK does not currently expose fingerprint reset.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Reset all TaskEarn fingerprint slots?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    managingBiometrics =
+        true;
+
+
+    disableBiometricManagement(
+        true
+    );
+
+
+    try{
+
+        const result =
+            await
+            window.AndroidTaskEarnFingerprint
+                .reset();
+
+
+        if(
+            result &&
+            (
+                result.success === true ||
+                result.reset === true
+            )
+        ){
+
+            updateSlotUI(1,false);
+            updateSlotUI(2,false);
+            updateSlotUI(3,false);
+
+
+            setBiometricStatus(
+                "All TaskEarn fingerprint slots have been reset.",
+                "success"
+            );
+
+        }else{
+
+            setBiometricStatus(
+                "Fingerprint reset was not completed.",
+                "error"
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Fingerprint reset:",
+            error
+        );
+
+
+        setBiometricStatus(
+            "Fingerprint reset failed.",
+            "error"
+        );
+
+    }finally{
+
+        managingBiometrics =
+            false;
+
+        disableBiometricManagement(
+            false
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DISABLE BIOMETRIC MANAGEMENT
+========================================================= */
+
+function disableBiometricManagement(
+    disabled
+){
+
+    [
+        addFinger1Button,
+        addFinger2Button,
+        addFinger3Button,
+        resetFingerprintsButton
+    ].forEach(
+        button=>{
+            button.disabled =
+                disabled;
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SLOT UI
+========================================================= */
+
+function updateSlotUI(
+    slot,
+    added
+){
+
+    const element =
+        document.getElementById(
+            "bioSlot" + slot
+        );
+
+
+    if(!element){
+        return;
+    }
+
+
+    if(added){
+
+        element.classList.add(
+            "added"
+        );
+
+
+        element.querySelector(
+            "span"
+        ).textContent =
+            "Configured";
+
+    }else{
+
+        element.classList.remove(
+            "added"
+        );
+
+
+        element.querySelector(
+            "span"
+        ).textContent =
+            "Not configured";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD BIOMETRIC STATUS
+========================================================= */
+
+async function loadBiometricStatus(){
+
+    if(
+        !biometricManagementAvailable()
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        typeof
+        window.AndroidTaskEarnFingerprint
+            .getStatus !==
+        "function"
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        const status =
+            await            window.AndroidTaskEarnFingerprint
+                .getStatus();
+
+
+        if(!status){
+            return;
+        }
+
+
+        updateSlotUI(
+            1,
+            status.finger1 === true
+        );
+
+        updateSlotUI(
+            2,
+            status.finger2 === true
+        );
+
+        updateSlotUI(
+            3,
+            status.finger3 === true
+        );
+
+    }catch(error){
+
+        console.warn(
+            "Biometric status:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MANAGEMENT TOGGLE
+========================================================= */
+
+fingerprintSettingsButton.addEventListener(
+    "click",
+    async function(){
+
+        const showing =
+            biometricManageActions.style.display ===
+            "grid";
+
+
+        if(showing){
+
+            biometricManageActions.style.display =
+                "none";
+
+            biometricActions.style.display =
+                "grid";
+
+            return;
+
+        }
+
+
+        biometricActions.style.display =
+            "none";
+
+        biometricManageActions.style.display =
+            "grid";
+
+
+        await loadBiometricStatus();
+
+    }
+);
+
+
+/* =========================================================
+   FINGER BUTTONS
+========================================================= */
+
+addFinger1Button.addEventListener(
+    "click",
+    function(){
+
+        enrollFingerprint(1);
+
+    }
+);
+
+
+addFinger2Button.addEventListener(
+    "click",
+    function(){
+
+        enrollFingerprint(2);
+
+    }
+);
+
+
+addFinger3Button.addEventListener(
+    "click",
+    function(){
+
+        enrollFingerprint(3);
+
+    }
+);
+
+
+resetFingerprintsButton.addEventListener(
+    "click",
+    resetFingerprints
+);
+
+
+/* =========================================================
+   VERIFY BUTTON
+========================================================= */
+
+verifyFingerprintButton.addEventListener(
+    "click",
+    verifyOwnerFingerprint
+);
 
 
 /* =========================================================
@@ -2193,6 +3135,11 @@ async function loginUser(){
 
     clearMessage();
 
+    hideOwnerBiometric();
+
+    ownerFingerprintVerified =
+        false;
+
 
     const email =
         emailInput.value
@@ -2203,10 +3150,6 @@ async function loginUser(){
     const password =
         passwordInput.value;
 
-
-    /* -----------------------------------------
-       EMAIL CHECK
-    ----------------------------------------- */
 
     if(
         !isValidEmail(email)
@@ -2224,10 +3167,6 @@ async function loginUser(){
     }
 
 
-    /* -----------------------------------------
-       PASSWORD CHECK
-    ----------------------------------------- */
-
     if(
         password.length === 0
     ){
@@ -2244,22 +3183,13 @@ async function loginUser(){
     }
 
 
-    /* -----------------------------------------
-       SUPABASE
-    ----------------------------------------- */
-
-    if(
-        !initializeSupabase()
-    ){
-
-        return;
-
-    }
+    loggingIn =
+        true;
 
 
-    loggingIn = true;
-
-    setLoginLoading(true);
+    setLoginLoading(
+        true
+    );
 
 
     showMessage(
@@ -2270,21 +3200,18 @@ async function loginUser(){
 
     try{
 
-        const result =
-            await supabaseClient.auth.signInWithPassword({
+        const {
+            data,
+            error
+        } =
+            await
+            supabaseClient.auth.signInWithPassword({
 
                 email:email,
 
                 password:password
 
             });
-
-
-        const data =
-            result.data;
-
-        const error =
-            result.error;
 
 
         if(error){
@@ -2301,37 +3228,62 @@ async function loginUser(){
             );
 
 
-            loggingIn = false;
-
-            setLoginLoading(false);
-
             return;
 
         }
+
+
+        const user =
+            data?.user;
+
+        const session =
+            data?.session;
 
 
         if(
-            data &&
-            data.session
+            !user ||
+            !session
         ){
 
             showMessage(
-                "Login successful. Opening TaskEarn...",
-                "success"
+                "Login completed, but a secure session was not created.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * OWNER CHECK
+         *
+         * UID is checked after successful Supabase
+         * authentication.
+         */
+
+        if(
+            user.id === OWNER_UID
+        ){
+
+            /*
+             * Owner:
+             * Password alone is NOT enough.
+             */
+
+            showOwnerBiometric();
+
+            showMessage(
+                "Password verified. Fingerprint verification required.",
+                "info"
             );
 
 
-            loginContent.textContent =
-                "Login Successful";
+            loggingIn =
+                false;
 
-
-            setTimeout(
-                function(){
-
-                    goToHome();
-
-                },
-                500
+            setLoginLoading(
+                false
             );
 
 
@@ -2340,15 +3292,28 @@ async function loginUser(){
         }
 
 
+        /*
+         * NORMAL USER
+         */
+
         showMessage(
-            "Login completed, but no session was created.",
-            "error"
+            "Login successful. Opening TaskEarn...",
+            "success"
         );
 
 
-        loggingIn = false;
+        loginContent.textContent =
+            "Login Successful";
 
-        setLoginLoading(false);
+
+        setTimeout(
+            function(){
+
+                goToHome();
+
+            },
+            450
+        );
 
 
     }catch(error){
@@ -2364,10 +3329,27 @@ async function loginUser(){
             "error"
         );
 
+    }finally{
 
-        loggingIn = false;
+        /*
+         * Do not release UI lock only when
+         * owner is waiting for fingerprint.
+         */
 
-        setLoginLoading(false);
+        if(
+            !biometricPanel.classList.contains(
+                "show"
+            )
+        ){
+
+            loggingIn =
+                false;
+
+            setLoginLoading(
+                false
+            );
+
+        }
 
     }
 
@@ -2385,20 +3367,15 @@ loginButton.addEventListener(
 
 
 /* =========================================================
-   SIGNUP BUTTON
+   SIGNUP
 ========================================================= */
 
 signupButton.addEventListener(
     "click",
     function(){
 
-        if(
-            loggingIn ||
-            sendingReset
-        ){
-
+        if(loggingIn){
             return;
-
         }
 
 
@@ -2417,9 +3394,7 @@ signupButton.addEventListener(
 async function sendPasswordReset(){
 
     if(sendingReset){
-
         return;
-
     }
 
 
@@ -2448,16 +3423,9 @@ async function sendPasswordReset(){
     }
 
 
-    if(
-        !initializeSupabase()
-    ){
+    sendingReset =
+        true;
 
-        return;
-
-    }
-
-
-    sendingReset = true;
 
     forgotButton.disabled =
         true;
@@ -2477,13 +3445,6 @@ async function sendPasswordReset(){
 
     try{
 
-        /*
-         * Recovery link returns to login.html.
-         *
-         * Example:
-         * pages/login.html
-         */
-
         const resetUrl =
             new URL(
                 LOGIN_PAGE,
@@ -2494,10 +3455,12 @@ async function sendPasswordReset(){
         const {
             error
         } =
-            await supabaseClient.auth.resetPasswordForEmail(
+            await
+            supabaseClient.auth.resetPasswordForEmail(
                 email,
                 {
-                    redirectTo:resetUrl
+                    redirectTo:
+                        resetUrl
                 }
             );
 
@@ -2505,7 +3468,7 @@ async function sendPasswordReset(){
         if(error){
 
             console.error(
-                "TaskEarn password reset:",
+                "Password reset:",
                 error
             );
 
@@ -2524,11 +3487,10 @@ async function sendPasswordReset(){
 
         }
 
-
     }catch(error){
 
         console.error(
-            "TaskEarn reset exception:",
+            "Password reset exception:",
             error
         );
 
@@ -2538,26 +3500,24 @@ async function sendPasswordReset(){
             "error"
         );
 
+    }finally{
+
+        sendingReset =
+            false;
+
+        forgotButton.disabled =
+            false;
+
+        loginButton.disabled =
+            false;
+
+        signupButton.disabled =
+            false;
+
     }
-
-
-    sendingReset = false;
-
-    forgotButton.disabled =
-        false;
-
-    loginButton.disabled =
-        false;
-
-    signupButton.disabled =
-        false;
 
 }
 
-
-/* =========================================================
-   FORGOT BUTTON
-========================================================= */
 
 forgotButton.addEventListener(
     "click",
@@ -2571,17 +3531,12 @@ forgotButton.addEventListener(
 
 function openResetPanel(){
 
-    recoveryMode = true;
+    recoveryMode =
+        true;
 
 
     resetPanel.classList.add(
         "show"
-    );
-
-
-    showResetMessage(
-        "",
-        ""
     );
 
 
@@ -2590,6 +3545,11 @@ function openResetPanel(){
 
     confirmNewPassword.value =
         "";
+
+
+    showResetMessage(
+        ""
+    );
 
 
     setTimeout(
@@ -2619,12 +3579,12 @@ function closeResetPanel(){
 
 
     showResetMessage(
-        "",
         ""
     );
 
 
-    recoveryMode = false;
+    recoveryMode =
+        false;
 
 }
 
@@ -2636,29 +3596,16 @@ function closeResetPanel(){
 async function updatePassword(){
 
     if(updatingPassword){
-
         return;
-
     }
 
 
     const password =
         newPassword.value;
 
-
     const confirm =
         confirmNewPassword.value;
 
-
-    showResetMessage(
-        "",
-        ""
-    );
-
-
-    /* -----------------------------------------
-       MINIMUM PASSWORD
-    ----------------------------------------- */
 
     if(
         password.length < 6
@@ -2669,16 +3616,10 @@ async function updatePassword(){
             "error"
         );
 
-        newPassword.focus();
-
         return;
 
     }
 
-
-    /* -----------------------------------------
-       PASSWORD MATCH
-    ----------------------------------------- */
 
     if(
         password !== confirm
@@ -2689,27 +3630,14 @@ async function updatePassword(){
             "error"
         );
 
-        confirmNewPassword.focus();
-
         return;
 
     }
 
 
-    /* -----------------------------------------
-       SUPABASE
-    ----------------------------------------- */
+    updatingPassword =
+        true;
 
-    if(
-        !initializeSupabase()
-    ){
-
-        return;
-
-    }
-
-
-    updatingPassword = true;
 
     savePasswordButton.disabled =
         true;
@@ -2729,7 +3657,8 @@ async function updatePassword(){
         const {
             error
         } =
-            await supabaseClient.auth.updateUser({
+            await
+            supabaseClient.auth.updateUser({
 
                 password:password
 
@@ -2738,25 +3667,10 @@ async function updatePassword(){
 
         if(error){
 
-            console.error(
-                "TaskEarn password update:",
-                error
-            );
-
-
             showResetMessage(
                 getErrorMessage(error),
                 "error"
             );
-
-
-            updatingPassword = false;
-
-            savePasswordButton.disabled =
-                false;
-
-            closeResetButton.disabled =
-                false;
 
             return;
 
@@ -2774,12 +3688,12 @@ async function updatePassword(){
 
                 try{
 
-                    await supabaseClient.auth.signOut();
+                    await
+                    supabaseClient.auth.signOut();
 
                 }catch(error){
 
                     console.warn(
-                        "TaskEarn sign out after reset:",
                         error
                     );
 
@@ -2789,23 +3703,10 @@ async function updatePassword(){
                 closeResetPanel();
 
 
-                clearMessage();
-
-
                 showMessage(
-                    "Password changed. Please login with your new password.",
+                    "Password changed. Please login again.",
                     "success"
                 );
-
-
-                updatingPassword = false;
-
-                savePasswordButton.disabled =
-                    false;
-
-                closeResetButton.disabled =
-                    false;
-
 
                 passwordInput.value =
                     "";
@@ -2820,7 +3721,6 @@ async function updatePassword(){
     }catch(error){
 
         console.error(
-            "TaskEarn password update exception:",
             error
         );
 
@@ -2830,8 +3730,10 @@ async function updatePassword(){
             "error"
         );
 
+    }finally{
 
-        updatingPassword = false;
+        updatingPassword =
+            false;
 
         savePasswordButton.disabled =
             false;
@@ -2844,40 +3746,25 @@ async function updatePassword(){
 }
 
 
-/* =========================================================
-   UPDATE PASSWORD BUTTON
-========================================================= */
-
 savePasswordButton.addEventListener(
     "click",
     updatePassword
 );
 
 
-/* =========================================================
-   CLOSE RESET BUTTON
-========================================================= */
-
 closeResetButton.addEventListener(
     "click",
-    function(){
-
-        closeResetPanel();
-
-    }
+    closeResetPanel
 );
 
-
-/* =========================================================
-   CLICK OUTSIDE RESET BOX
-========================================================= */
 
 resetPanel.addEventListener(
     "click",
     function(event){
 
         if(
-            event.target === resetPanel
+            event.target ===
+            resetPanel
         ){
 
             closeResetPanel();
@@ -2889,19 +3776,27 @@ resetPanel.addEventListener(
 
 
 /* =========================================================
-   ESCAPE KEY
+   RECOVERY
 ========================================================= */
 
-document.addEventListener(
-    "keydown",
-    function(event){
+supabaseClient.auth.onAuthStateChange(
+    function(
+        event,
+        session
+    ){
+
+        console.log(
+            "TaskEarn Auth:",
+            event
+        );
+
 
         if(
-            event.key === "Escape" &&
-            resetPanel.classList.contains("show")
+            event ===
+            "PASSWORD_RECOVERY"
         ){
 
-            closeResetPanel();
+            openResetPanel();
 
         }
 
@@ -2910,7 +3805,145 @@ document.addEventListener(
 
 
 /* =========================================================
-   ENTER KEY — EMAIL
+   EXISTING SESSION
+========================================================= */
+
+async function checkExistingSession(){
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await
+            supabaseClient.auth.getSession();
+
+
+        if(error){
+
+            console.warn(
+                error
+            );
+
+            return;
+
+        }
+
+
+        if(
+            data?.session
+        ){
+
+            const user =
+                data.session.user;
+
+
+            /*
+             * IMPORTANT:
+             *
+             * An existing Owner session does NOT
+             * automatically bypass fingerprint.
+             */
+
+            if(
+                user?.id === OWNER_UID
+            ){
+
+                await
+                supabaseClient.auth.signOut();
+
+
+                showMessage(
+                    "Owner account requires password and fingerprint verification.",
+                    "info"
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+             * Normal users can continue.
+             */
+
+            goToHome();
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "Session check:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function goToHome(){
+
+    if(redirecting){
+        return;
+    }
+
+
+    /*
+     * Absolute security check:
+     *
+     * Owner can never go Home from this page
+     * unless fingerprint was verified.
+     */
+
+    if(
+        window.__taskEarnOwnerLogin === true &&
+        !ownerFingerprintVerified
+    ){
+
+        showMessage(
+            "Fingerprint verification is required.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    redirecting =
+        true;
+
+
+    window.location.replace(
+        HOME_PAGE
+    );
+
+}
+
+
+/*
+ * Mark Owner login only when password has been
+ * successfully authenticated.
+ *
+ * This is only a client-side guard.
+ * Sensitive Owner actions must ALSO be
+ * protected server-side with RLS/Edge Functions.
+ */
+
+window.__taskEarnOwnerLogin =
+    false;
+
+
+/* =========================================================
+   ENTER KEYS
 ========================================================= */
 
 emailInput.addEventListener(
@@ -2931,10 +3964,6 @@ emailInput.addEventListener(
 );
 
 
-/* =========================================================
-   ENTER KEY — PASSWORD
-========================================================= */
-
 passwordInput.addEventListener(
     "keydown",
     function(event){
@@ -2954,213 +3983,48 @@ passwordInput.addEventListener(
 
 
 /* =========================================================
-   ENTER KEY — NEW PASSWORD
+   RECOVERY URL
 ========================================================= */
 
-newPassword.addEventListener(
-    "keydown",
-    function(event){
+function isRecoveryUrl(){
 
-        if(
-            event.key === "Enter"
-        ){
-
-            event.preventDefault();
-
-            confirmNewPassword.focus();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ENTER KEY — CONFIRM PASSWORD
-========================================================= */
-
-confirmNewPassword.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key === "Enter"
-        ){
-
-            event.preventDefault();
-
-            updatePassword();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   DETECT PASSWORD RECOVERY URL
-========================================================= */
-
-function detectRecoveryUrl(){
-
-    const hash =
-        window.location.hash || "";
-
-
-    const search =
-        window.location.search || "";
-
-
-    const combined =
+    const value =
         (
-            hash +
+            window.location.hash +
             "&" +
-            search
+            window.location.search
         ).toLowerCase();
 
-
-    /*
-     * Supabase recovery URLs normally contain:
-     *
-     * type=recovery
-     *
-     * We also check for:
-     *
-     * access_token
-     * refresh_token
-     *
-     * because recovery sessions can be delivered
-     * through the URL.
-     */
-
-    if(
-        combined.includes(
-            "type=recovery"
-        )
-    ){
-
-        recoveryMode = true;
-
-        return true;
-
-    }
-
-
-    return false;
-
-}
-
-
-/* =========================================================
-   AUTH STATE LISTENER
-========================================================= */
-
-function setupAuthListener(){
-
-    if(
-        !supabaseClient
-    ){
-
-        return;
-
-    }
-
-
-    supabaseClient.auth.onAuthStateChange(
-        function(
-            event,
-            session
-        ){
-
-            console.log(
-                "TaskEarn Auth:",
-                event
-            );
-
-
-            /*
-             * IMPORTANT:
-             *
-             * Never redirect to home during
-             * PASSWORD_RECOVERY.
-             */
-
-            if(
-                event === "PASSWORD_RECOVERY"
-            ){
-
-                openResetPanel();
-
-                return;
-
-            }
-
-
-            /*
-             * Login/session events.
-             *
-             * Only redirect when we are NOT
-             * inside recovery mode.
-             */
-
-            if(
-                event === "SIGNED_IN" &&
-                session &&
-                !recoveryMode &&
-                !redirecting
-            ){
-
-                /*
-                 * Do not immediately redirect here
-                 * when the login button is already
-                 * handling the login success.
-                 *
-                 * A small delay avoids duplicate
-                 * navigation.
-                 */
-
-                if(!loggingIn){
-
-                    goToHome();
-
-                }
-
-            }
-
-        }
+    return value.includes(
+        "type=recovery"
     );
 
 }
 
 
 /* =========================================================
-   EXISTING SESSION CHECK
+   START
 ========================================================= */
 
-async function checkExistingSession(){
+async function start(){
 
-    if(
-        !supabaseClient
-    ){
-
-        return;
-
-    }
+    setEyeIcon(
+        false
+    );
 
 
     /*
-     * Recovery URL must always stay on
-     * login page until password is changed.
+     * If password-recovery link is open,
+     * don't redirect to Home.
      */
 
     if(
-        detectRecoveryUrl()
+        isRecoveryUrl()
     ){
 
-        /*
-         * Give Supabase a moment to process
-         * the recovery session from the URL.
-         */
+        recoveryMode =
+            true;
+
 
         setTimeout(
             function(){
@@ -3176,7 +4040,7 @@ async function checkExistingSession(){
                 }
 
             },
-            250
+            300
         );
 
 
@@ -3185,140 +4049,17 @@ async function checkExistingSession(){
     }
 
 
-    try{
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.auth.getSession();
-
-
-        if(error){
-
-            console.warn(
-                "TaskEarn session check:",
-                error
-            );
-
-            return;
-
-        }
-
-
-        if(
-            data &&
-            data.session
-        ){
-
-            goToHome();
-
-        }
-
-    }catch(error){
-
-        console.warn(
-            "TaskEarn session check exception:",
-            error
-        );
-
-    }
+    await
+    checkExistingSession();
 
 }
 
 
 /* =========================================================
-   INITIAL PAGE START
+   START APPLICATION
 ========================================================= */
 
-function startTaskEarnLogin(){
-
-    /*
-     * First initialize Supabase.
-     */
-
-    const ready =
-        initializeSupabase();
-
-
-    if(!ready){
-
-        return;
-
-    }
-
-
-    /*
-     * Setup auth listener before checking
-     * existing session.
-     */
-
-    setupAuthListener();
-
-
-    /*
-     * Check recovery URL first.
-     */
-
-    const isRecovery =
-        detectRecoveryUrl();
-
-
-    if(isRecovery){
-
-        /*
-         * Supabase processes the recovery
-         * URL/session asynchronously.
-         *
-         * PASSWORD_RECOVERY event will open
-         * the panel.
-         */
-
-        setTimeout(
-            function(){
-
-                checkExistingSession();
-
-            },
-            200
-        );
-
-        return;
-
-    }
-
-
-    /*
-     * Normal login page:
-     *
-     * If session already exists,
-     * send user to home.html.
-     */
-
-    setTimeout(
-        function(){
-
-            checkExistingSession();
-
-        },
-        150
-    );
-
-}
-
-
-/* =========================================================
-   INITIAL UI
-========================================================= */
-
-setEyeIcon(false);
-
-
-/*
- * Start everything.
- */
-
-startTaskEarnLogin();
+start();
 
 
 /* =========================================================
@@ -3326,26 +4067,20 @@ startTaskEarnLogin();
 ========================================================= */
 
 console.log(
-    "TaskEarn Premium Login Ready"
+    "TaskEarn Login Ready"
 );
 
 console.log(
-    "Login Page:",
-    window.location.href
+    "Supabase:",
+    SUPABASE_URL
 );
 
 console.log(
-    "Signup Page:",
-    SIGNUP_PAGE
-);
-
-console.log(
-    "Home Page:",
-    HOME_PAGE
+    "Owner biometric security:",
+    "enabled"
 );
 
 </script>
 
 </body>
-
 </html>
